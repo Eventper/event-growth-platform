@@ -319,6 +319,8 @@ async function startServer() {
     const { runTenderSweep } = await import("./tender-sweeper");
     const { sendMail } = await import("./emailService");
     const { registerGrowthPlatformRoutes } = await import("./growth-platform-routes");
+    const elizabethWorkflowRouter = (await import("./growth-elizabeth-workflow")).default;
+    const outreachAnalyticsRouter = (await import("./growth-outreach-analytics")).default;
 
     if (dbRuntimeState.available) {
       registerEPGlobalRoutes(app);
@@ -504,6 +506,8 @@ async function startServer() {
       const { registerAiCommunicationsRoutes } = await import("./ai-communications-engine");
       registerAiCommunicationsRoutes(app);
       registerGrowthPlatformRoutes(app);
+      app.use("/api", elizabethWorkflowRouter);
+      app.use("/api", outreachAnalyticsRouter);
       app.use("/api", ukTendersRouter);
     }
 

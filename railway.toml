@@ -1,0 +1,58 @@
+# Railway Deployment Configuration
+# Monorepo with 3 production services: API Server, Growth Platform, Event Perfekt
+# Note: Requires PostgreSQL addon to be provisioned separately in Railway dashboard
+
+[build]
+builder = "nixpacks"
+buildCommand = "pnpm install --no-frozen-lockfile && pnpm run typecheck"
+
+# === SERVICE 1: API SERVER (Node.js Express Backend) ===
+[[services]]
+name = "api-server"
+source = "."
+rootDirectory = "artifacts/api-server"
+
+[services.build]
+builder = "nixpacks"
+buildCommand = "pnpm install --no-frozen-lockfile && pnpm run build"
+
+[services.deploy]
+startCommand = "PORT=$PORT node --enable-source-maps ./dist/index.mjs"
+healthchecks = { cmd = "curl -f http://localhost:$PORT/api/health" }
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+# === SERVICE 2: GROWTH PLATFORM (React SPA Frontend) ===
+[[services]]
+name = "growth-platform"
+source = "."
+rootDirectory = "artifacts/growth-platform"
+
+[services.build]
+builder = "nixpacks"
+buildCommand = "pnpm install --no-frozen-lockfile && BASE_PATH=/growth-platform pnpm run build"
+
+[services.deploy]
+startCommand = "PORT=$PORT node --enable-source-maps ./server.mjs"
+healthchecks = { cmd = "curl -f http://localhost:$PORT" }
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+# === SERVICE 3: EVENT PERFEKT (React SPA Frontend + SEO Prerender) ===
+[[services]]
+name = "event-perfekt"
+source = "."
+rootDirectory = "artifacts/event-perfekt"
+
+[services.build]
+builder = "nixpacks"
+buildCommand = "pnpm install --no-frozen-lockfile && BASE_PATH=/ pnpm run build"
+
+[services.deploy]
+startCommand = "PORT=$PORT node --enable-source-maps ./server.mjs"
+healthchecks = { cmd = "curl -f http://localhost:$PORT" }
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+# === DATABASE: PostgreSQL 16 (provision via Railway UI) ===
+# See "DATABASE SETUP" section in RAILWAY_SETUP.md
