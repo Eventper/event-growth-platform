@@ -1,0 +1,36 @@
+Here's the Phase 1 instruction to paste into the Agent — but only once you've actually tested Phase 0 (AI test returns a real response, event creates and deletes, no hardcoded event names). Don't paste it before that; the whole point of the phasing is that each one is proven before the next spends money.
+
+---
+
+**PHASE 1 — Market Insight & Strategy (the wizard). Build this phase only, then stop and report.**
+
+Phase 0 is signed off. Build Phase 1 now. Do not start any later phase. Reach the checkpoint, stop, and report back.
+
+Reminder of the governing sequence this serves: **Research → Strategy → Audience → Sponsors → Build → Campaign → Learn.** Phase 1 is Research + Strategy. Nothing downstream (sourcing, outreach) is built yet.
+
+**Build:**
+
+1. A wizard-style intake page. The user enters a plain-language goal (e.g. "I am launching a women's leadership event in Milton Keynes"). The wizard asks follow-up questions when the input is incomplete — it must ask, not assume.
+
+2. AI roles, all via OpenRouter (the key already wired in Phase 0):
+   - Use **Claude** as the reasoning and conversational model — it runs the interview, asks the smart follow-up questions, and synthesises the strategy.
+   - Use a **research-capable model** for the market-scan step (demand, competitors, similar events, audience pain points, relevant industries, candidate sponsor types, trending themes).
+   - The wizard interviews the **user** to capture and structure what they already know. It is fast — minutes, not a research study.
+
+3. **Juno** is the human-insight standard the wizard works to, and an optional deep-research input — it is NOT wired into the wizard and the wizard never waits on it. Leave a clean field/section in the strategy pack where Juno findings can be pasted or imported later. Do not build a Juno API connection now.
+
+4. Output a **strategy pack** saved onto the event's config: audience personas, sponsor personas, messaging recommendations, suggested pricing, content themes, and a market-opportunity score.
+
+5. The strategy pack is presented for **human approval** before anything uses it. The approved audience and sponsor profiles become the targeting parameters that Phase 2 will use for sourcing — store them in a structured form (job titles, sectors, locations, company size) so Phase 2 can read them directly.
+
+**Hard rules (unchanged):** event-agnostic — the strategy attaches to an event record, nothing hardcoded. Respect the AI spend ceiling. Build only this phase.
+
+**Checkpoint:** From a one-line goal, the wizard asks sensible clarifying questions and produces an approved strategy pack — audience and sponsor profiles, message, pricing, opportunity score — saved to the event config and structured so Phase 2 sourcing can read the targeting parameters directly. Then stop and report.
+
+---
+
+Two notes for you, not the Agent:
+
+When the wizard's built, test it with the *real* I Am Her brief — your actual goal, your actual audience. That way Phase 1 doesn't just pass a technical checkpoint, it produces the genuine strategy pack you'll use to source for August. Two birds.
+
+And watch this phase's cost the way you did Phase 0. The wizard involves more AI calls (the interview plus the market scan), so it'll likely cost more than Phase 0 did. If the burn jumps sharply, that's your signal to pause and reassess before Phase 2 — exactly the early-warning the phasing gives you.

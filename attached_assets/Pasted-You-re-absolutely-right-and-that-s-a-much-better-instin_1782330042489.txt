@@ -1,0 +1,40 @@
+You're absolutely right — and that's a much better instinct than just hand-correcting this one pack. If you fix it manually every time, the wizard stays dumb and you've built a tool that needs babysitting. If you teach the wizard to *understand tiers*, it gets it right for I Am Her **and** every future event. Fix the engine, not the output. That's the lesson you keep coming back to, and you're applying it correctly here.
+
+So the gap in Phase 1 is real: the wizard defaulted to mass-market because nothing told it to read the *positioning tier* of an event. It needs to understand that a £360 invitation-only evening at a luxury hotel is a fundamentally different animal from a £27 mass workshop — different price logic, different audience, different language, different sponsors.
+
+Here's the instruction to send the Agent to harden Phase 1 before you go anywhere near Phase 2:
+
+---
+
+**PHASE 1 HARDENING — teach the wizard to understand market tier. Build this, test it, then stop.**
+
+The wizard works mechanically but it defaults to mass-market assumptions. It produced a £75–£100 ticket and generic "empowerment" language for a premium £360 invitation-only event. Fix the intelligence, not the single output.
+
+**1. Add an explicit positioning-tier step to the interview.** Early in the wizard, the AI must establish where the event sits, and ask if unclear. Tiers:
+   - **Mass-market** — high volume, low price, broad audience, urgency/scarcity language.
+   - **Mid-market / professional** — moderate price, targeted audience.
+   - **Premium / luxury** — high price, invitation-only or curated, small exclusive audience, restrained and elevated language, premium venue, status and access as the value.
+
+   The wizard must ask: price point, venue type and standard, whether it's open or invitation-only/curated, and target headcount. These four answers set the tier.
+
+**2. Everything downstream must respect the tier.** The strategy pack must be internally consistent with it:
+   - **Pricing** — never suggest a price that contradicts the stated tier. If the user says premium/invitation-only at a luxury venue, do NOT propose mass-market pricing. Anchor to the price the user gives; if they give one, use it, don't override it.
+   - **Language/tagline** — premium events get restrained, elevated, specific messaging. Explicitly avoid generic empowerment clichés ("Empowering Women, Leading Change" and similar) for premium positioning.
+   - **Audience** — premium = small, high-fit, senior/established; reflect that in the personas (and produce more than one persona where the audience has real texture).
+   - **Sponsors** — premium events attract brands buying access to a curated audience, not mass reach.
+
+**3. Honour explicit user facts over AI guesses, always.** If the user states a price (£360), a venue (a named luxury hotel), a format (invitation-only) or a headcount (e.g. 60), those are FACTS the strategy pack must use exactly — the AI fills gaps around them, it never overrides them.
+
+**4. Re-test with the real I Am Her brief:** premium, invitation-only, £360 ticket, luxury hotel, ~60 curated women leaders. The strategy pack must come back with £360 (not a guess), restrained premium positioning (not empowerment clichés), and a senior/established audience persona — without any manual correction.
+
+**Checkpoint:** the same I Am Her brief now produces a tier-correct strategy pack — premium pricing held at £360, elevated non-generic language, curated senior audience — entirely from the wizard, no hand-editing. Then stop and report.
+
+---
+
+Two notes for you:
+
+This is the right place to spend a little build effort, because tier-awareness is what makes the wizard genuinely sellable later — a client running a £40 community meetup and a client running a £500 gala both get sensible strategies. You're building the product's intelligence, not patching one event.
+
+And the cost stays tiny here — this is still fractions-of-a-cent AI work, not Apollo credits. So harden it as much as you need; the expensive phase is still ahead.
+
+When it comes back tier-correct on the real brief, *that's* when the strategy pack is true enough to drive Phase 2 sourcing. Want me to also give you the exact real I Am Her answers to type into the wizard when you re-test, so the input is accurate and you're testing it against the genuine brief?

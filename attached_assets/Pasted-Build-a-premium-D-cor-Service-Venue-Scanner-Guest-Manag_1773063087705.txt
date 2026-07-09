@@ -1,0 +1,930 @@
+Build a premium Décor Service, Venue Scanner, Guest Management and Event Design Studio inside our app. This should be one connected system, not separate disconnected tools.
+
+The goal is to create a feature that allows us to plan an event visually and operationally from one place. It must combine:
+
+décor planning
+
+venue scanning
+
+guest management
+
+seating logic
+
+2D layout generation
+
+3D visualisation
+
+prompt-based automation
+
+walkthrough/presentation outputs
+
+This should feel like a professional event planning and design platform, similar in ambition to Homestyler and 3D Event Designer, but built specifically for event décor, seating, venue planning and guest flow.
+
+Core product vision
+
+We want a planner to be able to:
+
+create or open an event
+
+enter event details
+
+enable Guest Management
+
+enable Venue Scanner
+
+have the system automatically generate the venue shell in 2D and 3D
+
+have the system use guest numbers, seating rules, zones and décor preferences to automatically generate a draft layout
+
+manually edit the design if needed
+
+switch from 2D to 3D instantly
+
+preview the event visually and operationally
+
+use the final result for client presentation and internal delivery planning
+
+This is not just a seating chart tool.
+This is not just a generic room designer.
+This must be a connected event décor and guest planning design studio.
+
+Main principle
+
+The system should work like this:
+
+Event Record + Venue Scanner + Guest Management + Décor Library + Prompt Input + Layout Rules = automatic 2D and 3D event plan
+
+That is the key requirement.
+
+Event Record module
+
+Create a central Event Record for each event.
+
+This should store:
+
+event name
+
+event type
+
+event date
+
+venue name
+
+venue dimensions
+
+indoor or outdoor setting
+
+expected guest count
+
+confirmed guest count
+
+VIP count
+
+event style/theme
+
+seating style
+
+chair preference
+
+table preference
+
+required zones
+
+operational notes
+
+Event types should include:
+
+wedding
+
+corporate dinner
+
+conference
+
+gala
+
+banquet
+
+birthday
+
+launch event
+
+exhibition
+
+private celebration
+
+outdoor event
+
+themed event
+
+The Event Record should feed both Guest Management and Décor Design.
+
+Guest Management module
+
+Build Guest Management so it links directly to the Décor Service and Design Studio.
+
+Guest Management should store:
+
+total guests invited
+
+RSVP status
+
+confirmed attendees
+
+VIP guests
+
+family table groups
+
+head table requirements
+
+guests per table
+
+reserved sections
+
+overflow seating
+
+special seating notes
+
+This module should automatically feed the design system.
+
+Example:
+If the event has:
+
+250 confirmed guests
+
+20 VIPs
+
+tables of 10
+
+banquet setup
+
+registration required
+
+the system should automatically understand:
+
+how many tables are needed
+
+how many chairs are needed
+
+where VIP seating should go
+
+whether a registration area is needed
+
+whether capacity is too high for the venue
+
+This is critical:
+When Guest Management is enabled, it must help generate the plan automatically.
+
+Venue Scanner module
+
+Build a Venue Scanner or Venue Capture feature.
+
+This should allow the user to:
+
+scan a venue using a phone or device camera
+
+upload venue photos
+
+upload a short venue walkthrough video
+
+upload an image or PDF floor plan
+
+enter manual dimensions if needed
+
+The Venue Scanner should try to identify:
+
+room shape
+
+room width and length
+
+walls
+
+windows
+
+doors
+
+entrances and exits
+
+pillars or columns
+
+built-in bars or counters
+
+staircase positions if visible
+
+stage position if fixed
+
+ceiling height if possible
+
+After processing, it should generate:
+
+editable 2D floor plan
+
+linked 3D venue shell
+
+measurement layer
+
+visible structural features
+
+Important:
+It does not need to be architect-perfect on first pass, but it must create a strong usable starting point that can be edited manually.
+
+Manual correction must always be possible.
+
+Auto venue shell generation
+
+Once Venue Scanner is enabled and the scan or upload is complete, the system should automatically create:
+
+2D venue shell
+
+room boundary
+
+wall positions
+
+door placements
+
+window placements
+
+pillar positions
+
+entrances/exits
+
+fixed structures
+
+3D venue shell
+
+walls
+
+floor
+
+ceiling
+
+doors/windows
+
+room proportions
+
+base camera view
+
+The planner should not need to draw the venue from scratch unless they want to.
+
+Décor Service / Design Studio module
+
+Inside the Décor Service area, build a premium event design studio.
+
+This should support both:
+
+manual design
+
+automated design
+
+Users must be able to:
+
+design in 2D
+
+switch to 3D
+
+place event furniture and décor
+
+style the venue visually
+
+save designs per event
+
+present the design to clients
+
+The design module should feel polished, easy and premium, not technical or clunky.
+
+2D layout designer
+
+Build a drag-and-drop 2D event planning canvas.
+
+It should support:
+
+move, resize, rotate and duplicate objects
+
+snap to grid
+
+spacing guides
+
+alignment tools
+
+dimension visibility
+
+object locking
+
+layer handling
+
+zone labels
+
+easy editing
+
+Zones should include:
+
+stage
+
+dance floor
+
+registration desk
+
+buffet area
+
+bar area
+
+VIP section
+
+lounge area
+
+photo area
+
+cake area
+
+gift table
+
+service area
+
+walkway
+
+main aisle
+
+side aisle
+
+entrance zone
+
+holding area
+
+Furniture and décor library
+
+We need a detailed event furniture and décor library.
+
+Chair options should include:
+
+Chiavari chairs
+
+ghost chairs
+
+O-back chairs
+
+banquet chairs
+
+cross-back chairs
+
+folding chairs
+
+lounge chairs
+
+bar stools
+
+Table options should include:
+
+round banquet tables
+
+rectangular banquet tables
+
+glass banquet tables
+
+cocktail tables
+
+cake tables
+
+registration desks
+
+coffee tables
+
+bars and counters
+
+Other objects should include:
+
+sofas
+
+stage platforms
+
+dance floors
+
+floral arches
+
+backdrops
+
+pedestals
+
+floral stands
+
+truss systems
+
+lighting units
+
+LED screens
+
+props
+
+partition panels
+
+buffet stations
+
+signage
+
+walkway structures
+
+entrance features
+
+lounge setups
+
+centrepieces
+
+draping elements
+
+Each object should have:
+
+2D symbol
+
+3D model
+
+dimensions
+
+scalable size settings
+
+editable colour
+
+editable material/finish where possible
+
+quantity count
+
+category tags
+
+search/filter support
+
+optional pricing code or internal stock code for future use
+
+Colour, material and style editing
+
+Users must be able to customise:
+
+chair colours
+
+chair finishes
+
+table finishes
+
+table linen colours
+
+glass table styles
+
+stage colours
+
+drape colours
+
+floral themes
+
+backdrop colours
+
+lounge furniture colours
+
+lighting tone where possible
+
+Include event presets such as:
+
+luxury wedding
+
+all-white wedding
+
+gold and ivory
+
+black tie gala
+
+modern corporate
+
+classic banquet
+
+contemporary luxury
+
+rustic chic
+
+premium lounge
+
+themed celebration
+
+Allow users to save their own style presets.
+
+Automatic layout generation from guest data
+
+This is one of the most important features.
+
+When Guest Management is enabled, the system should automatically generate a floor plan based on:
+
+guest count
+
+VIP count
+
+seating type
+
+tables per guest count
+
+venue size
+
+event type
+
+selected décor items
+
+required zones
+
+Examples:
+
+180 guests with tables of 10 should suggest 18 tables, then adjust for VIP or special tables
+
+a conference should generate rows or classroom style, not banquet unless selected
+
+if registration is enabled, registration desk should appear near the entrance
+
+if VIPs exist, create a premium zone
+
+if the hall is too small, show a capacity warning
+
+This logic must be based on event rules, not random placement.
+
+Prompt-to-design automation
+
+We also want an AI-assisted design feature.
+
+The user should be able to enter a prompt such as:
+
+“Create a luxury wedding reception for 250 guests with gold Chiavari chairs, glass banquet tables, ivory flowers, white stage, central walkway and lounge corners.”
+
+The system should then interpret:
+
+event type
+
+guest count
+
+colour palette
+
+preferred chairs
+
+preferred tables
+
+décor style
+
+required functional zones
+
+Then it should combine:
+
+prompt data
+
+venue scan data
+
+guest management data
+
+event record data
+
+layout rules
+
+décor inventory
+
+Then produce:
+
+first-pass 2D layout
+
+linked 3D draft scene
+
+editable result
+
+Important:
+This should not be random AI generation.
+The AI must sit on top of rules, templates, seating logic and venue size.
+
+2D to 3D conversion
+
+Build one-click conversion from 2D layout to 3D preview.
+
+Everything placed in 2D should appear in 3D:
+
+tables
+
+chairs
+
+stage
+
+dance floor
+
+lounge seating
+
+arches
+
+buffet
+
+bar
+
+registration desk
+
+lighting objects
+
+drape elements where supported
+
+3D mode should support:
+
+orbit
+
+zoom
+
+pan
+
+top-down view
+
+perspective view
+
+walkthrough mode
+
+presentation mode
+
+Walkthrough and presentation mode
+
+We need client-facing presentation output.
+
+This should support:
+
+3D walkthrough preview
+
+visual flythrough mode
+
+presentation camera angles
+
+screenshot export
+
+rendered image export
+
+shareable presentation link later if possible
+
+clean client presentation view without editing controls
+
+In later phases, add:
+
+short video walkthrough export
+
+proposal-ready visual boards
+
+Automation flow required
+
+The automation flow should work like this:
+
+Step 1
+User creates or opens an event
+
+Step 2
+User enters or imports event details
+
+Step 3
+User enables Guest Management
+
+Step 4
+User enables Venue Scanner or uploads venue/floor plan
+
+Step 5
+System generates editable 2D venue shell and 3D venue shell
+
+Step 6
+System reads guest numbers, seating requirements and prompt if provided
+
+Step 7
+System generates a first-pass event layout automatically
+
+Step 8
+User edits furniture, colours, materials, zones and styling
+
+Step 9
+User switches to 3D preview
+
+Step 10
+User saves, presents or exports the design
+
+Examples of what the system should do
+
+Example 1:
+If an event says:
+
+250 guests
+
+20 VIPs
+
+banquet seating
+
+gold Chiavari chairs
+
+round glass tables
+
+stage
+
+dance floor
+
+buffet
+
+registration desk
+
+the system should automatically:
+
+calculate tables and chairs
+
+position them in a sensible layout
+
+create aisles
+
+create a VIP section
+
+place registration near entrance
+
+place buffet where practical
+
+generate the first-pass 2D plan
+
+show the linked 3D preview
+
+Example 2:
+If a user scans a venue, uploads photos, and adds this prompt:
+“Design a black tie gala with black and gold styling, stage at front, white dance floor, floral photo backdrop, and lounge corners.”
+
+the system should:
+
+use the scanned venue shell
+
+use the guest count and venue size
+
+create a suitable layout
+
+apply styling selections
+
+generate an editable draft in 2D and 3D
+
+Outputs required
+
+For each saved event design, we need:
+
+editable 2D plan
+
+3D preview
+
+furniture and décor item list
+
+quantities summary
+
+seating capacity summary
+
+warning if design exceeds venue capacity
+
+saved project file
+
+exportable design data
+
+Later phases can include:
+
+costing summary
+
+inventory allocation
+
+operations setup sheet
+
+build notes
+
+crew instructions
+
+table assignment overlay
+
+Saved templates
+
+Allow saved templates for:
+
+wedding reception
+
+gala dinner
+
+conference
+
+banquet
+
+launch event
+
+exhibition
+
+birthday event
+
+private party
+
+outdoor celebration
+
+church or faith event
+
+memorial or remembrance event
+
+Also allow custom templates to be saved by planners.
+
+User experience expectations
+
+The interface must be:
+
+premium
+
+modern
+
+simple
+
+visual
+
+intuitive for non-technical event planners
+
+It should not feel like engineering software.
+It should feel like a polished event planning product.
+
+Suggested technical stack
+
+Please propose a practical Replit-friendly build using something like:
+
+React or Next.js for front end
+
+Konva.js or Fabric.js for 2D editor
+
+Three.js for 3D rendering
+
+GLTF/GLB assets for furniture and décor models
+
+Supabase or Firebase for storage
+
+OpenAI API for prompt interpretation
+
+rules engine for layout logic and seating calculations
+
+MVP phases
+
+Phase 1
+
+Event Record
+
+Guest Management connection
+
+manual venue builder
+
+upload floor plan or venue photos
+
+editable 2D venue shell
+
+basic 3D venue shell
+
+guest-count-driven table and chair calculations
+
+auto-generated first-pass 2D layout
+
+manual editing
+
+basic décor library
+
+basic 3D preview
+
+Phase 2
+
+richer décor and furniture library
+
+colour and material editing
+
+Venue Scanner camera mode
+
+prompt-to-layout AI assistant
+
+VIP zoning
+
+circulation rules
+
+capacity warnings
+
+client presentation mode
+
+Phase 3
+
+advanced walkthrough
+
+video flythrough export
+
+guest-to-seat assignment overlay
+
+costing and inventory integration
+
+setup instructions
+
+proposal-ready renders
+
+collaboration and approvals
+
+Priority order
+
+Most important priorities:
+
+Guest Management must link directly to layout generation
+
+Venue Scanner must create the venue shell automatically
+
+System must generate a usable 2D and 3D starting plan
+
+Furniture and décor library must be strong and editable
+
+Users must be able to switch from 2D to 3D easily
+
+Prompt-based design support should enhance the workflow, not replace the rules engine
+
+Final instruction
+
+Please confirm:
+
+overall feasibility
+
+best architecture

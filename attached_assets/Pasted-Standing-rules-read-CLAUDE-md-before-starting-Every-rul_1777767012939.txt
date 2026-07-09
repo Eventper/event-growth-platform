@@ -1,0 +1,110 @@
+Standing rules — read CLAUDE.md before starting. Every rule applies.
+
+Additive only. No destructive migrations. Do not delete, drop, truncate, or alter any existing database table, column, index, or constraint. If any change would delete or alter existing schema, stop and ask before proceeding.
+Show diffs before committing.
+Reuse existing patterns. No parallel infrastructure.
+No "AI", "Claude", "agent", "bot" on user-facing surfaces.
+System boundaries: This is the Planning App (eventperfektplanningapp.com) = Event Planning + Client Portal + Tender Centre + Training. Applications for The Woman Who Leads The Room live here.
+Ship in daily increments.
+Stop and ask if uncertain.
+Lead enrichment uses RocketReach, not Hunter.
+No seeded names. Team assignment is invitation-based.
+Email passwords live only in Replit Secrets — never in chat or code. Department mailboxes only (adminuk@eventperfekt.com), never personal addresses, never invented addresses.
+
+
+Locked email copy for the Applications system on The Woman Who Leads The Room.
+All emails send from adminuk@eventperfekt.com. Replies route to the same mailbox. Do not create or use any other address.
+
+a. Submission acknowledgement (fires immediately on form submit):
+
+Subject: Your application — The Woman Who Leads The Room
+Dear [First name],
+Thank you for applying.
+Applications for the evening of Thursday 6 August are reviewed weekly. You'll hear from us within 7 days.
+Event Perfekt
+―
+Any questions? Write to adminuk@eventperfekt.com
+
+
+b. Acceptance email (fires when Final Approver clicks Approve):
+
+Subject: Congratulations — your invitation to The Woman Who Leads The Room
+Dear [First name],
+Congratulations.
+You have been selected as an esteemed guest of The Woman Who Leads The Room — an evening curated for women whose presence shapes the rooms they enter.
+Thursday 6 August 2026 · Milton Keynes · From 6:30pm
+Your application has been accepted. We are delighted to welcome you.
+[Confirm your place]
+Your formal invitation follows in June, with everything you need to know about the evening.
+The room is fixed. We look forward to welcoming you.
+Event Perfekt
+―
+Any questions? Write to adminuk@eventperfekt.com
+
+CTA links to /confirm/[confirmation_token]. Token expires 14 days after acceptance email sent.
+
+c. Decline email (fires when Final Approver clicks Decline):
+
+Subject: Thank you for applying
+Dear [First name],
+Thank you for your interest in The Woman Who Leads The Room.
+The room is fixed at 100, and on this occasion we are unable to extend an invitation. We curate carefully and decisions reflect fit for this particular room, not merit.
+Event Perfekt
+―
+adminuk@eventperfekt.com
+
+
+d. Need more info email (fires when First Reviewer requests):
+
+Subject: A quick question about your application
+Dear [First name],
+Thank you for applying. Before we progress, could you share [First Reviewer's question]?
+A short reply by email is all we need.
+Event Perfekt
+―
+adminuk@eventperfekt.com
+
+
+Confirmation page at /confirm/[confirmation_token]:
+
+The Woman Who Leads The Room
+[First name], your place is reserved.
+Thursday 6 August 2026 · Milton Keynes · From 6:30pm
+To confirm, complete your £100 attendance. Your formal invitation follows in June.
+[Confirm your place — £100]
+―
+Have a question first? [Ask before confirming]
+Need to step back? [Decline this invitation]
+―
+adminuk@eventperfekt.com
+
+Three paths from the confirmation page:
+
+Confirm your place → Stripe checkout (£100)
+Ask before confirming → free-text form, holds place 3 days, routes question to adminuk@eventperfekt.com
+Decline this invitation → soft-decline confirmation, releases place, fires graceful step-back email
+
+
+e. Payment confirmation email (fires after successful Stripe payment):
+
+Subject: Confirmed — we'll see you on the 6th
+Dear [First name],
+Your place is confirmed.
+Thursday 6 August 2026, Milton Keynes, from 6:30pm.
+Your formal invitation follows in June with everything you need to know — the venue, what to expect, and the women you'll be in the room with.
+Until then, the room thanks you.
+Event Perfekt
+―
+Any questions? Write to adminuk@eventperfekt.com
+
+Calendar invite (.ics) attached.
+
+f. Decline-by-applicant email (fires when applicant clicks Decline):
+
+Subject: Until next time
+Dear [First name],
+Thank you for letting us know.
+When the timing is right, we would be glad to welcome you to a future edition.
+Event Perfekt
+―
+adminuk@eventperfekt.com

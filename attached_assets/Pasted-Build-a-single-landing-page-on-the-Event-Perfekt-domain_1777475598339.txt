@@ -1,0 +1,244 @@
+Build a single landing page on the Event Perfekt domain to test interest in an upcoming event. Goal: capture audience interest, partner enquiries, and sponsor enquiries — all from one page.
+
+Route: /16july
+
+============================================================
+PAGE STRUCTURE (in order, top to bottom)
+============================================================
+
+1. Header — Event Perfekt logo only
+2. Hero with AI-generated image
+3. Description paragraphs
+4. THREE call-to-action buttons (Register interest / Partner with us / Sponsor with us)
+5. Form sections (one per CTA, only the relevant one shows when button clicked)
+6. Footer
+
+============================================================
+HERO IMAGE
+============================================================
+
+Generate an AI hero image — DO NOT use stock photos.
+
+Image brief for AI generation:
+"Premium evening event scene, soft warm lighting, professional women in elegant business attire networking at an upscale venue with champagne glasses, blurred bokeh background, editorial magazine quality, deep neutral tones (cream, charcoal, soft gold), composed and refined atmosphere, no faces clearly visible (focus on hands, glasses, ambient detail), 16:9 aspect ratio."
+
+Use a single horizontal AI-generated image at 16:9. No carousels. No multiple images.
+
+============================================================
+HEADLINE & SUBHEAD (over hero or directly below)
+============================================================
+
+Headline (large, serif):
+"An evening for senior professional women"
+
+Subhead:
+"Thursday 16 July 2026 · Milton Keynes"
+
+Below subhead:
+"Hosted by Event Perfekt × Shujo Aesthetics"
+
+============================================================
+DESCRIPTION (three short paragraphs)
+============================================================
+
+"A curated evening for directors, founders and senior professional women across Milton Keynes, Buckinghamshire, Bedfordshire and Northamptonshire.
+
+The evening brings together aesthetic excellence with Esther at Shujo Aesthetics — a CQC-registered specialist clinic with 20 years of clinical experience in aesthetic dermatology, melanin-rich skin, menopause and hormonal skincare — alongside premium brand experiences, wine tasting, and curated networking.
+
+By invitation only. Limited to 100 guests."
+
+============================================================
+THREE CTA BUTTONS
+============================================================
+
+Below the description, display three buttons in a row (stacked on mobile):
+
+Button 1: "Register your interest" — primary button (filled, brand colour)
+Button 2: "Partner with us" — secondary button (outlined)
+Button 3: "Sponsor with us" — secondary button (outlined)
+
+When a user clicks one, the page smooth-scrolls to a form section below tailored to that purpose. Only the chosen form is shown at a time. User can switch between forms by clicking another button.
+
+============================================================
+FORM 1 — REGISTER INTEREST (default visible if no button clicked)
+============================================================
+
+Heading: "Register your interest"
+Subline: "Be among the first to receive your invitation when registrations open in May 2026. Limited to 100 guests."
+
+Fields (required unless noted):
+- First name
+- Last name
+- Email
+- Role / Job title
+- Company (optional)
+- Phone (optional)
+- "How did you hear about this evening?" (optional)
+- Tickbox (required): "I'm happy to receive event updates from Event Perfekt."
+
+Submit button: "Register interest"
+
+On submit:
+- Validate email format
+- Store in database table `event_16july_interest` with columns: id, first_name, last_name, email, role, company, phone, source, consent_marketing, created_at, ip_address
+- Send confirmation email from marketing@eventperfekt.com:
+
+  Subject: "Thank you — your interest is registered"
+  Body:
+  "Dear [First name],
+
+  Thank you for registering your interest in our evening for senior professional women on Thursday 16 July 2026, hosted by Event Perfekt × Shujo Aesthetics in Milton Keynes.
+
+  We'll be in touch in May 2026 with full event details, venue confirmation and your formal invitation.
+
+  Limited to 100 guests — your early registration helps us secure your place when we open the invitation list.
+
+  Warm regards,
+
+  Tolu Kumolu-Johnson
+  Director, Event Perfekt Group"
+
+- Show success state: "You're on the list. We'll be in touch in May with full details."
+
+============================================================
+FORM 2 — PARTNER WITH US
+============================================================
+
+Heading: "Partner with us"
+Subline: "We're inviting select networks, women's organisations, professional associations, and community groups to partner on this evening. Tell us who you are."
+
+Fields (required unless noted):
+- Your name
+- Organisation / network name
+- Your role
+- Email
+- Phone (optional)
+- "Tell us about your organisation and how you'd like to partner" (textarea, required)
+- Tickbox (required): "I'm happy to receive event updates from Event Perfekt."
+
+Submit button: "Submit partner enquiry"
+
+On submit:
+- Store in database table `event_16july_partner_enquiries` with appropriate columns
+- Send notification email to tolu@eventperfekt.com (or admin email) with the enquiry details
+- Send acknowledgement email to the enquirer:
+
+  Subject: "Thank you — your partner enquiry is received"
+  Body:
+  "Dear [First name],
+
+  Thank you for reaching out about partnering on our evening for senior professional women on Thursday 16 July 2026, hosted by Event Perfekt × Shujo Aesthetics in Milton Keynes.
+
+  I'll personally be in touch within 48 hours to discuss further.
+
+  Warm regards,
+
+  Tolu Kumolu-Johnson
+  Director, Event Perfekt Group"
+
+- Show success state: "Thank you. Tolu will be in touch within 48 hours."
+
+============================================================
+FORM 3 — SPONSOR WITH US
+============================================================
+
+Heading: "Sponsor with us"
+Subline: "We're inviting premium brands across beauty, fashion, jewellery, fine wine, automotive and lifestyle to sponsor this curated evening."
+
+Fields (required unless noted):
+- Your name
+- Brand / company name
+- Your role
+- Email
+- Phone (optional)
+- "What kind of sponsorship are you interested in?" (radio buttons):
+  - Headline sponsor
+  - Experience partner (branded activation on the night)
+  - Goody bag partner
+  - Wine / beverage partner
+  - Not sure — let's discuss
+- "Tell us about your brand and what you'd like to discuss" (textarea, required)
+- Tickbox (required): "I'm happy to receive event updates from Event Perfekt."
+
+Submit button: "Submit sponsor enquiry"
+
+On submit:
+- Store in database table `event_16july_sponsor_enquiries`
+- Send notification email to tolu@eventperfekt.com with enquiry details
+- Send acknowledgement email to the enquirer:
+
+  Subject: "Thank you — your sponsor enquiry is received"
+  Body:
+  "Dear [First name],
+
+  Thank you for your interest in sponsoring our evening for senior professional women on Thursday 16 July 2026, hosted by Event Perfekt × Shujo Aesthetics in Milton Keynes.
+
+  I'll personally be in touch within 48 hours with our partnership pack and to discuss further.
+
+  Warm regards,
+
+  Tolu Kumolu-Johnson
+  Director, Event Perfekt Group"
+
+- Show success state: "Thank you. Tolu will be in touch within 48 hours with our partnership pack."
+
+============================================================
+FOOTER
+============================================================
+
+Three lines, centre-aligned:
+
+"Event Perfekt × Shujo Aesthetics"
+"For direct enquiries: tolu@eventperfekt.com"
+"© 2026 Event Perfekt Group"
+
+============================================================
+DESIGN RULES
+============================================================
+
+- Premium, minimal, lots of whitespace
+- Serif headline (Playfair Display or similar premium serif)
+- Sans-serif body (Inter or Event Perfekt brand font if defined)
+- Mostly black, white, ivory or cream — single accent colour matching Event Perfekt brand
+- AI hero image is the only image on the page — no stock photos, no other illustrations
+- Hero image overlaid with subtle dark gradient at the bottom for headline contrast
+- Form section feels discreet and easy
+- Mobile-first design — most senior professional women will register from phone
+- Buttons: clear hierarchy (primary "Register" filled, two outlined "Partner" / "Sponsor")
+
+============================================================
+ADMIN VIEW
+============================================================
+
+Add an admin page at /admin/16july accessible to logged-in admins only:
+
+Three tabs:
+- "Interest" — list of all entries from event_16july_interest
+- "Partner enquiries" — list from event_16july_partner_enquiries
+- "Sponsor enquiries" — list from event_16july_sponsor_enquiries
+
+Each tab:
+- Sortable by date, name, email
+- Search by name/email
+- Total count at top
+- Export to CSV button per tab
+
+============================================================
+TECHNICAL RULES
+============================================================
+
+- Don't break existing routes
+- Use marketing@eventperfekt.com SMTP (already wired) for all confirmation emails
+- Don't add this page to main site nav — direct link only
+- Page loads in under 2 seconds
+- Rate limit forms: max 3 submissions per IP per minute
+- GDPR line under each consent tickbox: "We'll only use your details to send updates about this event. You can unsubscribe at any time. See our privacy policy."
+
+============================================================
+COMMIT
+============================================================
+
+Single commit:
+  feat(events): landing page with interest, partner and sponsor forms for 16 July 2026 event
+
+After: typecheck, brief summary, share the live URL. Confirm AI hero image was generated (not stock).

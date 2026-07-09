@@ -1,0 +1,50 @@
+Client-side RAID Log — needs to mirror Group Portal RAID Log functionality AND fix the visibility/scoping problem. Do not start building until I confirm the audit results below.
+Audit first — report back before any code changes:
+
+Current table name and column inventory for the client-side RAID (likely alli_risks or similar). Include visibility column state distribution — how many rows are visible-to-client vs internal-only.
+Current render route on the Planning App that shows RAID to Trustees, and the filter logic it applies (if any).
+Whether the existing Group Portal RAID Log component (with treat / close / retask / comment / status dropdown / treatment notes) is reusable as-is or needs forking.
+Duplicate detection — D11 partner outreach appears 3x in current client view, D14 Jibowu consent appears 2x. Run a SELECT title, COUNT(*) FROM ... GROUP BY title HAVING COUNT(*) > 1 and report dupes.
+Owner field state — which visible rows have no owner, which have an EP-internal owner (Prabhleen Tak, Abraham Taiwo, Lara Shomuyiwa, Tolu Johnson), which have Trustee owners.
+
+Once audit is back, the target behaviour is:
+A. Visibility scoping — three categories, not two
+
+client_actionable — Trustees see it AND can treat/close/retask/comment. Example: DBS umbrella body, ICO registration, Jibowu consent, data protection lead unassigned, trustee name error propagation.
+client_visible_readonly — Trustees see it for context but cannot treat. Example: standing contract risks R1, R2, R3, R6.
+internal_only — never appears on Planning App. Example: any EP delivery slippage (D11/D12/D14 overdue, no outreach tracker, cascade failure risk, Prabhleen-named items).
+
+Default for any new entry: internal_only. Director must explicitly flip to client_visible_readonly or client_actionable. No blanket exposure.
+B. Functional parity with Group Portal RAID for client_actionable items only
+Reuse the Group Portal RAID Log component pattern. Trustees on client_actionable items can:
+
+Edit status (Open / In Treatment / Resolved / Closed / Accepted-Risk) — dropdown, audit-logged
+Add dated, attributed treatment note (same as RAID treatment notes pattern)
+Mark Resolved (sets status, requests Director confirmation)
+Retask (reassign owner between Mr. Kehinde Alli and Mr. Agboola Ogundeyin)
+Comment (round-trip pattern already built — Priority 3 in April)
+
+Director-only:
+
+Mark Closed (final close)
+Flip visibility category
+Edit title, description, priority
+Delete (audit-logged, soft-delete preferred)
+
+client_visible_readonly items: Trustees see them, no edit/treat/close capability.
+C. Pre-launch cleanup — mandatory before re-exposing to Trustees
+Run this in the same change set:
+
+Deduplicate D11, D14 (Jibowu consent), D14 (data protection lead) entries. Keep the most recent version with the fullest description; soft-delete the rest.
+Flip all EP-internal delivery risks to internal_only: D11 outreach overdue, D12 overdue, D14 OVERDUE Prabhleen, Phase 2 cascade failure, no outreach tracker.
+Verify owner on every remaining client-visible item — every client_actionable must have Mr. Kehinde Alli or Mr. Agboola Ogundeyin as owner; client_visible_readonly can be ownerless.
+Verify audit_logs is now writing visibility flips (flagged previously as silently ignored). If not, fix before re-exposing.
+
+D. Audit log every state change on client side
+Per existing standing requirement — every Trustee action on RAID (treat, status change, comment, retask) writes an audit_logs entry with actor, action, before/after state, timestamp. Same pattern as deliverable sign-offs.
+Pre-build report I want back:
+
+Audit results from points 1–5 above
+Confirmation that Group Portal RAID Log component is reusable or scope of fork needed
+List of every row currently flagged visible-to-client, with proposed category (client_actionable / client_visible_readonly / internal_only) for my approval
+Migration plan (additive only — no destructive changes; soft-delete only)

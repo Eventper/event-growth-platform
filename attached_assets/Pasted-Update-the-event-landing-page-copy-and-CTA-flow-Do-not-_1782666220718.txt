@@ -1,0 +1,160 @@
+Update the event landing page copy and CTA flow. Do not redesign the whole site. Keep the luxury editorial feel, but make the page clearer and more conversion-focused.
+
+1. Replace all “Buy Your Place” CTAs
+
+Change every button that says:
+
+Buy Your Place
+
+to:
+
+Apply for Your Invitation
+
+Under the main CTA, add small text:
+
+Applications are reviewed individually. Approved guests receive a private confirmation link.
+
+The page should not feel like public ticket sales. It should feel curated and invitation-only.
+
+2. Hero section changes
+
+At the top, make the offer clear within 5 seconds.
+
+Use this structure:
+
+Friday 28 August 2026 · Milton Keynes
+
+The Woman Who Leads the Room
+
+A private luxury dinner and wellbeing evening for accomplished women ready to restore, connect, and be recognised beyond the title.
+
+Then add a short detail line:
+
+100 invited women · Champagne welcome · Three-course dinner · Women’s health and wellbeing conversation · Editorial portraiture · I Am Her campaign feature
+
+Primary button:
+
+Apply for Your Invitation
+
+Secondary button:
+
+View the Evening
+
+Keep the visual style premium, calm, and editorial.
+
+3. Move the price lower
+
+Do not show £300 too high on the page.
+
+Move price below the “Your place includes” section.
+
+Change the wording from just:
+
+£300
+
+to:
+
+Guest contribution: £300
+
+Under it, add:
+
+Includes champagne welcome, three-course dinner, professional editorial portrait, I Am Her campaign feature, wellbeing session, and private guest benefits.
+
+4. Add “Who this is for” section near the top
+
+Place this after the hero and before the long emotional copy.
+
+Section title:
+
+This room is for women who
+
+Bullet points:
+
+Have built, led, scaled, or sustained something significant
+Carry responsibility in business, leadership, family, or community
+Want better conversations than typical networking rooms
+Value privacy, beauty, wellbeing, and meaningful connection
+Are ready to be seen beyond the role they perform every day
+
+Then add a line underneath:
+
+This is not for beginners looking for business basics.
+
+5. Add trust strip near the top
+
+Add a compact credibility strip after the “Who this is for” section:
+
+Featuring:
+Dr Sarah Jenkins — UK Menopause Advocate of the Year 2025
+Esther Emenike-Okorie — CEO, Shujo
+As featured by MKFM Milton Keynes
+Hosted by Event Perfekt Global Ltd
+
+Keep it elegant, not loud.
+
+6. Add “How invitations work” section
+
+Add this before the final CTA.
+
+Section title:
+
+How invitations work
+
+Steps:
+
+Request your invitation
+We review each application individually
+Approved guests receive private confirmation details
+Once confirmed, your editorial campaign card and guest details are prepared
+
+Button under this section:
+
+Apply for Your Invitation
+
+7. Update the application form fields
+
+The form should collect more than email.
+
+Fields:
+
+Full name
+Email address
+Instagram or LinkedIn
+Business / role
+Why would you like to attend?
+Would you like weekend stay details? Yes / No
+Were you nominated or invited by someone?
+
+Submit button:
+
+Request My Invitation
+
+After submission, show confirmation message:
+
+Thank you. Your request has been received. Applications are reviewed individually, and approved guests will receive private confirmation details by email.
+
+8. Reduce repeated copy
+
+Keep the premium tone, but remove repeated versions of:
+
+“not networking”
+“not advice”
+“right women”
+“woman behind the title”
+“room built for restoration”
+
+Do not delete the positioning completely. Just reduce repetition by around 25–35%.
+
+Luxury needs space. The page should feel confident, not over-explained.
+
+9. Final CTA section
+
+Replace the final CTA copy with:
+
+Applications are now open for 100 invited women.
+
+Request your invitation for The Woman Who Leads the Room.
+
+Button:
+
+Apply for Your Invitation

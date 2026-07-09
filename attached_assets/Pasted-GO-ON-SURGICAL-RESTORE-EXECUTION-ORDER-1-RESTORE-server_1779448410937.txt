@@ -1,0 +1,50 @@
+GO ON SURGICAL RESTORE.
+
+EXECUTION ORDER
+
+(1) RESTORE server/routes.ts FROM 075c7b5
+
+git checkout 075c7b5 -- server/routes.ts
+
+Don't touch any other file. Don't revert any other commit. The five feature changes mostly live outside server/routes.ts per your audit — those stay intact. Tables stay intact.
+
+(2) BOOT TEST IMMEDIATELY AFTER RESTORE
+
+Try to start the app. Three outcomes:
+
+(a) App boots clean → move to (3) to check if anything from 2e3b54e needs re-applying
+(b) App throws a different error → surface it, don't auto-fix, report what's broken
+(c) App throws the same EOF error → 075c7b5 isn't actually the last good commit, go back further. Try the commit before 075c7b5 next.
+
+If (a): proceed to (3).
+If (b) or (c): stop, report, I steer.
+
+(3) IDENTIFY WHAT WAS ADDED TO server/routes.ts IN 2e3b54e
+
+git show 2e3b54e -- server/routes.ts
+
+Show me the diff of what 2e3b54e added to server/routes.ts. That's the "Update event summary API and client to use secure authentication" commit — almost certainly the bridge endpoint route handler and the EP_CROSS_SYSTEM_KEY auth wiring.
+
+(4) RE-APPLY THE 2e3b54e ADDITIONS ON TOP OF THE RESTORED BASE
+
+After I see the diff in (3), I'll tell you whether to:
+  - Re-apply the diff cleanly (manual paste of the route handler additions into the restored routes.ts)
+  - Or skip and re-add the bridge auth differently if the diff looks like it's where the truncation started
+
+Don't re-apply without showing me the diff first.
+
+(5) FULL VERIFICATION
+
+After (4):
+  - Run button starts the app cleanly
+  - No EOF error in startup log
+  - Server boots to "listening" message
+  - Curl /api/summary/iam-her with EP_CROSS_SYSTEM_KEY → 200 JSON with live counts
+  - Curl /api/summary/iam-her with no key → 401
+  - Load /iam-her preview → renders, no hardcoded array regression
+  - Load /iam-her/register → form renders, submit creates event_applications row, fires confirmation email
+  - Load /iam-her/esther → loads, tasks/documents/messages render from real tables
+
+If anything fails verification — surface, don't paper over.
+
+GO STEP 1.

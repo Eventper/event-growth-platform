@@ -1,0 +1,111 @@
+URGENT FIX – STOP ALL CLIENT AUTO EMAILS
+
+Current issue:
+The system is automatically sending emails directly to clients when bookings are created or updated.
+
+This must stop immediately.
+
+NEW EMAIL APPROVAL RULE
+
+1. CLIENT MUST NOT RECEIVE ANY EMAIL automatically
+except:
+
+Booking enquiry received notification only (simple acknowledgement)
+
+Example:
+“Thank you, we have received your enquiry and a member of our team will review and contact you shortly.”
+
+NO pricing
+NO invoice
+NO booking pack
+NO payment request
+NO terms
+NO booking confirmation
+
+----------------------------------
+INTERNAL APPROVAL GATEWAY
+----------------------------------
+
+After booking is created:
+
+System generates booking pack internally only:
+
+- Booking confirmation email draft
+- Invoice draft
+- Agreement draft
+- Payment instructions
+
+SEND ONLY TO:
+
+info@eventperfekt.com
+
+Subject:
+
+INTERNAL REVIEW REQUIRED – DO NOT SEND – [Client Name]
+
+----------------------------------
+ADMIN ACTIONS
+----------------------------------
+
+Admin dashboard buttons:
+
+Approve & Send to Client
+Edit Draft
+Hold Draft
+Delete Draft
+
+NO EMAIL goes to client unless admin clicks:
+
+Approve & Send to Client
+
+----------------------------------
+BOOKING ENQUIRY AUTO RESPONSE
+----------------------------------
+
+ONLY this may go to client automatically:
+
+Subject:
+Thank You – We Have Received Your Booking Enquiry
+
+Body:
+
+Thank you for contacting Event Perfekt Global Ltd.
+
+We have received your enquiry and a member of our team is currently reviewing your request.
+
+We will contact you shortly with confirmation and next steps.
+
+Kind regards
+Event Perfekt Global Ltd
+
+----------------------------------
+DISABLE THESE AUTO EMAILS
+----------------------------------
+
+Immediately disable:
+
+- Auto invoice emails
+- Auto booking confirmation emails
+- Auto quote emails
+- Auto payment request emails
+- Auto agreement emails
+- Auto reminders
+
+Unless manually approved by Event Perfekt admin.
+
+----------------------------------
+EMAIL GATEWAY LOGIC
+----------------------------------
+
+Rule:
+
+IF booking created:
+→ Send internal review email only
+
+IF admin approves:
+→ Then send to client
+
+IF admin edits:
+→ Hold draft
+
+NO automatic client sending allowed.

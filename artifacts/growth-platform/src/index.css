@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Growth Intelligence — Executive Growth OS, v1.0 design tokens.
+  Deep BURGUNDY workspace (never full white) · floating WHITE cards ·
+  CHAMPAGNE used rarely (Growth Score / rings) · Poppins type.
+  Inverted theme: default on-workspace text is light; <Card> resets to dark
+  via text-card-foreground. Token names are stable so the app re-themes here.
+*/
+@theme {
+  --color-background: #5B1E2A;        /* deep executive burgundy workspace */
+  --color-foreground: #1A1714;        /* dark — used as card text */
+  --color-card: #FFFFFF;              /* floating white cards */
+  --color-card-foreground: #1A1714;
+  --color-primary: #6E2433;           /* burgundy — primary buttons / brand */
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #F4F1EC;
+  --color-secondary-foreground: #1A1714;
+  --color-accent: #C9A86A;            /* champagne — rare luxury accent */
+  --color-accent-foreground: #3A2A12;
+  --color-muted: #F4F1EC;
+  --color-muted-foreground: #1A1714;  /* black — no gray; readable on white cards */
+  --color-border: #ECE7E0;
+  --color-input: #E5E1DA;
+  --color-ring: #C9A86A;
+  --color-destructive: #B3261E;
+  --color-destructive-foreground: #FFFFFF;
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #1A1714;
+
+  /* Slim burgundy sidebar with champagne active indicator */
+  --color-sidebar: #4E1923;
+  --color-sidebar-foreground: #F3E7E9;
+  --color-sidebar-border: #3D131B;
+  --color-sidebar-active: #6E2433;
+  --color-sidebar-active-foreground: #FFFFFF;
+  --color-sidebar-muted: #C9A0A8;
+
+  /* Brand aliases */
+  --color-gold: #C9A86A;              /* champagne (rare) */
+  --color-ink: #1A1714;
+  --color-ivory: #F6EEE9;             /* light text on the burgundy workspace */
+  --color-warm: #1A1714;              /* was gray — now black; no gray anywhere */
+  --color-parchment: #5B1E2A;         /* workspace background (Layout wrapper) */
+  --color-surface: #F4F1EC;           /* light inner panel inside white cards */
+  --color-surface-hover: #ECE7DF;
+  --color-bone: #5B1E2A;
+  --color-charcoal: #1A1714;
+  --color-burgundy: #6E2433;
+  --color-burgundy-deep: #4E1923;
+  --color-burgundy-bright: #8B3A4A;
+  --color-champagne: #C9A86A;
+
+  /* Status — colour only when it means something */
+  --color-success: #1E7A46;
+  --color-warning: #B45309;
+  --color-info: #2563EB;
+  --color-danger: #B3261E;
+
+  --font-sans: 'Poppins', 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-heading: 'Poppins', 'Inter', system-ui, sans-serif;
+  --font-serif: 'Poppins', 'Inter', system-ui, sans-serif;
+
+  --radius: 1rem;          /* 16px */
+  --radius-sm: 0.75rem;
+  --radius-lg: 1.25rem;    /* 20px */
+  --radius-xl: 1.5rem;     /* 24px */
+}
+
+@layer base {
+  html { font-family: var(--font-sans); scroll-behavior: smooth; }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-ivory);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  ::selection { background-color: var(--color-champagne); color: #2A1E08; }
+}
+
+@layer utilities {
+  .font-heading { font-family: var(--font-heading); }
+  .font-serif { font-family: var(--font-serif); }
+  .font-body { font-family: var(--font-body); }
+
+  /* Brand text */
+  .text-gold { color: var(--color-gold); }
+  .text-champagne { color: var(--color-champagne); }
+  .text-ink { color: var(--color-ink); }
+  .text-ivory { color: var(--color-ivory); }
+  .text-warm { color: var(--color-warm); }
+  .text-burgundy { color: var(--color-burgundy); }
+  .text-charcoal { color: var(--color-charcoal); }
+
+  /* Brand backgrounds */
+  .bg-gold { background-color: var(--color-gold); }
+  .bg-champagne { background-color: var(--color-champagne); }
+  .bg-ink { background-color: var(--color-ink); }
+  .bg-ivory { background-color: var(--color-ivory); }
+  .bg-parchment { background-color: var(--color-parchment); }
+  .bg-surface { background-color: var(--color-surface); }
+  .bg-surface-hover { background-color: var(--color-surface-hover); }
+  .bg-burgundy { background-color: var(--color-burgundy); }
+  .bg-burgundy-deep { background-color: var(--color-burgundy-deep); }
+  .bg-bone { background-color: var(--color-bone); }
+
+  /* Status helpers */
+  .text-success { color: var(--color-success); }
+  .text-warning { color: var(--color-warning); }
+  .text-info { color: var(--color-info); }
+  .text-danger { color: var(--color-danger); }
+
+  .border-gold { border-color: var(--color-gold); }
+  .border-champagne { border-color: var(--color-champagne); }
+  .border-burgundy { border-color: var(--color-burgundy); }
+  .ring-gold { --tw-ring-color: var(--color-gold); }
+
+  /* Floating-card elevation — premium paper on a luxury desk */
+  .shadow-soft { box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 10px 30px -14px rgba(0,0,0,0.28); }
+  .shadow-card { box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 16px 40px -20px rgba(0,0,0,0.35); }
+  .shadow-glass { box-shadow: 0 8px 44px -8px rgba(0,0,0,0.45); backdrop-filter: blur(12px); }
+
+  /* Calm motion — settle, never bounce */
+  @keyframes fade-rise { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
+  .animate-fade-rise { animation: fade-rise 0.55s cubic-bezier(0.16,1,0.3,1) both; }
+}

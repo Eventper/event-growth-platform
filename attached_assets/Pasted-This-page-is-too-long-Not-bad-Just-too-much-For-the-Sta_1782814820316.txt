@@ -1,0 +1,179 @@
+This page is **too long**.
+
+Not bad. Just too much.
+
+For the Stay page, the job is simple:
+
+**make travelling to Milton Keynes feel easy, valuable, and worth staying for.**
+
+Right now it does that, but it’s padded. Padding reduces action.
+
+## What to keep
+
+Keep these sections:
+
+1. **Turn the evening into a weekend**
+2. **Why stay in Milton Keynes?**
+3. **EP Concierge**
+4. **Where to stay**
+5. **48 Hours in Milton Keynes**
+6. **Pick your weekend style**
+7. **Key weekend experiences**
+8. **For local businesses**
+9. **Supporting the local visitor economy**
+
+That structure works.
+
+The civic/economic part is strong because it clearly says the event brings women from across the UK into Milton Keynes and supports overnight stays, restaurants, retail, attractions and wider city engagement. Keep that section. 
+
+## What to cut or tighten
+
+### 1. “Stay over, bring a friend or family”
+
+Change to:
+
+**Stay over, bring someone with you, and let the EP Concierge help you shape your Milton Keynes weekend.**
+
+“Family” is fine later. Don’t put it in the hero. The event is for senior women, not a family trip.
+
+### 2. “You’re already coming for the room. Why not stay for the weekend?”
+
+Keep it. Strong. Simple.
+
+### 3. “Premium hotels close to the venue”
+
+Careful. If venue is not public yet, say:
+
+**Premium hotels close to central Milton Keynes**
+
+### 4. “Special discounts”
+
+Do not say discounts unless confirmed. Use:
+
+**Guest stay options and local recommendations available for confirmed guests.**
+
+### 5. EP Concierge wording
+
+“Let us help you plan it” is okay, but “concierge” only works if you actually reply fast.
+
+Use:
+
+**Need help planning the weekend?**
+
+Subline:
+
+**The EP Concierge can help with hotel options, group stay enquiries, restaurant ideas, beauty appointments, spa recommendations, family-friendly plans and local introductions.**
+
+Less promise. More control.
+
+## The big missing line
+
+Add this near the top, right after the hero:
+
+> **Hosted in Milton Keynes, The Woman Who Leads The Room is designed to bring accomplished women from across the UK into the city — supporting hotels, restaurants, retail, cultural attractions and the wider visitor economy.**
+
+That line helps the Mayor, sponsors, hotels, restaurants and local media understand the value.
+
+## Send this to Replit
+
+Paste this:
+
+---
+
+Please tighten the Stay & Explore page.
+
+Keep the structure, but make the page more direct and more useful.
+
+### Hero section
+
+Replace the current hero copy with:
+
+**Turn the evening into a weekend.**
+Coming to **The Woman Who Leads The Room**? Stay over, bring someone with you, and let the EP Concierge help you shape your Milton Keynes weekend.
+
+**You’re already coming for the room. Why not stay for the weekend?**
+
+Buttons:
+**Talk to the EP Concierge**
+**View Weekend Ideas**
+
+Add this civic/visitor economy line directly below the hero:
+
+**Hosted in Milton Keynes, The Woman Who Leads The Room is designed to bring accomplished women from across the UK into the city — supporting hotels, restaurants, retail, cultural attractions and the wider visitor economy.**
+
+### Why stay section
+
+Use:
+
+**Why stay in Milton Keynes?**
+Milton Keynes is easy to reach, simple to navigate, and built for a weekend stay. With fast train links from London, strong road access, premium hotels, shopping, restaurants, green spaces and family-friendly attractions, it gives guests a reason to arrive earlier, stay over and make more of the experience.
+
+Bullets:
+
+* London Euston to Milton Keynes Central in around 30 minutes
+* Hotels close to central Milton Keynes
+* Shopping, beauty, dining and nightlife nearby
+* Green space, family attractions and weekend activities
+
+### EP Concierge section
+
+Replace with:
+
+**Need help planning the weekend?**
+Travelling in? Bringing someone with you? Planning a group stay? The EP Concierge can help with hotel options, group stay enquiries, restaurant ideas, beauty appointments, spa recommendations, family-friendly plans and local introductions.
+
+Button:
+**Talk to the EP Concierge**
+
+### Where to stay section
+
+Change heading to:
+
+**Stay close. Stay comfortable. Stay longer.**
+
+Use:
+
+For guests travelling from outside Milton Keynes, staying over makes the evening easier, calmer and more enjoyable. Choose a hotel close to central Milton Keynes, wake up slowly, and make the most of the Bank Holiday weekend.
+
+Keep:
+
+* Leonardo Hotel Milton Keynes
+* Premier Inn Milton Keynes Central
+* Hotel La Tour Milton Keynes
+
+### Remove or change
+
+Remove any unconfirmed “special discounts” wording.
+
+Replace with:
+
+**Guest stay options and local recommendations will be shared with confirmed guests.**
+
+### Local business section
+
+Keep it, but tighten to:
+
+**Want to be featured in the weekend guide?**
+We are curating selected hotels, restaurants, beauty destinations, wellness providers and experiences for guests attending **The Woman Who Leads The Room**. If your business helps visitors stay longer, explore more or experience Milton Keynes at its best, we would be open to hearing from you.
+
+Button:
+**Feature Your Business**
+
+### Visitor economy section
+
+Keep this section and use:
+
+**Supporting the local visitor economy**
+**The Woman Who Leads The Room** brings women from across the UK into Milton Keynes, encouraging overnight stays, restaurant bookings, retail spend, attraction visits and wider engagement with the city. By positioning the event as a weekend destination experience, we are showcasing Milton Keynes as a place for leadership, business, wellbeing, lifestyle and opportunity.
+
+---
+
+## My call
+
+This page is useful for the Mayor form.
+
+But don’t let it become a brochure for Milton Keynes.
+
+Its job is to sell one thing:
+
+**This event makes Milton Keynes worth travelling to — and staying in.**

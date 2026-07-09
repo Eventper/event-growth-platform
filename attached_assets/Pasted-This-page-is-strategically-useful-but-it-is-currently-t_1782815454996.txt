@@ -1,0 +1,261 @@
+This page is **strategically useful**, but it is currently **too broad**.
+
+It is trying to sell:
+
+**platform + event + corporate wellbeing + brand partnerships + international expansion + waiting list**
+
+Too much.
+
+For now, this page should do one job:
+
+**Make The Woman Who Leads The Room feel like the first serious expression of a bigger platform.**
+
+Not sell everything at once.
+
+## What is good
+
+The platform name works:
+
+**The Human Behind The Title**
+
+That is strong. It gives depth behind the dinner.
+
+The core idea is also strong:
+
+> Leaders are not just titles. They carry pressure, identity, health, confidence, money, wellbeing and responsibility.
+
+That is the platform.
+
+## What feels weak
+
+### 1. “Leadership wellbeing platform” is overused
+
+You say it too many times. It starts to sound like corporate wellbeing language.
+
+Use it once. Then speak plainly.
+
+### 2. “Community” appears again
+
+You know the rule. Avoid “community” for now.
+
+Replace:
+
+**community opportunities**
+
+with:
+
+**future experiences, partnerships and speaker opportunities**
+
+### 3. “Professionals” is too broad
+
+In the flagship experience section, replace:
+
+**professionals**
+
+with:
+
+**senior professionals**
+
+Better:
+
+**female founders, executives, directors, senior professionals and business owners**
+
+### 4. “Personal development” in brand partnerships weakens it
+
+Remove **personal development**.
+
+It attracts coaches and trainers. Wrong signal.
+
+### 5. Corporate section is useful but too soon
+
+Keep it, but don’t overbuild it yet. You have not sold the first room. Corporate programmes can come later.
+
+For now, make it softer:
+
+**Corporate Conversations & Leadership Wellbeing**
+
+not full “Leadership Development” yet.
+
+## Stronger version to give Replit
+
+Paste this:
+
+---
+
+Please tighten the **About The Platform** page.
+
+The page should position **The Human Behind The Title** as the platform behind **The Woman Who Leads The Room**, without making it feel too broad or corporate too early.
+
+### Hero section
+
+Replace current hero copy with:
+
+**The Platform Behind The Woman Who Leads The Room**
+
+**The Human Behind The Title is a leadership platform exploring what leaders carry beneath success — pressure, identity, confidence, health, money, appearance, wellbeing and responsibility.**
+
+**It exists for people who have reached important rooms, built serious things, and now need better conversations around how they sustain themselves, their work and their lives.**
+
+**The platform begins with women in leadership through its first flagship experience, The Woman Who Leads The Room, with future experiences expanding into wider leadership audiences.**
+
+Buttons:
+
+**Explore The First Experience**
+**Explore Partnerships**
+
+### First flagship experience section
+
+Replace with:
+
+**The First Flagship Experience**
+
+**The Woman Who Leads The Room is the first flagship experience within The Human Behind The Title platform. Launching in Milton Keynes, it brings together carefully selected female founders, executives, directors, senior professionals and business owners for a private leadership dinner focused on confidence, health, visibility, connection and the woman behind the title.**
+
+**This first experience focuses on women because many senior women are carrying leadership pressure, business growth, identity shifts, health changes, financial decisions and personal responsibility at the same time.**
+
+Button:
+
+**View The Woman Who Leads The Room**
+
+### Core pillars section
+
+Keep the six pillars, but rename slightly:
+
+**Six Pillars That Shape Sustainable Leadership**
+
+Subline:
+
+**Six interconnected areas that affect how leaders sustain themselves, their influence and their work over time.**
+
+Pillars:
+
+1. **Confidence & Presence**
+   How leaders show up, own their space and continue to lead with clarity.
+
+2. **Women’s Health**
+   Menopause, hormones, energy, intimate health and the physical realities that shape leadership.
+
+3. **Skin & Aesthetic Health**
+   Confidence-led conversations around skin, aesthetic and intimate health as part of overall wellbeing.
+
+4. **Emotional Wellbeing**
+   The private pressure, responsibility and emotional weight carried by high-performing women.
+
+5. **Financial Wellbeing**
+   Money, property, growth, investment and sustainability decisions that affect leadership longevity.
+
+6. **Business Sustainability**
+   Helping founders and leaders build businesses that last, not just businesses that look successful.
+
+### Corporate section
+
+Change heading to:
+
+**For Organisations**
+
+Subheading:
+
+**Corporate Conversations & Leadership Wellbeing**
+
+Replace copy with:
+
+**The Human Behind The Title gives organisations a more human way to engage with leadership, wellbeing, retention, confidence, inclusion and performance.**
+
+**It supports conversations around women in leadership, menopause and workplace wellbeing, executive confidence, founder sustainability, financial wellbeing, burnout prevention, talent retention and human-centred leadership.**
+
+**This is where corporate wellbeing meets leadership reality.**
+
+Buttons:
+
+**Discuss Corporate Programmes**
+
+Keep HR / People & Culture and L&D cards.
+
+### Brand partner section
+
+Replace with:
+
+**For Brand Partners**
+
+**We work with carefully selected brands whose products, services and values support the people behind leadership roles.**
+
+**Our partners are not simply sponsors. They become part of the experience, the conversation and the guest journey.**
+
+**We create opportunities for aligned brands across women’s health, skin health, luxury fragrance, beauty, aesthetics, financial wellbeing, business banking, hospitality, lifestyle and corporate wellbeing.**
+
+Remove:
+
+**personal development**
+
+Button:
+
+**Explore Partnerships**
+
+### Vision section
+
+Keep, but tighten:
+
+**The Vision**
+
+**UK, Europe, West Africa & Beyond**
+
+**The Woman Who Leads The Room launches in Milton Keynes, with future editions planned across selected UK cities and aligned international markets.**
+
+**Through Event Perfekt Global’s delivery network, the long-term vision is to build leadership experiences across the UK, Europe, West Africa, the Middle East and wider EMEA.**
+
+**The aim is simple: to help people not only reach the room, but stay in it.**
+
+### Waiting list section
+
+Replace:
+
+**community opportunities**
+
+with:
+
+**future experiences and speaker opportunities**
+
+Use:
+
+**Interested in bringing The Human Behind The Title or The Woman Who Leads The Room to your organisation, city or region? Register your interest and be the first to hear about future launches, partnerships and future experiences.**
+
+Bullets:
+
+* Early access to new cities
+* Partnership enquiries
+* Speaker opportunities
+* Corporate programme updates
+
+### Final CTA
+
+Replace:
+
+**Be Part Of The Movement**
+
+with:
+
+**Build With The Platform**
+
+Copy:
+
+**Whether you are a guest, corporate organisation, brand partner, speaker, city leader or sponsor, The Human Behind The Title offers a way to align with a platform built around leadership, wellbeing, confidence and longevity.**
+
+Buttons:
+
+**Apply for Your Invitation**
+**Explore Partnerships**
+**Discuss Corporate Programmes**
+
+---
+
+## My call
+
+This page is not the selling page.
+
+The **event page sells the dinner**.
+The **Stay page sells Milton Keynes**.
+This page sells the **bigger platform logic**.
+
+So keep it sharp.
+
+Do not let it become a brochure for every future idea.

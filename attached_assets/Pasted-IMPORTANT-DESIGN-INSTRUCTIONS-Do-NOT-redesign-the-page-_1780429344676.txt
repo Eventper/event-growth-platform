@@ -1,0 +1,124 @@
+IMPORTANT DESIGN INSTRUCTIONS
+
+Do NOT redesign the page.
+
+Do NOT change the existing look and feel, colour palette, typography, spacing system, card styles, animations, section widths, buttons, navigation, or overall user experience.
+
+This new section must inherit and use the existing website design system so it feels like it was part of the original build.
+
+Use the same:
+
+* Fonts
+* Colours
+* Heading styles
+* Body text styles
+* Border radius
+* Shadows
+* Container widths
+* Spacing and padding
+* Button styles
+* Responsive behaviour
+
+Keep the section visually consistent with the rest of the website.
+
+LAYOUT REQUIREMENTS
+
+Desktop:
+
+* Use a two-column layout.
+* Dr Sarah Jenkins in the left column.
+* Esther Emenike-Okorie in the right column.
+* Both profiles should have equal visual weight.
+
+Tablet:
+
+* Two columns where appropriate.
+* Stack if necessary.
+
+Mobile:
+
+* Single column stacked layout.
+
+SECTION POSITION
+
+Replace the existing speaker section.
+
+Do not create a separate page.
+
+Place this section exactly where the current speaker section sits within the page flow.
+
+SECTION TITLE
+
+The Wellbeing Authorities Behind The Movement
+
+SUBHEADING
+
+Meet the clinical experts leading the wellbeing conversation at the heart of The Woman Who Leads the Room.
+
+INTRODUCTION
+
+At the heart of The Woman Who Leads the Room is a conversation many organisations still aren't having.
+
+Women are leading teams, driving growth, influencing strategy, and carrying increasing responsibility while often navigating hormonal health challenges, stress, burnout, confidence pressures, and wellbeing concerns that remain largely invisible in the workplace.
+
+To bring clinical expertise and meaningful insight to these conversations, we have partnered with two of the UK's leading specialists in women's health, wellbeing, and confidence.
+
+Together, they help shape the wellbeing conversation at the centre of the evening and support the wider mission of creating healthier, more sustainable leadership environments for women.
+
+PROFILE ONE
+
+Dr Sarah Jenkins
+
+Women's Health & Menopause Specialist
+
+MBBCh · Fellow of the Royal College of Obstetricians and Gynaecologists · Fellow of the Royal Society of Medicine · UK Menopause Advocate of the Year 2025
+
+Dr Sarah Jenkins is one of the UK's most respected voices in women's health, with particular expertise in menopause, hormonal wellbeing, and the often-overlooked physical realities experienced by women in leadership.
+
+A Harley Street practitioner, NHS-trained doctor, and national broadcaster, Dr Sarah was recognised as UK Menopause Advocate of the Year 2025 for her work advancing the conversation around women's health in the workplace.
+
+At The Woman Who Leads the Room, Dr Sarah leads the discussion around the physical and hormonal factors that influence how women lead, perform, sustain energy, and remain engaged throughout their careers.
+
+For corporate audiences, her expertise provides valuable insight into leadership wellbeing, employee retention, workplace culture, and women's health strategies.
+
+PROFILE TWO
+
+Esther Emenike-Okorie
+
+Clinical Confidence & Skin Health Specialist
+
+Aesthetic Dermatology Nurse Practitioner · Independent Nurse Prescriber · CQC Registered · Saint John's Institute Trained · Founder of Shujo Aesthetics
+
+Esther Emenike-Okorie is a leading clinical voice in skin health, confidence, and the connection between wellbeing and how women show up in the rooms they lead.
+
+A CQC-registered Independent Nurse Prescriber trained at the prestigious Saint John's Institute, Esther is recognised for her expertise in melanin-rich skin and for bringing a more inclusive, clinically grounded perspective to women's wellbeing.
+
+At The Woman Who Leads the Room, Esther explores the visible effects of stress, fatigue, hormonal change, and pressure, helping women better understand how wellbeing impacts confidence, presence, and performance.
+
+For corporate audiences, Esther offers a valuable perspective on inclusion, confidence-led leadership, and supporting diverse female talent across modern organisations.
+
+WHY THEIR EXPERTISE MATTERS
+
+Together, Dr Sarah Jenkins and Esther Emenike-Okorie bring a unique combination of expertise covering:
+
+• Women's Health and Menopause
+• Leadership Wellbeing
+• Burnout Prevention
+• Confidence and Self-Perception
+• Workplace Inclusion
+• Retention of Female Talent
+• Diverse Workforce Wellbeing
+
+Their combined expertise helps shape both the event experience and the wider corporate wellbeing initiatives delivered through The Woman Who Leads the Room.
+
+OPTIMISATION NOTES
+
+Keep the cards visually balanced.
+
+Avoid creating large walls of text.
+
+Use the existing card design from the website.
+
+If necessary, shorten displayed text slightly and provide a "Read More" option.
+
+The goal is to increase authority and credibility while maintaining the premium feel and conversion performance of the page.

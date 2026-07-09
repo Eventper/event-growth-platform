@@ -1,0 +1,71 @@
+# Replit Patch Brief — Discovery Engine Fixes (consolidated)
+*Targeted follow-up to Phase 1. Six fixes surfaced by the live digest + dashboard of Tue 30 June 2026. Not a rebuild. Apply as one pass.*
+
+---
+
+## What the live data revealed
+
+Digest header: `raw=88 passedGate=0 excludedByKeyword=25 staleDropped=21 deduped=0 threshold=30`
+Dashboard ("EP Agent — Tender Discovery Report"): **1 Qualifying** — the Palladium/Thailand ISSB tender.
+
+Findings:
+- ✅ The relevance gate fires and excludes well (25 excluded, 21 stale). Precision-over-volume is working — do **not** loosen the threshold on a quiet day.
+- ❌ **The two reports disagree** (digest `passedGate=0` vs dashboard `1 qualifying`) — they read different datasets.
+- ❌ **Dedup not applied** to the digest (`deduped=0`, exact duplicates + every multi-lot framework doubled).
+- ❌ **Deadlines panel unfiltered** — lists demolition, payroll, tree-pruning: the raw market, not EP's bids.
+- ❌ **Lane discipline missing** — the one "qualifying" tender (institutional/ISSB **standards-advisory** consultancy) is exactly the development-*advisory* work EP treats as no-bid; it should not qualify.
+- ❌ **International geography not screened** — a **Thailand** tender passed for a London/Africa-only firm.
+
+---
+
+## Fix 1 — One report, one source of truth (highest priority)
+
+The digest and the dashboard must never contradict each other.
+- Both surfaces read from **one canonical query / view** of "qualifying tenders for org X today" (e.g. a single `qualified_tenders` view or service function). The email and the dashboard both call it; neither computes its own counts.
+- The header counters (`raw / passedGate / excludedByKeyword / staleDropped / deduped`) and the rendered rows must derive from the **same** result set — not separate variables (the Phase 1 counter-binding bug, now visible across two surfaces).
+- Acceptance: a sweep produces identical qualifying counts and identical tender lists in the digest and the dashboard, every time.
+
+## Fix 2 — Dedup + collapse multi-lot frameworks
+- Enforce `UNIQUE (org_id, ocid)` (or `(org_id, source, source_notice_id)` where no OCID) at ingest with `ON CONFLICT DO UPDATE`. Verify the index exists in the **live DB**, not just the schema file.
+- Deadlines/qualifying queries select **distinct** on that key — no title appears twice.
+- Collapse multi-lot frameworks (e.g. Northumbria T25-0047, 8 lots) to **one** line: `<ref> <title> — <buyer> (N lots)`, earliest deadline; lots accessible on drill-in.
+
+## Fix 3 — Scope the deadlines panel to EP's live bids
+- `WHERE org_id=:org AND status IN ('committed','drafting','submitting') AND deadline BETWEEN now() AND now()+:window`.
+- Never show raw / excluded / stale / unqualified notices. Empty is the correct state when nothing is committed.
+
+## Fix 4 — Lane discipline: advisory ≠ delivery
+The Palladium/ISSB tender exposed that the gate scores keyword-relevance but not **lane fit**. EP's development lane is for **events & programme *delivery***, never aid/advisory consultancy.
+- Move to **EXCLUDE (or hard warning flag)**: *institutional capacity building, capacity enhancement, standards adoption, ISSB, technical assistance, advisory services, policy reform, institutional strengthening, sector reform* — i.e. standards/policy/advisory development work.
+- Keep qualifying only where an EP delivery keyword co-occurs (*event, workshop, conference, summit, logistics, programme delivery, stakeholder engagement, training event*). Advisory term **without** a delivery term → drop/flag.
+
+## Fix 5 — International geography allow-list
+A London/Africa-only firm should never see a Thailand tender qualify.
+- Add a geography screen with an **allow-list**: United Kingdom + EP's African footprint (Nigeria, Ghana, Uganda, Senegal, Zambia, South Africa, Sierra Leone, Mozambique, Kenya) + explicit diaspora relevance.
+- Any tender whose delivery country is outside the allow-list → **flag `out-of-geography` and drop from qualifying** (or route to human review, never auto-qualify).
+- This complements the existing UK place-based locality flag — that one screens *which UK city*; this one screens *which country*.
+
+## Fix 6 — Keyword-exclusion audit (false friends)
+- Log **which exclude term fired** per dropped notice.
+- One-off: dump the 25 exclusions + matched term; check nothing comms/creative was killed by a blunt rule (watch "campaign" caught by "waste/recycling", e.g. the Merseyside "Recycle Right campaign" — relevant lane, though a correct no-bid on locality/timing anyway).
+- Make it a recurring weekly 2-minute review.
+
+---
+
+## Verification — prove on live data, not a typecheck
+A green typecheck does **not** close these. Run a real sweep and paste back:
+1. Digest and dashboard showing **identical** qualifying counts and lists.
+2. Header `deduped > 0`; **no repeated titles**; Northumbria T25-0047 as **one** collapsed line.
+3. Deadlines panel showing only committed/qualified items for the org (empty acceptable).
+4. The Palladium/ISSB Thailand tender **no longer qualifying** (excluded on lane + geography).
+5. The 25 keyword exclusions with the matched term for each.
+
+## Acceptance criteria
+- [ ] Digest + dashboard read one canonical query; counts/lists always match.
+- [ ] Composite unique key live; ingest uses `ON CONFLICT`; zero duplicate titles in a real digest.
+- [ ] Multi-lot frameworks collapse to one line.
+- [ ] Deadlines panel scoped to org + committed/qualified only.
+- [ ] Advisory/standards terms excluded unless an EP delivery term co-occurs.
+- [ ] International geography allow-list enforced; out-of-geography tenders cannot auto-qualify.
+- [ ] Per-exclusion term logging in place; 25 exclusions reviewed.
+- [ ] All five verification outputs produced from a live sweep and pasted back.

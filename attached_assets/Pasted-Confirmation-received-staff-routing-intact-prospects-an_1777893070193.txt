@@ -1,0 +1,44 @@
+Confirmation received — staff routing intact, prospects and tenders on Planning App.
+The architecture isn't pure (memory says Group Portal owns staff work), but migration is a major piece of work and not worth doing right now. Two practical actions instead:
+1. Document the architecture truthfully in CLAUDE.md / replit.md.
+Update the system boundary statement to reflect reality:
+SYSTEM BOUNDARIES (corrected, locked):
+
+Group Portal (Twin Trade Replit) =
+- Staff login (only)
+- Project management
+- ALLI delivery
+- RAID
+- Tasks
+- Compliance Inbox
+- Invoicing
+- Director morning briefing
+- Auto-decision engine
+- Member registrations review
+
+Planning App (eventperfektplanningapp.com) =
+- Client portal (Kehinde, future paid clients)
+- Event Planning (Create Event, vendors, run sheet, etc.)
+- Tender Centre (/saas-tender-dashboard) — accessed by staff via token link from Group Portal
+- Prospect Finder (/prospect-finder) — accessed by staff via token link from Group Portal
+- Training module (/onboarding-portal)
+- SAAS-PAUSED routes: /staff-login, /staff, /create-event direct access
+
+Cross-system bridge:
+- Group Portal → Planning App via EP_CROSS_SYSTEM_KEY (event/engagement/tender create-from-project)
+- Token-passed auto-login from Group Portal tile → Planning App tool (staff bypass Planning App login)
+- No staff login on Planning App side
+Document this in BOTH replit.md (Planning App) AND CLAUDE.md (Group Portal) so the next dev sees the real picture.
+2. Confirm token-passed auto-login works for prospect-finder and saas-tender-dashboard.
+Currently I know token-passed auto-login works for /create-event. Confirm same pattern works for:
+
+/prospect-finder (Juliet, Abraham access)
+/saas-tender-dashboard (Prab, Abraham, Tolu access)
+
+If the same pattern isn't wired, wire it. Staff click a Group Portal tile, get auto-logged into the right Planning App tool, no separate login.
+3. Backlog item — future migration.
+Add to SaaS reactivation backlog in replit.md:
+
+When SaaS resumes (Planning App becomes multi-tenant product), prospect-finder and saas-tender-dashboard should migrate to Group Portal as staff-only tools. Other tenants on the SaaS Planning App don't need access to Event Perfekt's prospect or tender pipelines.
+
+Standing rules apply. Don't migrate now. Document and move on.

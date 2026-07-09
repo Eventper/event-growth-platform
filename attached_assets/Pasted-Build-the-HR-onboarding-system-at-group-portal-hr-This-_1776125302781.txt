@@ -1,0 +1,115 @@
+Build the HR onboarding system at /group-portal/hr. This is urgent — staff start Wednesday.
+
+Replace the current HR stub page with a complete onboarding system.
+
+PART 1 — STAFF ONBOARDING FORM at /group-portal/hr/onboarding
+Public page — no login required
+Dark theme #0A0A0A, gold #E2C87A, Poppins font
+
+Multi-step wizard with progress bar:
+
+Step 1 — Welcome
+Event Perfekt Group logo
+Heading: Join the Event Perfekt Group Team
+Email field
+Full name field
+Next button — checks if email already submitted
+
+Step 2 — Personal Details
+Preferred name
+City and country
+Working mode: Remote, Office, Hybrid
+
+Step 3 — Your Role
+Company dropdown: Event Perfekt Global Ltd, Event Perfekt Management Services, Twin Trade Global, TwinPaay, Lightbulb Corporate Gifts
+Role title
+Primary function: Event Management, Project Management, Finance, Compliance, Marketing, Sales, Technology, Operations, Administration
+Engagement type: Full-time, Contract, Freelance, Intern
+
+Step 4 — Experience
+Experience summary — minimum 100 characters with live counter
+
+Step 5 — Documents
+Upload: Passport or ID — required
+Upload: Right to work document — required  
+Upload: CV — required
+Upload: Other supporting documents — optional
+
+Step 6 — Declarations
+Checkbox: I confirm I have the right to work in the country where I will be working — required
+Checkbox: I confirm I have no undisclosed conflicts of interest — required
+Checkbox: I agree to Event Perfekt Group terms and conditions — required
+
+Step 7 — Review and Submit
+Summary of all entered details
+Edit button per section
+Submit Application button — gold
+
+Step 8 — Confirmation
+Green tick
+Heading: Application Submitted Successfully
+Message: Thank you [name]. Your application is under review. You will hear from us within 1 working day.
+Reference number: EP-[random 6 digits]
+Check your status at: /group-portal/hr/status
+
+On submission send alert email to adminuk@eventperfekt.com:
+Subject: New Onboarding Submission — [Name] — [Role] — [Company]
+Body: Name, email, role, company, engagement type, submitted at. Review at https://eventperfektplanningapp.com/group-portal/hr/admin
+
+PART 2 — STATUS CHECK at /group-portal/hr/status
+Public page — no login required
+Email field to check status
+Shows status with colour coded badge:
+SUBMITTED — blue — Under Review
+NEEDS_INFO — amber — Additional Information Required  
+APPROVED — green — Approved — Access being set up
+REJECTED — red — Unsuccessful
+ACTIVE — lime green — Active — Welcome to the team
+
+PART 3 — ADMIN REVIEW QUEUE at /group-portal/hr/admin
+Requires group portal admin login
+Shows all submissions in a table sorted by date — newest first
+Columns: Name, Email, Role, Company, Engagement Type, Submitted, Status badge, Actions
+Actions per row:
+- View — opens full submission detail in a side panel
+- Approve — turns status to APPROVED, sends approval email to applicant
+- Needs Info — opens modal to type what is needed, sends email to applicant
+- Reject — opens modal for reason, sends email to applicant
+- Activate — appears only when APPROVED — creates login credentials and sends to applicant
+
+Full detail panel shows:
+- All form fields
+- Uploaded documents with download links
+- Declarations confirmed
+- Admin notes text area — save button
+- Action buttons
+
+On APPROVE send email to applicant:
+Subject: Welcome to Event Perfekt Group — Application Approved
+Dear [Name], We are delighted to confirm your application has been approved. You will receive your login details within 24 hours. Welcome to the team. Tolulope Kumolu-Johnson, Director, Event Perfekt Group.
+Send from adminuk@eventperfekt.com for UK, admin@eventperfekt.com for Nigeria
+
+On ACTIVATE:
+1. Create user in epglobal_users with email, name, role staff, company_assignments set to their company
+2. Generate temporary password: EP + firstname + random 4 digits
+3. Bcrypt hash the password
+4. Send login email to applicant:
+
+Subject: Event Perfekt Group — Your Portal Login Details
+Dear [Name], Your portal access is ready. Login at: https://eventperfektplanningapp.com/group-portal/login — Email: [email] — Temporary Password: [password] — Please change your password on first login. Welcome to the team. Tolulope Kumolu-Johnson, Director.
+
+BACKEND routes in server/group-portal-routes.ts:
+POST /api/group-portal/hr/submit
+POST /api/group-portal/hr/upload (multer — save to uploads/hr/[submissionId]/)
+GET /api/group-portal/hr/status/:email
+GET /api/group-portal/hr/admin/all — requires admin auth
+GET /api/group-portal/hr/admin/:id — requires admin auth
+PATCH /api/group-portal/hr/admin/:id/decision — requires admin auth
+POST /api/group-portal/hr/admin/:id/activate — requires admin auth
+
+ADD ROUTES TO App.tsx:
+/group-portal/hr/onboarding → GroupPortalHROnboarding
+/group-portal/hr/status → GroupPortalHRStatus
+/group-portal/hr/admin → GroupPortalHRAdmin
+
+Build everything now. This is needed by Wednesday. Confirm when complete and give me the three URLs.

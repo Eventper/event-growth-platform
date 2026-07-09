@@ -1,0 +1,81 @@
+Good — Group Portal has given you the exact spec and confirmed the live outbound payloads match it exactly. That removes the field-mismatch risk that hit PE-001.
+Send this to Planning App Replit:
+
+Spec received. Build to exactly this contract.
+
+Standing rules — read CLAUDE.md before starting. Every rule applies.
+Additive only. No destructive operations. Show diffs. Reuse existing patterns. No seeded names. No "AI" or "agent" on user-facing surfaces. Stop and ask if uncertain.
+
+Two endpoints to build on Planning App. Bearer auth via EP_CROSS_SYSTEM_KEY (also accept legacy x-alli-sync-key header). Both idempotent on parent_project_id — if record exists, return 200 with existing record, do not duplicate.
+
+1. POST /api/client-engagements/create-from-project
+Request body:
+json{
+  "parent_project_id": 123,
+  "parent_project_url": "https://tradenow.thetwintrade.co.uk/portal/twintrade/projects/123",
+  "name": "Acme Strategic Review",
+  "client": "Acme Ltd",
+  "start_date": "2026-05-15",
+  "end_date": "2026-11-30",
+  "contract_value": "75000.00",
+  "currency": "GBP",
+  "engagement_lead_email": "lead@example.com",
+  "engagement_lead_name": "Jane Smith",
+  "description": "Q3 strategic review and operating model design.",
+  "status": "active"
+}
+Response (201 created, or 200 if exists):
+json{
+  "engagement_id": "ENG-2026-0042",
+  "engagement_url": "https://eventperfektplanningapp.com/client-engagements/ENG-2026-0042",
+  "status": "active"
+}
+
+2. POST /api/tenders/create-from-project
+Request body:
+json{
+  "parent_project_id": 124,
+  "parent_project_url": "https://tradenow.thetwintrade.co.uk/portal/twintrade/projects/124",
+  "name": "UK Cabinet Office — Trade Mission Bid",
+  "client": "UK Cabinet Office",
+  "tender_authority": "UK Cabinet Office",
+  "submission_deadline": "2026-06-30",
+  "contract_value": "250000.00",
+  "currency": "GBP",
+  "bid_lead_email": "bid@example.com",
+  "bid_lead_name": "Tunde Bello",
+  "description": "Multi-region trade-delegation framework bid.",
+  "status": "drafting"
+}
+Response (201 created, or 200 if exists):
+json{
+  "tender_id": "TND-2026-0007",
+  "tender_url": "https://eventperfektplanningapp.com/tenders/TND-2026-0007",
+  "status": "drafting"
+}
+
+Implementation requirements:
+
+Store parent_project_id as a unique key + back-link column on the engagement / tender tables. Add as new columns if not present (additive only).
+Reject 401 if Authorization: Bearer doesn't match EP_CROSS_SYSTEM_KEY (must be ≥16 chars). Also accept x-alli-sync-key header for backward compatibility.
+On success, fire your own internal Planning App notifications (assignee, calendar). Do not send the lead invitation email — Group Portal handles that.
+Idempotency: lookup by parent_project_id first. If exists, return 200 with existing. If not, create and return 201.
+Match the existing event endpoint pattern (already deployed) for consistency in error handling, logging, response structure.
+
+Response field naming is non-negotiable:
+
+Engagement endpoint MUST return engagement_id, engagement_url, status
+Tender endpoint MUST return tender_id, tender_url, status
+
+Group Portal's bridge has fallback logic that accepts id if specific names aren't returned, but the spec is the contract. Build to spec.
+
+Test cases after build:
+
+Send a valid Strategic engagement payload — confirm 201 with engagement_id returned
+Send the same payload again — confirm 200 with existing engagement_id (idempotency)
+Send a valid Tender payload — confirm 201 with tender_id
+Send same payload again — confirm 200
+Send with wrong Bearer token — confirm 401
+Send with x-alli-sync-key instead of Bearer — confirm 200/201 (backward compat)
+
+Brief me with deploy confirmation and the test results before I trigger the backfill from Group Portal side.

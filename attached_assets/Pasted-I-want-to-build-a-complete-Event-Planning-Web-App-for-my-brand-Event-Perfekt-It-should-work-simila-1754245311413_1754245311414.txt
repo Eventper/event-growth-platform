@@ -1,0 +1,117 @@
+I want to build a complete Event Planning Web App for my brand, Event Perfekt. It should work similarly to Aisle Planner, with modules for client onboarding, event planning, budgets, vendors, document storage, and automation.
+
+Design and Branding:
+- Burgundy (#800020) with white text, Poppins font
+- Responsive modern interface
+- Logo upload per event (especially for corporate)
+- Hero image support per event
+- Welcome screen with Event Perfekt branding
+
+Core Features:
+
+1. Multi-Event Dashboard
+- View and manage all events
+- Each event displays summary info: type, date, guest count, status
+- Upload hero image for each event
+- Country dropdown with Nigeria and UK at top, global list below
+- Currency auto-selected from country (₦, £, $, etc.)
+- Track guest counts and duration (how many days the event lasts)
+- Create folders and store documents per event
+
+2. Event Creation Workflow
+- Initial question: “What type of event are you planning?”
+  - Options: Private or Corporate
+  - Each opens a tailored question form
+
+Private Event Form Questions:
+- Full Name
+- Phone Number
+- Email Address
+- Type of event (Birthday, Wedding, Party, etc.)
+- Event name or theme
+- Description of event
+- Start and end date
+- Total number of event days
+- Country and city
+- Guest count
+- Budget range
+- Do you already have a venue?
+- Ceremony venue and date
+- Reception venue and date
+- After Party venue and date
+- Do you need decor, vendor support, planning services?
+- Any specific cultural or traditional needs?
+
+Corporate Event Form Questions:
+- Company Name
+- Contact Person Name
+- Company Email
+- Event type (Conference, Retreat, Launch, Dinner, etc.)
+- Description of the event
+- Upload company logo
+- Preferred start and end date
+- Country and city
+- Event duration (in days)
+- Guest count or attendee range
+- Budget range
+- Do you already have a venue?
+- Program Venue and date
+- Reception venue and date
+- After Party venue and date (if any)
+- Do you require branding, planning, decor, catering, or vendor coordination?
+
+3. After Submission Automation
+- Automatically generate a client dashboard
+- Generate and send contract to client using submitted info
+- Automatically generate 30% deposit invoice
+- Auto-email client with welcome + invoice
+- Create file storage folder for that event
+- Store client data, form data, and docs in project folder
+
+4. Checklist Tracker
+- Auto-filled by event type
+- To Do / In Progress / Done statuses
+- Assign to planner or vendor
+- Calendar view of due dates
+
+5. Budget Management
+- Estimated, actual, and paid columns
+- Visual budget status bar
+- Currency-specific fields based on country
+- Export to PDF
+
+6. Vendor Manager
+- Add vendors by name, service, website, phone
+- Assign vendor to specific events and segments
+- Upload/view contracts
+
+7. Document Management
+- Auto-create file folder per event
+- Upload images, PDFs, contracts, branding assets
+- All uploads linked to the correct event
+
+8. Client View Portal
+- Clients can see (but not edit) their dashboard: event summary, budget, tasks, timeline
+
+9. Proposal & Contract Generation
+- Editable templates
+- Proposals and contracts auto-populated with client/event data
+- Downloadable and emailed to client
+
+10. Invoicing System
+- After contract signing, 30% invoice is generated
+- Email client with invoice and payment instructions
+
+Advanced Features:
+- Team login for multiple planners
+- Internal chat/comments per event
+- Task calendar view
+- Proposal builder with exportable PDFs
+- Visual event timeline (Reception, After Party, etc.)
+- Full PDF export of budget, checklist, proposal
+
+Tech Stack:
+- Backend: Python Flask or FastAPI
+- Frontend: Bootstrap or Tailwind CSS
+- Storage: SQLite or JSON (initially)
+- Modular structure: templates, routes, models, static folders

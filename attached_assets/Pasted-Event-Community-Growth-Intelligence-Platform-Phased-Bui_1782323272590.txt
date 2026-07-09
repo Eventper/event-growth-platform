@@ -1,0 +1,95 @@
+Event & Community Growth Intelligence Platform
+Phased Build Brief for the Replit Agent
+Event Perfekt Group  ·  Brand-new Replit project  ·  June 2026  ·  Build in phases, stop at every checkpoint
+
+This brief defines a reusable SaaS platform whose objective is audience acquisition and sponsor acquisition — not event management. It is built fresh in a new Replit project. Build it phase by phase. At the end of each phase, STOP, confirm the checkpoint works, and wait for approval before starting the next phase. Do not run ahead across phases. Do not bundle phases into one commit.
+THE GOVERNING SEQUENCE
+Research → Strategy → Audience → Sponsors → Build → Campaign → Learn
+This order is the platform’s logic and must never be broken. Each step depends on the one before it: you do not source an audience until strategy defines who; you do not build until the audience and sponsors are known; you do not run a campaign until it is built; you only learn once a campaign has produced real data. Every phase below serves this sequence. If a build decision ever conflicts with this order, this order wins.
+Operating Rules (read first, apply throughout)
+• Build only the current phase — Complete it, reach its checkpoint, stop, and report. Never start the next phase without explicit approval. This is a hard cost-control rule.
+• No phase bundling — One phase, one working checkpoint, one report. No giant multi-phase commits.
+• Event-agnostic from line one — An event is a configuration record, never hardcoded. No “iamher”, “july”, “august” or any single event baked into table names, routes or logic. The Woman Who Leads The Room is simply the first event profile loaded in.
+• Human approval gate is non-negotiable — No outreach of any kind sends automatically. Everything is drafted into an approval queue for a human to approve or reject. Every outbound email carries a clear opt-out / unsubscribe. This rule cannot be optimised away.
+• No automated gender inference — Where an event targets a specific audience (e.g. women), surface each prospect’s name and profile to the human reviewer to confirm fit. Never auto-filter or auto-bin by guessing gender from a name.
+• Spend deliberately — Apollo enrichment credits and AI calls cost money per use. Search and store cheaply; only spend enrichment credits and AI generation on prospects a human has marked worth pursuing. Never enrich or generate in bulk speculatively.
+• Secrets only — All API keys (OpenRouter, Apollo, Companies House, email) live in Replit Secrets. Never in code, never echoed in logs.
+• Stack — React + TypeScript + Tailwind frontend; Node.js + Express backend; PostgreSQL on Neon; hosted on Replit. AI via OpenRouter only.
+Phase 0 — Foundations
+Goal
+Stand up the empty, event-agnostic app with the AI layer wired and proven.
+Build
+1. New Replit project on the React + Express + Neon stack. Clean — no code copied blindly from the old Planning App.
+2. Wire OpenRouter as the single AI gateway. Read OPENROUTER_API_KEY from Replit Secrets. Build one server-side AI service module that takes a task type and routes to the right model (content → Claude, cheap automation → a low-cost model, etc.). All AI calls go through this one module — no direct vendor SDKs.
+3. Define the event-agnostic data model. Core table: events (id, name, type, location, date, status, config JSON). All prospects, campaigns, outreach and pipeline records reference an event_id. No event-specific names anywhere.
+4. Set a hard monthly spend ceiling / usage guard on the AI layer if the OpenRouter key cap is not already set.
+Checkpoint
+CHECKPOINT — The empty app boots, a single test AI call through OpenRouter returns a response, and an event record can be created with no hardcoded event anywhere in the schema.
+Phase 1 — Market Insight & Strategy (the wizard)
+Goal
+A guided, conversational set-up: the user states their goal, the platform researches the market and proposes audience, sponsor and messaging strategy for human approval.
+Build
+5. A wizard-style intake: user enters a plain-language goal (e.g. “I am launching a women’s leadership event in Milton Keynes”). The wizard asks follow-up questions when the input is incomplete — it must ask rather than assume.
+6. AI roles in the wizard, all via OpenRouter (one key, one bill): use Claude as the REASONING and CONVERSATIONAL model — it interviews the user, asks the smart follow-up questions, and synthesises the strategy. Use a research-capable model (e.g. one with web access via OpenRouter) for the MARKET-SCAN step — demand, competitors, similar events, trends. The wizard interviews the USER to capture and structure what they know; it is fast (minutes), not a human-research study.
+7. Juno is the HUMAN-INSIGHT STANDARD the wizard works to, and an OPTIONAL deep-research input — it is NOT wired into the wizard and the wizard never waits on it. Juno is a separate platform that interviews the real market (customers/audience) over days; the wizard interviews the user in minutes. When the user wants real human validation of a persona or message, they run a Juno study separately and feed its findings back into the wizard’s strategy pack. Leave a clean place to paste/import Juno findings into the event strategy. (Connecting Juno’s API as an automated source is a possible Phase 5 enhancement, not core.)
+8. From the interview + market scan, output a strategy pack for the event: audience personas, sponsor personas, messaging recommendations, suggested pricing and content themes, and a market-opportunity score. Save it onto the event’s config.
+9. The strategy pack is presented for HUMAN APPROVAL before anything downstream uses it. The approved audience/sponsor profiles become the targeting parameters for Phase 2 sourcing.
+Checkpoint
+CHECKPOINT — From a one-line goal, the wizard asks sensible clarifying questions and produces an approved strategy pack (audience + sponsor profiles, message, pricing, score) saved to the event config, ready to drive sourcing.
+Phase 2 — Prospect Discovery (Apollo-led)
+Goal
+Source the right people by profile into the prospect database, against the approved strategy.
+Build
+10. New backend module apollo-source.ts. Read APOLLO_API_KEY from Secrets. Implement two operations: Search (POST filters — job titles, location radius, industry, company size — from the approved profiles) and Enrich (verified contact details for a chosen person, with confidence flag).
+11. Apollo is the PRIMARY discovery source. Companies House API is a fill-in/complement (especially for local independent operators Apollo under-covers). The old RSS/trigger scripts are NOT used in this platform.
+12. COST DISCIPLINE: Search and store matches cheaply first. Do NOT auto-enrich. Enrichment (which spends credits) happens only after a human marks a prospect worth pursuing, or in controlled approved batches. Default discovery is run-on-demand (a button), not an automatic daily schedule, until the user opts in.
+13. Matches write into a prospects table against the event_id and prospect type (audience / sponsor / media). Store source and a source reference for every record; never fabricate a contact — if unverified, mark it so.
+14. Require an Apollo plan tier that includes API access and sufficient enrichment credits.
+Checkpoint
+CHECKPOINT — A discovery run against the approved profile returns real, on-profile people stored against the event, with sources recorded and no credits spent on enrichment until a human selects prospects.
+Phase 3 — Scoring, Screening & Outreach Generation
+Goal
+Score and screen prospects, then generate outreach into a human-approval queue — nothing auto-sends.
+Build
+15. Scoring: each prospect gets an Audience Score, Sponsor Score and (later) Influencer Score, from location, industry, company size, revenue indicators, seniority, online activity and strategic fit against the approved profile.
+16. Human screen: surface name + profile to the reviewer to confirm fit (including audience-specific fit such as gender for a women’s event). No automated gender inference. Individual vs corporate is flagged here, as it changes the outreach channel and lawful basis.
+17. Outreach generation via OpenRouter: drafts LinkedIn messages, emails, follow-ups, sponsor pitches and invitations in the event’s approved voice. Reuse the proven 4-touch cadence (Day 0 / 4 / 9 / 14).
+18. HARD GATE: all drafts land in an approval queue with status pending. A human approves or rejects before anything sends. Every email includes a clear opt-out. Riskier individual/sole-trader contacts are routed to LinkedIn rather than cold email by default.
+19. Reply handling: poll the inbox, classify replies (positive / not now / unsubscribe / out-of-office / auto-reply), auto-suppress unsubscribes, pause sequences on positive replies and flag them for a human to close.
+Checkpoint
+CHECKPOINT — Scored, human-screened prospects produce draft outreach in the approval queue; approving one sends it (with opt-out), replies are polled and classified, and nothing ever sends without approval.
+Phase 4 — Pipelines, Dashboard & Website Integration
+Goal
+See everything in one place, and connect the live public site so real enquiries flow in.
+Build
+20. Audience pipeline: Identified → Contacted → Interested → Applied → Paid → Attending.
+21. Sponsor pipeline: Identified → Contacted → Meeting Booked → Proposal Sent → Negotiating → Confirmed.
+22. Real-time dashboard across both pipelines, showing progress to the event’s target (e.g. 60 paid guests), traffic/engagement and conversion. Bot filtering and a human-sessions counter from day one so the numbers are real.
+23. Website integration by API: the existing public site (eventperfekt.net/iamher) STAYS where it is and POSTs its data — registrations, applications, story submissions, sponsor and partner enquiries, payments — into this platform via secure API endpoints. The platform does not host the public site.
+24. Content-to-capture rule: any generated content (social posts, blogs) must carry a link back to a capture form that feeds the audience pipeline. Content that does not feed capture is not built.
+Checkpoint
+CHECKPOINT — A real enquiry submitted on the live public site appears in the platform’s pipeline and dashboard within moments, and both pipelines reflect real prospect movement.
+Phase 5 — Learning Engine (after the core is proven)
+Goal
+Once real campaign data exists, the platform learns and improves recommendations.
+Build
+25. Capture the learning data from day one (which messages, sources, audiences and content produced opens, replies, applications, conversions) — this tracking is built earlier; this phase consumes it.
+26. Once sufficient real data exists, surface recommendations: which messages convert, which sponsors respond, which audiences engage, which content drives applications. Recommendations assist the human; they do not auto-act.
+27. Media pipeline (journalists, podcasters, influencers) added here as a third pipeline if still wanted — it is not part of the room-filling core.
+Note
+Do not build auto-recommendations until there is real campaign data to learn from. With little data the engine guesses; build the capture now, switch the learning on later.
+Compliance & Cost Guardrails (apply across all phases)
+• UK GDPR / PECR — Apollo is a sourcing tool, not a licence to mass-email. Lawful basis, clear opt-out, and honouring deletion/unsubscribe requests are mandatory. Outreach connects to sourcing only through the human approval gate.
+• Compliance sign-off — The outreach approach and data handling are reviewed by the Group Risk & Compliance function before live sending at scale.
+• Credit and AI cost — Search cheap, enrich selectively, generate on approved prospects only. Respect the AI spend ceiling. Default to on-demand runs, not automatic schedules, until the user opts in.
+• No named partners — Outbound uses aggregate phrasing; no partner or prospect is named externally until commercials are signed and naming is authorised.
+How the Phases Serve the Sequence
+The build phases are the governing sequence, made concrete. They are the same thing:
+• Research — Phase 1 — market insight wizard
+• Strategy — Phase 1 — approved strategy pack (audience, sponsor, message, pricing)
+• Audience — Phase 2 — Apollo-led discovery of the right people
+• Sponsors — Phase 2 + 3 — sponsor sourcing, scoring and pitches
+• Build — Phase 0 + 4 — foundations, pipelines, dashboard, website feed
+• Campaign — Phase 3 + 4 — human-approved outreach running into visible pipelines
+• Learn — Phase 5 — the learning engine, once real campaign data exists
+Build outcomes, not activities. Every search, score, draft and post exists to put a captured lead, a booked guest or a signed sponsor into a pipeline a human can see and close. Build one phase, prove it, stop, then continue.

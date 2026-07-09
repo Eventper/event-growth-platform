@@ -1,0 +1,50 @@
+Here's Phase 2. It's written to be strict in two directions at once — strict on *data quality* so you source the right women correctly the first time, and strict on *spend* so Apollo credits don't run away. Paste it only once you've eyeballed the Phase 1 pack and it reads true.
+
+---
+
+**PHASE 2 — Prospect Discovery (Apollo-led). Build this phase only, then stop and report.**
+
+Phase 1 is signed off and the strategy pack is approved. Build Phase 2 now. Do not start Phase 3 or any later phase. Reach the checkpoint, stop, report.
+
+Governing sequence reminder: **Research → Strategy → Audience → Sponsors → Build → Campaign → Learn.** Phase 2 is Audience + Sponsors (sourcing only). No scoring, no outreach, no sending is built in this phase.
+
+**Source of truth:** Phase 2 reads its targeting DIRECTLY from the approved strategy pack on the event (job titles, sectors, locations, company size, for both the audience persona and the sponsor personas). It does not invent its own targeting. If the strategy pack is missing a needed field, STOP and ask — do not guess.
+
+**Build:**
+
+1. New backend module `apollo-source.ts`. Read `APOLLO_API_KEY` from Replit Secrets. Two operations only:
+   - **Search** — POST filters built from the approved personas (titles, location radius, industry, company size). Returns matching people.
+   - **Enrich** — returns verified contact details for a SPECIFIC selected person, with Apollo's confidence flag.
+
+2. **Apollo is the primary source. Companies House API is the fill-in** (used especially for local/independent operators Apollo under-covers). The old RSS/trigger scripts are not used.
+
+3. **STRICT SPEND RULE — this is the core of the phase:**
+   - Search results are stored CHEAP — names, titles, company, location, profile — with NO enrichment. Searching does not spend enrichment credits.
+   - Enrichment (which spends a credit per contact) happens ONLY when a human selects specific prospects and clicks an explicit "Enrich selected" action. Never auto-enrich. Never bulk-enrich a whole search.
+   - Discovery runs **on-demand via a button**, never on an automatic schedule. No background discovery cron in this phase.
+   - Show a running count of enrichment credits used, visible to the user, so spend is never hidden.
+
+4. **STRICT DATA-QUALITY RULES — so the list is right the first time:**
+   - Every stored prospect records its **source** and a **source reference** (Apollo ID / Companies House number / URL). Never fabricate a contact. If a detail is unverified, mark it `unverified` — never present a guess as fact.
+   - **De-duplicate** on store — the same person must never appear twice (match on name + company, and on email once enriched).
+   - Store prospects against the **event_id** and a **prospect_type** (`audience` / `sponsor`). Keep audience and sponsor lists cleanly separated — they have different personas and different downstream handling.
+   - Tag each prospect **individual vs corporate** (sole trader / independent vs employee of a larger company) — this is needed later for lawful outreach routing, so capture it at source.
+   - Capture enough for the human fit-check that comes in Phase 3: full name, title, company, location, and the profile/LinkedIn URL where available — so a reviewer can confirm fit (including audience-specific fit such as gender) by eye.
+
+5. **No outreach, no scoring, no sending** is built here. Phase 2 ends with a clean, de-duplicated, sourced, separated list of audience and sponsor prospects — enriched only where a human chose to spend the credit.
+
+**Hard rules (unchanged):** event-agnostic (everything attaches to event_id, nothing hardcoded); secrets only; respect spend ceilings; build only this phase.
+
+**Apollo plan note:** confirm the Apollo account is on a tier that includes API access and has enrichment credits available before testing live. If the key or credits are missing, STOP and flag — do not stub or fake results to appear to pass.
+
+**Checkpoint:** Using the approved I Am Her personas, a button-triggered search returns real, on-profile people (senior women leaders in the catchment for audience; the right roles at premium brands for sponsors), stored de-duplicated with sources recorded, separated into audience and sponsor lists, tagged individual/corporate — and NO enrichment credit is spent until a human selects prospects and enriches them explicitly, with the credit count visible. Then stop and report.
+
+---
+
+Two notes for you, not the Agent:
+
+The line that protects your money is rule 3 — **search free, enrich only on explicit human selection.** When you test, deliberately run a search and confirm it costs zero Apollo credits, *then* enrich two or three by hand and watch the credit counter tick. If a plain search burns credits, the build's wrong and you stop there before it scales.
+
+And one honest caution on "correct once and for all": even a perfect build can't make Apollo's *data* perfect — people change jobs, emails go stale, the local independent women will be patchy. So Phase 2 gets you a clean, correctly-structured, de-duplicated list sourced the right way — but the human fit-check in Phase 3 is still where *you* confirm these are genuinely the right women. The build makes the data clean and honest; it can't make it infallible. Worth holding that expectation as you test.
+
+When the checkpoint holds, Phase 3 (scoring, the human screen, outreach generation) is next — and you're back to cheap AI-cost territory for the generation, with the human gate doing the quality control.

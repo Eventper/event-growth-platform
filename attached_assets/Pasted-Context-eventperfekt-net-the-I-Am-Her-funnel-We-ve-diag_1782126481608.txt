@@ -1,0 +1,22 @@
+Context: eventperfekt.net, the I Am Her funnel. We've diagnosed the conversion problem: the hero CTA "Request Your Invitation" sends people to /access, where they hit a two-step gate — choose £300+VAT or "complimentary," then fill an 8–10 field form (two separate emails, company, job title, LinkedIn). Visitors expecting a simple next step bounce before committing. Result: real traffic, near-zero form starts, zero tickets. The UTM tracking you just added is correct and should stay. Four jobs below. Build in this order. Do not touch seo-meta-injector.ts, robots.txt, sitemap.xml, or any meta/SEO hooks — this is funnel, forms, and analytics only. Report what you changed after each job; don't refactor anything I haven't asked about.
+Job A — Add a low-commitment primary CTA (the most important change)
+
+Right now there's no shallow entry point — every visitor's only option is "commit £300 or apply for free." We need a one-field email capture as the primary path for the majority who are interested but not yet sold.
+
+On /iamher, change the hero primary CTA from "Request Your Invitation" (→ /access) to a low-commitment capture: button text like "Get the Details" or "Register Your Interest." It should open a lightweight single-field capture (email only — no name, no second email, nothing else) inline or in a small modal. This is a NEW minimal capture, not the old brochure modal you removed — do not resurrect that dead code.
+On submit: store the email using the site's existing email-capture storage if one already exists (the weekly report has an "Emails Captured" metric, so there's likely already a table/endpoint — find it and reuse it; don't build a parallel one). Fire trackFunnelEvent('interest_capture', '/iamher', {...}) so UTM data attaches automatically. Show a clear confirmation state after submit.
+Keep the paid £300 path available, but as a clearly-labelled secondary button (e.g. "Buy your place") for people who are ready to purchase now — it should not be the wall everyone hits first.
+
+Job B — Add a form_view event on /access
+
+Today we can't tell "never clicked the CTA" apart from "clicked but bounced at the option screen." Fire a form_view event when /access loads, before any option button is clicked, with UTM attached. This makes the true drop-off visible in the funnel dashboard as a distinct step between cta_click and form_start.
+Job C — Cut the friction on /access itself
+
+For anyone who still reaches /access, reduce the commitment. Two changes:
+
+Trim the complimentary form to essentials only — name and email to start. Remove or make optional the secondary fields (work email as well as email, telephone, website, etc.). You can collect the rest later; right now every extra field is bleeding conversions.
+Keep the fuller form only on the paid path, where asking for more detail is justified because money is changing hands.
+
+Job D — Reporting
+
+After building, confirm in your report: the new funnel step sequence (form_view → cta_click/interest_capture → form_start → form_complete → submit_success), that UTM still attaches to all of them, and where captured interest-emails are being stored so I can find them in the dashboard.

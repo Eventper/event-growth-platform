@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study: Youth Football Development Programme | Event Perfekt Global</title>
+<meta name="description" content="How Event Perfekt Global designed and delivered a youth football development programme — securing Juventus Academy placements, major corporate sponsorships, and professional club opportunities for young people from underserved communities.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #258807;
+    --white: #ffffff;
+    --black: #000000;
+    --grey: #111111;
+    --mid: #1a1a1a;
+    --muted: #888888;
+    --border: #222222;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 32px; }
+
+  /* ── HEADER ── */
+  .case-header {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--border);
+  }
+  .breadcrumb {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .breadcrumb span { color: #555; }
+  .case-header h1 {
+    font-size: clamp(30px, 4.5vw, 54px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    max-width: 800px;
+  }
+  .case-header h1 em {
+    color: var(--green);
+    font-style: normal;
+  }
+  .standfirst {
+    font-size: 17px;
+    color: #bbbbbb;
+    max-width: 680px;
+    line-height: 1.9;
+    margin-bottom: 48px;
+  }
+
+  /* ── META STRIP ── */
+  .meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid var(--border);
+  }
+  .meta-item {
+    padding: 22px 28px;
+    border-right: 1px solid var(--border);
+    flex: 1;
+    min-width: 150px;
+  }
+  .meta-item:last-child { border-right: none; }
+  .meta-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .meta-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  /* ── SECTIONS ── */
+  .section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+  .section-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .section h2 {
+    font-size: clamp(24px, 3vw, 38px);
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .section p {
+    font-size: 16px;
+    color: #bbbbbb;
+    max-width: 720px;
+    line-height: 1.9;
+    margin-bottom: 18px;
+  }
+
+  /* ── DELIVERY GRID ── */
+  .delivery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 52px;
+  }
+  .delivery-card {
+    background: var(--grey);
+    padding: 36px 32px;
+  }
+  .delivery-num {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .delivery-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .delivery-card p {
+    font-size: 14px;
+    color: #999999;
+    line-height: 1.75;
+  }
+
+  /* ── JUVENTUS CALLOUT ── */
+  .highlight {
+    background: var(--green);
+    padding: 60px 56px;
+    margin-top: 72px;
+  }
+  .highlight .hl-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 18px;
+    display: block;
+  }
+  .highlight h2 {
+    font-size: clamp(24px, 3.5vw, 40px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 20px;
+    max-width: 680px;
+  }
+  .highlight p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.85);
+    max-width: 660px;
+    line-height: 1.85;
+  }
+
+  /* ── SPONSORS ── */
+  .sponsors { padding: 72px 0; border-bottom: 1px solid var(--border); }
+  .sponsor-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 36px;
+  }
+  .sponsor-tag {
+    background: var(--grey);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 12px 22px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── WHAT THIS PROVES ── */
+  .proof { padding: 72px 0; border-bottom: 1px solid var(--border); }
+  .proof-list {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .proof-item {
+    background: var(--grey);
+    padding: 28px 36px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .proof-item .arrow {
+    color: var(--green);
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .proof-item p {
+    font-size: 15px;
+    color: #cccccc;
+    line-height: 1.75;
+  }
+  .proof-item p strong {
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  /* ── CTA ── */
+  .case-cta {
+    padding: 80px 0 60px;
+    text-align: center;
+  }
+  .case-cta h2 {
+    font-size: clamp(26px, 3.5vw, 44px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  .case-cta h2 em {
+    color: var(--green);
+    font-style: normal;
+  }
+  .case-cta p {
+    font-size: 17px;
+    color: #999999;
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.85;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--green);
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .cta-btn:hover { opacity: 0.85; }
+
+  @media (max-width: 640px) {
+    .highlight { padding: 40px 28px; }
+    .meta-item { min-width: 140px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="case-header">
+  <div class="container">
+    <div class="breadcrumb">Our Work in Action <span>/</span> Case Study</div>
+    <h1>From Community Pitch<br>to <em>Juventus Academy.</em></h1>
+    <p class="standfirst">
+      How we designed, funded, and delivered a youth football development programme that gave young people from underserved communities access to professional training, club placements, and one of the world's most prestigious football academies.
+    </p>
+    <div class="meta-strip">
+      <div class="meta-item">
+        <span class="meta-label">Programme</span>
+        <span class="meta-value">Youth Football Development</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Sector</span>
+        <span class="meta-value">Charity / Community Sport</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Our Role</span>
+        <span class="meta-value">Creative &amp; Programme Director</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Outcome</span>
+        <span class="meta-value">Juventus Academy Placements Secured</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── THE CHALLENGE ── -->
+<section class="section">
+  <div class="container">
+    <span class="section-tag">The Challenge</span>
+    <h2>Talent Exists Everywhere.<br>Opportunity Does Not.</h2>
+    <p>
+      Young footballers from underserved communities have the ability. What they lack is access — to professional coaching, to the right networks, to environments where their talent can be seen and developed at the level it deserves.
+    </p>
+    <p>
+      The brief was clear: build a programme that does not just inspire young people, but actively creates the pathways that change their trajectories. Structured. Funded. Delivered. Not a concept — a working model.
+    </p>
+  </div>
+</section>
+
+<!-- ── WHAT WE DELIVERED ── -->
+<section class="section">
+  <div class="container">
+    <span class="section-tag">What We Delivered</span>
+    <h2>End-to-End Programme Delivery.<br>Every Stage. Every Detail.</h2>
+    <p>We did not commission this programme. We built it — from identification of participants through to securing placements at professional level. Here is what that looked like in practice.</p>
+
+    <div class="delivery-grid">
+
+      <div class="delivery-card">
+        <span class="delivery-num">01 — Identification</span>
+        <h3>Talent Identification &amp; Mentor Matching</h3>
+        <p>Young footballers were identified, assessed, and individually matched with professional football athletes as mentors. Structured, ongoing relationships with clear accountability — not one-off inspiration sessions.</p>
+      </div>
+
+      <div class="delivery-card">
+        <span class="delivery-num">02 — Access</span>
+        <h3>Professional Training Placements</h3>
+        <p>Participants were placed into professional training environments. The kind of access most young players from underserved communities never reach — secured through our network, relationships, and direct negotiation.</p>
+      </div>
+
+      <div class="delivery-card">
+        <span class="delivery-num">03 — Progression</span>
+        <h3>Club Placements Secured</h3>
+        <p>We secured real club placements for programme participants. Not trials. Not promises. Confirmed placements at real clubs — with everything negotiated, arranged, and delivered by our team.</p>
+      </div>
+
+      <div class="delivery-card">
+        <span class="delivery-num">04 — Platform</span>
+        <h3>TV Studio &amp; Media Production</h3>
+        <p>A professional TV studio was designed and built from the ground up — creating a media platform to interview sporting personalities and programme participants. Visibility, credibility, and reach beyond the pitch.</p>
+      </div>
+
+      <div class="delivery-card">
+        <span class="delivery-num">05 — Funding</span>
+        <h3>Major Corporate Sponsorship</h3>
+        <p>Sponsorship was secured from MediaGlo, Dettol, Access Bank, MultiChoice (DStv/GOtv), and additional corporate partners. Brand partnerships that funded delivery, elevated the programme's profile, and proved the commercial model works.</p>
+      </div>
+
+      <div class="delivery-card">
+        <span class="delivery-num">06 — Community</span>
+        <h3>The #LaceUpADream Initiative</h3>
+        <p>A campaign that took the programme beyond participants and into the wider community — building public awareness, supporter engagement, and long-term visibility for the programme's mission.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── JUVENTUS CALLOUT ── -->
+<div class="container">
+  <div class="highlight">
+    <span class="hl-label">Programme Highlight</span>
+    <h2>Participants Accepted Into<br>the Juventus Academy.</h2>
+    <p>
+      Our highest achievement on this programme — and the proof that this model works. Young people from our community programme, accepted into one of the world's most prestigious football academies. Not luck. Not chance. The result of a structured pathway, the right relationships, and a delivery team that did not stop at good enough.
+    </p>
+  </div>
+</div>
+
+<!-- ── SPONSORS ── -->
+<section class="sponsors">
+  <div class="container">
+    <span class="section-tag">Corporate Partners Secured</span>
+    <h2>Sponsorship We Brought In</h2>
+    <p style="font-size:16px; color:#bbbbbb; max-width:640px; line-height:1.9; margin-top:16px;">
+      These were not small grants. They were brand partnerships — negotiated and secured by our team — that funded programme delivery and gave the initiative the commercial credibility to grow.
+    </p>
+    <div class="sponsor-grid">
+      <span class="sponsor-tag">MediaGlo</span>
+      <span class="sponsor-tag">Dettol</span>
+      <span class="sponsor-tag">Access Bank</span>
+      <span class="sponsor-tag">MultiChoice — DStv / GOtv</span>
+      <span class="sponsor-tag">Additional Corporate Partners</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHAT THIS PROVES ── -->
+<section class="proof">
+  <div class="container">
+    <span class="section-tag">What This Demonstrates</span>
+    <h2>A Track Record,<br>Not a Proposal.</h2>
+    <p style="font-size:16px; color:#bbbbbb; max-width:700px; line-height:1.9; margin-bottom:0;">
+      Every element of this programme was designed, funded, and delivered. That is the standard we bring to every engagement.
+    </p>
+    <div class="proof-list">
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>Programme design and delivery are one function for us</strong> — we do not hand off execution to someone else once the plan is written.</p>
+      </div>
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>We secure partnerships and funding</strong> — we understand what corporate sponsors need and how to position community programmes to attract serious investment.</p>
+      </div>
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>We manage the full pathway</strong> — from participant identification through to confirmed placements at professional and international level.</p>
+      </div>
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>We build infrastructure that lasts</strong> — the TV studio, the media platform, the sponsor relationships — all created as durable assets for the programme, not one-off outputs.</p>
+      </div>
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>Results are the only measure</strong> — Juventus Academy placements, professional club opportunities, and a funded community programme are the evidence. The model works.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="case-cta">
+  <div class="container">
+    <h2>Ready to Build Something<br><em>This Real?</em></h2>
+    <p>
+      Whether you are a charity, foundation, or mission-led organisation — if you need a delivery partner who goes beyond planning and actually executes, we should talk.
+    </p>
+    <a href="/contact" class="cta-btn">Start the Conversation</a>
+  </div>
+</section>
+
+</body>
+</html>

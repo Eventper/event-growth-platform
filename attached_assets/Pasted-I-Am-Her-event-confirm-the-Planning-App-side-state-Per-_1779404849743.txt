@@ -1,0 +1,30 @@
+I Am Her event — confirm the Planning App side state.
+
+Per architecture (locked April 2026), Planning App owns the client-facing and event delivery side of I Am Her. Group Portal owns staff/internal management. Group Portal infrastructure is being readied for Ololade to start outreach tomorrow morning. Need Planning App side confirmed alongside.
+
+CONFIRM:
+
+(1) /iam-her dashboard
+Does the I Am Her dashboard route at eventperfektplanningapp.com/iam-her exist and render?
+Expected: header "I Am Her — The Woman Who Leads the Room | Friday 28 August 2026 · Milton Keynes · By Invitation Only", four metric cards (Days to Event countdown, Co-Creators Confirmed, Corporate Partners, Guest Applications), six tabs (Overview, Co-Creators, Corporate Partners, Guest List, Tasks, Documents).
+Confirm event date shows 28 August 2026, not 7 August (date was moved per Group Portal commit 8e8fcc0d).
+
+(2) Esther co-creator portal
+Does /iam-her/esther render? Esther — Shujo Aesthetics — her 10 tasks, document upload, message thread.
+Confirm Esther can log in and see her workspace.
+
+(3) Guest registration form
+Public registration / application form exists? Where is it accessible from?
+
+(4) Bridge endpoint
+Is GET /api/summary/iam-her exposed and returning live data?
+Test curl:
+  curl -sS https://eventperfektplanningapp.com/api/summary/iam-her | jq .
+Expected: { active_event: bool, days_to_event: N, co_creators_count: N, corporate_partners_count: N, guest_applications_count: N, event_name: string, event_date: ISO }
+
+(5) Event date consistency
+Confirm event date is 28 August 2026 (not 7 August) across all surfaces — dashboard header, countdown maths, any email/notification templates, registration form, Esther's portal copy. Search and update any remaining "7 August 2026" / "7 Aug" strings.
+
+DO NOT BUILD ANY NEW FEATURES. Surface current state honestly. If any of (1)-(5) doesn't exist or is broken, report it — don't paper over.
+
+After confirmation: report the dashboard URL, Esther portal URL, guest registration URL, and bridge endpoint test output.

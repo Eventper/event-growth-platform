@@ -1,0 +1,54 @@
+Confirmed — over-correction acknowledged. Right approach now is diagnostic first, surgical fix second.
+Step 1 — Verify token-passed bridge as Director, Faye, Juliet, Mercy, Mariam:
+Test each role logging into Group Portal first, then clicking Event Management Services tile (or equivalent tile that should bridge to Planning App):
+
+Director (info@eventperfekt.com): does it auto-log into Planning App's event tools without separate login? Where does it land?
+Faye (fayeotaji@eventperfekt.com): same question
+Juliet (existing account, Lagos Admin): same
+Mercy or Mariam (any Nigeria team member with a fresh token): same
+
+Document for each:
+
+Pass/fail per role
+Where they land (URL on Planning App)
+Any auth errors, redirect loops, missing tokens, role mismatches
+
+Step 2 — Once diagnosis is complete, propose the surgical fix:
+Two scenarios:
+Scenario A — Bridge is fundamentally broken:
+If token-passed auto-login fails for some/all roles, the bridge needs fixing properly. The fix is NOT exposing Planning App routes directly — it's making the token bridge work. Then:
+
+Re-quarantine /create-event (restore SAAS-PAUSED redirect)
+Re-enable redirects on /get-started, /private-event-form, /corporate-event-form
+Delete the duplicate /group-portal/* routes you created on Planning App
+Fix the actual bridge so Group Portal tiles auto-log staff into the right Planning App tools
+
+Scenario B — Bridge works for some tools but not others:
+Identify exactly which tools were unreachable that drove your over-correction. Then:
+
+Add token-passed bridge entries for those specific tools
+Re-quarantine the SAAS-PAUSED routes
+Delete the duplicate /group-portal/* routes
+Document which Planning App tools have legitimate bridge access from Group Portal
+
+Either scenario, the duplicate /group-portal/ routes on Planning App come down.* They're parallel infrastructure that shouldn't exist.
+Step 3 — Document in replit.md (Planning App side):
+
+Architecture lock — Planning App:
+
+This codebase serves: Client Portal, Event Planning tools (Guest Management, Decor, Vendors, Run Sheets, Floor Plans), Tender Centre, Training module
+This codebase does NOT serve: staff login, project management, HR, compliance, CRM, marketing, EP Agent — these live on Group Portal (Twin Trade Replit)
+Direct staff access to Planning App routes (/staff-login, /staff, /create-event, /get-started, marketing pages) is SAAS-PAUSED
+Staff access Planning App tools ONLY via token-passed bridge from Group Portal tiles
+When SaaS reactivates, the SAAS-PAUSED routes can be re-enabled following the documented reactivation checklist
+
+
+Update CLAUDE.md (Group Portal side) with the parallel note clarifying which Planning App tools have legitimate bridge access.
+Brief me when:
+
+Token-passed bridge tested for all 5 roles — pass/fail per role with diagnostic detail
+Surgical fix proposal sent for sign-off
+After sign-off, all changes shipped in single commit (re-quarantine, delete duplicates, fix bridge per scenario)
+Architecture documented on both sides
+
+Standing rule reinforced: SAAS-PAUSED is deliberate. Don't reactivate without explicit instruction. Stop and ask if uncertain

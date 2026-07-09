@@ -1,0 +1,92 @@
+"Update the I Am Her page at eventperfektplanningapp.com/iamher. Do not change any design, layout, fonts, colours, or styling. Only update text and add new sections as specified below. Keep everything else exactly as it is.
+CHANGE 1 — Fix the date — it is wrong
+Currently shows: 6 Aug — Thursday 2026
+Change to: 7 Aug — Friday 2026
+Also update the stat block date from Thursday to Friday.
+
+CHANGE 2 — Photography line — add one sentence
+Currently reads:
+Editorial photography. Captured on arrival, throughout the evening, and on departure. Composed. Considered. Publish-worthy.
+Change to:
+Editorial photography. Captured on arrival, throughout the evening, and on departure. Composed. Considered. Publish-worthy. Photography is offered, not obligatory. Your image is yours.
+
+CHANGE 3 — Change June to May in two places
+Currently reads: Revealed in June 2026 — appears twice
+Change both to: Revealed in May 2026
+
+CHANGE 4 — Add waitlist capture after the stat block
+After the line: Attendance is confirmed, not booked.
+Add this text and a simple email capture form in the same styling as the existing contact form:
+Applications currently under review. Join the waitlist to be considered for future editions.
+Form fields:
+
+Your name
+Your email
+Submit button text: Join the Waitlist
+
+When submitted send notification to info@eventperfekt.com with subject: I Am Her — Waitlist Application — [name] — [email]
+
+CHANGE 5 — Add sections that do not yet exist
+These three sections do not exist on the live page. Add them in this order — between the Access section and the Get in Touch section. Match the styling of existing sections exactly.
+
+SECTION A — WHY THIS EVENING EXISTS
+Heading: Why This Evening Exists
+As women rise — in our careers, in our goals, in our responsibilities — something quietly fades.
+We travel for work.
+We lead teams.
+We run homes.
+We take care of everyone and everything.
+And slowly:
+the body suffers
+the glow disappears
+the confidence softens
+the woman inside becomes quiet
+This evening is for her.
+The woman who looks strong on the outside but feels tired on the inside.
+The woman who has achieved so much, yet rarely makes space for herself.
+This is an evening of healing, self-restoration, identity, confidence, beauty, body care, wellness, and inner glow.
+Because when a woman feels well, restored, beautiful, and grounded, she leads differently.
+
+SECTION B — THE WOMAN BEHIND THE ROOM
+Heading: The Woman Behind The Room
+I built this evening because I know this woman.
+I am her.
+I have led teams, travelled for work, managed homes, and shown up for everyone — and learned the hard way that showing up for yourself is not a luxury. It is the foundation.
+The Woman Who Leads the Room is the evening I wished existed. And now it does.
+Tolulope Johnson
+Founder — Event Perfekt Global Ltd
+
+SECTION C — FOR ORGANISATIONS
+Heading: For Organisations Who Believe in Women
+The Woman Who Leads the Room is more than an evening. It is a statement of what it means to support women who carry responsibility at the highest levels — in their careers, in their homes, and in their communities.
+Corporate partners who align with this evening demonstrate a commitment to:
+Inclusion that honours the whole woman — not just her role, her title, or her output — but her identity, her confidence, her wellbeing, and her inner life.
+Diversity that goes deeper than representation — true diversity includes supporting women through the realities of leadership, ageing, hormonal changes, burnout, and the invisible load they carry.
+Wellbeing that recognises the truth — supporting her is not a perk. It is a responsibility.
+Confidence as a corporate asset — when a woman feels restored, beautiful, and grounded, she performs differently. She leads differently. She shows up differently.
+Community impact — this evening brings together 100 senior women from across Milton Keynes and Buckinghamshire. Supporting this room is supporting the ecosystem they influence.
+Corporate organisations may:
+
+Nominate senior women to be considered for invitation
+Sponsor a limited brand presence aligned with beauty, wellness, and confidence
+Support the evening as part of their CSR, DEI, or wellbeing strategy
+Align their brand with a movement that honours women at their highest level
+
+Participation is reviewed and confirmed — never purchased openly. This maintains the integrity of the room.
+
+CHANGE 6 — Replace the About section entirely
+Currently reads:
+Event Perfekt Global Ltd is a professional event management and planning company based in London, Buckinghamshire, and beyond. We design and deliver high-end events — from intimate evening gatherings to large-scale corporate conferences — always with the same care, precision, and elegance. An Evening for Her is one of our signature events — curated, by invitation only, for women who lead.
+Replace with:
+Event Perfekt Global Ltd designs and delivers exceptional experiences for organisations, teams, and individuals who expect more.
+From high-level corporate conferences and executive retreats to curated private gatherings and brand activations — we work with organisations across the UK and internationally to create moments that matter.
+The Woman Who Leads the Room is one of our signature experiences — designed for the senior women your organisation relies on.
+We also work with corporate clients on executive and leadership events, team and culture experiences, client entertainment and hospitality, brand and product activations, conference and awards delivery, and bespoke private events.
+If you are looking for a partner who brings precision, elegance, and genuine care to every experience — we would love to hear from you.
+info@eventperfekt.com
+www.eventperfekt.com
+Keep the existing Visit Our Website button. Change the button text to: Explore Event Perfekt
+
+CHANGE 7 — Update the footer
+Currently reads: Event Perfekt × Shujo Aesthetics — making yours perfekt
+Change to: Event Perfekt × Shujo Aesthetics — co-created with our aesthetic partner — revealed May 2026

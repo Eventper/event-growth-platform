@@ -1,0 +1,65 @@
+Goal: collapse completed work on the ALLI staff tracker so the dashboard focuses on what needs attention. Visual collapse only — no colour redesigns, no urgency rules, no business logic changes.
+
+File: client/src/pages/portal-alli-tracker.tsx
+
+Three sections to apply this to. Same rule everywhere: if it's done, collapse it by default. User can click to re-expand.
+
+============================================================
+SECTION 1 — PHASE DETAILS CARDS
+============================================================
+
+The three big phase cards (Strategic Review, Facilitation Model, Funding Model).
+
+For each phase card:
+- A phase is "done" when all its tasks have client_signed_off=true (e.g., 9/9 client-signed).
+- If done: render as a thin collapsed strip — phase number circle, title, "Complete" badge, and a chevron-right icon. Greyed out (opacity 0.55, neutral grey background, no coloured border accent).
+- If not done: render the existing full card unchanged.
+- Click anywhere on the collapsed strip to expand back to the full card.
+- Track per-phase open state in component-level useState<Record<string|number, boolean>>.
+
+============================================================
+SECTION 2 — PHASE MILESTONES
+============================================================
+
+The "Phase X Milestone — ... Complete" blocks below Phase Details.
+
+For each milestone block:
+- A milestone is "done" when it's been locked-and-sent (whatever flag drives the green "Sent" badge — reuse the existing condition).
+- If done: render as a thin collapsed strip — phase number circle, milestone title, "Sent" badge, chevron-right. Greyed out same as Section 1.
+- If not done: render the existing full block unchanged (deliverable chips, attachment, Lock & Send button).
+- Click strip to expand.
+
+============================================================
+SECTION 3 — KANBAN BOARD
+============================================================
+
+The board with columns: Not Started / In Progress / Under Review / Complete / Blocked.
+
+- By default render only Not Started, In Progress, Under Review, Blocked. Hide the Complete column from the main row.
+- Below the kanban board, add one collapsed strip: "📦 Completed (N)" where N is the count of cards in the Complete bucket.
+- Click that strip to expand the Complete column inline below it. Same grey strip style as Sections 1 and 2 when collapsed.
+- When expanded, show the existing Complete column render unchanged — don't restyle the cards inside.
+
+============================================================
+RULES
+============================================================
+
+- Default state: completed items collapsed, in-progress items expanded.
+- Don't change data fetching, mutations, server calls, or any business logic. Visual only.
+- Don't touch RAID Register, Activity Feed, Project Notes, Director Approval Queue, Client Actions Panel, or Pending Client Actions Panel. Those stay as-is.
+- Don't change colours of anything that isn't being newly added (the grey collapsed style only).
+
+============================================================
+VERIFICATION
+============================================================
+
+After applying:
+1. Page is visibly shorter on first load.
+2. Phase 1 (Strategic Review) shows as a thin grey strip — only complete phase right now.
+3. Phase 1 Milestone shows as a thin grey strip with "Sent" badge.
+4. Kanban shows 4 columns; "Completed (N)" strip sits below, collapsed.
+5. Clicking any strip expands it; clicking the chevron/strip again re-collapses.
+6. Phase 2, Phase 3, their milestones, and the active kanban columns are unchanged.
+7. No errors, server still runs cleanly.
+
+If anything errors, paste it back.

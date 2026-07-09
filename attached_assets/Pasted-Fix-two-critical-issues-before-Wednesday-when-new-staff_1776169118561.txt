@@ -1,0 +1,67 @@
+Fix two critical issues before Wednesday when new staff start:
+
+FIX 1 — ADD AUTHENTICATION TO MAIN PLANNER
+The main planner routes have no authentication guard. Add login protection to these routes:
+/planner-dashboard
+/create-event
+/vendor-management
+/guest-management
+/budget-planner
+/event-workspace
+/staff-directory
+/admin-panel
+
+Create a simple staff login at /staff-login with:
+- Email and password fields
+- Dark burgundy theme matching rest of app
+- On success redirect to /planner-dashboard
+- Store token in localStorage as staff_token
+- If no token redirect to /staff-login
+
+FIX 2 — BUILD A UNIFIED STAFF PORTAL ENTRY PAGE
+Add a new page at /staff that shows all available portals as cards.
+No login required to see this page — it is just a directory.
+
+Dark background #0A0A0A, gold accents #E2C87A, Poppins font.
+
+Heading: Event Perfekt Group — Staff Access
+Sub: Select your workspace below
+
+Show these cards:
+
+Card 1 — Main Planner
+Icon: 📋
+Title: Event Planning Platform
+Description: Create and manage events, guests, vendors, budgets and contracts
+Button: Login to Planner → /staff-login
+Colour: #7B1F3A
+
+Card 2 — Group Portal
+Icon: 🏢
+Title: Group Portal
+Description: HR, compliance, RAID, documents and company operations
+Button: Login to Portal → /group-portal/login
+Colour: #1A1A2E
+
+Card 3 — Tender Command Centre
+Icon: 📄
+Title: Tender Command Centre
+Description: Find and bid on government and corporate tenders
+Button: Go to Tender Centre → /saas-tender
+Colour: #1A2A0A
+
+Card 4 — Onboarding and Training
+Icon: 🎓
+Title: New Staff Onboarding
+Description: Complete your onboarding and training modules
+Button: Start Onboarding → /onboarding-training
+Colour: #2A1A0A
+
+Add a link to /staff in the main navigation header alongside the existing Client Portal and Plan Event buttons. Label it: Staff Access
+
+Also update the header buttons:
+- Rename Command Centre to Client Portal Login
+- Keep Plan Event
+- Add Staff Access → /staff
+
+Build both fixes now and confirm the /staff page URL is working.

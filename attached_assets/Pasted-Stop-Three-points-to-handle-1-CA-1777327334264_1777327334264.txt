@@ -1,0 +1,41 @@
+Stop. Three points to handle:
+
+============================================================
+1. CAPTURE THE THREE AUDIT FINDINGS AS A TODO
+============================================================
+
+Create or append to a file called TECH_DEBT.md in the repo root with:
+
+## Open audit findings (logged 27 Apr 2026)
+
+1. **SECURITY: /api/portal/db-debug publicly accessible** (portal-routes.ts:207)
+   - No auth guard. Returns env state including PROD_DB_URL flag, NODE_ENV, masked DATABASE_URL.
+   - Fix: wrap in requirePortalAuth or remove entirely.
+   - Priority: HIGH (this week).
+
+2. **SECURITY: SYNC_SECRET hardcoded** (alli-sync-routes.ts:23)
+   - Currently: `const SYNC_SECRET = "EP-ALLI-SYNC-2026"`.
+   - Should be: `process.env.ALLI_SYNC_SECRET` with fallback warning.
+   - Priority: MEDIUM (this week).
+
+3. **DATA: D9 share_with_client status unconfirmed**
+   - Earlier patch reportedly set all 29 ALLI deliverables to share_with_client=true.
+   - Audit finding suggests this was never DB-verified.
+   - Action: SELECT id, phase, share_with_client FROM alli_project_deliverables WHERE project_id='alli-foundation-2024' ORDER BY phase, id;
+   - Priority: LOW (verify only, fix if wrong).
+
+Commit TECH_DEBT.md with message: chore: log open audit findings for follow-up
+
+============================================================
+2. NOW BACK TO THE ACTUAL QUESTION
+============================================================
+
+The original question was about why Phase 1 milestone shows "Not yet sent" on the planning app despite being locked-and-sent on staff side. You went off-script and audited security instead.
+
+Run only this:
+
+  SELECT id, phase, milestone_state, milestone_document_url IS NOT NULL AS has_doc, sent_to_client_at FROM alli_phase_milestones ORDER BY phase;
+
+Paste the result here as a table. That's it. Nothing else. No fixes, no other queries, no audits.
+
+If milestone_state is null or 'draft' for any row, tell me. If you don't know which DB to query, tell me.

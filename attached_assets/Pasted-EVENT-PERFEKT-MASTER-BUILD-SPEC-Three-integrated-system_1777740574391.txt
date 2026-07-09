@@ -1,0 +1,248 @@
+EVENT PERFEKT — MASTER BUILD SPEC
+Three integrated systems for The Perfekt Evening · Edition 1
+
+Project ↔ Event Auto-Linking (Group Portal ↔ Planning App)
+Team Assignment & Invitation Flow (invitation-based, no seeded names)
+Application & Confirmation System (apply → review → accept → confirm → pay)
+
+Live by: 16 May 2026
+Total build sequence: 12 working days
+
+PART A — PROJECT ↔ EVENT AUTO-LINKING
+A.1 Architecture
+Two systems, one logical record:
+
+Group Portal (Twin Trade Replit) owns the project: deliverables, team, budget, RAID, timeline
+Planning App (eventperfektplanningapp.com) owns the event: guest list, applications, run of show, on-the-night logistics
+Linked via linked_event_id and parent_project_id, kept in sync via cross-system API
+
+A.2 Auto-creation trigger
+When a project is created with project_type = 'event_project', the system:
+
+Calls Planning App API: POST /api/events/create-from-project
+Pre-populates the new event with: name, date, parent project ID, client, event type, expected attendance, budget total, status = "planning"
+Returns event ID to project record
+Both dashboards display linked record panels
+
+A.3 Project type selector on creation form
+
+Event project (auto-creates linked event)
+Strategic project (no event — like ALLI)
+Tender / bid project (no event)
+Internal project (no event)
+
+If "Event project" selected, additional fields: planned event date, expected attendance, event type dropdown, event manager assignment (via invitation flow — see Part B).
+A.4 Bidirectional sync rules
+Project → event:
+
+Date changes (project is canonical)
+Budget changes
+Team changes (project members visible on event side based on role)
+Status changes
+
+Event → project:
+
+Confirmed guest count (feeds project audience metric)
+On-the-night status
+Final attendance and revenue (post-event, feeds project P&L)
+Event Manager risk flags that escalate to project RAID
+
+Local to each side (no sync): deliverables (project only), application reviews (event only), run of show (event only).
+A.5 Cross-system display
+Project view shows right panel "Linked Event" — name, manager, status, applications received, confirmed attendance, click-through.
+Event view shows right panel "Parent Project" — name, lead, deliverables status, budget burn, RAID flags, click-through.
+Cross-system links use signed URLs with short-lived tokens.
+A.6 API endpoints
+Planning App:
+
+POST /api/events/create-from-project
+GET /api/events/[id]/project-data
+PATCH /api/events/[id]/sync
+
+Group Portal:
+
+POST /api/projects/[id]/link-event
+GET /api/projects/[id]/event-data
+PATCH /api/projects/[id]/sync
+
+Authenticated via shared API key in Replit Secrets as EP_CROSS_SYSTEM_KEY.
+A.7 Database additions
+Group Portal projects table:
+
+project_type VARCHAR
+linked_event_id UUID
+event_date DATE
+expected_attendance INTEGER
+event_type VARCHAR
+
+Planning App events table:
+
+parent_project_id UUID
+parent_project_url VARCHAR (signed link)
+linked_at TIMESTAMP
+last_synced_at TIMESTAMP
+
+
+PART B — TEAM ASSIGNMENT & INVITATION FLOW
+B.1 Principle
+No seeded names anywhere. Every team member is assigned via deliberate invitation. Invitations are accepted or declined.
+B.2 Role types per project
+
+Project Lead
+Project Manager
+Event Manager (event projects only)
+Compliance Lead
+Operations Lead
+Finance Lead
+Other (free text)
+
+B.3 Permission tiers
+
+Director — full system access, all projects, all financials
+Internal Staff — assigned projects only, role-based access within project
+External Freelancer / Contractor — single project + linked event only, no group-wide access, no other projects, no commercial back-end. Time-boxed to project end date + 30 days, then auto-revoked.
+
+B.4 Country tags
+Every team member tagged: UK / Nigeria / Other. Used for:
+
+Preventing cross-region mis-assignments unless explicitly overridden
+Routing notifications in correct timezone
+Applying the right working calendar (UK bank holidays vs Nigeria public holidays)
+
+B.5 Assignment flow
+When user clicks "Assign team" on a project:
+a. Existing staff dropdown — pulls from staff portal, filtered by country if relevant
+b. Invite new member — opens form: name, email, role on this project, role in company, country, permission tier (internal staff vs external freelancer)
+B.6 Invitation email (auto-sent on assignment)
+
+Subject: You've been assigned to a new project — [Project Name]
+Dear [First name],
+[Inviter name] has assigned you as [Role] on [Project Name].
+[Project description]
+Click below to view the project, see your deliverables, and confirm your assignment.
+[View project]
+If this assignment isn't right for you, reply to [inviter email] directly.
+Event Perfekt
+
+B.7 Acceptance flow
+Invitee clicks through to project landing page showing:
+
+Their assigned role highlighted
+Deliverables tagged to them
+Two buttons: Accept assignment / Decline assignment
+
+On accept: name appears across project + linked event, dashboard access enabled, daily digests start.
+On decline: assigner notified, reassigns to someone else.
+B.8 External freelancer specifics
+When the user invites someone with permission_tier = 'external_freelancer':
+
+Additional fields required: contract reference, day rate, estimated total days, project end date
+System enforces time-boxed access: revoked automatically project end date + 30 days
+Freelancer sees only their project + linked event — no Group Portal sidebar, no other projects, no group financials, no Twin Trade or TwinPaay
+All freelancer activity logged for audit
+
+B.9 Cross-system propagation
+When someone is assigned to a project with a linked event, they appear on event side automatically based on role:
+
+Event Manager → assigned to event delivery
+Project Lead → visible as project owner on event dashboard
+Compliance / Finance → visible as approvers
+
+B.10 Migration of existing staff
+Soft migration for current portal users:
+
+All current staff stay live, no immediate cutoff
+Each receives a "confirm your role and country" email when new system goes live
+Until they confirm, profile shows "pending confirmation" tag
+After 30 days unconfirmed, account suspended pending director review
+
+B.11 Database additions
+users table:
+
+country VARCHAR (UK / Nigeria / Other)
+permission_tier VARCHAR (director / internal_staff / external_freelancer)
+contract_reference VARCHAR (freelancers only)
+day_rate DECIMAL (freelancers only)
+access_expires_at TIMESTAMP (freelancers only)
+
+project_assignments table:
+
+project_id UUID
+user_id UUID
+role VARCHAR
+invited_at TIMESTAMP
+invited_by_user_id UUID
+accepted_at TIMESTAMP
+declined_at TIMESTAMP
+status VARCHAR (pending / accepted / declined / removed)
+
+
+PART C — APPLICATION & CONFIRMATION SYSTEM
+(Lives on the event side — Planning App)
+C.1 Database
+Table: event_applications
+Columns: id, event_id, first_name, last_name, email, role, company, phone, linkedin_url, heard_from, marketing_consent, submitted_at, agent_enriched_at, agent_score, agent_notes, linkedin_data JSONB, instagram_data JSONB, company_data JSONB, prab_decision (renamed: first_reviewer_decision), prab_note (renamed: first_reviewer_note), prab_actioned_at (renamed: first_reviewer_actioned_at), tolu_decision (renamed: final_approver_decision), tolu_note (renamed: final_approver_note), tolu_actioned_at (renamed: final_approver_actioned_at), final_status, confirmation_token, token_expires_at, held_until, question_asked_at, question_text, question_answered_at, paid_at, stripe_session_id, stripe_payment_intent_id.
+Reviewer fields are role-based, not name-based — populated by whoever holds First Reviewer and Final Approver roles on the project at time of action.
+C.2 Application form
+Endpoint: POST /api/applications/submit
+Required: first_name, last_name, email, role, marketing_consent
+Optional: company, phone, linkedin_url, heard_from
+On submit:
+
+Write row, final_status = pending
+Fire submission acknowledgement email
+Trigger agent enrichment (60-second target)
+Redirect to thank-you page
+
+C.3 Agent enrichment
+Target: 60 seconds. Performs:
+a. LinkedIn lookup if URL provided — public profile data, stored in linkedin_data
+b. Instagram search by name + company — public profile data, private accounts flagged for manual check, stored in instagram_data
+c. Company cross-reference — Companies House, website, sector, stored in company_data
+d. Scoring 1–5 against five criteria:
+
+Seniority match (director/founder = 5; manager = 3; junior = 1)
+Geographic fit (MK/Bucks/Beds/Northants = 5; London commute = 4; further = 2)
+Sector relevance (corporate/finance/public sector/entrepreneurship = 5; aligned adjacent = 4; off-brief = 2)
+Public presence quality (professional/active/aligned = 5; minimal = 3; concerning = 1)
+Audience overlap signal (mutual connections, sector concentration = 5)
+
+Final agent_score = average rounded to 1 decimal.
+e. Auto-flags red lights: no LinkedIn AND no Instagram, sector mismatch, profile inactive >12 months, low-quality referral source
+f. Auto-greens: director-level + verified company + active LinkedIn + average ≥ 4
+g. Writes 3-line summary to agent_notes
+Edition 1 — manual links only. Agent surfaces URLs for First Reviewer to click. No automated scraping. Re-evaluate Edition 3.
+C.4 First Reviewer dashboard
+URL: /portal/eventperfekt/applications
+Access: anyone with first_reviewer role on this event
+Sort: pending oldest first
+Card displays: name, role, company, agent score with criteria breakdown on hover, agent 3-line summary, clickable LinkedIn / Instagram / Companies House links, three buttons: Recommend Yes / Recommend No / Need More Info with required one-line note.
+Need More Info routes free-text question to applicant via "need more info" email; application returns to queue when applicant replies.
+C.5 Final Approver dashboard
+URL: /portal/eventperfekt/applications/director
+Access: anyone with final_approver role on this event
+Shows: applications where first_reviewer_decision IN (recommend_yes, recommend_no)
+Card shows: everything First Reviewer saw + their decision and note + three buttons: Approve / Decline / Override
+Override logs disagreement to decision_audit table for future agent training.
+On Approve: final_status = accepted, generate confirmation_token, fire acceptance email.
+On Decline: final_status = declined, fire decline email.
+C.6 Emails (all from events@eventperfekt.com, replies route to adminuk@)
+a. Submission acknowledgement (immediate on apply):
+
+Subject: Your application — The Woman Who Leads The Room
+Dear [First name],
+Thank you for applying.
+Applications for the evening of Thursday 6 August are reviewed weekly. You'll hear from us within 7 days.
+Event Perfekt
+Any questions? Write to adminuk@eventperfekt.com
+
+b. Acceptance (on Final Approver approve):
+
+Subject: Congratulations — your invitation to The Woman Who Leads The Room
+Dear [First name],
+Congratulations.
+You have been selected as an esteemed guest of The Woman Who Leads The Room — an evening curated for women whose presence shapes the rooms they enter.
+Thursday 6 August 2026 · Milton Keynes · From 6:30pm
+Your application has been accepted. We are delighted to welcome you.
+[Confirm your place]
+Your formal invitation follows in June

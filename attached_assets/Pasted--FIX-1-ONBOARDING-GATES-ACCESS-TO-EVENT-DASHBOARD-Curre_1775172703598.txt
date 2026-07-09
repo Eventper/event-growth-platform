@@ -1,0 +1,155 @@
+
+# FIX 1 — ONBOARDING GATES ACCESS TO EVENT DASHBOARD
+
+Currently a planner can access the full Event Dashboard before onboarding is complete. This must be gated.
+
+**How it must work:**
+
+The 6 onboarding steps are:
+1. Enquiry received
+2. Initial call booked
+3. Brief submitted
+4. NDA signed
+5. Deposit invoice sent + paid
+6. Kickoff meeting scheduled
+
+Rules:
+- Steps 1-3: Event Dashboard is accessible but shows a banner: "Onboarding in progress — [X/6 steps complete]. Contract and planning tabs locked until NDA is signed and deposit is paid."
+- Steps 1-3: These tabs are LOCKED (show padlock, clicking shows message "Complete onboarding to unlock"): Contracts, Invoicing, Budget, Vendors, Guests, Timeline, Decor Studio
+- Steps 1-3: These tabs remain OPEN: Overview, Tasks, Team, Chat, Planning Log
+- Step 4 (NDA signed): Contracts tab unlocks
+- Step 5 (Deposit paid): Invoicing + Budget + Vendors + Guests + Timeline + Decor Studio all unlock
+- Step 6 (Kickoff scheduled): Full access, onboarding banner disappears, status advances to IN_PLANNING
+
+**Implementation:**
+- Add onboarding_step (integer 1-6) and onboarding_completed (boolean) fields to events table
+- When event is created from lead pipeline or intake, onboarding_step defaults to 1
+- Each onboarding step completion updates onboarding_step in the database
+- Event Dashboard reads onboarding_step and applies tab lock logic on render
+- Locked tabs show a padlock icon on the tab label
+- Clicking a locked tab shows a modal: "This section is locked. Complete step [X] of onboarding to unlock it. Go to Onboarding →"
+- Onboarding progress bar visible at top of Event Dashboard until onboarding_completed = true
+
+---
+
+# FIX 2 — GO LIVE BUTTON REQUIRES CONTRACT SIGNED + DEPOSIT PAID
+
+Currently the Go Live button in the Event Dashboard header routes to Event Day Command with no checks. Add prerequisite validation.
+
+**Before allowing Go Live, check ALL of the following:**
+1. Client contract status = "Signed" (from contracts table)
+2. Deposit invoice status = "Paid" (from invoices table)
+3. Guest count > 0 (at least one guest added)
+4. At least one vendor added
+5. Run sheet has at least one item
+
+**If any check fails:**
+- Do NOT route to Event Day Command
+- Show a checklist modal titled "Not ready to go live"
+- List each failed check with a red cross and a link to fix it:
+  - "Client contract not signed → Go to Contracts tab"
+  - "Deposit not paid → Go to Invoicing tab"
+  - "No guests added → Go to Guests tab"
+  - "No vendors confirmed → Go to Vendors tab"
+  - "Run sheet is empty → Go to Timeline tab"
+- Each item that IS complete shows a green tick
+- Modal has two buttons: "Fix issues" (closes modal) and "Override — go live anyway" (admin/manager role only)
+
+**If all checks pass:**
+- Show confirmation modal: "You are about to go live for [Event Name]. This will notify your team and activate the Event Day Command Centre. Confirm?"
+- On confirm: set status = EVENT_DAY, route to /event-day-command/:id, send push notification to all assigned team members: "[Event Name] is now LIVE. Open Event Day Command."
+
+---
+
+# FIX 3 — POST-EVENT SURVEY AUTO-SENDS ON WRAP UP
+
+Currently the guest survey must be sent manually from the Post-Event tab. It must send automatically when the planner clicks Wrap Up.
+
+**When Wrap Up button is clicked:**
+
+Step 1 — Show confirmation modal:
+"Wrap up [Event Name]? This will:
+- Set event status to Post-Event
+- Automatically send thank you + survey email to all checked-in guests
+- Notify your team the event has ended
+Confirm wrap up?"
+
+Step 2 — On confirm, trigger ALL of the following automatically:
+
+a) Set event workflowStatus = POST_EVENT
+
+b) Send survey email to every guest where checkedIn = true:
+- Use SendGrid
+- Subject: "Thank you for attending [Event Name] — share your feedback"
+- Body: personalised with guest first name, event name, event date
+- Include survey link: /survey/:eventId/:guestRsvpToken (unique per guest so responses are attributed)
+- Use the existing Thank You email template with survey link appended
+
+c) Send team notification to all assigned staff:
+- In-app notification: "[Event Name] has wrapped up. Complete your post-event tasks."
+- Email notification to each team member with link to post-event checklist
+
+d) Auto-generate the post-event report draft:
+- Pull: final guest count, check-in %, budget vs actual, top dietary requirements, group breakdown
+- Create a draft report in the Reports tab pre-populated with this data
+- Planner just needs to review and download — no manual data entry
+
+e) Flag any outstanding balance invoice:
+- If client has unpaid balance invoice, automatically send payment reminder email via SendGrid
+- Show orange banner in Finance section: "Balance payment outstanding for [Event Name]"
+
+f) Route to /post-event/:id automatically
+
+---
+
+# FIX 4 — CLOSED EVENTS CREATE REPEAT CLIENT RECORD IN LEAD PIPELINE
+
+Currently when an event is closed nothing happens to the client record. The client should automatically enter a repeat business track.
+
+**When Event Closure is confirmed (status = CLOSED):**
+
+Automatically create a new prospect record in the Lead Pipeline:
+- Company: client company name (from event record)
+- Contact: client name + email + phone (from event record)
+- Stage: "Consultation" (not New Enquiry — they already know us)
+- Source: "Repeat Client"
+- Notes: auto-populated with: "Previous event: [Event Name] on [Event Date]. Budget: [Amount]. Outcome: [Post-event report summary if available]."
+- Priority: High (existing clients are warm leads)
+- Milestone type: auto-suggest based on next likely event (if they had an annual gala, suggest same time next year)
+- Assigned to: same planner who managed the closed event
+
+Show notification to assigned planner: "[Client Name] has been added to your Lead Pipeline as a repeat client. Schedule a follow-up call."
+
+Also:
+- Tag the client record in Lead Pipeline with a "Repeat Client" gold badge
+- In the prospect activity timeline, auto-log: "Previous event completed: [Event Name] — [attendance]% attendance, [satisfaction score] satisfaction rating"
+- If client rated the event (post-event survey) include their satisfaction score in the prospect notes
+
+---
+
+# VERIFICATION CHECKLIST:
+[ ] New events default to onboarding_step = 1
+[ ] Event Dashboard shows onboarding progress bar until complete
+[ ] Tabs locked correctly at each onboarding stage (padlock visible)
+[ ] Clicking locked tab shows correct modal with link to fix
+[ ] NDA signed → Contracts tab unlocks
+[ ] Deposit paid → all remaining tabs unlock
+[ ] Kickoff scheduled → onboarding complete, banner disappears, status = IN_PLANNING
+[ ] Go Live button checks all 5 prerequisites before routing
+[ ] Failed prerequisites show checklist modal with red crosses and fix links
+[ ] Passed prerequisites show green ticks
+[ ] Override option visible to admin/manager only
+[ ] Go Live confirmation modal appears when all checks pass
+[ ] Team push notification sends on Go Live
+[ ] Wrap Up confirmation modal lists all 5 auto-actions before confirming
+[ ] Survey email sends to all checked-in guests on Wrap Up
+[ ] Survey link is unique per guest (uses rsvpToken)
+[ ] Team notification sends on Wrap Up
+[ ] Post-event report draft auto-generates with real data
+[ ] Outstanding balance invoice reminder sends on Wrap Up
+[ ] Routes to /post-event/:id on Wrap Up
+[ ] Event Closure creates repeat client record in Lead Pipeline
+[ ] Repeat client record has stage = Consultation and priority = High
+[ ] Repeat Client gold badge visible on prospect card
+[ ] Assigned planner notified of new repeat client record
+[ ] Previous event data included in prospect activity timeline

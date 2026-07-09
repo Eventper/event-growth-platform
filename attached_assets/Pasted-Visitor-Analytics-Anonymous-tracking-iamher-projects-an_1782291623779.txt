@@ -1,0 +1,215 @@
+Visitor Analytics
+Anonymous tracking · /iamher & /projects-and-programmes
+
+
+Hide my traffic
+
+Last 30 days
+Refresh
+Filter
+Country...
+Page...
+UTM Source...
+Show bots
+Reset
+LinkedIn Tracking Tip:LinkedIn strips referrer headers by default, so your traffic appears as "direct". Add UTM tags to every LinkedIn post:?utm_source=linkedin&utm_medium=social&utm_campaign=iamher-aug26
+Copy tag
+Page Views
+1,164
+last 30 days
+Sessions
+724
+unique visitors
+Emails Captured
+5
+via popup
+Countries
+31
+worldwide reach
+Foot Traffic Report
+Traffic is coming from United Kingdom
+Top page: /iamher
+1164
+Views
+724
+Sessions
+5
+Captures
+31
+Countries
+Latest visitor location: Sweden
+Overview
+Sessions (724)
+Email Captures (5)
+I Am Her Funnel
+Booth Funnel
+Brand Visitors
+I Am Her Marketing Insights
+I AM HER — August 26, 2026
+Marketing Performance Snapshot
+Venue TBC · Capacity: 100 women · 67 days to go
+📅 30d period
+🗺️ 31 countries
+1164
+Page Views
+1117
+I Am Her Views
+5
+Email Captures
+448
+Funnel Visitors
+13
+CTA Clicks
+0
+Submissions
+❤️
+Direct traffic = brand love
+501 people came directly — word-of-mouth is spreading! Add “?referral=friend” to track shares.
+⚠️
+Funnel is leaking
+Only 0% of visitors submit. The /access page gets 73 views — test a clearer CTA like “Secure your spot now — limited to 100 women.”
+⚠️
+CTA needs urgency
+Only 2.9% click. Try: “Only 12 Platinum tickets left — August 26, Venue TBC.”
+💡
+Popup offer not working
+Your email popup captures 5 from 1164 views. Change the offer to “Get the exclusive I Am Her welcome pack + early-bird pricing.”
+⚠️
+Photo booth is invisible
+No booth traffic yet. Link “/360-booth-hire-milton-keynes” from your I Am Her posts — it adds value and drives bookings.
+📊
+I Am Her pages are performing
+1117 views across I Am Her pages. /iamher is the top performer — push more traffic there.
+📊 I Am Her Page Breakdown
+/iamher
+884 views (79%)
+/accessTICKETS
+73 views (7%)
+/iamher/stay
+69 views (6%)
+/iamher/partnership
+45 views (4%)
+/iamher/stories
+15 views (1%)
+/iamher/submit-story
+10 views (1%)
+/iamher/card
+7 views (1%)
+/iamher/media
+5 views (0%)
+iamher-community
+4 views (0%)
+/iamher/story/i-am-her-leadership-director-emilys
+2 views (0%)
+/iamher/story/i-am-her-the-woman-behind-the-titl-director-b062yc
+1 views (0%)
+/iamher/story/i-am-her-identity-founder-79spsc
+1 views (0%)
+/access/paymentTICKETSPAYMENT
+1 views (0%)
+🔗 Traffic Source Share
+direct
+388 (54%)
+ig
+111 (15%)
+ig
+74 (10%)
+direct
+47 (7%)
+ig
+16 (2%)
+direct
+16 (2%)
+copilot.com
+12 (2%)
+direct
+11 (2%)
+📈 I Am Her Funnel
+448
+Visitors
+13
+CTA Clicks
+0
+Form Starts
+0
+Submissions
+Conversion rate: 0.0%
+CTA rate: 2.9%
+Form completion: 0%
+📝 Content Recommendations (This Week)
+📸
+Instagram Story — Behind the scenes
+High impact
+Show the venue (Venue TBC). Use “Swipe up for tickets” + link with UTM tag. Expected: +15-20 clicks.
+📧
+Email to existing list — Last chance
+Urgent
+Subject: “67 days left — 12 Platinum tickets remaining for I Am Her”. Link: /access?utm_source=email&utm_campaign=iamher-countdown
+💬
+WhatsApp broadcast — Referral push
+Viral
+Send to VIPs: “Bring a friend — both get a welcome gift at check-in.” Track with ?referral=vip
+📱
+LinkedIn Post — Founder story
+Awareness
+Lynda shares why she started I Am Her. Tag: ?utm_source=linkedin&utm_medium=social&utm_campaign=iamher-founder
+🎥
+Reels / TikTok — 15-sec teaser
+Trending
+Quick montage: speakers, food, atmosphere. CTA: “Link in bio” with UTM tag. Target: 18-45 women in UK.
+💰 Cost Per Acquisition (CPA) Calculator
+Current Spend
+£0
+Add your ad spend above
+Submissions
+0
+From funnel data
+Current CPA
+£—
+Per submission
+Target CPA
+£15
+On target
+🎯 What-If Scenario Tool
+🚀 Boost traffic by
+💡 Improve CTA by
+🔄 Improve conversion by
+💰 Increase ad spend by
+🚀 What if you double your Instagram posts and run a £50 Facebook ad?
+Boost traffic by:
+
+50%
+📊 Projected Result
+672 visitors (+224) → 0 submissions (+0)
+🚀 Recommended Action
+Post 2x daily on Instagram Stories with UTM tags. Target: 18-45 women in UK.
+Estimated cost: £50
+ROI: Medium
+AI-Powered Next Action
+What to do right now
+💡
+CTA engagement is low
+⚡ Priority 80/100 · Do this today
+2.9% of visitors click the CTA. 435 visitors leave without clicking.
+💠 Top insight
+Change the CTA on /iamher to: “Secure your spot — limited to 100 women. August 26, Venue TBC.” Make it a burgundy button above the fold.
+Go to page →
+Also tracked
+🔄
+Form drop-off detected
+13 clicked the CTA but only 0 submitted. 100% are dropping off at the form....
+This week
+📸
+Instagram is missing
+Zero tracked Instagram sessions. Either you're not posting links, or you're not ...
+This week
+❤️
+Capitalise on direct traffic
+501 of 717 sessions are direct — people know your brand. But you can't track whe...
+This week
+🚀 Launch Actions
+📸 Post to Instagram
+📢 Run Facebook Ad
+🎯 Preview I Am Her Page
+🎫 Open Ticket Page
+✨ Generate Full Plan

@@ -1,0 +1,125 @@
+Expose all Decor tabs
+
+In the Decor Agent page, add top-nav buttons/tabs for:
+
+Color Palettes (existing)
+
+Venue Themes (existing)
+
+Decor Plans (existing)
+
+2D Floor Plan (currently hidden)
+
+3D Designer (currently hidden)
+
+Venue Upload (currently hidden)
+
+Ensure the active tab state switches correctly and persists during navigation back/forward.
+
+B) 2D Floor Plan Designer (functional)
+
+Implement the 2D editor with:
+
+Drag & drop primitives: round/rect tables, chairs, stage, dancefloor, labels.
+
+Canvas grid with snap-to-grid, zoom/pan.
+
+Selection + basic transforms (move/rotate/resize) and a simple properties/inspector panel.
+
+Toolbar: Undo/Redo, Zoom +/–, Fit to screen, Export PNG.
+
+Persistence: Save & load the layout per eventId.
+
+Add API endpoints to store/retrieve layout data.
+
+On tab open, auto-load if data exists; show clear empty state if none.
+
+C) 3D Venue Designer (functional)
+
+Implement the 3D editor with:
+
+Orbit camera controls, ambient + directional light, ground/grid.
+
+Add/remove basic objects: round table, chair, stage, dancefloor.
+
+Simple transforms (position/rotation/scale) per object.
+
+Toolbar: Reset camera, Snapshot PNG export.
+
+Persistence: Save & load the scene graph per eventId.
+
+Add API endpoints to store/retrieve scene objects.
+
+On tab open, auto-load if data exists; clear empty state if none.
+
+D) Venue Upload (enable and wire)
+
+Ensure the Venue Upload tab is visible and usable:
+
+Upload reference images for the event (per eventId).
+
+Store uploaded URLs/paths and make them available to both 2D and 3D designers for reference.
+
+Show thumbnails and basic file management (view/delete).
+
+E) Decor Plan integration
+
+In Decor Plans, allow attaching outputs from the designers:
+
+Attach 2D floor plan image (from PNG export) and 3D snapshot.
+
+Display attached assets within the Decor Plan review so planners and clients can see layout + theme together.
+
+Ensure attachments save/load with the plan per eventId.
+
+F) API & data model (minimal, reliable)
+
+Add minimal REST endpoints to support:
+
+GET/POST floor plans per eventId
+
+GET/POST 3D scenes per eventId
+
+GET/POST/DELETE venue images per eventId
+
+GET/POST decor plan attachments per eventId
+
+Use existing DB stack (Drizzle/PG) if available; otherwise implement clean in-memory stubs with TODO notes and swap to DB.
+
+G) UX polish (no visual rebrand)
+
+Keep all buttons within containers (wrap on small screens, no overflow).
+
+Provide clear empty states for each tab (what this tool does + how to start).
+
+Add basic toasts/alerts for Save/Load success/failure.
+
+Maintain consistent spacing and typography using existing utilities.
+
+Do not change any colors; use existing classes and styles only.
+
+H) Error handling & performance
+
+Gracefully handle API errors (retry or show actionable messages).
+
+Don’t block the UI during save/load; show non-blocking progress indicators.
+
+Make canvas performance acceptable for mid-range laptops (reasonable object counts).
+
+I) Permissions
+
+Respect existing auth/roles: only planners can edit; clients can view exports/attachments where applicable.
+
+J) Acceptance Criteria
+
+Decor Agent shows six tabs (Palettes, Themes, Plans, 2D, 3D, Upload), all functional.
+
+2D editor: drag/drop primitives, grid/snap, export PNG, save/load by eventId.
+
+3D editor: orbit camera, add primitives, snapshot PNG, save/load by eventId.
+
+Venue Upload: upload/view/delete images tied to eventId; accessible to 2D/3D tabs.
+
+Decor Plans: can attach/view 2D/3D outputs per eventId.
+
+Buttons do not overflow; layout remains responsive.

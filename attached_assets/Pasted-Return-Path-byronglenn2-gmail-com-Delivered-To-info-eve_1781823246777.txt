@@ -1,0 +1,131 @@
+Return-Path: <byronglenn2@gmail.com>
+Delivered-To: info@eventperfekt.com
+Received: from DIR-14 ([10.50.14.85])
+	by localhost with LMTP
+	id eHZUA9ljNGpZ1QwA0J78UA
+	(envelope-from <byronglenn2@gmail.com>)
+	for <info@eventperfekt.com>; Thu, 18 Jun 2026 17:32:09 -0400
+Received: from fwd-01.fwd.privateemail.com ([10.50.14.24])
+	by DIR-14 with LMTP
+	id iFIiA9ljNGoX2QgAro7NpA
+	(envelope-from <byronglenn2@gmail.com>)
+	for <info@eventperfekt.com>; Thu, 18 Jun 2026 17:32:09 -0400
+Received: from fwd-01.fwd.privateemail.com (localhost [127.0.0.1])
+	by fwd-01.fwd.privateemail.com (Postfix) with ESMTP id 4ghDT500BrzGsByX
+	for <info@eventperfekt.com>; Thu, 18 Jun 2026 17:32:08 -0400 (EDT)
+Received: from localhost (unknown [10.50.15.72])
+	by fwd-01.fwd.privateemail.com (Postfix) with ESMTP id 4ghDT46lypzGsBxs
+	for <info@eventperfekt.com>; Thu, 18 Jun 2026 17:32:08 -0400 (EDT)
+X-Sieve: Pigeonhole Sieve 0.5.22.1 (02dbc0f4)
+X-Sieve-Redirected-From: adminuk@eventperfekt.com
+Delivered-To: adminuk@eventperfekt.com
+Received: from DIR-10 ([10.50.14.251])
+	by localhost with LMTP
+	id OGZSN9hjNGoU2xkA0J78UA
+	(envelope-from <byronglenn2@gmail.com>)
+	for <adminuk@eventperfekt.com>; Thu, 18 Jun 2026 17:32:08 -0400
+Received: from mxs-01.privateemail.com ([10.50.14.133])
+	by DIR-10 with LMTP
+	id 4BAyN9hjNGoUugQA6K0gBg
+	(envelope-from <byronglenn2@gmail.com>)
+	for <adminuk@eventperfekt.com>; Thu, 18 Jun 2026 17:32:08 -0400
+Received: from asp-relay-pe.jellyfish.systems (infra-nat.jellyfish.systems [198.177.122.24])
+	by mxs-01.privateemail.com (Postfix) with ESMTP id 4ghDT46Wwyz3hhT6
+	for <adminuk@eventperfekt.com>; Thu, 18 Jun 2026 17:32:08 -0400 (EDT)
+Authentication-Results: asp-relay-pe.jellyfish.systems;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=p5FyQTRz;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (asp-relay-pe.jellyfish.systems: domain of byronglenn2@gmail.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=byronglenn2@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+X-Original-To: <adminuk@eventperfekt.com>
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by asp-relay-pe.jellyfish.systems (Postfix) with ESMTPS id 4ghDT44nPvzyQQ
+	for <adminuk@eventperfekt.com>; Thu, 18 Jun 2026 21:32:08 +0000 (UTC)
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5ad578c49afso140051e87.3
+        for <adminuk@eventperfekt.com>; Thu, 18 Jun 2026 14:32:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781818327; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PVYfJrlCrcefrnLZyLpk8h6twHiOkwGnY3ggLtBJk0wc4Q8mDRm1HAgOmy3R6TqoCa
+         KLbWmDHotUlMv176F2sy32SwKi8qzf11zIHsbh5CVYx6WlEyKdyYv0Y0SuRoA4GVIrIl
+         6pb5rMJW3lD9CWD7LVelgKatHc1PYbltdY9P1CJhEbhvXsY1sys1NXU69qaJKPVdC8cB
+         gYPS+fS+qpYh7++2w6m6SHhWaMgLTqe44gJS9nIjA6DIYFq/+JKe+aVeNGFtwtxGbzV9
+         jsrupi5P++/tSj2ZqYNBydmgZGUSm9qdSXDkj39jkiwfTbfMGh7KmGsTx4WiBld378OC
+         9+aA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:mime-version:references:in-reply-to
+         :sender:from:dkim-signature;
+        bh=pajRxEqcGSVYZ+O8aDHv0PFnGXTcvM85xAFksmrl3/g=;
+        fh=R6mvT6pt6owJN1LwZ/8a2PTNbIermEBZ/PsXsa7E8ss=;
+        b=YoEehrYc3C2gn08DFfa7MibqGk1sJpHNfjw2+gEDCd1YNRAdgS3xHybh0RO71Pnkx7
+         y3/Sc1BCTdKLiohi6jGSJWebbU27UPKBj8U7r15NNjN5KGKliOOR/2A5GErt1XazJ5P4
+         67hJqKOB0RmeIUauvTtlN0nvq4LWAFJ+wK7F30IEvAUzg3ZHSew8p/QrtZQt84GMGhrK
+         rSgiuFoZ308Bdupfwsts72kgw2MHfXuGJEmIOOvjfwMHo7S4OCCA9DUUhbGFGqoDpOs/
+         MoT2OTPQfRI+lDCMhx3xpS1hEKS2lPVKXL2pLAoKcKaN8RAUp94DQSSYdcP7YoCunmdD
+         KNxg==;
+        darn=eventperfekt.com
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781818327; x=1782423127; darn=eventperfekt.com;
+        h=to:subject:message-id:date:mime-version:references:in-reply-to
+         :sender:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pajRxEqcGSVYZ+O8aDHv0PFnGXTcvM85xAFksmrl3/g=;
+        b=p5FyQTRz5rRTWx7e08HLCvyWdBsZWvGoRDuCpAxRR7ASNZNouxOrZSLpU7SpOepKlq
+         DuYtF+RKWkh1tyGKF+2WCDH6iGvyYVTo/hdDN9T9XwWE+q2j/Ro+vEUz9nMGRoH3I9ml
+         fI8JVDByi1k2jx0onXw3XgW3CYDMkfTRisK9gLiDhTn4LdnBP2+Q2zLxZg92icgY32bY
+         jZ4RDt1SPp/SBkvwVVsHT8M/xVHyfQkFilL8czgjiU474XHuad5Lb6UBuM96b6ITiMJ9
+         P0/rWgV9Ssp9pYuDgwBwMNQTqA992SXJfl/nOGP+p1hdoffQqHTdXJxp7Q6BLFbAZhr+
+         D7Gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781818327; x=1782423127;
+        h=to:subject:message-id:date:mime-version:references:in-reply-to
+         :sender:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pajRxEqcGSVYZ+O8aDHv0PFnGXTcvM85xAFksmrl3/g=;
+        b=QqcxJc2Hrim1ETpwn/eWmd1Fi7Cy4VdPGaMR+Z59HKNUWuuhf6f9wnLjIvrdFVQa8E
+         t9f5Fu6RAY3bDQnmclRRIjgGE5vd6ztfZ5n+oS1Bjnc+rM9/m1HLpwZjyaFbLC2DSw7V
+         7v9oPlfA3FRYcDOLThGwwwWAv0UzxNx1ZURLP+jx4n4E4gzXaPX/cn+A8zGAbcwdaxGw
+         kadLnkyzxIo5PriH/g5ukQ2X/Y0YwkshSBvu5t881VxFG2qLbYSco7oJfSuMvHAYlUBF
+         mx1BcsUeS9WFGG1emFraFYmZocbQ0qr1XECMJ1/5BI9GpOwXydiikDCYD5PUInrPdyyr
+         UKLw==
+X-Gm-Message-State: AOJu0YxnFVnJrQYhc0OoTPMjgH4MBVJ+/l8DJbz4N/lpNuEANzcIAhWk
+	6Fv7e6p0UFOLJ2JgxZ8q0nRHofbpJNQSPKTncr5xNmgL6WswL0XRYxjHvS/vBlTmdWIkBKhfSZT
+	8d/3SYd+gHI+3QHHnPhoiBgAvs7XIPARaHWfjasg=
+X-Gm-Gg: AfdE7cm/gMlUDo7XrlNaDyaU/cRc51uUHcpLaci0ab/HxVaZDgXX8l/yA0B2EhPPLCq
+	K92od9PU4o2f75MfnCL0iCsMiDdZQpCrXzMQe06QzR5U4xjpS2xxfgqWtfbhnv6CSVaDNvWepFd
+	Xa0Bw+vi4yQkn3KECLaxeb9ouOMAGWxA/Xud7EtqcMGDG0eOg2aK4MvRoFmZJ8RUva/GNSMr5g/
+	1vT2unB4xiBWG/f85UuVjKmsJnfUwLKjqDCsEvFm7F8y8a8TDNzXJSJVjPGruMLL3e5e9hD4UqO
+	iWCyp6+mkfeT
+X-Received: by 2002:ac2:50a2:0:b0:5ad:5714:b8ed with SMTP id
+ 2adb3069b0e04-5ad5714b9dbmr153840e87.10.1781818326946; Thu, 18 Jun 2026
+ 14:32:06 -0700 (PDT)
+Received: from 1012252345055 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 18 Jun 2026 14:32:01 -0700
+Received: from 1012252345055 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 18 Jun 2026 14:32:01 -0700
+X-F0uq15-Message-ID: 379a603d-30d9-4df3-a35c-688657a228ff
+From: byronglenn2@gmail.com
+Sender: byronglenn2@gmail.com
+In-Reply-To: <e397a556-2ed1-7304-f663-2712026e77e3@eventperfekt.com>
+References: <e397a556-2ed1-7304-f663-2712026e77e3@eventperfekt.com>
+MIME-Version: 1.0
+Date: Thu, 18 Jun 2026 14:32:01 -0700
+X-Google-Sender-Auth: Ep8eNRt22RA9ZNhbkKNo-Ma7ACA
+X-Gm-Features: AVVi8CfNYVHdmHPI52Tx9DoGg2LbZ0fx-hddcWaCp1mJsW6V7OnABiYrmK0I3rc
+Message-ID: <CAPDrMre9jdD92oFsH31aCkdoAnw6X6HxknpEFp9E6AfySm-YVg@mail.gmail.com>
+Subject: Re: Chat about Prince-Vincent - wbx cwp
+To: adminuk@eventperfekt.com
+Content-Type: text/plain; charset="UTF-8"
+X-Virus-Scanned: ClamAV using ClamSMTP
+
+Hi everyone,
+
+Thanks for the fast response,
+I think we met a few months ago in East Jessica, right?
+We definitely should discuss about it!
+Let me know when you're in the area.
+
+Enjoy your weekend,
+Jessica Clark

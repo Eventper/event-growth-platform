@@ -1,0 +1,88 @@
+ALLI Foundation client portal — Trustee access audit + 2-of-2 sign-off approval pattern needed.
+
+Question 1 — Audit current Trustee access:
+Who from ALLI Foundation is currently onboarded to the client portal at eventperfektplanningapp.com? Specifically:
+a. Kehinde Alli (kalli@allifoundation.org) — has portal account? Has logged in? Can view project? Can approve sign-offs? Last login timestamp.
+b. Agboola Afolabi Ogundeyin (agboola@jobtrolley.co) — has portal account? Has logged in? Last login timestamp.
+c. Kehinde Alli alternate (Kehindeballi@gmail.com) — same person as primary, just gets CC on emails. Should NOT have a separate portal account. Confirm not duplicated.
+Send me the audit before doing anything else.
+
+Question 2 — Add Agboola as second Trustee user (if not already done):
+If Agboola doesn't have portal access:
+a. Create user account on Planning App client portal:
+
+Email: agboola@jobtrolley.co
+Name: Agboola Afolabi Ogundeyin
+Role: TRUSTEE
+Linked to: ALLI Foundation client account
+Project access: ALLI Foundation Phase 1 / Phase 2 / Phase 3 (full)
+
+b. Fire client portal welcome email from info@eventperfekt.com (NOT Twin Trade community template — this is a client portal welcome, different from internal staff welcome and different from Community Member welcome). BCC info@eventperfekt.com per Director BCC rule.
+Welcome email content (concise):
+
+Dear Agboola,
+Following Kehinde's request, you've been added to the ALLI Foundation client portal as a second Trustee.
+The portal lets you view the engagement progress, review deliverables, sign off on milestones, and access all project documents.
+Set your password here: [link to /portal/set-password?token=...]
+If you have any questions, reply to this email.
+Tolu
+Tolulope Kumolu-Johnson
+Founder & Director
+Event Perfekt Group
+info@eventperfekt.com
+
+Confirm: should this welcome wait for Tolu's explicit approval before sending (Outbound Queue), or fire automatically once account is created? Default: Outbound Queue for review since this is a Trustee-level access — Director should approve.
+
+Question 3 — Implement 2-of-2 Trustee sign-off pattern:
+Per ALLI Foundation governance, major milestone sign-offs require BOTH Trustees to approve, not just one. Apply to:
+a. Phase 1 Milestone — Strategic Review Complete sign-off
+
+Currently shows "Approve & Sign Off" button (single approver)
+Change to: "Approve & Sign Off" requires BOTH Kehinde AND Agboola to click
+Status states:
+Awaiting Trustee 1 approval (Kehinde or Agboola — whoever first)
+Awaiting Trustee 2 approval (the other Trustee)
+Both approved — milestone signed off
+Visual: shows "1 of 2 Trustees approved (Kehinde at [timestamp])" while waiting for second
+Either Trustee can request changes — that resets the flow and notifies Director
+
+b. Phase 2 Milestone — Facilitation Model Complete sign-off (when ready)
+c. Phase 3 Milestone — Funding Model Complete sign-off (when ready)
+d. Final closeout sign-off (engagement end)
+Don't apply 2-of-2 to:
+
+Individual deliverable approvals within a phase (single Trustee can approve those — too granular for 2-of-2)
+Document reviews
+Discussion thread responses
+Calendar event acceptances
+
+Document this approval pattern in replit.md and CLAUDE.md as the standard for ALLI Foundation client governance. Future engagements with charity Trustee boards can opt into the same pattern.
+
+Question 4 — Notifications go to BOTH Trustees:
+Currently Director status updates probably notify only Kehinde. Change to:
+
+Project Discussion posts → notification fires to BOTH Kehinde AND Agboola
+Document uploads → notification fires to BOTH
+Milestone sign-off requests → notification fires to BOTH
+Director messages → notification fires to BOTH
+Invoice issued → notification fires to BOTH
+
+Both can engage at any time. Both see the same project, same documents, same status.
+
+Sequence:
+
+Audit current state (10 minutes) — send back to me
+Add Agboola if missing — flag for Director approval before welcome fires
+Implement 2-of-2 milestone sign-off (4-6 hours) — affects Phase 1 sign-off button currently visible
+Wire dual-notification (1-2 hours) — both Trustees get all alerts
+Test flow:
+
+
+Director posts Discussion → both Kehinde + Agboola get notified
+Either Trustee initiates Phase 1 sign-off → status shows 1 of 2
+Other Trustee approves → milestone fully signed off, Director notified
+
+Estimate: 1 working day.
+
+Standing rules apply. Director BCC info@eventperfekt.com on welcome emails. Memory entry #2 (Planning App = Client Portal). Memory entry #9 (Director BCC rule). Audit log immutability for sign-off events. Production click-through verification before declaring shipped.
+Brief me after audit (Step 1). Don't proceed past Step 2 without Director approval on the Agboola welcome email content.

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study: Major National Energy Corporation — Nigeria | Event Perfekt Global</title>
+<meta name="description" content="Five consecutive years delivering large-scale employee and family CSR events for a major national energy corporation across multiple Nigerian locations — 800 guests per location, retained delivery partner.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #258807;
+    --white: #ffffff;
+    --black: #000000;
+    --grey: #111111;
+    --mid: #1a1a1a;
+    --muted: #888888;
+    --border: #222222;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1020px; margin: 0 auto; padding: 0 32px; }
+  a { color: var(--green); text-decoration: none; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 560px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.28);
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.3) 60%, transparent 100%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 64px 32px;
+    max-width: 1020px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .breadcrumb {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .breadcrumb span { color: #555; }
+  .hero-content h1 {
+    font-size: clamp(28px, 4vw, 54px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    max-width: 800px;
+  }
+  .hero-content h1 em { color: var(--green); font-style: normal; }
+  .hero-content p {
+    font-size: 17px;
+    color: #cccccc;
+    max-width: 640px;
+    line-height: 1.85;
+  }
+
+  /* ── CLIENT BAR ── */
+  .client-bar {
+    background: var(--green);
+    padding: 22px 0;
+  }
+  .client-bar .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .client-bar p { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; }
+  .client-bar .detail { font-size: 12px; font-weight: 600; opacity: 0.85; letter-spacing: 0.8px; }
+
+  /* ── META STRIP ── */
+  .meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid var(--border);
+    border-top: none;
+  }
+  .meta-item {
+    padding: 22px 28px;
+    border-right: 1px solid var(--border);
+    flex: 1;
+    min-width: 140px;
+  }
+  .meta-item:last-child { border-right: none; }
+  .meta-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .meta-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .meta-value.green { color: var(--green); }
+
+  /* ── SECTIONS ── */
+  .section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+  .section-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .section h2 {
+    font-size: clamp(24px, 3vw, 38px);
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .section h2 em { color: var(--green); font-style: normal; }
+  .section p {
+    font-size: 16px;
+    color: #bbbbbb;
+    max-width: 720px;
+    line-height: 1.9;
+    margin-bottom: 18px;
+  }
+
+  /* ── TWO COL ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+    margin-top: 20px;
+  }
+  .two-col img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    filter: brightness(0.8);
+    display: block;
+  }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── STAT ROW ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 52px;
+  }
+  .stat-card {
+    background: var(--grey);
+    padding: 32px 28px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 900;
+    color: var(--green);
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  /* ── DELIVERY GRID ── */
+  .delivery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 52px;
+  }
+  .delivery-card {
+    background: var(--grey);
+    padding: 36px 32px;
+  }
+  .delivery-num {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .delivery-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .delivery-card p {
+    font-size: 14px;
+    color: #999999;
+    line-height: 1.75;
+  }
+
+  /* ── IMAGE ROW ── */
+  .img-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin-top: 52px;
+  }
+  .img-row img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    filter: brightness(0.7);
+    display: block;
+  }
+  @media (max-width: 600px) { .img-row { grid-template-columns: 1fr 1fr; } }
+
+  /* ── GREEN DAY CALLOUT ── */
+  .greenday {
+    background: var(--green);
+    padding: 60px 56px;
+    margin-top: 72px;
+  }
+  .greenday .hl-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 18px;
+    display: block;
+  }
+  .greenday h2 {
+    font-size: clamp(24px, 3.5vw, 40px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 20px;
+    max-width: 680px;
+  }
+  .greenday p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.85);
+    max-width: 660px;
+    line-height: 1.85;
+  }
+
+  /* ── WHAT THIS PROVES ── */
+  .proof-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 44px;
+  }
+  .proof-item {
+    background: var(--grey);
+    padding: 26px 36px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .proof-item .arrow {
+    color: var(--green);
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .proof-item p {
+    font-size: 15px;
+    color: #cccccc;
+    line-height: 1.75;
+    margin: 0;
+    max-width: none;
+  }
+  .proof-item p strong { color: var(--white); font-weight: 700; }
+
+  /* ── CTA ── */
+  .case-cta { padding: 90px 0 70px; text-align: center; }
+  .case-cta h2 {
+    font-size: clamp(26px, 3.5vw, 46px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  .case-cta h2 em { color: var(--green); font-style: normal; }
+  .case-cta p {
+    font-size: 17px;
+    color: #999999;
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.85;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--green);
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .cta-btn:hover { opacity: 0.85; }
+
+  @media (max-width: 640px) {
+    .greenday { padding: 40px 28px; }
+    .hero-content { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <img class="hero-img"
+    src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&auto=format&fit=crop&q=80"
+    alt="Large-scale corporate event Nigeria"
+    loading="eager">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="breadcrumb">Our Work in Action <span>/</span> Case Study</div>
+    <h1>Five Years. Multiple Locations.<br><em>800 Guests. Every Time.</em></h1>
+    <p>A retained delivery partnership with one of Nigeria's most prominent national energy corporations — delivering large-scale employee and family CSR events across multiple locations, year after year.</p>
+  </div>
+</div>
+
+<!-- ── CLIENT BAR ── -->
+<div class="client-bar">
+  <div class="container">
+    <div class="inner">
+      <p>Client: Major National Energy Corporation — Nigeria</p>
+      <span class="detail">Retained Partner — 5 Consecutive Years &nbsp;|&nbsp; Multiple Locations</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── META STRIP ── -->
+<div class="container">
+  <div class="meta-strip">
+    <div class="meta-item">
+      <span class="meta-label">Client Sector</span>
+      <span class="meta-value">Energy — National Corporation</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Relationship</span>
+      <span class="meta-value green">5 Consecutive Years</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Guests Per Location</span>
+      <span class="meta-value">800</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Format</span>
+      <span class="meta-value">Multi-Location</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">EPG Role</span>
+      <span class="meta-value">Full Event Delivery</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── THE RELATIONSHIP ── -->
+<section class="section">
+  <div class="container">
+    <span class="section-tag">The Relationship</span>
+    <h2>Not a Supplier.<br><em>A Retained Delivery Partner.</em></h2>
+    <div class="two-col">
+      <div>
+        <p>
+          A one-off event contract is easy to win. Winning the same contract five years in a row — for one of Nigeria's most prominent national energy corporations — is something else entirely. It means the delivery was right every single time.
+        </p>
+        <p>
+          For five consecutive years, Event Perfekt Global has been the trusted delivery partner for this corporation's flagship end of year employee and family CSR events. Same client. Same trust. Consistent delivery across multiple Nigerian locations, 800 guests per location, year after year.
+        </p>
+        <p>
+          That is not a track record that can be manufactured. It has to be earned — every year.
+        </p>
+      </div>
+      <img
+        src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&auto=format&fit=crop&q=80"
+        alt="Corporate event delivery Nigeria"
+        loading="lazy">
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <span class="stat-num">5</span>
+        <span class="stat-label">Consecutive Years</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">800+</span>
+        <span class="stat-label">Guests Per Location</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">Multi</span>
+        <span class="stat-label">Location Delivery</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">2</span>
+        <span class="stat-label">Event Types Delivered</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHAT WE DELIVERED ── -->
+<section class="section">
+  <div class="container">
+    <span class="section-tag">What We Delivered</span>
+    <h2>End of Year. Every Year.<br>Every Detail. Ours.</h2>
+    <p>The annual end of year programme combined employee celebration with family and community CSR outreach — two audiences, one event, multiple locations. All coordinated and delivered by our team.</p>
+
+    <div class="delivery-grid">
+      <div class="delivery-card">
+        <span class="delivery-num">01 — Planning</span>
+        <h3>Annual Event Design &amp; Production Planning</h3>
+        <p>Full event concept and production planning delivered fresh each year — evolving the programme while maintaining the scale, quality, and consistency the client expected across every location.</p>
+      </div>
+      <div class="delivery-card">
+        <span class="delivery-num">02 — Logistics</span>
+        <h3>Multi-Location Coordination</h3>
+        <p>Simultaneous delivery across multiple Nigerian locations — logistics, vendor management, and operational coordination managed centrally with in-location execution at each site.</p>
+      </div>
+      <div class="delivery-card">
+        <span class="delivery-num">03 — Audience</span>
+        <h3>Employee &amp; Family Programme</h3>
+        <p>Events designed for employees and their families — creating an inclusive, celebratory atmosphere that reflected the corporation's investment in its people and communities.</p>
+      </div>
+      <div class="delivery-card">
+        <span class="delivery-num">04 — CSR</span>
+        <h3>Community Outreach &amp; CSR Delivery</h3>
+        <p>Integrated CSR outreach components — managed and delivered as part of the broader event programme, aligned to the corporation's community investment objectives across each location.</p>
+      </div>
+      <div class="delivery-card">
+        <span class="delivery-num">05 — Scale</span>
+        <h3>800-Guest Event Management</h3>
+        <p>Full operational management for 800-guest events per location — venue coordination, supplier management, guest flow, catering, production, and on-the-night delivery.</p>
+      </div>
+      <div class="delivery-card">
+        <span class="delivery-num">06 — Retention</span>
+        <h3>Retained Partner Relationship</h3>
+        <p>Five consecutive contract renewals. Year-on-year delivery that earned continued trust — managed through a consistent account relationship, continuous improvement, and delivery that matched expectation every time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── IMAGE ROW ── -->
+<div class="container">
+  <div class="img-row">
+    <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&auto=format&fit=crop&q=80" alt="Large scale corporate event" loading="lazy">
+    <img src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=600&auto=format&fit=crop&q=80" alt="Corporate CSR event Nigeria" loading="lazy">
+    <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&auto=format&fit=crop&q=80" alt="Employee celebration event" loading="lazy">
+  </div>
+</div>
+
+<!-- ── WORLD GREEN DAY CALLOUT ── -->
+<div class="container">
+  <div class="greenday">
+    <span class="hl-label">Additional Commission — World Green Day</span>
+    <h2>Stakeholder Event Delivery.<br>Lagos. World Green Day.</h2>
+    <p>
+      Beyond the annual end of year programme, Event Perfekt Global was commissioned to deliver the corporation's World Green Day stakeholder event in Lagos — bringing together key stakeholders for an occasion centred on environmental commitment and sustainability.
+    </p>
+    <p style="margin-top:16px; font-size:15px; color:rgba(255,255,255,0.7);">
+      A different format. A different audience. The same standard of delivery.
+    </p>
+  </div>
+</div>
+
+<!-- ── WHAT THIS DEMONSTRATES ── -->
+<section class="section">
+  <div class="container">
+    <span class="section-tag">What This Demonstrates</span>
+    <h2>What Five Years with One Client<br>Actually Means</h2>
+    <div class="proof-list">
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>Retention is the highest form of client endorsement</strong> — five consecutive years means the delivery was right every single time. No client at this level keeps coming back out of convenience.</p>
+      </div>
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>We operate at corporate scale in Nigeria</strong> — 800 guests per location, multiple sites, employee and community audiences. This is large-format delivery in a demanding market.</p>
+      </div>
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>We manage multi-location programmes simultaneously</strong> — not sequentially. Coordination, logistics, and quality control across locations at the same time.</p>
+      </div>
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>CSR delivery is part of our scope</strong> — we do not just run the celebration. We integrate the community outreach, the employee programme, and the operational logistics into one coherent event.</p>
+      </div>
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>We are trusted with the events that matter internally</strong> — end of year employee events are not marketing exercises. They are how a corporation shows its people that they matter. Being trusted with that says everything.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="case-cta">
+  <div class="container">
+    <h2>Need a Delivery Partner<br><em>Who Shows Up Every Year?</em></h2>
+    <p>
+      If you are running large-scale corporate or CSR events and need a team that delivers consistently — let's talk.
+    </p>
+    <a href="/contact" class="cta-btn">Talk to Our Events Team</a>
+  </div>
+</section>
+
+</body>
+</html>

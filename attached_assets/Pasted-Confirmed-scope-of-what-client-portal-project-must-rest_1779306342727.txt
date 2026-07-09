@@ -1,0 +1,32 @@
+Confirmed scope of what /client-portal/project must restore to. The original April 2026 build, working as of 17 May 2026, included:
+
+PER PHASE (1, 2, 3 — burgundy header with phase name and timeline):
+
+A. Milestone-level surface:
+   - Pack PDF download/read link (from milestone_document_url — bridge returns this)
+   - Milestone status banner driven by milestone_state:
+     * draft → hide banner
+     * ready_for_client → "Ready for your sign-off" + Sign Off Milestone button (Approve / Request Changes)
+     * client_approved → "✓ Signed off by [milestone_signed_off_name] on [milestone_signed_off_at]"
+     * needs_changes → "✗ Changes requested on [date]" + rejection_comment
+   - Sign-off history (collapsible)
+
+B. Deliverables table — every deliverable in that phase:
+   - Columns: Deliverable, Status, Due Date, Action
+   - Status badges: Pending (grey), In Progress (amber), Complete (green), Delivered (burgundy)
+   - Due date red if overdue
+   - Action column:
+     * If status = delivered and no feedback yet → Approve (green) + Request Changes (amber) buttons
+     * If approved → green tick "Approved by [trustee] on [date]"
+     * If changes requested → amber "Changes Requested" badge + the trustee's comment
+     * If complete but not delivered → grey "Coming Soon"
+   - Per-deliverable POST endpoints for approve and request-changes (with comment)
+   - Writes to client_deliverables locally (or the appropriate state column)
+
+Tasks:
+
+(1) Show me the full diff of commit 5ae7875 so I can see what was actually removed. Both server/client-portal-routes.ts and client/src/pages/client-portal/project.tsx.
+
+(2) Restore the per-deliverable rows + actions block under each phase section. This may mean reverting the commit entirely (cleanest) and re-applying any non-destructive refactor work separately. Default to full revert unless you can show clearly which lines are safe to keep.
+
+(3) Confirm the bridge endpoint /api/alli-sync/phase-milestones returns the full deliverables array per milestone (the snippet earlier showed "deliverables: [ /* D1...Dn summaries */ ]"). If it does, the page should iterate that array to render the deliverables table per phase. If the deliverables array is sparse and per-deliverable state lives locally on Planning App in client_deliverables, then the page reads from local for state and from the bridge for milestone_

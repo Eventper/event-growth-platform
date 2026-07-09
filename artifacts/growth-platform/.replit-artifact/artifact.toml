@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/growth-platform/"
+title = "Event & Community Growth Intelligence Platform"
+version = "1.0.0"
+id = "artifacts/growth-platform"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/growth-platform/" ]
+localPort = 25495
+
+[services.development]
+run = "pnpm --filter @workspace/growth-platform run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/growth-platform", "run", "build" ]
+publicDir = "artifacts/growth-platform/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25495"
+BASE_PATH = "/growth-platform/"

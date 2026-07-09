@@ -1,0 +1,73 @@
+ALLI client portal milestone work — adds to the existing kanban at /client-portal/project on this Replit (eventperfektplanningapp.com). Twin Trade is the source of truth and has just shipped the server-side changes that this work depends on.
+
+CONTEXT — what Twin Trade just shipped (already live as of tonight's commit on the Twin Trade Replit):
+
+(a) The bridge endpoint at /api/alli-sync/deliverables now returns two extra fields on each row: ai_draft_status and client_signed_off. The mapAlliStatus() function on the Twin Trade side has been rewritten so:
+- client_signed_off=true → status returned as 'approved' (terminal client-final)
+- ai_draft_status='approved' AND client_signed_off=false → status returned as 'awaiting_review' (Director done, awaiting Kehinde)
+- otherwise falls back to mapping the legacy `status` column
+
+The 9 Phase 1 deliverables already have ai_draft_status='approved' on Twin Trade. So the GET /api/alli-sync/deliverables response NOW returns them with status='awaiting_review'. The kanban on /client-portal/project should already be showing them under "Ready for Review" column instead of "Approved" without any code change here. Verify that first as step 0 before doing anything else.
+
+(b) Two new bridge endpoints are live on Twin Trade for milestones:
+
+GET /api/alli-sync/phase-milestones
+  Returns: array of milestone objects, one per phase, shape:
+  {
+    phase_number: 1 | 2 | 3,
+    milestone_title: string,
+    milestone_document_url: string | null,
+    milestone_state: 'draft' | 'ready_for_client' | 'client_approved',
+    milestone_signed_off_at: ISO timestamp | null,
+    milestone_signed_off_by: string | null,
+    deliverables: [
+      { id, deliverable_number, title, status, due_date, ... }
+    ]
+  }
+
+POST /api/alli-sync/phase-milestones/:phase/signoff
+  Body: { signed_off_by: string (Kehinde's user identifier on this side), notes?: string }
+  Behaviour: in a single transaction on Twin Trade — sets milestone_state='client_approved', milestone_signed_off_at=NOW(), milestone_signed_off_by=<value>, fans out client_signed_off=true to every deliverable linked to that phase, writes one audit_logs row.
+  Response: { ok: true, milestone: <updated milestone object>, deliverables_signed_off: <count> }
+
+Auth on both new endpoints: header x-alli-sync-key with the SAME value already used for the existing /api/alli-sync/deliverables call in this codebase. Find where that header value is set today and reuse it. Do not introduce a new env var or invent a new secret.
+
+Twin Trade host: read it from the existing config. This codebase already calls /api/alli-sync/deliverables successfully, so the host/base URL for those calls is already wired up somewhere. Find it and reuse the same base URL for the two new endpoints. Do not hardcode a new URL.
+
+WHAT TO BUILD HERE:
+
+1. Phase 1 Milestone banner above the kanban on /client-portal/project. Renders only when GET phase-milestones returns a phase_number=1 milestone with milestone_state='ready_for_client'. Hidden in any other state (draft, client_approved). Banner shows:
+   - milestone_title (large, primary)
+   - subtitle line: "9 deliverables ready for your review"
+   - if milestone_document_url is present: a "Download Phase 1 Pack" link or button that opens that URL
+   - "Sign Off Milestone" button (primary CTA)
+   - The banner uses the existing client portal styling — the burgundy/white EP brand already in use on /client-portal/project. Do not introduce a new colour palette.
+
+2. Sign Off Milestone button click handler:
+   - Opens the SAME caution/confirmation modal component that the existing per-deliverable Sign Off button already uses on this page. Do not build a new modal.
+   - Modal copy: "Sign off Phase 1 Milestone? This signs off all 9 Phase 1 deliverables in one action. This cannot be undone."
+   - Confirm action calls POST /api/alli-sync/phase-milestones/1/signoff with body { signed_off_by: <Kehinde's id from the current session>, notes: <optional textarea content if you want to surface one> }
+   - On 200 response: refresh the kanban data (re-fetch GET /api/alli-sync/deliverables), the 9 deliverables move from Ready for Review to Approved, hide the milestone banner, show a confirmation toast "Phase 1 signed off."
+   - On error: show error toast, leave banner visible, log the error.
+
+3. Existing per-deliverable Sign Off buttons stay exactly as they are. They remain a fallback. Do not remove or alter them. The milestone banner is additive.
+
+4. No changes to the column structure of the kanban itself. The four existing columns (Not Started / In Progress / Ready for Review / Approved) and their styling stay. The bridge change on Twin Trade is what moves cards between columns; the planning app's kanban already buckets 'awaiting_review' into Ready for Review correctly.
+
+READ-ONLY DIAGNOSTIC FIRST — show me ALL of the following in one response, no edits, no commits:
+
+a. Open /client-portal/project right now in this Replit's preview and tell me what you see in the Ready for Review column versus Approved column. If the 9 Phase 1 deliverables are still in Approved, something on the Twin Trade side hasn't propagated and we stop and check before any further work.
+
+b. The exact file path that renders /client-portal/project and the function that calls GET /api/alli-sync/deliverables. Quote the call site verbatim — I need to see how the request is made and how the response is consumed.
+
+c. The exact file/function for the existing per-deliverable Sign Off button. Quote: the button JSX, the click handler, the confirmation modal component used, and the POST call it makes (URL, body shape, headers).
+
+d. Where the x-alli-sync-key header value is read in this codebase. File and line. Confirm it's an env var or a config value, not a hardcoded string.
+
+e. Where the Twin Trade base URL is set for existing /api/alli-sync calls. File and line. Confirm it's an env var or a config value.
+
+f. A test fetch from this environment to GET /api/alli-sync/phase-milestones using the same auth header. Paste the raw JSON response. If 401, the header isn't being read or the key is wrong — flag it. If 404, Twin Trade hasn't deployed the new endpoint yet — flag it. If 200, paste the response.
+
+Once I see a–f, I approve the build in this order: (1) banner component + GET phase-milestones data fetch, (2) Sign Off Milestone button + modal wiring + POST phase-milestones/:phase/signoff, (3) refresh-on-success behaviour. One bundled commit at the end. No partial state.
+
+If at any point Twin Trade's new endpoints aren't reachable (step f returns 404), STOP. Do not stub responses. Do not build the UI against a fake. Tell me Twin Trade's deploy hasn't propagated and we wait.

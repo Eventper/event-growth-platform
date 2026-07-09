@@ -1,0 +1,55 @@
+TASK: Add bot filtering + source tracking to the /iamher visitor analytics. 
+Do NOT delete or overwrite any existing analytics data. This is ADDITIVE only — 
+we flag and segment, we never destroy historical rows.
+
+BEFORE YOU START:
+1. Confirm which database you are connected to. Read the DB target and tell me 
+   the name before running any migration. If it shows dev/helium or an empty/
+   unfamiliar schema, STOP and ask me. Production is PROD_DB_URL (Neon).
+2. Show me the current analytics table schema before altering it.
+
+WHAT TO BUILD:
+
+1. CAPTURE (if not already stored on each session/pageview, add columns):
+   - referrer (full referrer URL, null if direct)
+   - utm_source, utm_medium, utm_campaign (parsed from query string)
+   - user_agent (full string)
+   - ip_address (store hashed/truncated if needed for privacy)
+   - time_on_page (seconds)
+   - is_bot (boolean, default false)
+
+2. BOT DETECTION — set is_bot = true when ANY of these match:
+   - user_agent matches a known crawler/bot list (use the maintained 
+     'crawler-user-agents' JSON list, or equivalent — bots, spiders, 
+     headless browsers, link-preview fetchers like facebookexternalhit, 
+     LinkedInBot, Twitterbot, WhatsApp, Slackbot, bingbot, Googlebot, 
+     AhrefsBot, SemrushBot etc.)
+   - user_agent is empty/null
+   - time_on_page = 0 AND only one pageview in the session (no interaction)
+   - IP falls in a known data-centre range (AWS, Google Cloud, Azure, 
+     DigitalOcean) — use an IP-to-ASN lookup or a maintained data-centre 
+     IP list. Real attendees come from residential/mobile ISPs, not 
+     cloud data centres.
+
+3. KEEP existing exclusions: staff (planner login) and the manual 
+   "Exclude This Device" button stay as-is. Bot flag is separate and 
+   additional.
+
+4. DASHBOARD CHANGES on /iamher/analytics:
+   - Default every metric (Page Views, Sessions, Emails, Countries, 
+     Top Pages, Top Countries) to HUMAN ONLY (is_bot = false, 
+     staff excluded, device-excluded removed).
+   - Add a small toggle: "Show bots" / "Human only" so I can see both.
+   - Add a "Bots filtered: X" line so I can see how much noise was removed.
+   - Add a "Top traffic sources" widget: group human sessions by 
+     referrer + utm_source so I can finally see WHERE real visitors 
+     come from.
+
+5. Fix the count mismatch: Top Pages total (~498) does not match the 
+   header Sessions/Views (423). Make sure every widget uses the SAME 
+   date window and the SAME human-only filter. Tell me what caused 
+   the mismatch.
+
+OUTPUT: backfill is_bot on existing rows where user_agent allows it, 
+then show me the before/after numbers: raw sessions vs human sessions 
+for the last 30 days.

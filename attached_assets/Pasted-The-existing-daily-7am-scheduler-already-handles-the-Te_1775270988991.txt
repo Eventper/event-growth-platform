@@ -1,0 +1,519 @@
+The existing daily 7am scheduler already handles the Tender Digest email. Do NOT replace or break that scheduler. Add the prospect automation as an additional job alongside it in the same scheduler.
+
+Find the existing scheduler code (search for the Tender Digest cron job). Add the prospect automation job to run at 7am in the same place, after the Tender Digest job.
+
+The prospect automation job must:
+1. Run at 7am GMT daily (Sunday skip)
+2. Run the daily prospect search (by rotating sector/trigger per day of week as specified)
+3. Auto-enrich each result with findDecisionMaker()
+4. Draft personalised emails using the 12 approved templates
+5. Send morning briefing at 7:30am
+
+Now build all 5 missing pieces:
+
+---
+
+# MISSING PIECE 1 — DAILY PROSPECT SEARCH CRON JOB
+
+Add to existing scheduler alongside Tender Digest job:
+
+```typescript
+// Daily prospect search — runs Mon-Sat at 7am GMT
+if (dayOfWeek !== 0) { // 0 = Sunday, skip
+  await runDailyProspectSearch()
+}
+```
+
+`runDailyProspectSearch()` does:
+
+**Day of week → sector rotation:**
+- Monday: UK Financial Services + Fintech (SIC codes: 64110, 64191, 64192, 64999, 66190)
+- Tuesday: UK Tech + SaaS (SIC codes: 62012, 62020, 62090, 63110, 63120)
+- Wednesday: Nigeria — all sectors (use Agent research, not Companies House)
+- Thursday: UK Property + Construction + Retail (SIC codes: 68100, 68209, 41100, 47190)
+- Friday: UK Food + Energy + High Value any country (SIC codes: 56101, 35110, 35210)
+- Saturday: Pan-African — Ghana, Kenya, South Africa (Agent research)
+- Sunday: No run
+
+**Anniversary years to target (calculate from current year):**
+- 5th anniversary: founded in 2020
+- 10th anniversary: founded in 2015
+- 15th anniversary: founded in 2010
+- 20th anniversary: founded in 2005
+- 25th anniversary: founded in 2000
+- 50th anniversary: founded in 1975
+
+**For UK searches:** Call Companies House API
+```
+GET https://api.company-information.service.gov.uk/search/companies
+params: { q: '[sector keyword]', items_per_page: 20 }
+```
+Filter by: incorporation date in target anniversary years, active status only.
+Calculate exact anniversary month from date_of_creation.
+Flag urgent if anniversary is within next 3 months.
+
+**For Nigeria/Africa searches:** Call callAgent() with task: 'prospect_research'
+Prompt: "Find 10 real companies in [country] in the [sector] sector founded in [anniversary years] that would be strong prospects for premium corporate event planning. Only return companies with verifiable public presence. Return JSON: [{companyName, city, industry, website, foundingYear, milestoneFlag, confidence, sourceUrl}]"
+
+**Trigger detection beyond anniversaries — run every day regardless of sector rotation:**
+- End of Year: search if month >= 8 (August onwards)
+  UK: Companies House — active companies in Financial Services/Tech/Legal/Consulting with 50+ employees
+  Nigeria: Agent research — Lagos/Abuja corporates planning December events
+- IPO/Funding: Agent research daily — "Find UK or Nigerian companies that have announced a funding round or IPO in the last 30 days"
+  Always set High Priority = true, estimated_value = £50000 minimum
+
+**Scoring (max 100 points):**
+- Round anniversary (10th, 25th, 50th): +40
+- Non-round anniversary: +20
+- Large/enterprise company: +20
+- High-value sector (Finance, Tech, Energy): +15
+- Anniversary within 3 months: +15
+- Anniversary within 6 months: +10
+- Has website: +5
+- Confidence = High: +5
+
+Only add prospects with score >= 30.
+Auto-set High Priority if score >= 60.
+
+Auto-set estimated_value:
+- Enterprise Financial Services: £75000
+- Large Tech/SaaS: £50000
+- Mid-market: £25000
+- SME: £15000
+- Default: £20000
+
+Deduplicate: before inserting, check company name + country against existing records. Skip if exists.
+
+Set on each new prospect:
+- source: 'Daily Prospecting Agent'
+- stage: 'New Enquiry'
+- trigger_type: anniversary / end_of_year / ipo_funding / product_launch
+- milestone_flag: auto-generated string
+- created_at: now
+
+---
+
+# MISSING PIECE 2 — 12 EMAIL TEMPLATES
+
+Create a templates table in the database:
+```sql
+create table outreach_templates (
+  id serial primary key,
+  trigger_type text, -- anniversary, end_of_year, product_launch, award_ceremony, office_opening, ipo_funding
+  country_group text, -- uk, nigeria
+  subject text,
+  body text,
+  created_at timestamp default now(),
+  updated_at timestamp default now()
+)
+```
+
+Seed this table with all 12 approved templates exactly as written below. These are final — do not rewrite or paraphrase them.
+
+-- TEMPLATE 1: UK ANNIVERSARY --
+trigger_type: anniversary | country_group: uk
+subject: [Company]’s [N]th anniversary — marking it properly
+body:
+Dear [FirstName],
+
+[Company] has been building something genuinely significant for [N] years. That kind of milestone tends to arrive quietly — and the organisations that mark it well are the ones that take a moment to reflect on the journey before pressing forward again.
+
+At Event Perfekt we specialise in helping companies at exactly this point. We’ve spent 15 years delivering milestone events for corporate and public sector clients across London and the UK — from intimate leadership celebrations to large-scale anniversary galas. What we bring isn’t just logistics. It’s the ability to shape an experience that actually reflects who you are and what you’ve built.
+
+We work with a small number of clients at any one time so that every event gets the attention it deserves. We’d genuinely love to hear what you’re thinking for this year and bring some ideas to the table.
+
+Would you be open to a brief conversation?
+
+[SIGNATURE]
+
+-- TEMPLATE 2: NIGERIA ANNIVERSARY --
+trigger_type: anniversary | country_group: nigeria
+subject: [N] years of [Company] — this deserves to be celebrated properly
+body:
+Dear [FirstName],
+
+[N] years in business in Nigeria is a real achievement. The landscape is tough, the journey is rarely straightforward, and the companies that make it to [N] years have earned the right to celebrate — properly, not just on paper.
+
+At Event Perfekt we’ve been delivering corporate events across Lagos, Abuja, and the UK for 15 years. We understand the Nigerian business environment, we understand what it means to gather the right people in the right room, and we know how to create an evening that your team, your clients, and your partners will talk about long after the night is over.
+
+We’re not a template company. Every event we plan starts with understanding what this milestone means to the people involved — and building something around that. We’d love to hear about [Company] and what you’d want this celebration to feel like.
+
+Can we find a time to speak this week?
+
+[SIGNATURE]
+
+-- TEMPLATE 3: UK END OF YEAR --
+trigger_type: end_of_year | country_group: uk
+subject: December — is your celebration in hand?
+body:
+Dear [FirstName],
+
+The best venues in London for end of year events are already taking bookings for Q4. It sounds early but the companies that plan ahead are the ones whose teams leave the December party still talking about it in January — rather than wondering why the room felt like an afterthought.
+
+Event Perfekt has been delivering end of year celebrations for corporate clients across London for 15 years. We’ve learned that what makes these events land isn’t the budget — it’s the intention behind them. When a team feels genuinely valued, that carries into the new year in ways that matter to your business.
+
+We handle everything from venue sourcing to the moment the last guest leaves, so you don’t carry the weight of it. We’d love to understand what your team deserves this December and bring some ideas to you.
+
+Would a conversation this week work?
+
+[SIGNATURE]
+
+-- TEMPLATE 4: NIGERIA END OF YEAR --
+trigger_type: end_of_year | country_group: nigeria
+subject: December in Lagos — let’s plan something your team deserves
+body:
+Dear [FirstName],
+
+End of year season in Lagos arrives faster than most companies expect. The venues that create the right atmosphere are already receiving enquiries, and the events that feel special in December are the ones that were thought about in August — not the ones pulled together in November.
+
+At Event Perfekt we’ve been helping organisations across Lagos and Abuja deliver end of year celebrations that their teams genuinely look forward to. We understand that in Nigeria, how you bring people together says something about how you value them. The room, the food, the atmosphere, the way the evening flows — all of it communicates something to your staff and your clients.
+
+We’d love to hear what you’re envisioning for December and help you build something around it. No pressure — just a conversation with people who care about getting these things right.
+
+Can we speak this week?
+
+[SIGNATURE]
+
+-- TEMPLATE 5: UK PRODUCT LAUNCH --
+trigger_type: product_launch | country_group: uk
+subject: [Company]’s launch — the event should match the ambition
+body:
+Dear [FirstName],
+
+A product launch is one of the most important moments in a company’s calendar. It’s the first time the market, the press, and your own team see what you’ve been building — and the experience of that moment shapes how the story gets told afterwards.
+
+Event Perfekt has spent 15 years delivering launch events for corporate and commercial clients across the UK. We understand that a great launch isn’t just a nice evening — it’s a strategic moment. The venue, the flow, the atmosphere, the way your product is presented — everything should be working together to reinforce the message you’re putting into the world.
+
+We’d love to understand what [Company]’s launch means and what you want people to feel when they leave the room. That’s always where we start.
+
+Would you be open to a conversation?
+
+[SIGNATURE]
+
+-- TEMPLATE 6: NIGERIA PRODUCT LAUNCH --
+trigger_type: product_launch | country_group: nigeria
+subject: Your launch deserves an event that the market remembers
+body:
+Dear [FirstName],
+
+Bringing a new product or service to the Nigerian market is a significant moment — and the companies that make an impression at launch tend to do so because the event itself reflected the quality of what they were putting forward.
+
+At Event Perfekt we’ve delivered product launch events across Lagos, Abuja, and internationally. We understand the importance of getting the right people in the room, creating an atmosphere that generates conversation, and making sure that what’s being launched is what everyone remembers when they walk out.
+
+We’d love to hear about what [Company] is bringing to market and how we might help make the launch moment something that sets the right tone from day one.
+
+Can we find time to speak?
+
+[SIGNATURE]
+
+-- TEMPLATE 7: UK AWARD CEREMONY --
+trigger_type: award_ceremony | country_group: uk
+subject: Awards season — is [Company] hosting anything this year?
+body:
+Dear [FirstName],
+
+For companies that operate at the level [Company] does, awards season isn’t just about being nominated or winning — it’s an opportunity to bring the right people together, reinforce your position in the industry, and create an evening that people associate with your name.
+
+Event Perfekt has been delivering award ceremonies, industry receptions, and private dinners for corporate clients across London for 15 years. We know how to create the kind of environment where relationships deepen and reputations are built — not just a room with a trophy at the end.
+
+If you’re thinking about hosting a reception, a dinner, or a full ceremony this season we’d love to be part of the conversation early. The events that land well are always the ones that were planned with intention.
+
+Would a brief call make sense?
+
+[SIGNATURE]
+
+-- TEMPLATE 8: NIGERIA AWARD CEREMONY --
+trigger_type: award_ceremony | country_group: nigeria
+subject: Awards season in Nigeria — is [Company] marking it?
+body:
+Dear [FirstName],
+
+Award season in Nigeria is one of the strongest moments in the corporate calendar to bring clients, partners, and stakeholders together. The companies that use it well don’t just attend other people’s events — they host their own, and those evenings become part of how they’re known in the market.
+
+At Event Perfekt we’ve delivered corporate receptions and award ceremonies for clients across Lagos and Abuja. We understand the Nigerian corporate landscape and we know what it takes to create an evening that reflects well on the organisation behind it.
+
+If [Company] is thinking about marking this season with something of your own we’d genuinely love to hear about it and bring some ideas to you.
+
+Can we speak this week?
+
+[SIGNATURE]
+
+-- TEMPLATE 9: UK OFFICE OPENING --
+trigger_type: office_opening | country_group: uk
+subject: [Company]’s new [city] office — marking it properly
+body:
+Dear [FirstName],
+
+Opening a new office is one of those milestones that can either pass quietly or become a moment your clients, partners, and team actually remember. The companies that use it well treat it as an opportunity — a reason to bring the right people into the room and let them see where things are going.
+
+Event Perfekt has spent 15 years delivering opening events, client receptions, and corporate celebrations across London and the UK. We know how to create an experience that feels like a genuine occasion rather than an obligation — one that leaves people feeling connected to what you’re building.
+
+We’d love to hear about the new space and what you’d want the opening to feel like. That’s always where the best events start.
+
+Would you be open to a conversation?
+
+[SIGNATURE]
+
+-- TEMPLATE 10: NIGERIA OFFICE OPENING --
+trigger_type: office_opening | country_group: nigeria
+subject: The new [Company] office — let’s open it properly
+body:
+Dear [FirstName],
+
+A new office in Lagos or Abuja is a statement. It tells your clients, your team, and the market that you’re growing, you’re committed, and you’re here for the long term. How you mark that opening moment says something too — and the organisations that do it well use it as a chance to bring the right people together and deepen the relationships that matter.
+
+At Event Perfekt we’ve delivered opening receptions and corporate celebrations across Lagos, Abuja, and internationally. We understand what it means to create an evening that feels considered, not rushed.
+
+We’d love to hear about [Company]’s new space and help you think through what the opening should feel like.
+
+Can we find a time to speak?
+
+[SIGNATURE]
+
+-- TEMPLATE 11: UK IPO/FUNDING --
+trigger_type: ipo_funding | country_group: uk
+subject: Congratulations on the raise — this deserves a proper celebration
+body:
+Dear [FirstName],
+
+Closing a funding round at this level takes everything a team has. The late nights, the conversations that almost didn’t happen, the belief required to get to yes — that deserves to be marked in a way that lets everyone involved actually feel it.
+
+Event Perfekt has been delivering milestone celebrations for corporate and commercial clients across London for 15 years. We’ve helped companies mark funding rounds, IPOs, and major growth moments in ways that bring investors, teams, and stakeholders together in one room and create a memory that lasts longer than the announcement.
+
+We’d love to understand what this moment means to [Company] and help you celebrate it properly. These occasions don’t come around often — they’re worth getting right.
+
+Would a brief conversation make sense?
+
+[SIGNATURE]
+
+-- TEMPLATE 12: NIGERIA IPO/FUNDING --
+trigger_type: ipo_funding | country_group: nigeria
+subject: [Company]’s funding round — congratulations, and a thought
+body:
+Dear [FirstName],
+
+Securing investment at this level in Nigeria is a genuine achievement. It reflects the confidence your investors have in what you’re building — and that kind of confidence deserves to be celebrated in a way that brings the right people together and marks the moment properly.
+
+At Event Perfekt we’ve delivered celebration events for corporate clients across Lagos, Abuja, and the UK. We understand that in Nigeria, gathering your investors, your team, and your partners in the right environment is also a signal to the market — and we know how to make that gathering feel like the occasion it is.
+
+We’d love to speak with someone at [Company] about marking this milestone. A brief conversation is all it takes to get started.
+
+Can we find a time this week?
+
+[SIGNATURE]
+
+---
+
+# MISSING PIECE 3 — SENDER PROFILES + COUNTRY ROUTING
+
+Create sender_profiles table:
+```sql
+create table sender_profiles (
+  id serial primary key,
+  profile_name text, -- 'UK' or 'Nigeria'
+  from_email text,
+  sender_name text,
+  title text,
+  company text,
+  website text,
+  signature_block text,
+  country_codes text[], -- array of country names that route to this sender
+  is_default boolean default false
+)
+```
+
+Seed with two records:
+
+UK Profile:
+- profile_name: UK
+- from_email: adminuk@eventperfekt.com
+- sender_name: Prablehen Tak
+- title: Client Manager
+- company: Event Perfekt Global Ltd
+- website: www.eventperfekt.com
+- signature_block: "Warm regards,\nPrablehen Tak\nClient Manager | Event Perfekt Global Ltd\nwww.eventperfekt.com"
+- country_codes: ['United Kingdom','UK','GB','England','Scotland','Wales','Ireland']
+- is_default: true
+
+Nigeria Profile:
+- profile_name: Nigeria
+- from_email: admin@eventperfekt.com
+- sender_name: Juliet Ike
+- title: Client Manager
+- company: Event Perfekt Global Ltd
+- website: www.eventperfekt.com
+- signature_block: "Warm regards,\nJuliet Ike\nClient Manager | Event Perfekt Global Ltd\nwww.eventperfekt.com"
+- country_codes: ['Nigeria','NG','Nigerian']
+- is_default: false
+
+Routing function:
+```typescript
+function getSenderProfile(country: string): SenderProfile {
+  const profiles = await db.select().from(senderProfiles)
+  const match = profiles.find(p => 
+    p.country_codes.some(c => 
+      c.toLowerCase() === country.toLowerCase()
+    )
+  )
+  return match || profiles.find(p => p.is_default)
+}
+```
+
+Replace the hardcoded admin@eventperfekt.com in ALL outgoing outreach emails with getSenderProfile(prospect.country).from_email
+
+Add Sender Profiles section in Admin Panel → Settings:
+- Show both profiles as editable cards
+- Editable: from_email, sender_name, title, website, signature_block, country_codes
+- Save button per profile
+- Test Email button — sends test to admin’s own email to verify SendGrid routing
+- Note: "Both sender addresses must be verified in SendGrid. Visit SendGrid Sender Authentication to verify adminuk@eventperfekt.com"
+
+---
+
+# MISSING PIECE 4 — MORNING BRIEFING EMAIL
+
+Add to the scheduler, 30 minutes after the prospect search runs (7:30am):
+
+```typescript
+async function sendProspectBriefing(runResults: ProspectRunResults) {
+  const managers = await db.select().from(users)
+    .where(inArray(users.role, ['admin', 'planner']))
+  
+  for (const manager of managers) {
+    await sendGrid.send({
+      to: manager.email,
+      from: 'admin@eventperfekt.com',
+      subject: `Good morning — ${runResults.prospectsAdded} new prospects found today`,
+      html: buildBriefingEmail(manager, runResults)
+    })
+  }
+}
+```
+
+Briefing email content:
+```
+Subject: Good morning — [N] new prospects found today
+
+Good morning [Name],
+
+Your prospecting agent ran this morning and found [N] new companies.
+
+HIGH PRIORITY ([n] companies):
+• [Company] — [trigger] — [sector] — [city] — Est. [value]
+[up to 5 high priority prospects listed]
+
+CONTACTS FOUND: [n] decision-makers verified and ready
+EMAILS DRAFTED: [n] outreach emails ready for your approval
+
+[Review and approve → link to /prospect-finder?tab=outreach]
+
+Full pipeline: [link to /prospect-finder]
+
+Event Perfekt | www.eventperfekt.com
+```
+
+Also send in-app notification to all managers:
+"[N] new prospects added this morning. [n] emails ready for approval."
+
+---
+
+# MISSING PIECE 5 — EMAIL DRAFTING USING TEMPLATES
+
+When drafting an outreach email for any prospect, replace the current on-demand AI generation with template-based generation:
+
+```typescript
+async function draftOutreachEmail(prospect: Prospect, contact: Contact): Promise<Email> {
+  // 1. Get correct template
+  const countryGroup = getNigeriaCountries().includes(prospect.country) ? 'nigeria' : 'uk'
+  const template = await db.select().from(outreachTemplates)
+    .where(and(
+      eq(outreachTemplates.trigger_type, prospect.trigger_type),
+      eq(outreachTemplates.country_group, countryGroup)
+    )).limit(1)
+  
+  // 2. Get correct sender
+  const sender = await getSenderProfile(prospect.country)
+  
+  // 3. Fill placeholders
+  let subject = template.subject
+    .replace('[Company]', prospect.companyName)
+    .replace('[N]', calculateYears(prospect.foundingYear))
+    .replace('[city]', prospect.city || 'London')
+  
+  let body = template.body
+    .replace('[FirstName]', contact.firstName)
+    .replace('[Company]', prospect.companyName)
+    .replace('[N]', calculateYears(prospect.foundingYear))
+    .replace('[city]', prospect.city || 'London')
+    .replace('[SIGNATURE]', sender.signature_block)
+  
+  // 4. Use Agent to add ONE personalised sentence only
+  // Agent adds a single sentence after the opening paragraph that references
+  // something specific about this company (sector detail, recent news, city context)
+  // It does NOT rewrite the template — it only adds personalisation
+  const personalisationSentence = await callAgent(
+    `Add ONE sentence (max 20 words) to personalise this email for ${prospect.companyName}, 
+     a ${prospect.industry} company in ${prospect.city}. 
+     Their trigger: ${prospect.milestone_flag}. 
+     The sentence should feel natural after the opening paragraph.
+     Return ONLY the sentence, nothing else.`,
+    { task: 'email_draft' }
+  )
+  
+  // Insert personalisation after first paragraph
+  const paragraphs = body.split('\n\n')
+  paragraphs.splice(1, 0, personalisationSentence)
+  body = paragraphs.join('\n\n')
+  
+  return {
+    to: contact.email,
+    from: sender.from_email,
+    fromName: sender.sender_name,
+    subject,
+    body,
+    prospectId: prospect.id,
+    contactId: contact.id,
+    templateId: template.id,
+    status: 'pending_approval'
+  }
+}
+```
+
+This approach:
+- Uses your approved templates as the base (no AI rewriting your words)
+- Adds one personalised sentence per company for relevance
+- Signs with the correct sender per country
+- Saves as pending_approval so staff review before sending
+
+---
+
+# VERIFICATION CHECKLIST:
+[ ] Existing Tender Digest scheduler still runs unchanged
+[ ] New prospect search job added alongside it at 7am
+[ ] Sunday correctly skipped
+[ ] Sector rotation correct per day of week
+[ ] Companies House called for UK searches with correct SIC codes
+[ ] Agent research called for Nigeria/Africa searches
+[ ] End of Year trigger only runs August-December
+[ ] IPO/Funding trigger runs daily, always High Priority
+[ ] Scoring logic correct, only score >= 30 added
+[ ] Deduplication prevents same company being added twice
+[ ] outreach_templates table created with all 12 templates seeded exactly as written
+[ ] Templates retrievable by trigger_type + country_group
+[ ] sender_profiles table created with UK and Nigeria profiles seeded
+[ ] getSenderProfile() returns correct sender by country
+[ ] All outreach emails now use getSenderProfile() not hardcoded admin@
+[ ] UK prospects send from adminuk@eventperfekt.com signed Prablehen Tak
+[ ] Nigeria prospects send from admin@eventperfekt.com signed Juliet Ike
+[ ] Admin Settings shows Sender Profiles as editable cards
+[ ] Test email button works per sender profile
+[ ] Morning briefing sends at 7:30am to all admin/planner users
+[ ] Briefing lists high priority prospects with value estimates
+[ ] Briefing includes link to outreach approval tab
+[ ] In-app notification sends to managers after daily run
+[ ] draftOutreachEmail() uses template base + one Agent personalisation sentence
+[ ] Agent only adds one sentence, does not rewrite the template
+[ ] Drafted emails saved as pending_approval
+[ ] Staff can review, edit, and approve from Outreach tab
+[ ] Approved email sends from correct sender via SendGrid
+[ ] Activity timeline logs: sent by, to, email, timestamp

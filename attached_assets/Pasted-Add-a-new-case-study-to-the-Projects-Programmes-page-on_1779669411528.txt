@@ -1,0 +1,140 @@
+Add a new case study to the Projects & Programmes page on the eventperfektplanningapp.com website at the existing /case-studies/youth slot. Replace any placeholder content currently at that URL.
+Pre-action checks (do these first, report back before making any changes):
+
+Confirm DB target is PROD (Neon via PROD_DB_URL), not dev/helium.
+Confirm the schema and layout of existing case studies. The reference template is the energy corporation case study at /case-studies/energy — match its exact structure, visual treatment, and brand styling.
+Confirm whether /case-studies/youth already exists as a published page, a draft, or is empty. Report current state before overwriting.
+Confirm site brand colours in use — primary theme is deep burgundy #330311. Match the new case study to existing case studies, NOT to imported brand colours.
+Confirm the CHARITY & COMMUNITY portfolio card on the Projects & Programmes page already links to /case-studies/youth — report the card text and target URL.
+
+Once confirmed, build the case study at /case-studies/youth with the following content, structured to mirror /case-studies/energy:
+
+Page metadata
+
+URL: /case-studies/youth
+Page title: "From Positioned to Fundable. In Six Weeks. | Event Perfekt Global"
+Meta description: "A six-week strategic and operational consultancy engagement repositioning a UK Registered Charity in youth violence prevention — from positioned to fundable."
+Status: Published (live)
+
+
+Header section (above the fold)
+Breadcrumb / label: "Our Work in Action / Case Study"
+H1 headline: "From Positioned to Fundable. In Six Weeks."
+Lead paragraph: "A six-week consultancy engagement repositioning a UK Registered Charity working in youth violence prevention — building the strategic, operational, and funding-readiness architecture required to enter live conversations with statutory commissioners, charitable trusts, and corporate sponsors."
+Client identifier line: "Client: UK Registered Charity — Youth Violence Prevention"
+Sub-line: "Six-Week Consultancy Engagement | Strategic, Operational, Funding-Ready"
+
+Key Facts Panel (label/value rows, same style as energy case study)
+
+Client Sector: Charity — Youth Violence Prevention
+Engagement Length: 6 Consecutive Weeks
+Deliverables Produced: 29 Documents across 3 Phases
+Geographic Focus: Three South London Boroughs
+EPG Role: Strategic, Operational, Funding-Readiness Consultancy
+
+
+Section 1 — The Engagement
+Section label: "The Engagement"
+H2: "Strong Intent. No Operational Backbone."
+Body (three paragraphs):
+"A charity can have ten years of community standing, direct access to at-risk young people, and a clear founding mission — and still not be fundable. Without the operational architecture that funders and statutory commissioners look for, intent does not convert into income."
+"That was the position when this client approached Event Perfekt Global. The charity had community standing, founding mission, and direct access to the young people it wanted to serve. What it did not have was a documented operating model, a referral process, a partner network, a safeguarding architecture, or a funding plan."
+"Six weeks. That was the brief. Take the charity from positioned to fundable."
+Stats row (three columns, alternating burgundy/accent like energy case study):
+
+6 — WEEKS
+29 — DELIVERABLES
+3 — PHASES
+
+
+Section 2 — What We Delivered
+Section label: "What We Delivered"
+H2: "Three Phases. Twenty-Nine Documents. One Operating Identity."
+Intro line: "Six weeks of work delivered across three structured phases. Here is what the scope looked like."
+Six numbered delivery blocks (same visual style as energy case study — large numeral on left, title and body on right):
+01 — Strategic Definition
+Repositioning the charity from grant-giver to facilitation and navigation service. Audit of operating identity, gap analysis against fundable charities at scale, website and positioning audit with a fourteen-point change list, market entry roadmap, and a documented proof-of-concept case study.
+02 — Operating Model & Infrastructure
+Formal referral and intake process across five sourcing channels. Partner identification and outreach architecture. Pro bono professional network framework spanning mental health, legal, mentoring, and pathway specialism. Ambassador model. Audience segmentation across six cohorts.
+03 — Safeguarding Architecture
+Safeguarding and support structure built to Charity Commission and funder due diligence standards. Seven operational annexes: incident logging, three consent forms, personnel onboarding, partner alignment, statutory contact directory, whistleblowing procedure, and data retention schedule with statutory periods seeded against UK GDPR, IICSA, NSPCC, HMRC, and Charities Act bases.
+04 — Funding Readiness
+Funding model defining revenue mix across statutory commissioning, charitable trusts, corporate sponsorship, and a Sponsor a Young Person scheme. Target funder and commissioner list. Commissioning pitch narrative. Sponsorship framework. Borough shortlist for first commissioning engagement.
+05 — Partner Network Activation
+Twenty named partner organisations identified, categorised by sector and borough, with role-based contact addresses and engagement rationale. Ninety-day partner engagement sequence with weekly cadence. Outreach templates for cold approach, follow-up, and decline response. Live partner directory with status tracking.
+06 — Closeout & Handover
+Engagement closeout pack consolidating all deliverables. End of engagement report with phase-by-phase summary. Strategic overview in prose and card formats. Website update brief for the charity's web developer. Calendar-seeded ninety-day partner engagement sequence.
+
+Section 3 — What This Proves
+Section label: "What This Proves"
+H2: "Operational Consultancy. Not Strategic Theatre."
+Body (two paragraphs):
+"Many consultancy engagements produce strategy documents that sit on a shelf. This one produced operational infrastructure the charity is using from Day One."
+"Event Perfekt Global's core discipline is event delivery — work that requires real logistics, real timelines, real safeguarding, real partner coordination, and real audience response. The same operational lens that delivers a multi-location 800-guest event delivers a referral process that actually works on Day One. Strategic consultancy without operational grounding produces beautiful documents that never get used; operational consultancy without strategic framing produces busywork. EPG works at the intersection."
+Burgundy callout box (full width, white text, matches energy case study callout):
+"Six weeks after this engagement closed, the charity was ready to walk into a meeting with a pan-London statutory body, hold a commissioning conversation with three priority boroughs, send first outreach to twenty named partner organisations, and host its first ambassador convening — with a safeguarding architecture, funding model, and operational discipline that no funder, commissioner, or sponsor would query."
+"That is what positioned-to-fundable looks like in six weeks."
+
+Section 4 — What We Bring
+Section label: "What We Bring"
+H2: "Event Delivery DNA. Applied to Strategy."
+Body (two paragraphs):
+"Event Perfekt Global is fundamentally an event management group. Our consultancy work — including the engagement described in this case study — exists because clients who came to us for event delivery kept asking us for more: 'You understand how we operate. Can you help us think about positioning, partnerships, fundraising, governance?'"
+"Operational thinking sharpens strategy. Strategic clarity makes events meaningful rather than performative. The two disciplines reinforce each other — and we can support clients in either, or both."
+Sub-section — Our Event Capability (bulleted list)
+
+Fundraising and donor events for charities, including ambassador convenings, supporter receptions, and annual fundraisers.
+Corporate engagement and partnership events, including launches, networking convenings, and stakeholder briefings.
+Government and embassy events, including formal receptions, delegations, and stakeholder programmes.
+Cross-border events across the UK, Nigeria, and wider African markets — with on-the-ground operational capacity in nine-plus African countries under our active UK Government contract CEFAS25-35.
+Cultural and community events drawing on deep Nigerian and diaspora cultural knowledge — a differentiator for clients operating across UK and African markets.
+
+Sub-section — Our Consultancy Capability (bulleted list)
+
+Strategic positioning and operating identity reset — typically three to four weeks.
+Safeguarding architecture and Charity Commission compliance — typically two to three weeks.
+Funding readiness and go-to-market support — typically four to six weeks.
+Full strategic-to-commercial repositioning, as delivered in this case study — typically six to eight weeks.
+
+
+Section 5 — CTA (Ready to Deliver?)
+Section label: "Ready to Deliver?"
+H2: "Event Perfekt Delivers. Year After Year."
+Body (three short lines):
+"Whether your need is event delivery, structural consultancy, or both — we have the structure, the team, and the track record."
+"Charities, social enterprises, government, corporates, embassies. UK and Africa. Single events or retained programmes. Strategic resets or operational architecture."
+"One conversation tells you whether we're the right partner — or whether we can introduce you to one."
+CTA buttons (same style as energy case study):
+
+Primary: "Start the Conversation" → /consultation-request
+Secondary: "← Back to Projects & Programmes" → /projects-and-programmes
+
+
+Footer line for the case study page (matching energy case study footer style):
+"Event Perfekt Global Ltd | 20 Wenlock Road, London N1 7GU | Company No. 15875326 | UK & Africa Programme Delivery | Active UK Government Contract CEFAS25-35"
+
+CRITICAL — anonymisation rules to enforce:
+
+NO mention of "ALLI Foundation" anywhere
+NO Trustee names
+NO specific borough names (use "Three South London Boroughs" only)
+NO specific £4k income figure
+NO governance discrepancy references
+NO named partner organisations (use "pan-London statutory body" not "London VRU"; "twenty named partner organisations" not actual partner names)
+NO Charity Commission number
+Client identified by sector only: "UK Registered Charity — Youth Violence Prevention"
+
+
+After publishing, confirm:
+
+Page live at https://eventperfektplanningapp.com/case-studies/youth
+Layout matches /case-studies/energy structure exactly (key facts panel, stats row, six numbered delivery blocks, callout box, two-column capability lists, CTA buttons)
+Brand colours match existing pages (deep burgundy #330311 primary, mid burgundy #8C2842 accent)
+CHARITY & COMMUNITY card on /projects-and-programmes correctly links to /case-studies/youth
+CTA buttons functional — Start the Conversation routes to /consultation-request
+Anonymisation rules enforced — search the page source for "ALLI", "Kehinde", "Agboola", "Lambeth", "Lewisham", "Southwark", "VRU", "1182529" and confirm zero hits
+Mobile responsiveness verified
+Page indexed for SEO with the meta description above
+Discussion thread note posted: "Charity & Community case study published live at /case-studies/youth. Sector-anonymised in line with existing case study pattern. No client consent required as no client is named. Page matches /case-studies/energy structure and EPG brand."
+
+Report back with all nine confirmations and the live URL.

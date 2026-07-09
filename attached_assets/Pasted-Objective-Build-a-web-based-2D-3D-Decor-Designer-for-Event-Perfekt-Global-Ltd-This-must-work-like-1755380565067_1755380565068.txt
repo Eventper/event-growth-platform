@@ -1,0 +1,95 @@
+Objective
+Build a web-based 2D + 3D Decor Designer for Event Perfekt Global Ltd. This must work like Homestyler / Planner5D but tailored to event décor.
+
+🔹 Core Features
+
+Dual Designer Modes
+
+2D Floor Plan: Drag-and-drop layout planning, tables, chairs, stages, decor.
+
+3D Immersive Mode: Full 360° interactive view, zoom, rotate, walkthrough.
+
+Asset Library (Seeded + Expandable)
+Each asset must include:
+
+id, name, category, variants (color/finish/size), dimensions (W/H/D), gltfUrl, icon/thumbnail, vendorId, vendorName, sku, unitPrice/rentalPrice, currency, availabilityRegion, leadTime.
+
+Seed Library Must Include:
+
+Seating: Chiavari chairs (gold, silver, white, clear), Dior chairs (white/gold, silver, black), Crossback chairs, Bride & Groom thrones
+
+Tables: Round banquet (5ft, 6ft), Rectangular banquet (6ft, 8ft), Cocktail tables
+
+Stage & Dancefloor: Modular stage blocks, White/black/LED dancefloors
+
+Dining & Décor:
+
+Centrepieces (floral, crystal, rustic)
+
+Vases (glass, gold, silver, cylinder sets)
+
+Flowers (roses, hydrangea, orchids in multiple colours)
+
+Candles (pillar, taper, tea light, floating, LED)
+
+Charger plates (gold rim, silver rim, beaded, matte black)
+
+Cutlery (silver, gold, rose gold, matte black)
+
+Glassware (wine, flute, tumbler sets)
+
+Table linen (white, ivory, burgundy, black, swatches)
+
+Table numbering / name cards
+
+Lighting & Draping: Chandeliers (crystal, rustic, modern), Uplighting (RGB), Fairy lights, Drapes (sheer white, burgundy, black, custom colours)
+
+Props & Lounge: Backdrop panels, Lounge sofas, Photo wall props
+
+Designer Tools
+
+Drag-and-drop placement
+
+Rotation, resizing, duplication
+
+Grouping elements (tables + chairs)
+
+Snap-to-grid alignment
+
+Undo/redo history
+
+Camera angles (top, side, walkthrough)
+
+Measurement guides
+
+AI Designer Assistant – “EP Designer Guru”
+
+Accepts text prompts (e.g., “Design a wedding reception for 200 guests in a ballroom with Dior chairs, crystal chandeliers, burgundy/gold theme”).
+
+Automatically generates a 2D + 3D layout using available library assets.
+
+Suggests décor alternatives if assets are not available.
+
+Provides budget estimates based on unit prices.
+
+Output & Sharing
+
+Save projects (eventId linked).
+
+Export options: PDF moodboard, 2D floor plan, 3D render images.
+
+Shareable link for clients/vendors.
+
+Scalability
+
+Asset library must allow easy future uploads (via JSON/CSV + GLTF).
+
+Compatible with vendor integrations (pricing & availability updates).
+
+🔹 Development Notes
+
+Use React + Three.js (or Babylon.js) for 3D rendering.
+
+Store assets in JSON format with GLTF models.
+
+Prioritise performance: allow >300 guests (tables + chairs + decor) without lag.

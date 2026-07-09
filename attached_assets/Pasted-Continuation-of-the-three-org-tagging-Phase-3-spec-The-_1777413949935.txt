@@ -1,0 +1,78 @@
+Continuation of the three-org tagging + Phase 3 spec. The earlier paste cut off mid-ALLI-keyword-list. Below is the rest. Treat it as one continuous spec with what you already have.
+
+============================================================
+RESUME: ALLI KEYWORDS (from where the previous paste cut off)
+============================================================
+
+isAlliRelevant() keyword set, continued from "domestic abuse":
+
+- domestic abuse (combined with prevention / community / survivor / refuge / perpetrator programme)
+- crisis line / 24/7 support / outreach support / drop-in support
+- caseload / caseworker / key worker / support worker
+- third sector delivery / VCS / VCSE / voluntary sector / community sector
+- charity-led delivery / charity sector
+- lived experience / peer support / peer mentor
+- cohort delivery / group programme / 1-2-1 mentoring
+- referral pathway / multi-agency / partnership delivery (combined with social or charity context)
+- recovery / rehabilitation (combined with addiction / criminal justice / youth)
+- exploitation prevention / modern slavery (when combined with young people)
+- school exclusion / behaviour intervention / inclusion programme
+
+============================================================
+isPmoRelevant() — FULL KEYWORD SET
+============================================================
+
+- PMO / programme management office / portfolio management office
+- portfolio governance / portfolio assurance / portfolio reporting
+- programme manager / senior programme manager / programme management consultant
+- project manager (combined with: senior, lead, contractor, daily rate, interim, specialist, P3O, programme)
+- change management / business change / change lead / change practitioner
+- transformation / digital transformation / business transformation / operational transformation
+- portfolio assurance / programme assurance / project assurance / IPA-style assurance
+- governance framework / governance lead / programme governance / project governance
+- benefits realisation / benefits management / outcomes management
+- PRINCE2 / PMP / MSP / P3O / agile / scrum / SAFe (certification signals)
+- Crown Commercial Service consultancy frameworks: RM6187 / RM6309 / RM6313 / RM6126 / RM6303 / Multidisciplinary Consultancy
+- management consultancy / management consulting (when buyer is government, NHS, financial services, or banking)
+- financial services regulatory / FCA / PRA / Bank of England / Basel / IFRS / SOX / GDPR (when combined with delivery/programme/transformation)
+- banking transformation / insurance transformation / wealth management transformation
+- strategic delivery / delivery leadership / delivery director
+- ITIL / service management / operational governance / service transition
+- contractor day rate / interim resource / specialist contractor / day rate consultancy
+- target operating model / TOM / operating model design
+- PMO setup / PMO capability / programme establishment
+- risk and issue management / RAID management (in PMO/portfolio context, not charity-RAID)
+- stage gate / gateway review / OGC gateway
+- buyer signals: Cabinet Office / NHS / NHSX / NHSE / HMRC / DWP / DfE / FCDO / DCMS / MOD / Home Office
+- financial services buyers (named where possible): Lloyds Banking Group / Barclays / HSBC / NatWest / Santander UK / Nationwide / Standard Chartered / Aviva / Legal & General / Prudential
+
+Match logic for each function:
+- score = sum of weighted matches (clamped 0-100)
+- matches in TITLE or BUYER score 3x weight vs DESCRIPTION matches
+- relevant = true if score >= 30
+- matched_keywords array stores up to 8 strongest hits for explainability
+
+============================================================
+PIECE B — INSERT-TIME COMPUTATION
+============================================================
+
+Wire the three relevance functions into every discovery insert path:
+
+- tender-finder-service.ts (Contracts Finder + Find a Tender)
+- tender-sweeper.ts (daily AI sweep + monitored buyer search)
+- ng-tender-sources.ts (World Bank, AfDB, NGTenders, Nigeria sources)
+- TED route (when re-enabled with v3 key)
+- bidstats route
+- Quick Add Tender (manual paste route)
+- Phase 2 extraction completion hook — re-evaluate flags after extraction since extracted facts often contain richer language than the original notice
+
+Every new tender row written gets all three flag sets computed at insert time. Idempotent: re-running computation on an existing row should produce the same result, no flapping.
+
+============================================================
+PIECE C — BACKFILL
+============================================================
+
+One-off script: scripts/jobs/backfill-org-relevance.ts
+
+- Iterate every saas_tenders row
+- Run isEpRelevant

@@ -1,0 +1,62 @@
+Build out the remaining Tender Centre pieces — Phase 3 of the original rebuild PLUS the three-organisation tagging system (EP, ALLI, PMO Consulting). Don't bundle into one giant commit; ship phase by phase.
+
+============================================================
+DESIGN DECISIONS LOCKED
+============================================================
+
+Three organisation lanes, not two:
+
+1. EP — Event Perfekt Group (event production, programme delivery, FCDO/DEFRA Africa, cross-border payments)
+2. ALLI — ALLI Foundation (youth violence, knife crime, drug/alcohol, social impact, charity sector)
+3. PMO — Tolu's PMO/Portfolio/Programme/Consulting career (banking, government, financial services, transformation)
+
+Each tender can be tagged for one, two, or all three. They aren't mutually exclusive.
+
+============================================================
+PIECE A — THREE-LANE ORGANISATION TAGGING
+============================================================
+
+Add columns to saas_tenders if not present:
+- ep_relevant BOOL DEFAULT FALSE
+- ep_relevance_score INT (0-100)
+- ep_matched_keywords TEXT[]
+- alli_relevant BOOL DEFAULT FALSE
+- alli_relevance_score INT (0-100)
+- alli_matched_keywords TEXT[]
+- pmo_relevant BOOL DEFAULT FALSE
+- pmo_relevance_score INT (0-100)
+- pmo_matched_keywords TEXT[]
+
+Build three relevance functions in server/tender-finder-service.ts:
+
+isEpRelevant() keywords:
+- event production / event management / events delivery / event services framework
+- programme delivery / programme support / programme management (when combined with events/communications/stakeholder)
+- stakeholder engagement / convening / facilitation
+- communications and outreach / strategic communications
+- cross-border payments / remittance / financial inclusion / diaspora
+- conference / summit / ministerial event / diplomatic event
+- training delivery / capacity building (when combined with events or programmes)
+- FCDO / DEFRA / British Council / DCMS / Cabinet Office (buyer signal)
+- Africa / UK-Africa / sub-Saharan Africa
+- framework agreement (combined with events/programme/comms)
+
+isAlliRelevant() keywords:
+- youth violence / serious youth violence / SYV / youth crime
+- knife crime / knife enabled crime
+- gang exit / gangs / gang prevention / gang affiliation
+- county lines / drug exploitation / criminal exploitation / CSE / CCE
+- drug and alcohol / substance misuse / addiction recovery / harm reduction
+- mental health (combined with youth/young people/community)
+- safeguarding (combined with young people/children)
+- adverse childhood experiences / ACEs / trauma-informed
+- violence reduction / violence prevention / VRU
+- youth offending / YOT / youth justice / restorative justice
+- young people not in education / NEET
+- mentoring / outreach / role model
+- pupil referral unit / PRU / alternative provision
+- early intervention (combined with youth/family)
+- BAME communities / racial equity in social context
+- diaspora youth / Nigerian community
+- VAWG / violence against women and girls
+- domestic abuse (combined with prevention/c

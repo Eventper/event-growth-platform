@@ -1,0 +1,187 @@
+Add a new module inside the Event Perfekt Planning App called:
+
+PHOTO BOOTH BOOKINGS
+
+This must sit inside the Event Perfekt Planning App admin dashboard and client booking portal.
+
+MODULE FEATURES
+
+1. NEW BOOKING FORM (ADMIN CREATE BOOKING)
+
+Admin enters:
+
+CLIENT DETAILS
+- Full name
+- Address
+- Email
+- Phone
+
+EVENT DETAILS
+- Event type
+- Event date
+- Start time
+- End time
+- Duration
+- Venue
+- Guest count
+
+PRICING
+- Net amount
+- VAT (20%)
+- Total amount
+- Deposit percentage
+- Deposit due
+- Balance due
+- Cash balance flag
+
+BANK DETAILS
+Display:
+
+Bank: Revolut Business
+Account Name: Event Perfekt Global Ltd
+Account Number: 78253411
+Sort Code: 04-29-09
+
+PAYMENT REFERENCE
+Auto generate client name or booking reference
+
+2. CLIENT BOOKING PORTAL PAGE
+
+Client receives secure booking link.
+
+Page shows:
+
+BOOKING SUMMARY
+- Event date
+- Venue
+- Service
+- Hire duration
+- Price
+- VAT
+- Total
+- Deposit due
+- Balance due
+
+PAYMENT DETAILS
+Bank transfer details
+
+Cash balance note:
+Outstanding cash balance must be paid before setup begins on event day.
+
+3. BOOKING AGREEMENT & TERMS OF HIRE
+
+Display FULL agreement inside booking page.
+
+Client must:
+
+☐ Tick agreement checkbox
+
+Type full legal name
+
+Date auto stamp
+
+Button:
+Accept Agreement & Confirm Booking
+
+Client cannot continue without accepting.
+
+4. PAYMENT TRACKING
+
+Admin dashboard must show:
+
+- Quote sent
+- Deposit due
+- Deposit paid
+- Balance due
+- Balance paid
+- Booking confirmed
+- Agreement signed
+
+Buttons:
+
+Send Booking Confirmation
+Generate Invoice PDF
+Download Invoice
+Mark Deposit Paid
+Mark Balance Paid
+
+5. INVOICE SYSTEM
+
+Generate professional branded PDF invoice with:
+
+- Invoice number
+- Client details
+- Event details
+- Net amount
+- VAT
+- Total
+- Deposit due
+- Balance due
+- Bank details
+- Payment terms
+
+6. EMAIL AUTOMATION
+
+System automatically emails:
+
+Booking confirmation
+Invoice
+Payment instructions
+Agreement copy
+
+7. PHOTO BOOTH BOOKINGS CALENDAR
+
+Show all booth bookings in calendar format.
+
+Include:
+
+- Date
+- Venue
+- Client
+- Time
+- Payment status
+- Deposit status
+
+8. BOOKING STATUS TAGS
+
+Use tags:
+
+New Enquiry
+Quote Sent
+Awaiting Deposit
+Deposit Paid
+Confirmed
+Completed
+Cancelled
+
+9. SEARCH / FILTER
+
+Filter bookings by:
+
+Date
+Payment status
+Client name
+Venue
+Booking status
+
+This module must live inside the Event Perfekt Planning App admin dashboard and client portal.
+
+Create Shoaib Shah booking as first live record:
+
+Name: Shoaib Shah
+Address: 34 Highmead, LU3 1RY
+Email: shoshiz7890@gmail.com
+Phone: 07946 856265
+
+Service: 360 Booth Hire
+Date: 24 May 2026
+Time: 7PM – 10PM
+Venue: Wilton Hall, Wilton Ave, Bletchley, Milton Keynes, MK3 6BN
+
+Net: £350
+VAT: £70
+Total: £420
+
+Deposit due: £336
+Balance cash on day: £84
+Status: Awaiting Deposit

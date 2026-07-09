@@ -1,0 +1,25 @@
+URGENT: Strategic Overview build (B2–B5) deployed to production incomplete. Mr. Alli could see broken state. Fix or rollback within the hour.
+The problem:
+Current /portal-alli-client-hub.tsx shows two standalone tiles labelled DOCUMENTS ("Jump to documents") and HOW PHASE N CONNECTS ("Jump to sign-offs") above the Project Deliverables kanban board. These tiles are wrong. They should not exist as standalone tiles.
+What was approved (per locked Q1–Q10 design from previous session, all-in-one build approval):
+The Strategic Overview is a NEW section above the existing Project Deliverables board. It is a three-card layout per phase:
+
+Card 1 — WHAT (what we built in this phase)
+Card 2 — WHY (why we built it)
+Card 3 — WHAT NEXT (how to operate it / what comes next)
+
+The cross-links (DOCUMENTS → Project Deliverables board, HOW PHASE N CONNECTS → Milestone Sign-Offs) are meant to be embedded inside the Strategic Overview cards as inline cross-references, NOT rendered as their own tiles.
+The diagnosis:
+B4 (cross-link wiring) appears to have shipped without B3 (the Strategic Overview three-card render component). The cross-link tiles are sitting alone because the parent Strategic Overview component they were meant to live inside doesn't exist on the page.
+Fix order (do exactly this, in this order, with approval gate at step 2):
+
+IMMEDIATE — rollback the two standalone tiles. Remove the DOCUMENTS tile and the HOW PHASE N CONNECTS tile from /portal-alli-client-hub.tsx and redeploy. The page reverts to: Project Deliverables board + Milestone Sign-Offs section only. No standalone tiles. This is the safe rollback state — same as before B4. Confirm rollback live within 30 minutes.
+THEN — design proposal for B3. Produce the design for the Strategic Overview three-card layout (WHAT / WHY / WHAT NEXT per phase, sitting above the Project Deliverables board). Pull the published Strategic Overview content from the local mirror table (portal_project_strategic_overview_mirror, populated via the 15-minute pull-sync from Group Portal). For each phase row in the mirror, render a three-card group with the published content. Send the design proposal to me before re-deploying. Do not deploy B3 without explicit approval of the design.
+THEN — B4 cross-link wiring INSIDE the cards. Once B3 is approved and deployed, wire the cross-links as embedded inline references inside the relevant cards (DOCUMENTS reference inside the WHAT card, HOW PHASE N CONNECTS reference inside the WHAT NEXT card). Not as standalone tiles.
+THEN — B5 empty-state + visual audit. As originally specified.
+
+Critical:
+
+Step 1 (rollback) is NOT optional. Do not skip rollback to "fix forward" with the proper build. Mr. Alli is a live user. The current state confuses him. Rollback first, then build properly.
+Confirm rollback is live with a screenshot of /portal-alli-client-hub.tsx showing no standalone tiles.
+Do not deploy B3 design without my approval. The previous all-in-one approval was conditional on the design proposal being shown at design stage; that design was not shown, which is how we got to the current broken state.

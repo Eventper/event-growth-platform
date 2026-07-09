@@ -1,0 +1,95 @@
+Code
+<title>The Woman Who Leads the Room | Private Luxury Women’s Experience | Milton Keynes 2026</title>
+
+<meta name="description" content="A private, invitation-only luxury women’s experience hosted by Event Perfekt Global in Milton Keynes. For founders, directors, consultants, clinicians, and senior women leaders. 6 August 2026.">
+
+<meta name="keywords" content="women leaders UK, Milton Keynes women’s event, private luxury women’s experience, Event Perfekt Global, executive women Milton Keynes, female founders event UK, senior women consultants UK">
+
+<meta name="author" content="Event Perfekt Global Ltd">
+<meta name="robots" content="index, follow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+These tags ensure Google, Bing, Yahoo, DuckDuckGo, and LinkedIn can index your page.
+
+2️⃣ Add OpenGraph Tags (for LinkedIn, Facebook, WhatsApp)
+These control how your page appears when shared:
+
+Code
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Woman Who Leads the Room — Private Luxury Women’s Experience">
+<meta property="og:description" content="A curated, invitation-only evening for senior women leaders in Milton Keynes. Hosted by Event Perfekt Global.">
+<meta property="og:url" content="https://eventperfekt.com">
+<meta property="og:image" content="https://eventperfekt.com/your-hero-image.jpg">
+This ensures LinkedIn shows your event beautifully when anyone shares it.
+
+3️⃣ Add Twitter Card Tags (for X/Twitter)
+Code
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Woman Who Leads the Room — Private Luxury Women’s Experience">
+<meta name="twitter:description" content="A private, invitation-only evening for senior women leaders in Milton Keynes.">
+<meta name="twitter:image" content="https://eventperfekt.com/your-hero-image.jpg">
+4️⃣ Add Schema Markup (Google LOVES this)
+This is invisible to users but boosts your ranking massively.
+
+Tell Replit to add this at the bottom of the <body>:
+
+Code
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "The Woman Who Leads the Room",
+  "description": "A private luxury women’s experience hosted by Event Perfekt Global in Milton Keynes for senior women leaders.",
+  "startDate": "2026-08-06T19:00",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "location": {
+    "@type": "Place",
+    "name": "Private Venue, Milton Keynes",
+    "address": "Milton Keynes, UK"
+  },
+  "organizer": {
+    "@type": "Organization",
+    "name": "Event Perfekt Global Ltd",
+    "url": "https://eventperfekt.com"
+  }
+}
+</script>
+This makes Google treat your event as an official event listing, even though it’s private.
+
+5️⃣ Add Alt‑Text to All Images
+Tell Replit:
+
+Add descriptive alt‑text to every image
+
+Use phrases like:
+
+“private luxury women’s experience”
+
+“Event Perfekt Global”
+
+“women leaders Milton Keynes”
+
+Example:
+
+Code
+<img src="hero.jpg" alt="Private luxury women’s experience for senior women leaders in Milton Keynes">
+This boosts SEO without changing your design.
+
+6️⃣ Keep Your Structure EXACTLY the Same
+You don’t need to change:
+
+layout
+
+sections
+
+headings
+
+CTAs
+
+spacing
+
+visuals
+
+Your structure is already perfect for premium positioning.
+
+We are only adding invisible SEO power behind it.

@@ -1,0 +1,47 @@
+Here's Phase 4 — the last core phase. This is the one that closes the loop: every response lands somewhere, moves through a pipeline, and shows up in one dashboard. Paste it once Phase 3's checkpoint holds and you've had the quick word with Lara.
+
+---
+
+**PHASE 4 — Pipelines, Dashboard & Website Integration. Build this phase only, then stop and report.**
+
+Phase 3 is signed off — scoring, the human screen, outreach generation and the send gate all work. Build Phase 4 now. This is the last core phase. Reach the checkpoint, stop, report.
+
+Governing sequence reminder: **Research → Strategy → Audience → Sponsors → Build → Campaign → Learn.** Phase 4 completes Build + Campaign — making everything visible and connecting the live public site so real demand flows in and nothing dead-ends.
+
+**1. Audience pipeline.** A visible pipeline for audience prospects moving through stages:
+   Identified → Contacted → Interested → Applied → Paid → Attending.
+   - A prospect's stage updates from real events: outreach sent moves them to Contacted; a positive reply or form action to Interested; an application to Applied; a confirmed payment to Paid; and so on.
+   - Stages are visible and a human can move a prospect manually too.
+
+**2. Sponsor pipeline.** A separate visible pipeline for sponsor prospects:
+   Identified → Contacted → Meeting Booked → Proposal Sent → Negotiating → Confirmed.
+   - Kept fully separate from the audience pipeline — different personas, different handling.
+
+**3. Real-time dashboard** across both pipelines:
+   - Counts at each stage of each pipeline.
+   - **Progress to the event's target** read from the event config (for I Am Her: 60 paid guests, with the break-even marker). Show paid vs target clearly.
+   - Traffic and engagement, and conversion through the funnel.
+   - **Bot filtering and a human-sessions counter from day one** — the headline numbers must reflect real humans, not bots, or the dashboard misleads. Bots are excluded from all human-facing counts.
+
+**4. Website integration by API — the loop-closer.**
+   - The existing public site **eventperfekt.net/iamher STAYS where it is.** This platform does NOT host or rebuild it.
+   - The site POSTs its data into this platform via **secure API endpoints**: event registrations, applications, story submissions, sponsor enquiries, partner enquiries, and payment confirmations.
+   - Every inbound submission **lands against the right event and the right pipeline**, creating or updating a prospect/lead — nothing falls on the floor. A new enquiry with no existing prospect record creates one (tagged source = website).
+   - Secure the endpoints (a shared secret/API key in Secrets) so only the real site can post in.
+   - **Capture is the priority:** every response has a destination. This is the dead-end the whole platform exists to fix — a reply, a form fill, a payment must always land somewhere visible.
+
+**5. Content-to-capture rule.** Any generated content feature (social posts, blogs) must carry a link back to a capture form that feeds the audience pipeline. Content that does not feed capture is not built. (Content generation itself can be minimal here — the rule is the point.)
+
+**Hard rules (unchanged):** event-agnostic — pipelines, dashboard and endpoints all key off event_id, nothing hardcoded to I Am Her; secrets only; build only this phase. The Phase 3 send gate and opt-out/suppression rules remain fully in force.
+
+**Checkpoint:** A real enquiry submitted on the live public site (eventperfekt.net/iamher) appears in this platform's correct pipeline and on the dashboard within moments, against the right event, with no manual entry. Both pipelines show real prospect movement, the dashboard shows true human numbers (bots excluded) and progress to the 60-guest target. Then stop and report.
+
+---
+
+Two notes for you, not the Agent:
+
+The website API connection (rule 4) is the single most valuable thing in this phase, and the bit most likely to need care — your public site lives in the *old* Planning App, and this is a *new* project, so they have to talk across the gap by API. When you test, do it for real: go to the live site, submit a genuine test enquiry, and watch it appear in the new dashboard. If it lands, your dead-end is closed for good. That's the moment the whole build pays off.
+
+And once Phase 4 holds, you have the full core platform — research to capture, all visible. Phase 5 (the learning engine and media pipeline) is genuinely *later*: it needs real campaign data to learn from, and right now you have almost none. So don't rush into it. The thing to do after Phase 4 is **run the actual I Am Her campaign through the machine** — source, screen, approve, send, watch the pipeline fill — and let that generate the data Phase 5 will eventually learn from.
+
+That sequencing matters: build the core, *use* it to fill the room, then teach it. Want me to hold Phase 5 until you've run a real campaign, and instead give you a short "go-live runbook" next — the order to actually operate the machine for I Am Her once Phase 4 is signed off?

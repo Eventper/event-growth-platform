@@ -1,0 +1,22 @@
+Confirmed. Proceed.
+
+Canonical mirror: client_portal_strategic_overview_mirror — no rename.
+Auth: x-alli-sync-key.
+
+Draft the exact pull-sync implementation plan now. Include in the plan:
+
+(1) Group Portal endpoint URL the sync will call (e.g. GET https://tradenow.thetwintrade.co.uk/api/alli-sync/strategic-overview). Confirm whether that endpoint exists on Group Portal today. If not, surface that as a precondition that must be built on Group Portal side first — flag it explicitly so Tolu knows to brief the Group Portal agent before this sync goes live. Don't deploy a sync that hits a 404.
+
+(2) Cron mechanism (node-cron, system cron, or Replit scheduled deployment) and where the schedule lives in code.
+
+(3) Upsert key on the mirror: project_id + phase_number + section_key (per your proposal). Confirm those three columns exist on the mirror table — if not, propose the migration to add them before the sync writes anything.
+
+(4) Soft-delete behaviour: add is_published column on the mirror (if not present) and have sync set is_published=false for rows that exist locally but are missing/unpublished on Group Portal. Render component filters WHERE is_published=true. Confirm the render component honours this filter.
+
+(5) sync_runs table on Planning App: columns at minimum — run_started_at, run_finished_at, rows_upserted, rows_unpublished, source_fetch_status (200/4xx/5xx/timeout), error_message (nullable). Surface latest 20 runs via a simple admin route (e.g. /admin/sync-runs) so Tolu can see status without SSH.
+
+(6) Empty-state behaviour confirmed: render component reads only from client_portal_strategic_overview_mirror filtered to is_published=true and project_id=ALLI. If zero rows for a phase, the Strategic Overview section for that phase does NOT render — no placeholders, no fallback Group Portal call from the browser.
+
+(7) Backfill handling: first sync run after deploy will treat all Group Portal published rows as new and upsert. Confirm the two legacy rows currently in the mirror (DOCUMENTS, HOW PHASE N CONNECTS) will be marked is_published=false by the sync (since they won't exist on Group Portal's project_strategic_overview_phases as WHAT/WHY/WHAT_NEXT rows), and therefore will stop rendering. Verify this is the intended cleanup path or propose explicit deletion of those two legacy rows as part of deploy.
+
+Send the implementation plan for review before any code change. Do not deploy.

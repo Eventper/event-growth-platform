@@ -1,0 +1,30 @@
+Two actual fixes, then I'll do the Camden test myself tomorrow. Don't run any AI generation now.
+
+FIX 1 — Create the missing saas_org_tender_scores table (F5)
+
+The frontend references this table for the org-lane filter chips and "Why this tender?" panel. The table was never migrated. Build the migration:
+
+- Create saas_org_tender_scores with columns: id, tender_id (FK), org_code (ENUM 'EP'|'ALLI'|'PMO'), score INT, matched_keywords TEXT[], scored_at TIMESTAMP DEFAULT NOW
+- Idempotent IF NOT EXISTS
+- Backfill from existing saas_tenders ep_relevance_score / alli_relevance_score / pmo_relevance_score columns — one row per (tender, org) combo where score > 0
+- Confirm Camden #3093 ends up with a row for ALLI score 4 after backfill
+
+Wire any insert paths that currently write to saas_tenders' inline columns (the 6 paths from Piece B) to ALSO write a row to saas_org_tender_scores. Or — cleaner — make the inline columns the source of truth and have the frontend query those instead of the missing table. Pick whichever requires less code change.
+
+Whichever route: confirm Piece D's filter pills and "Why this tender?" panel show real data after the fix.
+
+FIX 2 — overall_confidence default null instead of 0 (F1)
+
+Change the column default on saas_tender_bid_sections.overall_confidence from 0 to NULL. UPDATE all existing rows where last_scored_at IS NULL to set overall_confidence = NULL. UI logic that renders the traffic-light should already handle null as "not scored" — verify it does, fix if not.
+
+Same fix for coverage_score, evidence_score, voice_score — all should be NULL when last_scored_at is null.
+
+After both fixes:
+- Typecheck
+- Confirm Camden #3093 row state in saas_tender_bid_sections — should now show overall_confidence = NULL on all three sections
+- Confirm Camden #3093 has a row in saas_org_tender_scores for ALLI with score 4
+- Brief summary
+
+Don't run any AI generation, scoring, or gap analysis on Camden. I'll do that tomorrow myself as the actual end-to-end test.
+
+If anything errors, paste back.

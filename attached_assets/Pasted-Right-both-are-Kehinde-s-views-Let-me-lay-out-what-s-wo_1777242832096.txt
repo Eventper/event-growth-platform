@@ -1,0 +1,30 @@
+Right — both are Kehinde's views. Let me lay out what's working, what's broken, and what's missing, then we fix them in order.
+What's working:
+Project Deliverables page (first screenshot): 9 cards in Ready for Review with Review buttons. Correct.
+What's broken (Kehinde dashboard, second screenshot):
+Two distinct issues:
+
+Donut chart "Project Snapshot" says 1 total item, 0 in every status. Should be 29 total, 9 in awaiting_review, 20 not_started.
+Stat cards below: "Approved by you 0 / 0% of total" (correct), "Awaiting Review 0 / ready for your sign-off" (wrong — should be 9), "In Progress 0 / being worked on" (correct, none in progress yet).
+Bottom Deliverables Board correctly shows 29 in Not Started and 0 in Ready for Review — also wrong. The 9 should be in Ready for Review here too.
+
+So the dashboard widgets are reading the same delivered vs awaiting_review mismatch, but in different files. The Project page got fixed; the dashboard page didn't.
+What's missing — the milestone banner:
+There is no milestone banner anywhere on either screenshot. That's expected — the planning-app session never built it. The session got pulled into fixing the regression (column rename) and never reached the Layer 1 + Layer 2 milestone work I originally drafted.
+Two more things to do tonight if you've got the energy:
+Reply to planning-app Claude Code:
+
+Two more issues, both in the same place. Kehinde's dashboard page (the welcome page she lands on, with "Welcome back Tolulope" header and Project Snapshot donut + stat cards + Deliverables Board) is still using the old delivered filter.
+Find the dashboard page file (likely client/src/pages/client-portal/home.tsx or similar — the one that renders the Project Snapshot donut chart and the four stat cards above the Deliverables Board).
+Three fixes:
+
+Project Snapshot donut + counters — currently shows "1 Total items, 0 / 0 / 0 / 0" across Approved / Review / Active / Not started. Find the data source (likely a SELECT or aggregation over deliverables) and confirm it's reading the same data as the Project page kanban. Probably needs same delivered → awaiting_review rename.
+AWAITING REVIEW stat card — should show 9 with subtitle "ready for your sign-off." Currently shows 0.
+Deliverables Board at the bottom of the dashboard — same 4 columns (Not Started / In Progress / Ready for Review / Approved). Currently shows all 29 in Not Started. Same delivered → awaiting_review filter rename.
+
+Then — milestone banner work. Original plan was Layer 1 (server-side proxy routes) + Layer 2 (banner component above the Project Deliverables kanban with Sign Off Milestone button). We deferred this earlier because the regression fix had to happen first. Now that the regression is fixed, build the milestone banner as originally planned:
+
+Server-side proxy: GET /api/client-portal/alli/phase-milestones and POST /api/client-portal/alli/phase-milestones/:phase/signoff (mirror existing alli/deliverables proxy pattern)
+Client-side banner: above the kanban, shows when Phase 1 milestone state='ready_for_client', with milestone title + "9 deliverables ready for your review" + Download Phase 1 Pack link + Sign Off Milestone button + ReviewModal caution-confirm
+
+Do dashboard fixes first (smaller scope, faster ship). Then milestone banner. Two separate commits. Show me each diff before commit.

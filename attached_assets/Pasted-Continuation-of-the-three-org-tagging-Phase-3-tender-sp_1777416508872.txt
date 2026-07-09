@@ -1,0 +1,111 @@
+Continuation of the three-org tagging + Phase 3 tender spec. Pieces A, B, C shipped (commits 1-3). Build Pieces D and E now. Each commit ships independently — don't bundle.
+
+============================================================
+PIECE D — DASHBOARD UI FOR ORG TAGGING
+============================================================
+
+Update saas-tender-dashboard.tsx with the org-lane filter and pills.
+
+D1. TOP FILTER — segmented control above the existing filter bar:
+- [All] [EP] [ALLI] [PMO] [Multi-org]
+- Default: All
+- Each label shows live count: "EP (43)" "ALLI (18)" "PMO (19)" "Multi-org (5)"
+- Counts pulled from the new ep_relevant / alli_relevant / pmo_relevant columns
+- "Multi-org" = tenders with 2+ org flags true
+- Filter is INDEPENDENT of existing status/SME/CPV/region filters — combinable
+
+D2. ORGANISATION PILLS on each tender card:
+- Blue "EP" pill if ep_relevant=true
+- Purple "ALLI" pill if alli_relevant=true
+- Amber "PMO" pill if pmo_relevant=true
+- Render next to existing match-tier badge
+- All three can show on a single tender if applicable
+- Hover any pill → tooltip showing top 3 matched_keywords for that org
+
+D3. "WHY THIS TENDER?" EXPANDABLE SECTION per card:
+- Small "Why?" text link below the title
+- Click expands inline showing: matched_keywords for each visible org pill, plus the relevance scores
+- Useful when a tender is flagged for an unexpected lane — explainability not black box
+
+D4. EMPTY STATE per filter:
+- If filter shows zero results: "No [EP/ALLI/PMO/Multi-org] tenders match your other filters. Try [All] or adjust other filters."
+
+============================================================
+PIECE E — AUTONOMOUS DRAFTING WITH CITATIONS + CONFIDENCE
+============================================================
+
+Build on Phase 2's extracted facts and existing 16-section bid drafting code. Five sub-pieces.
+
+E1. CITATION INJECTION
+
+In the existing AI drafting routes (Generate, Generate All 16, Improve, Answer Questions, Review Chat):
+
+- The prompt to Claude already includes EXTRACTED INTELLIGENCE block (Phase 2 ✓)
+- Update system prompt to require Claude to cite each fact it uses, inline:
+  - Tender pack docs: [Doc: filename, p. N]
+  - Bid Vault: [Vault: bid-vault-doc-name]
+  - Past wins/losses: [Win: tender-name] or [Loss: tender-name, lesson]
+- After Claude returns text, parse for citation markers using regex: \[(Doc|Vault|Win|Loss): ([^\]]+)\]
+- Store parsed citations as structured array on the bid section row (new column: citations JSONB):
+    citations: [{type, source_id, page?, snippet?, raw_marker}]
+- Render citations in the UI as clickable footnote-style markers — clicking opens the source in a modal or new tab
+- Strip markers cleanly when section is exported or copied — never leak [Doc: X.pdf, p. 4] into a final submission
+
+E2. CONFIDENCE SCORING
+
+After section generation, run a SECOND AI pass:
+
+  "Score this bid section 0-100 on three dimensions:
+  (a) Coverage of mandatory requirements from the tender — score how many extracted requirements are addressed in this section, weighted by importance (mandatory pass/fail counts more than nice-to-have)
+  (b) Evidence strength — count direct citations to Bid Vault evidence and learning vault past wins. More cited evidence = higher score
+  (c) Voice alignment — match against EP's known voice from past wins (CEFAS, Lloyds banking, DEFRA portfolio governance). Generic AI-sounding language = lower score
+  
+  Return JSON: { coverage_score, evidence_score, voice_score, overall_confidence, weak_points: [...] }"
+
+Add columns to bid section table:
+- coverage_score INT
+- evidence_score INT
+- voice_score INT
+- overall_confidence INT
+- weak_points TEXT[]
+- last_scored_at TIMESTAMP
+
+Surface in the section UI:
+- Traffic light next to section header: green 80+, amber 50-79, red <50
+- Tooltip on hover shows the three sub-scores
+- "What would improve this section?" button below each section reveals weak_points
+- Clicking a weak point links to suggested action
+
+E3. GAP ANALYSIS
+
+After Generate-All-16 (or manually triggered), run a final AI pass:
+
+  "Compare the generated bid against extracted tender requirements.
+  
+  For each requirement marked mandatory_pass_fail in extracted_facts: is it explicitly addressed in any of the 16 sections? Quote where.
+  
+  For each evaluation_criterion: is it strongly addressed (multiple citations, specific evidence) or weakly (generic claims, no evidence)?
+  
+  Return JSON: { gaps: [{requirement, severity: 'critical'|'high'|'medium', suggested_section, suggestion}], coverage_summary }"
+
+Store as bid_gaps table:
+- id, tender_id, requirement_id, severity, suggested_section_id, suggestion
+- status ('open'|'resolved'|'ignored'), created_at
+
+Surface as a banner on the bid editor:
+- "⚠️ 3 critical gaps detected — click to review"
+- Expandable list shows each gap with: requirement, severity, which section should address it, click jumps to that section
+- Per gap: [Mark resolved] [Ignore] [Add evidence]
+
+E4. EVIDENCE PICKER
+
+Per section, before generation:
+- Auto-scan saas_tender_bid_vault for documents tagged relevant to the section topic (use section title + tender industry as semantic match seed)
+- Surface relevant Bid Vault docs in a sidebar: "Evidence available: [3-5 most relevant docs] — click to attach"
+- User clicks attach → doc gets added to that section's prompt context for generation
+- Track attached evidence per section in new join table bid_section_evidence (section_id, vault_doc_id, attached_at, attached_by)
+- Citations in generated text reference attached docs first, then any other vault docs the AI pulls in
+
+E5. LEARNING LOOP
+
+After a section is generated and confidence-s

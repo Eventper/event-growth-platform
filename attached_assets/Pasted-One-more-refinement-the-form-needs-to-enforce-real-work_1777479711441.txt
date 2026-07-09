@@ -1,0 +1,52 @@
+One more refinement — the form needs to enforce real, working emails. Add these three layers:
+
+LAYER 1 — Format validation
+Standard email regex validation on the field. Reject obvious typos before submit.
+
+LAYER 2 — Disposable email blocking
+Maintain a small server-side blocklist of disposable email domains (mailinator.com, tempmail.com, 10minutemail.com, guerrillamail.com, throwaway.email, yopmail.com, dispostable.com, getnada.com, sharklasers.com, fakeinbox.com).
+
+If the submitted email matches one of these domains, reject with the message:
+"Please use a real email address — your formal invitation will be sent here in May 2026."
+
+LAYER 3 — Double opt-in confirmation
+This is the important one.
+
+When a user submits the form:
+1. Save the entry to event_16july_interest with a new column `email_confirmed` (boolean, default false)
+2. Generate a unique confirmation token (random UUID, store in new column `confirmation_token`)
+3. Send the user a confirmation email instead of the existing thank-you email:
+
+  Subject: "Please confirm your seat — Thursday 16 July 2026"
+  Body:
+  "Dear [First name],
+  
+  Thank you for taking your seat at our evening for the woman who leads the room — Thursday 16 July 2026, hosted by Event Perfekt × Shujo Aesthetics.
+  
+  To confirm your registration and ensure you receive your formal invitation in May 2026, please click the link below:
+  
+  [CONFIRM YOUR SEAT]  ← button linking to https://eventperfekt.com/16july/confirm?token=[token]
+  
+  If you didn't register, you can safely ignore this email.
+  
+  Warm regards,
+  
+  Tolu Kumolu-Johnson
+  Director, Event Perfekt Group"
+
+4. Build a /16july/confirm endpoint that:
+   - Validates the token
+   - Updates email_confirmed = true
+   - Shows a success page: "Your seat is confirmed. Your formal invitation will arrive in May 2026."
+
+5. Update the success state on the form itself to:
+   "Almost there — please check your email to confirm your seat. Your formal invitation will arrive in May 2026."
+
+ADMIN VIEW — show confirmation status
+In the admin Interest tab, add a column "Confirmed?" showing yes/no based on email_confirmed. Allow filtering by confirmed/unconfirmed/all. Default view: show only confirmed entries.
+
+ADD A SMALL HELP LINE BELOW THE EMAIL FIELD
+Below the email field on the form, in small muted text:
+"Your formal invitation will be sent to this address in May 2026 — please use a real email."
+
+That's it. Three layers, simple to implement, dramatically improves list quality.

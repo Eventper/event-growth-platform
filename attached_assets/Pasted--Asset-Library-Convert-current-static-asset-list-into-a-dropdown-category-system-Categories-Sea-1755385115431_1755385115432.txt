@@ -1,0 +1,90 @@
+. Asset Library
+
+Convert current static asset list into a dropdown category system.
+
+Categories: Seating, Tables, Staging, Lighting, Drapes, Décor, Florals, Tableware, Special (e.g., Bride & Groom Chairs).
+
+Each category expands to show assets (Chiavari, Dior, Crossback, Chandeliers, Table candles, Drapes, Vases, etc.).
+
+Dropdown selector at the top → pick category → see only that category’s items.
+
+Each asset entry shows: name, icon/preview, rental duration, and price.
+
+2. Currency Handling
+
+Remove hard-coded USD.
+
+Add a currency selector dropdown (GBP, USD, EUR, NGN, etc.).
+
+Currency setting applies across all pricing, totals, and exports.
+
+Pricing values will be editable in the admin backend (we will load cost per asset manually).
+
+3. Placement & Editing
+
+Drag asset → place on 2D canvas.
+
+Selecting an item populates the Properties panel:
+
+Change variant (color/material/size).
+
+Change quantity.
+
+Rental duration (e.g., 2d, 5d).
+
+Budget auto-updates based on:
+Total = ∑ (Asset Unit Cost × Quantity × Rental Duration multiplier).
+
+4. 2D ⇄ 3D Views
+
+Add a toggle: 2D | 3D.
+
+2D view = floor plan placement.
+
+3D view = GLTF models (orbit, pan, zoom).
+
+Both views share the same layout JSON.
+
+5. Save/Load
+
+Save event layout by eventId.
+
+Load existing layout automatically on page open.
+
+Support multiple saved versions (e.g., “Design v1, v2”).
+
+6. Export
+
+2D → PNG/PDF.
+
+3D → snapshot PNG.
+
+Include totals + currency in export.
+
+7. EP Designer Guru (Prompt Section)
+
+Separate section (not in Properties panel).
+
+Text box → user writes a natural language prompt (e.g., “200 guests, round tables, gold Chiavari chairs, chandelier centre lighting, dancefloor centre stage”).
+
+Output: auto-generates a layout using available library assets.
+
+User can edit placement after generation.
+
+Acceptance Test
+
+✅ I can:
+
+Select Tables → Round Banquet from dropdown, drag to canvas.
+
+Switch currency from USD → GBP → see all values update.
+
+Select asset → change quantity to 10 → budget total updates correctly.
+
+Switch to 3D → see tables + Chiavari chairs in room.
+
+Save → reload → layout is intact.
+
+Export → get PDF/PNG with visuals + total cost.
+
+Type prompt into EP Designer Guru → auto-generate a draft layout with correct assets.

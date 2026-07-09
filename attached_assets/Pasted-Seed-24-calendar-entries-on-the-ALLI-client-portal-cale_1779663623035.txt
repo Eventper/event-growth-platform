@@ -1,0 +1,85 @@
+Seed 24 calendar entries on the ALLI client portal calendar for the 90-day Partner Engagement sequence post-25 May 2026. Two entries per week for 12 weeks starting Tuesday 26 May 2026.
+Pre-action checks (do these first, report back before creating any entries):
+
+Confirm DB target is PROD (Neon via PROD_DB_URL), not dev/helium.
+Confirm no existing entries for any of the dates below — if any exist, list them and stop.
+Confirm the calendar entry schema supports an "Owner: ALLI Foundation" value (organisational owner, not individual). If only personal owners are supported, report what would need to change.
+
+Entry template per item:
+
+Title: "Partner Outreach: [Organisation Name]"
+Date and time per the schedule below; default time 10:00 (Foundation re-times as needed)
+Duration: 60 minutes
+Owner: ALLI Foundation
+Attendees: leave blank — Foundation assigns internally on the day
+Description: "Send Template 1 cold outreach email per the Partner Engagement Playbook section 8. Attach materials per the Materials Inventory in section 9. Update the Partner Engagement Tracker on action."
+Reminder: 48 hours before, then 1 hour before
+
+24 entries — Week 1 to Week 12:
+Week 1 — Statutory recognition
+
+Tue 26 May — Partner Outreach: London VRU partner registration
+Thu 28 May — Partner Outreach: Safer London VESS referral partner
+
+Week 2 — Statutory recognition cont'd
+
+Tue 2 Jun — Partner Outreach: St Giles Trust SOS partnership
+Thu 4 Jun — Partner Outreach: Catch22 Youth Violence Intervention
+
+Week 3 — Lambeth
+
+Tue 9 Jun — Partner Outreach: Lambeth Council Community Safety
+Thu 11 Jun — Partner Outreach: Young Lambeth Cooperative membership
+
+Week 4 — Lambeth + Anna Freud
+
+Tue 16 Jun — Partner Outreach: Dwaynamics peer relationship
+Thu 18 Jun — Partner Outreach: Anna Freud pro bono training
+
+Week 5 — Pro bono infrastructure
+
+Tue 23 Jun — Partner Outreach: LawWorks Not-for-Profits Programme application
+Thu 25 Jun — Partner Outreach: TrustLaw membership application
+
+Week 6 — Pro bono infrastructure cont'd
+
+Tue 30 Jun — Partner Outreach: National Pro Bono Centre directory listing
+Thu 2 Jul — Partner Outreach: Mind in BWW referral partnership
+
+Week 7 — Lewisham
+
+Tue 7 Jul — Partner Outreach: Lewisham Council Safer Lewisham Partnership
+Thu 9 Jul — Partner Outreach: Power The Fight partnership
+
+Week 8 — Lewisham cont'd
+
+Tue 14 Jul — Partner Outreach: XLP mentoring exchange
+Thu 16 Jul — Partner Outreach: Voluntary Action Lewisham membership
+
+Week 9 — Southwark
+
+Tue 21 Jul — Partner Outreach: Southwark Council Community Safety
+Thu 23 Jul — Partner Outreach: Community Southwark membership
+
+Week 10 — Southwark + Black Thrive
+
+Tue 28 Jul — Partner Outreach: Spark 2 Life peer relationship
+Thu 30 Jul — Partner Outreach: Black Thrive Lambeth consultation
+
+Week 11 — Follow-up batch
+
+Tue 4 Aug — Partner Follow-up: VRU and Safer London (Template 2)
+Thu 6 Aug — Partner Follow-up: St Giles Trust and Catch22 (Template 2)
+
+Week 12 — Review and consolidate
+
+Tue 11 Aug — Partnership Pipeline Review: 90-minute Foundation review of the Engagement Tracker, converting conversations, next 90 days
+Thu 13 Aug — Quarterly Trustee Board agenda item: Partnership Pipeline Status
+
+After seeding, confirm:
+
+All 24 entries created with correct dates, owner "ALLI Foundation", reminders set
+Each entry visible on the Foundation calendar
+Discussion thread note posted: "24-entry Partner Engagement sequence seeded on the calendar. Two outreaches per week for 12 weeks starting Tuesday 26 May. Owner ALLI Foundation — Trustees and team delegate internally. Tracker location: [Documents/Partner Engagement Tracker]"
+
+Report back with all three confirmations.

@@ -1,0 +1,44 @@
+"The tender search is returning 134 completely irrelevant results — building surveys, patient lifting, waste management, prison services. Fix this by adding proper relevance filtering so only tenders relevant to Event Perfekt's capabilities are shown.
+FIX 1 — ADD KEYWORD FILTERING TO SEARCH RESULTS
+The current search returns all tenders without filtering. Add a relevance filter that checks each result against Event Perfekt's capability keywords before displaying it.
+A tender is relevant to Event Perfekt if its title or description contains ANY of these terms:
+Event management terms:
+event, conference, venue, gala, awards, ceremony, delegate, MICE, hospitality, exhibition, festival, summit, forum, symposium, workshop, networking, launch, roadshow, banquet, dinner, reception
+Project and programme management terms:
+project management, programme management, PMO, portfolio management, programme director, project director, delivery manager, programme delivery, project delivery, change management, transformation, implementation, governance, assurance, benefits realisation, stakeholder management
+Consulting and advisory terms:
+management consulting, strategy, advisory, consultancy, organisational development, capacity building, technical assistance, business support, enterprise support, feasibility, research, evaluation, impact assessment, service design
+Africa and international development terms:
+Africa, African, Nigeria, Kenya, Ghana, Rwanda, Tanzania, Uganda, Ethiopia, diaspora, international development, overseas development, development assistance, aid programme, capacity building, FCDO, DFID, global south, emerging markets, developing countries
+Community and engagement terms:
+community engagement, stakeholder engagement, public engagement, consultation, outreach, community development, social value, engagement services, behaviour change, communications
+Trade and business terms:
+international trade, export, trade facilitation, trade development, inward investment, trade mission, trade promotion, market development, business network, trade finance
+FIX 2 — RELEVANCE SCORE
+For each tender calculate a relevance score:
+
+Title contains keyword: 10 points per match
+Description contains keyword: 5 points per match
+Minimum score to display: 10 points
+
+Only show tenders with a relevance score of 10 or above.
+Sort results by relevance score — most relevant first.
+Show the relevance score as a small badge on each card — gold for high relevance (30+), amber for medium (10-29).
+FIX 3 — SMART CATEGORY FILTERING
+When a user selects a category in Find Tenders only search and display tenders relevant to that category:
+Events and Venues: only show tenders containing event, conference, venue, gala, awards, ceremony, delegate, hospitality, exhibition, festival, summit, forum, dinner, reception, workshop, launch
+PMO: only show tenders containing project management, programme management, PMO, portfolio, delivery manager, governance, assurance, transformation, change management, implementation
+Consulting: only show tenders containing consulting, advisory, consultancy, strategy, capacity building, technical assistance, evaluation, research, feasibility
+Africa: only show tenders containing Africa, African, Nigeria, Kenya, Ghana, Rwanda, Tanzania, diaspora, international development, FCDO, global south, emerging markets
+Trade: only show tenders containing trade, export, international trade, trade facilitation, inward investment, trade mission
+Community and Engagement: only show tenders containing community engagement, stakeholder engagement, public engagement, consultation, outreach, engagement services
+FIX 4 — ADD ALL CATEGORIES OPTION
+Add an All Categories option that searches across all keyword sets simultaneously and returns all relevant results sorted by relevance score.
+FIX 5 — SHOW MATCH REASON
+On each result card add a small line showing why it matched:
+Matched: event management, conference planning
+This helps the user understand immediately why this tender is relevant.
+FIX 6 — IRRELEVANT RESULTS HIDDEN BY DEFAULT
+Any tender that scores below 10 relevance points is hidden from results by default.
+Add a Show All Results toggle at the top of results — off by default. When turned on shows all results including low relevance ones with a grey Low Relevance badge.
+Apply all six fixes now. Test with category Events and Venues selected and confirm only relevant event management tenders are showing — not building surveys, patient lifting, or waste management."

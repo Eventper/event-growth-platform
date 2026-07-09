@@ -1,0 +1,125 @@
+REPLIT BUILD INSTRUCTIONS — TENDER FINDER (NON-NEGOTIABLE REQUIREMENTS)
+
+Goal
+Build a Tender Finder that only shows live, recent, actionable tenders and supports our bid pipeline. It must include GDPR/Data Privacy tenders and include Nigeria as a target geography in addition to the UK.
+
+1) Tender Types to Include (Search Categories)
+The system MUST include these tender categories/keywords in its search logic and filtering:
+- GDPR
+- Data Protection
+- Data Privacy
+- Information Governance
+- Cybersecurity (only when clearly connected to data privacy / compliance)
+- DPIA / Data Protection Impact Assessment
+- DPO services / outsourced DPO
+- GDPR training / privacy training
+- Privacy compliance audits
+- ISO 27001 (only if privacy/compliance related)
+- Records management + privacy compliance (only if linked to data protection)
+
+Keep our existing core categories too (events, project/programme management, training, conference/hybrid events, themed event decoration, corporate gifting procurement, etc.).
+
+2) Geography to Include
+The system MUST support:
+A) United Kingdom (all UK portals already planned)
+B) Nigeria — include Nigeria tender sources AND allow “Nigeria” as a location filter.
+
+Nigeria sources must be treated as first-class, not an afterthought:
+- Federal Government procurement / official tender publications (where available)
+- State government procurement portals (at minimum Lagos + Abuja/FCT as starting points)
+- Donor/IFIs and NGO procurement posting Nigeria opportunities (UNDP/UNICEF/World Bank/AfDB etc.)
+
+If a tender is Nigeria-based but posted on an international portal (UN, World Bank etc.), it must still appear under Nigeria.
+
+3) Only Recent, Live Tenders (Strict Exclusion Rules)
+The system MUST show ONLY tenders that are:
+- Open / active / accepting submissions
+- Not cancelled
+- Not withdrawn
+- Not closed
+- Not awarded
+- Not “No longer accepting responses”
+- Not “intent to award” where competition is closed
+
+Hard exclusions (must never be displayed):
+- Award notices / contract award notices
+- Previously awarded tenders
+- Archived listings
+- Expired / past deadline opportunities (deadline earlier than today)
+- Cancelled opportunities
+- Withdrawn opportunities
+- Completed procurements
+- “Prior information notice” / “pipeline notice” without an open bid stage (unless we explicitly add a separate “Pipeline” tab later)
+
+4) “Recent” Definition (Recency Filter)
+Apply a “recent” rule so we don’t see old listings:
+- Only include tenders first published within the last 60 days (default)
+- AND deadline must be in the future (mandatory)
+- Provide a settings option to change 30/60/90 days, but default must be 60 days.
+
+If publication date is missing:
+- Include only if deadline is in the future AND listing was discovered within the last 14 days (use first_seen timestamp), otherwise exclude.
+
+5) Data Model (Fields Required)
+Each tender record MUST store:
+- tender_id (stable unique ID derived from source + source ID)
+- title
+- buyer/authority/organisation
+- country (UK or Nigeria or other if donor portal)
+- location (city/region if available)
+- category tags (GDPR/Data Privacy/Event/Training/PM etc.)
+- source_name + source_url
+- publish_date
+- deadline_date
+- status (Open/Closed/Awarded/Cancelled/Unknown)
+- value_estimate + currency (if provided)
+- short_summary (auto-generated)
+- eligibility/requirements (key bullets)
+- documents_links (where available)
+- last_checked timestamp
+- first_seen timestamp
+
+6) Status Detection and Normalisation
+Different portals use different words. You MUST normalise into these statuses:
+- OPEN (only these are allowed to show by default)
+- CLOSED
+- AWARDED
+- CANCELLED
+- UNKNOWN
+
+Display rule:
+- Only show OPEN by default.
+- If status is UNKNOWN, treat as excluded unless deadline is in the future AND the page clearly indicates submissions are open (must be programmatically detected).
+
+7) De-Duplication
+The same tender might appear across portals. Implement:
+- Exact match on tender_id where possible
+- Fuzzy match on title + buyer + deadline within 7 days
+If duplicates found:
+- Keep one “master” record and attach secondary sources as references.
+
+8) UI Requirements (So it’s usable)
+The app MUST provide:
+- Filters: Country (UK/Nigeria), Category (GDPR/Data Privacy/etc.), Value band, Deadline range, Source
+- Sorting: Deadline soonest, Publish date newest, Value highest
+- A clear “Open only” toggle (default ON)
+- A “Recency window” setting (30/60/90 days; default 60)
+- A “Saved/Watchlist” feature
+- Export to CSV
+
+9) Automated Daily Refresh
+- Refresh sources daily (or more frequently if feasible)
+- Update status and remove tenders that became closed/awarded/cancelled
+- Keep history internally but do not display excluded tenders in the main list
+
+10) Acceptance Tests (Must Pass)
+Before you say the build is done, verify:
+A) No tender with a past deadline appears anywhere in the default list.
+B) No award notice appears in the default list.
+C) No cancelled/withdrawn appears in the default list.
+D) GDPR/Data Privacy searches return results when such tenders exist.
+E) Nigeria filter shows Nigeria opportunities from Nigeria sources and donor portals.
+F) De-duplication works (no repeated listings of same tender in the main list).
+G) Each record shows title, buyer, publish date, deadline, country, source, and link.
+
+Non-negotiable: If any of A–G fails, the build is not acceptable.

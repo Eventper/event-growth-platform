@@ -1,0 +1,66 @@
+Two bugs to fix on the Partner Directory at the ALLI client portal.
+Pre-action check:
+
+Confirm DB target is PROD (Neon via PROD_DB_URL), not dev/helium.
+
+Bug 1 — Unicode escape sequences rendering as raw text instead of characters
+The card displays show \u23f0 and \u2014 as visible text instead of rendering as the actual characters ⏰ and —. This means the data was inserted as escaped Unicode strings rather than as decoded characters.
+Fix: Search the partner_directory table (and any related rows) for the literal strings \u23f0, \u2014, \u2026, \u2018, \u2019, \u201c, \u201d, \u2013 and replace each with the actual decoded character:
+
+\u23f0 → ⏰ (or just remove the emoji and write "Next action:" in plain text — cleaner)
+\u2014 → — (em dash)
+\u2013 → – (en dash)
+\u2026 → … (ellipsis)
+\u2018 \u2019 → ' ' (smart quotes)
+\u201c \u201d → " " (smart double quotes)
+
+Run this as a database-side fix on every text field in the partner_directory table. Use UTF-8 encoding for the table going forward.
+Recommended: Remove the ⏰ emoji entirely from the Next action display. Card UIs read cleaner with plain "Next action: 18/06/2026 — Send Template 1 cold outreach re pro bono training" than with an emoji that may not render consistently across browsers and devices.
+Bug 2 — Layout needs to be a tabular / spreadsheet-style view, not a stacked card view
+The current display is stacked vertically per partner (Name on line 1, Sector on line 2, Status on line 3, Services on line 4, Owner + Borough on line 5, Next action on line 6). This is hard to scan when there are 20 partners.
+Fix: Change the default view of the Partner Directory to a tabular spreadsheet-style layout with the following columns:
+OrganisationBoroughServicesStatusOwnerNext Action DateNext Action
+Column specifications:
+
+Organisation — 25% width, sortable alphabetically, partner name only (not full description); clicking opens the full partner card for that row
+Borough — 10% width, sortable, filterable
+Services — 15% width, comma-separated tags, filterable
+Status — 12% width, colour-coded pill (Not started grey, Approached blue, Pending response amber, In conversation blue, Engaged green, Declined red-amber, Closed grey), sortable, filterable
+Owner — 10% width, sortable, filterable
+Next Action Date — 13% width, sortable by date ascending (earliest first by default)
+Next Action — 15% width, truncate with ellipsis at 50 characters, full text on hover
+
+Required behaviours:
+
+All columns sortable by clicking the column header
+Filter row above the column headers — one filter per column where applicable
+Sticky header row when scrolling down
+Click any row to expand the full partner detail (existing card content — Notes, full What they do, full Why we'd engage, Contact, Date approached, Date last contact)
+Maintain the existing service category filter chips at the top (All Services / Music / Mentoring / Therapy / Education / Employment / Legal / Housing / Mental Health) — they filter the table view, not the cards
+Add a view-toggle button: "Table view" (default) / "Card view" (existing layout) — so users can switch
+Mobile: collapse to card view automatically on screens narrower than 768px
+
+Status column colour-coding (HEX values matching the existing portal palette):
+
+Not started: background #E5E7EB / text #374151
+Approached: background #DBEAFE / text #1E40AF
+Pending response: background #FEF3C7 / text #92400E
+In conversation: background #DBEAFE / text #1E40AF
+Engaged — active partnership: background #D1FAE5 / text #065F46
+Declined — revisit: background #FED7AA / text #9A3412
+Closed: background #E5E7EB / text #374151
+
+After completion, confirm:
+
+All 20 partner records cleaned — no \u escape sequences visible anywhere in the directory
+Default view is now tabular with the 7 columns specified
+Status colour coding rendered correctly per the hex values
+Sort and filter functional on every applicable column
+Next Action Date sorts ascending by default (earliest action first)
+Clicking a row expands to show full partner detail
+View-toggle button works — switches between Table and Card views
+Mobile breakpoint at 768px auto-switches to Card view
+Service category filter chips still functional alongside the table
+Discussion thread note posted: "Partner Directory upgraded — tabular spreadsheet view with sortable filterable columns. Unicode escape rendering bug fixed across all 20 partner records. Default view is now table; card view available via toggle."
+
+Report back with all ten confirmations.

@@ -1,0 +1,122 @@
+Build three additions to the ALLI milestone sign-off flow. Touches both Twin Trade staff side AND planning app client side. Detect which repo by checking for client/src/pages/portal-alli-tracker.tsx — if exists, you're in Twin Trade; if not, planning app.
+
+============================================================
+GOAL — RECAP
+============================================================
+
+Currently the client sees a milestone sign-off card with "I confirm I have reviewed" + Approve / Request Changes buttons. Three problems:
+- The documents being approved aren't visible on the card
+- One-click approval feels too light for a charity contract
+- No human-readable artefact proving the sign-off happened
+
+Fix all three.
+
+============================================================
+PLANNING APP SIDE (client/src/pages/client-portal/...)
+============================================================
+
+ADDITION 1 — SHOW DOCUMENTS IN THE SIGN-OFF CARD
+
+In the MilestoneSignOffCard component (currently shows the confirmation text + buttons):
+
+Add a "Documents in this pack" section between the milestone title and the confirmation text. List:
+- The milestone pack PDF (from milestone_document_url) with a clickable link that opens in a new tab
+- All deliverables in this phase (D1–DN) — title only, no per-deliverable approve buttons (we removed those yesterday)
+
+If milestone_document_url is null/missing, show "Pack document not yet attached" in muted text and disable the Approve button (Request Changes still available so client can flag it).
+
+Style: light card with PDF icon + filename + "Open" button per document, similar to the staff side dialog. Reuse existing portalCard / G palette.
+
+ADDITION 2 — TYPED-NAME CONFIRMATION
+
+Replace the single "✓ Approve & Sign Off" button click with a two-step pattern:
+
+When user clicks Approve:
+- A confirmation panel slides open inline (not a separate modal — keep it tight)
+- Shows: "Type your full name to confirm sign-off"
+- Text input (placeholder: "e.g. Kehinde Alli")
+- The "Confirm Sign-Off" button is disabled until the typed name matches the logged-in trustee's full name (case-insensitive, trim whitespace) — pull the name from getPortalUser().fullName or full_name
+- Below the input, render small italic legal text: "By typing your name and clicking Confirm Sign-Off, you confirm you have reviewed all documents listed above. This action will be timestamped and recorded with your IP address. It cannot be reverted from this UI."
+- Cancel button to back out
+
+On Confirm Sync-Off click → POST to /api/client-portal/alli/milestones/:milestone_id/signoff with decision='approved' AND the typed_name field (forward to bridge).
+
+Same two-step for Request Changes — already requires a comment, so keep that. No name-typing needed for rejection (lighter cost of a wrong click).
+
+ADDITION 3 — DOWNLOADABLE SIGN-OFF RECEIPT (PDF)
+
+Add a "Download sign-off receipt" link/button on the milestone card AFTER it's been signed off. The link calls a new endpoint:
+
+  GET /api/client-portal/alli/milestones/:milestone_id/signoff-receipt
+
+Returns a PDF as a blob that the browser downloads with filename like "ALLI-Phase-1-SignOff-Receipt-Kehinde-Alli.pdf".
+
+Server-side proxy in server/client-portal-routes.ts: forwards to the bridge endpoint /api/alli-sync/milestones/:milestone_id/signoff-receipt.
+
+============================================================
+TWIN TRADE SIDE (staff)
+============================================================
+
+ADDITION 4 — BRIDGE ENDPOINT FOR THE RECEIPT
+
+Add to server/alli-sync-routes.ts:
+
+  GET /api/alli-sync/milestones/:milestone_id/signoff-receipt
+    - requireSyncKey
+    - find the most recent approved signoff row for this milestone from alli_milestone_signoffs (decision='approved')
+    - if none exists, return 404 with message "Milestone not signed off yet"
+    - generate a PDF on the fly using whatever PDF library is already in the project (check package.json — likely pdfkit, pdf-lib, or jspdf)
+    - PDF content (one A4 page):
+        Header: ALLI Foundation — Charity No. 1182529
+        Title: "Milestone Sign-Off Receipt"
+        Two-column key-value block:
+          Project: Youth Violence Prevention Model Design
+          Contract: EP-ALLI-2026-001
+          Phase: [milestone.phase] — [milestone.title]
+          Decision: APPROVED
+          Signed by: [signed_by_name]
+          Signed by email: [signed_by_email]
+          Typed confirmation: [typed_name]
+          Signed at: [signed_at, format as "27 April 2026, 22:18 UTC"]
+          IP address: [client_ip]
+          User agent: [client_user_agent]
+        Documents reviewed (from document_versions_snapshot JSONB):
+          - bullet list of {title} (v{version})
+        Footer: small italic text:
+          "This receipt confirms the trustee's formal acceptance of the milestone deliverables listed above. Captured at point of sign-off and recorded immutably in the project audit trail. Generated on [now] by Event Perfekt Group delivery platform."
+    - Set Content-Type: application/pdf, Content-Disposition: attachment; filename="ALLI-Phase-{N}-SignOff-Receipt-{Name}.pdf"
+    - Return the PDF buffer
+
+ADDITION 5 — STAFF-SIDE RECEIPT ACCESS
+
+In portal-alli-tracker.tsx, in the Sign-off history section that already exists per milestone (showing past signoffs with timestamp + IP + comment), add a "Download receipt" button on each approved signoff row that hits a new staff endpoint:
+
+  GET /api/portal/alli/milestones/:milestone_id/signoff-receipt — staff-auth-protected wrapper that internally calls the same generation code as the bridge endpoint.
+
+ADDITION 6 — SCHEMA UPDATE
+
+Add a typed_name column to alli_milestone_signoffs:
+  typed_name TEXT NULL
+
+Run the migration. Update the bridge POST /api/alli-sync/milestones/:milestone_id/signoff handler to accept and store typed_name in the new column. Include typed_name in the receipt PDF (Addition 4).
+
+============================================================
+RULES
+============================================================
+
+- Don't break existing functionality (kanban, RAID, weekly reports, documents, request inbox).
+- Reuse existing PDF library if present. If none exists, install pdfkit (lightweight, no headless browser needed).
+- Don't generate the receipt PDF until it's requested — generate on demand, don't store the bytes (data is already in the audit table; PDF is a presentation layer).
+- Make the typed-name match case-insensitive and whitespace-tolerant.
+- If trustee's full_name on session is empty/null, fall back to allowing them to type any non-empty name (but flag in the audit row that name verification was bypassed).
+
+============================================================
+WRAP UP
+============================================================
+
+When done, run typecheck. Commit:
+  feat(alli): documents-in-signoff card + typed-name confirmation + downloadable signoff receipt PDF
+
+Tell me which side you finished on. If Twin Trade side, say "Twin Trade side done, paste this into planning app next." If planning app side, say "Planning app side done."
+
+If errors, paste them back. Don't keep going on a broken foundation.

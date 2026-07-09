@@ -1,0 +1,101 @@
+Plan approved. Proceed with the small/medium migration path:
+Keep working UI, add canonical schema + bridge-facing APIs, coordinate deletion with Group Portal once both sides are verified.
+
+Phase 1 — Canonical schema (Planning App)
+Add additive (no destructive changes to existing saas_tender_* tables):
+
+tender_sources table:
+
+
+id, name, type (rss / api / scrape), endpoint, auth_method, geo_scope (UK / Nigeria / Africa / EU / Global), active_flag, last_run_at, created_at
+Seed with the 14 source handlers Group Portal currently has hardcoded (Contracts Finder, FTS, FCDO, eTendersNI, Crown Commercial Service, UNGM, World Bank, AfDB, TED, Total Tenders, etc.) — get the exact list from Group Portal Replit
+
+
+tender_opportunities table:
+
+
+id, source_id (FK), title, buyer, contract_value, currency, deadline_interest, deadline_clarification, deadline_submission, description, source_url, geo, sector, fit_score, status, ingested_at, created_at
+Migrate any usable existing tender data from saas_tenders or older tables where appropriate
+
+
+TENDER_DISCOVERY_PAUSED flag — env var or DB-driven toggle, defaults to true initially during migration
+Move the schedule logic into a clean dedicated cron (07:05 UTC daily for discovery) — separate from older sweep code, doesn't fire while PAUSED is true
+
+
+Phase 2 — Bridge-facing APIs (Planning App)
+Expose for Group Portal consumption (auth via x-cross-system-key header, value = EP_CROSS_SYSTEM_KEY):
+
+GET /api/tenders/briefing-summary?date=YYYY-MM-DD&closing_within_days=N
+Returns: discovered_today, closing_soon (top 5), pipeline_count, by_source, by_score
+GET /api/tenders/list?filters=...
+Returns: paginated list with filters (geo, score, deadline range, sector, status)
+GET /api/tenders/:id
+Returns: full tender detail including all three deadlines, scoring rationale, source link
+GET /api/tenders/counts
+Returns: today's count, closing-soon count, high-score count, pipeline total — for Director home tile
+Bridge auth on tender pages — confirm SaaS Tender Command Centre frontend can accept bridge-redeem session (same pattern as event tools) so Director / Prab / Abraham land authenticated via Group Portal Tender Manager tile
+
+
+Phase 3 — Discovery agent migration (Planning App)
+
+Port the 14 hardcoded source handlers from Group Portal's tender-discovery.ts into Planning App's discovery service
+Wire to read from canonical tender_sources table (so adding/removing sources is config, not code change)
+Apply the existing post-3-May parser quality filters (no contract awards, deadline sanity >12 month flag, geo exclusion)
+Test discovery manually with TENDER_DISCOVERY_PAUSED=true → verify it produces clean opportunities → unpause
+
+
+Phase 4 — Group Portal switch (coordinated)
+Group Portal Replit handles:
+
+Wire briefing cron to call Planning App's /api/tenders/briefing-summary endpoint
+Wire Director home tender tile to call Planning App's /api/tenders/counts
+Wire Tender Manager tile to bridge into Planning App's SaaS Tender Command Centre (same bridge pattern as Event Management Services)
+Run with switchable fallback for 3-5 days (Planning App primary, Group Portal stack fallback if Planning App returns errors)
+
+
+Phase 5 — Verification (Director)
+
+Three consecutive briefings come from Planning App API cleanly with no fallback triggered
+Tender Manager tile bridges into Planning App as Director, Prab, Abraham — each lands at appropriate scoped view
+Sample bid draft via Planning App EP Agent works
+Public proposal share link works
+
+
+Phase 6 — Deletion (Group Portal Replit)
+Only after Phase 5 verified:
+
+Delete server/tender-discovery.ts (1,314 lines)
+Delete server/tender-routes.ts (350 lines)
+Delete server/tender-notifications.ts (314 lines)
+Delete server/tender-manager-routes.ts
+Delete server/tender-document-routes.ts
+Delete server/tender-sourcing-routes.ts
+Delete server/tender-validation-routes.ts
+Delete the 12 tender tables on Group Portal's Neon DB (status flip if FK constraints prevent delete per audit immutability rule)
+Remove discoverTenders() call from server/scheduler.ts
+Remove /api/ep-agent/tender-probe endpoint
+Remove all tender imports in server/index.ts
+
+
+Estimated timeline:
+
+Phase 1 (canonical schema): half day
+Phase 2 (bridge APIs): half day
+Phase 3 (discovery migration + parser quality fix): full day
+Phase 4 (Group Portal switchable fallback): half day
+Phase 5 (3-5 days verification window)
+Phase 6 (deletion): 30 minutes
+
+Total: 2.5-3 working days build + 3-5 days verification window. Realistic ship by end of next week.
+
+Tonight's actual close:
+Don't start any phase tonight. Plan is approved. Phases begin tomorrow morning when both Replit sessions are fresh. Group Portal's existing tender stack continues producing daily briefings as it has been — no capability gap during migration.
+
+Standing rules apply:
+
+Production click-through verification at Phase 5 before Phase 6 fires
+Bridge audit pattern applies to every cross-system call
+Document migration state in CLAUDE.md (Group Portal) AND replit.md (Planning App) so future sessions don't drift
+Don't break daily briefing during migration — Group Portal stack stays alive until Phase 5 verified
+
+Brief me when Phase 1 is complete (canonical schema landed, sources seeded). I'll review schema before Phase 2 starts.

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <style>
+      html,body{background:#330311;color:#F4ECD8;margin:0;padding:0;}
+      /* Loading screen — fades out when React mounts */
+      body:has(#root:not(:empty)) #loading-screen {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease;
+      }
+      #loading-screen {
+        position: fixed;
+        inset: 0;
+        background: #330311;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.4s ease;
+      }
+      #loading-screen .logo {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 20px;
+        animation: pulse 2s ease-in-out infinite;
+      }
+      #loading-screen .brand-name {
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #C9A961;
+        margin-bottom: 8px;
+      }
+      #loading-screen .tagline {
+        font-family: 'Poppins', sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        color: rgba(244,236,216,0.4);
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 0.6; transform: scale(0.98); }
+        50% { opacity: 1; transform: scale(1.02); }
+      }
+    </style>
+    <meta name="theme-color" content="#330311" />
+    <meta name="description" content="Event Perfekt — Professional event planning and management for weddings, corporate events, celebrations, and day coordination services in Nigeria and the UK. Making yours perfekt." />
+    <meta name="keywords" content="event planning, event management, wedding planner, corporate events, day coordination, event planner Nigeria, event planner UK, event planner Lagos, event planner London, celebration planner, party planner, vendor management, guest management, government event management, British High Commission events, British Council events, HMRC conference management, government events, Princes Trust events, public sector event planning, tender event management, Crown Commercial Service events, Cabinet Office events, Home Office events, Ministry of Defence events, DWP events, corporate conference management, UK government supplier, event management framework, conference organiser UK, summit management, diplomatic event planning, embassy event planning" />
+    <meta name="author" content="Event Perfekt" />
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <!-- Google Search Console — verified for eventperfekt.net -->
+    <meta name="google-site-verification" content="HJAFLRBEVNwl1z" />
+    <!-- Bing Webmaster Tools — verified for eventperfekt.net -->
+    <meta name="msvalidate.01" content="D5F58DD1A31F4168FC912513F8FD29EA" />
+    <link rel="canonical" href="https://eventperfekt.net/" />
+    <link rel="alternate" hreflang="en-gb" href="https://eventperfekt.net/" />
+    <link rel="alternate" hreflang="en" href="https://eventperfekt.net/" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Event Perfekt" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <meta property="og:site_name" content="Event Perfekt" />
+    <meta property="og:title" content="Event Perfekt — Professional Event Planning & Management" />
+    <meta property="og:description" content="Transform complex event planning into streamlined, intelligent workflows. Weddings, corporate events, celebrations, and day coordination services in Nigeria and the UK. Making yours perfekt." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://eventperfekt.net/" />
+    <meta property="og:image" content="https://eventperfekt.net/assets/3d%20Logo%20(1)_1754249114645.jpg" />
+    <meta property="og:image:alt" content="Event Perfekt Logo" />
+    <meta property="og:locale" content="en_GB" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Event Perfekt — Professional Event Planning & Management" />
+    <meta name="twitter:description" content="Transform complex event planning into streamlined, intelligent workflows. Weddings, corporate events, celebrations, and day coordination." />
+    <meta name="twitter:image" content="https://eventperfekt.net/assets/3d%20Logo%20(1)_1754249114645.jpg" />
+    <title>Event Perfekt — Professional Event Planning & Management | Making Yours Perfekt</title>
+    <script>function initApollo(){var n=Math.random().toString(36).substring(7),o=document.createElement("script");o.src="https://assets.apollo.io/micro/website-tracker/tracker.iife.js?nocache="+n,o.async=!0,o.defer=!0,o.onload=function(){window.trackingFunctions.onLoad({appId:"6a198ff1e6cf870018cb8e96"})},document.head.appendChild(o)}initApollo();</script>
+  </head>
+  <body>
+    <div id="loading-screen">
+      <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#C9A961" stroke-width="1.5" opacity="0.3"/>
+        <circle cx="50" cy="50" r="38" fill="none" stroke="#C9A961" stroke-width="1" opacity="0.5">
+          <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <text x="50" y="56" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="32" font-weight="700" fill="#C9A961">EP</text>
+      </svg>
+      <div class="brand-name">Event Perfekt</div>
+      <div class="tagline">...making yours perfekt</div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>

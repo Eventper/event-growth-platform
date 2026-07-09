@@ -1,0 +1,33 @@
+/* ==== PATCH: stop opacity + translucent backgrounds from washing out text ==== */
+
+/* 1) Force solid white cards and containers */
+.bg-white { background-color: #ffffff !important; }
+.bg-gray-50, .bg-gray-100, .bg-gray-200 { background-color: #ffffff !important; }
+.bg-slate-50, .bg-slate-100, .bg-slate-200 { background-color: #ffffff !important; }
+
+/* 2) Kill any element/parent opacity utilities */
+[class*="opacity-"] { opacity: 1 !important; }
+
+/* 3) Kill translucent text utilities like text-white/70, text-black/60 */
+[class*="text-white/"], [class*="text-black/"], [class*="text-slate/"], [class*="text-gray/"] {
+  color: currentColor !important; /* falls back to our black/white rules */
+}
+
+/* 4) Neutralize backdrop/filter blur that can lighten foregrounds */
+[class*="backdrop-"], [class*="blur"], [class*="brightness"], [class*="contrast"] {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+/* 5) Tailwind Typography plugin often sets lighter colors under .prose */
+.prose, .prose :where(p, h1, h2, h3, h4, h5, h6, li, a, strong, em, code) {
+  color: inherit !important;
+}
+
+/* 6) Ensure progress/labels on light sections are fully opaque & black */
+.bg-white *, .bg-gray-50 *, .bg-gray-100 *, .bg-gray-200 *,
+.bg-slate-50 *, .bg-slate-100 *, .bg-slate-200 * {
+  opacity: 1 !important;
+  color: black !important;
+}

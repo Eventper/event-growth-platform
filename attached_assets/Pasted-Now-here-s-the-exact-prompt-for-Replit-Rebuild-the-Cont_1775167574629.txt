@@ -1,0 +1,119 @@
+Now here's the exact prompt for Replit:Rebuild the Contracts tab in event-dashboard.tsx to be a fully auto-generating contract system. Here is exactly what I need:
+
+---
+
+**STEP 1 — CONTRACT TYPE SELECTOR**
+Three contract types, each with its own generation flow:
+- Client Contract (Event Perfekt → Client)
+- Vendor Contract (Event Perfekt → Supplier)
+- Venue Contract (Event Perfekt → Venue)
+
+---
+
+**STEP 2 — DROPDOWNS (user selects these, everything else auto-fills)**
+
+For Client Contract:
+- Select client → dropdown populated from lead pipeline / enquiries table (name, company, email, address)
+- Select service scope → Full Planning / Day Coordination / Venue Search / Decor Only / Combined
+- Payment terms → 50% deposit + 50% balance / 30% deposit + 70% balance / 100% upfront / Custom
+- Currency → GBP / NGN / USD
+- Governing law → England & Wales / Federal Republic of Nigeria / Both
+
+For Vendor Contract:
+- Select vendor → dropdown populated from vendors table for this event (name, company, service category, contact)
+- Service type → auto-filled from vendor category
+- Same payment terms, currency, governing law dropdowns
+
+For Venue Contract:
+- Select venue → dropdown populated from event venue field + any saved venues
+- Same payment terms, currency, governing law dropdowns
+
+---
+
+**STEP 3 — AUTO-PULL FROM EXISTING DATA**
+
+Once client/vendor/venue and event are selected, auto-populate ALL of the following without the user typing anything:
+
+From event record: event name, event date, event time, venue name, venue address, event type, guest count
+From client/lead record: client full name, company name, registered address, email, phone
+From vendor record: vendor name, company, service description, contact name, email
+From event budget: total contract value, deposit amount (calculated from % selected), balance amount, deposit due date (today + 7 days), balance due date (30 days before event)
+From admin settings: Event Perfekt company name, registered address, company number, VAT number, signatory name (Tolulope Kumolu-Johnson, Director)
+
+---
+
+**STEP 4 — AUTO-GENERATED CONTRACT SECTIONS (12 sections)**
+
+Generate a complete, professional contract document with these sections:
+
+1. PARTIES — EP details + counterparty details (all auto-filled)
+2. EVENT DETAILS — name, date, time, venue, type, guest count (all auto-filled)
+3. SCOPE OF SERVICES — pre-written clause blocks per service type. Write full professional clauses for each: Full Planning, Day Coordination, Venue Search, Decor Only
+4. FEES & PAYMENT SCHEDULE — total value + deposit amount + deposit due date + balance + balance due date (all calculated)
+5. PAYMENT METHOD — bank transfer details (pull from admin settings) + Flutterwave payment link if available
+6. CANCELLATION POLICY — tiered: >90 days = deposit forfeited; 30-90 days = 50% total fee; <30 days = 100% total fee
+7. FORCE MAJEURE — standard clause
+8. LIABILITY — EP liability capped at contract value, standard professional indemnity clause
+9. DELIVERABLES & RESPONSIBILITIES — bullet list based on service scope selected
+10. AMENDMENTS — changes must be in writing, signed by both parties
+11. GOVERNING LAW — based on jurisdiction dropdown
+12. SIGNATURES — EP signatory block + counterparty signatory block + date fields
+
+---
+
+**STEP 5 — CONTRACT LIFECYCLE**
+
+After generation, the contract must have a status that moves through:
+Draft → Sent → Awaiting Signature → Signed → Completed
+
+Actions available at each stage:
+- Draft: Edit any field, Preview as PDF, Send to client/vendor via email (SendGrid)
+- Sent: Resend, mark as Awaiting Signature
+- Awaiting Signature: Digital signature capture (simple drawn or typed signature)
+- Signed: Download PDF, mark as Completed
+- Completed: View only, download PDF
+
+---
+
+**STEP 6 — ONBOARDING LINK**
+
+When a contract is marked as Signed, automatically:
+1. Update the event workflow status if appropriate
+2. Trigger the deposit invoice to be generated in the Invoicing tab
+3. Log the contract signing in the Planning Log
+4. Send confirmation email to both parties via SendGrid
+
+---
+
+**UI REQUIREMENTS**
+
+- The contract preview must render as a clean, professional document (white background, black text, Event Perfekt logo at top, professional typography)
+- All editable fields must be clearly marked and editable inline before sending
+- Show a side-by-side: left = form/dropdowns, right = live contract preview that updates as selections are made
+- Mobile responsive
+- Save draft automatically every time a field changes
+
+Make this as automated as possible. The user should only need to select: contract type, who they are contracting with, service scope, payment terms, currency, and governing law. Everything else fills itself.Paste that directly into Replit. Here's what it builds:
+You select 6 things only:
+
+Contract type (client / vendor / venue)
+Who you're contracting with (dropdown from your existing data)
+Service scope (full planning / day coord / decor etc)
+Payment terms (50/50, 30/70, 100%)
+Currency
+Governing law
+
+Everything else is automatic:
+
+All party details pulled from lead pipeline / vendor records
+Event name, date, venue, guest count pulled from event record
+Contract value, deposit amount, deposit due date, balance due date all calculated
+EP company details, signatory name pulled from admin settings
+12 contract sections generated with professional pre-written clauses
+Side-by-side live preview updates as you make selections
+
+When signed it automatically:
+
+Triggers the deposit invoice in the Invoicing tab
+Logs it in the Planning Log
+Sends confirmation email to both parties via SendGrid

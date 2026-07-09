@@ -1,0 +1,18 @@
+Context: This is the eventperfekt.net site (React SPA + Express, with the seo-meta-injector.ts and client/public/ setup). I'm running paid Instagram and LinkedIn ads plus an MKFM press placement to the I Am Her funnel, but all analytics traffic shows as "direct" so I can't tell which channel works. I also have a funnel leak: people click the main CTA on /iamher but zero of them start the form. Two jobs below.
+Job 1 — Make campaign traffic trackable (UTMs)
+
+The in-app browsers on Instagram/LinkedIn strip the referrer, so paid clicks land as "direct." I'll be adding UTM parameters to my ad links myself (e.g. ?utm_source=instagram&utm_medium=paid&utm_campaign=iamher). I need the site to handle them properly:
+
+In the useVisitorTracking analytics layer, capture any utm_source, utm_medium, and utm_campaign from the landing URL and record them against the session, so they show up in the analytics/funnel dashboards instead of "direct."
+Persist those UTM values for the whole session (e.g. sessionStorage) so that if the visitor navigates from /iamher deeper into the funnel, the original source still attaches to any form start or submission.
+Make sure the funnel events (CTA click, form start, submission) are stamped with that source so I can see conversion by channel.
+
+Job 2 — Diagnose and fix the CTA-to-form drop-off
+
+On /iamher, visitors click the main CTA but none start the form. I need to know why before changing it. Please:
+
+Tell me exactly what the primary CTA on /iamher currently does — which component, where it links to (/iamher/partnership? a mailto? a payment page?), and what the destination asks the user to fill in (every field).
+Confirm whether a "form start" event actually fires when the form is interacted with — it's possible the drop-off is partly a tracking gap (the event never fires) rather than a real drop-off. Check that the funnel's "form start" trigger is wired to the right element.
+Report back the field list and the event wiring. Don't redesign anything yet — I want to see the diagnosis first.
+
+Important: Don't touch the SEO injector, robots.txt, or sitemap. This is analytics + funnel only.

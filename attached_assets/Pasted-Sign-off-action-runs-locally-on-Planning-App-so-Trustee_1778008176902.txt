@@ -1,0 +1,75 @@
+Sign-off action runs locally on Planning App (so Trustees never get blocked by sync issues) BUT IT MUST PUSH the sign-off event back to Group Portal's ALLI Tracker so the canonical record stays accurate.
+Pattern is: local action, canonical record updated via webhook/push.
+
+Send to Replit:
+
+ALLI Trustee sign-off architecture — needs sync-back to Group Portal canonical.
+Today's milestone fix removed the Twin Trade dependency from the SIGN-OFF ACTION (correct — Trustees shouldn't be blocked by sync URL config). But it also removed the sync entirely, which means:
+
+Group Portal ALLI Tracker (canonical staff-side record) doesn't know when a Trustee signs off
+Prab / Abraham / Lara / Director see stale "awaiting sign-off" status on Group Portal even after Mr. Kehinde Alli or Mr. Agboola Ogundeyin signs on Planning App
+Phase 3 invoice automation (which depends on Phase 3 completion + sign-off) can't fire because the canonical record never updates
+Weekly reports drift from reality
+
+Per memory entry #2, ALLI Tracker on Group Portal is canonical for ALLI staff-side work. Sign-off events on Planning App must push back to that canonical record.
+
+Required architecture — sign-off LOCAL + sync BACK:
+
+Trustee sign-off action stays LOCAL on Planning App (no Twin Trade dependency for the click action — keep today's fix as-is)
+WHEN sign-off succeeds locally, fire a webhook/POST to Group Portal:
+
+
+POST [GROUP_PORTAL_BASE_URL]/api/group-portal/inbox/alli-signoff-event
+Payload: { phase, deliverable_ids, signed_by_email, signed_by_name, signature_text, timestamp, planning_app_signoff_id }
+Auth: shared cross-system key (EP_CROSS_SYSTEM_KEY in env, same pattern as bridge)
+Idempotent: if Group Portal already received this signoff_id, no-op
+
+
+Group Portal endpoint:
+
+
+Accepts the event
+Updates canonical alli_tracker_phases (or equivalent) — sets phase as client_signed, records timestamp, signer, signature
+Updates linked deliverables (D1-D9 etc) — marks client_approved
+Posts confirmation in staff-side Discussion thread on ALLI Tracker
+Notifies staff (Prab, Abraham, Lara, Director) — "Mr. Kehinde Alli signed off Phase 1"
+Triggers downstream automation if applicable (e.g. Phase 3 sign-off → Phase 3 invoice automation per existing scheduler logic)
+
+
+If Group Portal is unreachable when the webhook fires:
+
+
+Retry with exponential backoff (3 retries: 1 min, 5 min, 30 min)
+Queue locally on Planning App if all retries fail (planning_app_pending_syncs table)
+Daily cron retries pending syncs
+Trustee sign-off is NEVER blocked by sync failures — it's always confirmed locally first, sync follows
+
+
+Reverse direction (read sync — Planning App reads from Group Portal):
+
+
+Daily cron pulls deliverable updates from Group Portal so Trustees see fresh deliverables when staff add them
+This is OPTIONAL — if Twin Trade sync URL not set, Planning App gracefully shows last-known state with a "last updated" timestamp
+Don't make Trustee sign-off depend on this read sync
+
+
+Setup required:
+a. Add EP_CROSS_SYSTEM_KEY to Planning App env (same value as on Group Portal side)
+b. Add GROUP_PORTAL_BASE_URL to Planning App env
+c. Build the /api/group-portal/inbox/alli-signoff-event endpoint on Group Portal side
+d. Build the webhook fire on Planning App side after successful local sign-off
+e. Build the retry/queue logic for sync resilience
+f. Test end-to-end: Trustee signs off on Planning App → webhook fires → Group Portal alli_tracker updates → staff see reflected status within seconds
+
+Confirm both Replit instances coordinate — Group Portal builds the receiving endpoint, Planning App builds the firing logic. Both need EP_CROSS_SYSTEM_KEY in their secrets.
+
+Standing rules apply. Memory entry #2 (canonical model). Memory entry #13 (single-Trustee sign-off). Production verification with screenshots:
+
+Trustee signs off on Planning App ✓
+Group Portal ALLI Tracker updates within 30 seconds ✓
+Staff Discussion thread on Group Portal shows confirmation post ✓
+Director / Prab / Abraham / Lara get notification ✓
+If Group Portal is offline during sign-off, Trustee still succeeds locally ✓
+Pending sync clears when Group Portal comes back ✓
+
+Brief me when both sides are wired and end-to-end tested.

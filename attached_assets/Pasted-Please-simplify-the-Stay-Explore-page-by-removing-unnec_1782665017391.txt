@@ -1,0 +1,249 @@
+Please simplify the Stay & Explore page by removing unnecessary sections, repeated blocks, and over-explaining.
+
+Goal:
+Make the page shorter, cleaner, and more useful. It should help guests decide to stay overnight, plan a weekend, and contact EP Concierge.
+
+Do not redesign the page. Keep the premium editorial feel. Remove clutter.
+
+Primary page purpose:
+Turn event guests into weekend visitors.
+
+Primary CTA:
+Talk to the EP Concierge
+
+Secondary CTA:
+View Weekend Ideas
+
+Keep only these sections, in this order:
+
+1. Hero
+2. Why stay in Milton Keynes?
+3. EP Concierge
+4. Where to stay
+5. 48 Hours in Milton Keynes
+6. Pick your weekend style
+7. Key weekend experiences
+8. Want to be featured in the weekend guide?
+9. Final EP Concierge CTA
+10. Visitor economy note
+11. Footer
+
+Remove these unnecessary or low-priority sections:
+- Remove repeated EP Concierge blocks throughout the page
+- Remove duplicate “Let us arrange it” sections
+- Remove “Considering Milton Keynes?” or move it to the very bottom only if needed
+- Remove long city-growth language about Milton Keynes being ambitious, forward-thinking, fastest-growing, etc.
+- Remove excessive tourism-board style copy
+- Remove repeated phrases like “Make it yours,” “stay longer,” “explore more,” if they appear too often
+- Remove any duplicated attraction descriptions
+- Remove anything that makes the page feel like a council brochure instead of a premium guest guide
+
+Hero section:
+
+Headline:
+Turn the evening into a weekend.
+
+Subheadline:
+Coming to The Woman Who Leads The Room? Stay over, bring a friend or family, and let the EP Concierge help you plan your Milton Keynes weekend.
+
+Supporting line:
+You’re already coming for the room. Why not stay for the weekend?
+
+Buttons:
+Talk to the EP Concierge
+View Weekend Ideas
+
+Replace the long “Why Milton Keynes?” section with this shorter version:
+
+Title:
+Why stay in Milton Keynes?
+
+Copy:
+Milton Keynes is easy to reach, simple to navigate, and built for a weekend stay. With fast train links from London, strong road access, premium hotels, shopping, restaurants, green spaces and family-friendly attractions, it gives guests a reason to arrive earlier, stay over and make more of the experience.
+
+Bullets:
+- London Euston to Milton Keynes Central in around 30 minutes
+- Premium hotels close to the venue
+- Shopping, beauty, dining and nightlife nearby
+- Green space, family attractions and weekend activities
+
+EP Concierge section:
+
+Title:
+EP Concierge
+
+Subtitle:
+Let us help you plan it.
+
+Copy:
+Travelling in? Bringing friends? Planning a group stay? Want help choosing a hotel, restaurant, beauty appointment or weekend itinerary? The EP Concierge can help you shape the weekend around how you want to experience it.
+
+List:
+- Hotel recommendations
+- Group room enquiries
+- Restaurant bookings
+- Beauty and spa appointments
+- Family-friendly plans
+- Things to do before and after the event
+- Local introductions
+
+CTA:
+Talk to the EP Concierge
+
+Concierge form fields:
+- Name
+- Phone number
+- Email
+- Are you attending the event? Yes / No / Interested
+- Are you staying overnight? Yes / No / Unsure
+- How many people are travelling?
+- What would you like help with?
+
+Where to stay section:
+
+Move this section higher, immediately after EP Concierge.
+
+Keep only the hotel cards:
+- Leonardo Hotel
+- Premier Inn
+- Hotel La Tour
+
+Intro copy:
+For guests travelling from outside Milton Keynes, staying over makes the evening easier, calmer and more enjoyable. Choose a hotel close to the venue, wake up slowly, and make the most of the Bank Holiday weekend.
+
+Remove any repeated concierge CTA inside individual hotel cards.
+
+48 Hours in Milton Keynes section:
+
+Keep this section, but shorten the copy.
+
+Title:
+48 Hours in Milton Keynes
+
+Subtitle:
+Turn one evening into a Bank Holiday weekend.
+
+Friday:
+Arrive, check in, attend The Woman Who Leads The Room, then continue the evening with cocktails or quiet conversation.
+
+Saturday:
+Slow brunch, shopping, beauty, spa treatments, dinner or a girls’ weekend plan.
+
+Sunday:
+Willen Lake, Bletchley Park, family attractions, a slow reset, then travel home.
+
+Rename “Choose Your Weekend” to:
+
+Pick your weekend style
+
+Keep only these five options, with one-line descriptions:
+
+Reset & Recharge
+Luxury hotel stay, wellness, spa, lakeside walks and brunch.
+
+Shop & Indulge
+Centre:MK, H Beauty, champagne bars, fashion and beauty.
+
+Adventure & Energy
+iFLY, Snozone, Xscape and group experiences.
+
+Culture & Curiosity
+Bletchley Park, theatre, local culture and historic walks.
+
+Bring the Family
+Woburn Safari Park, Willen Lake and family-friendly activities.
+
+Key weekend experiences section:
+
+Keep the attractions, but shorten every description to one or two lines maximum.
+
+Group them under these headings:
+- Adventure & Energy
+- Shopping & Beauty
+- Green Space & Wellness
+- Culture & Curiosity
+- Dining & After Hours
+
+For each attraction, keep:
+- Name
+- One-line description
+- Visit website button
+
+Do not include long paragraphs.
+
+Keep these examples:
+Adventure & Energy:
+- Snozone
+- Xscape
+- iFLY Indoor Skydiving
+- Escape Hunt
+
+Shopping & Beauty:
+- H Beauty & Champagne Bar
+- centre:mk
+
+Green Space & Wellness:
+- Willen Lake
+- Campbell Park
+- Spa & Treatments
+
+Culture & Curiosity:
+- Bletchley Park
+- Milton Keynes Theatre
+
+Dining & After Hours:
+- Fourteen Sky Bar
+- The Alchemist
+- Parrilla
+- The Oligarch
+- Cosy Club
+- H Beauty Champagne Bar
+
+Remove or heavily shorten:
+- “The businesses behind the city”
+- “Every city has remarkable businesses”
+- Long explanation about curating the best of Milton Keynes
+- “Considering Milton Keynes?” section, unless placed at the bottom as a small optional note
+
+Add this section instead:
+
+Title:
+Want to be featured in the weekend guide?
+
+Copy:
+We are curating selected hotels, restaurants, beauty destinations, wellness providers and experiences for guests attending The Woman Who Leads The Room.
+
+If your business helps visitors stay longer, explore more or experience Milton Keynes at its best, we would be open to hearing from you.
+
+CTA:
+Feature Your Business
+
+Final CTA:
+
+Title:
+Make the weekend easier.
+
+Copy:
+Tell us what you need help with and the EP Concierge will help you plan the details around your visit.
+
+Button:
+Talk to the EP Concierge
+
+Visitor economy note:
+
+Shorten to:
+
+The Woman Who Leads The Room brings women from across the UK into Milton Keynes, encouraging overnight stays, restaurant bookings, retail spend, attraction visits and wider engagement with the city. By positioning the event as a weekend destination experience, we are showcasing Milton Keynes as a place for leadership, wellbeing, lifestyle and opportunity.
+
+Footer:
+Keep:
+An initiative by Event Perfekt Global Ltd.
+Privacy Policy · Your Data Rights · Contact · Follow on Instagram · Follow on LinkedIn
+
+Important style instructions:
+- Keep the page premium and calm
+- Use shorter paragraphs
+- Remove repeated CTAs
+- Remove generic tourism copy
+- Make the page useful, not bloated
+- The page should feel like a curated weekend guide, not a local authority brochure

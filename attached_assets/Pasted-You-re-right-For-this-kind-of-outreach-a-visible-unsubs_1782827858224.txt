@@ -1,0 +1,94 @@
+You’re right.
+
+For this kind of outreach, a visible **“unsubscribe” footer** makes it feel like email marketing.
+
+That weakens the positioning.
+
+This is meant to feel like:
+
+**a direct partner invitation from Lynda’s desk**
+
+Not:
+
+**a campaign blast**
+
+But you still need a compliance-safe way to opt out.
+
+So the fix is:
+
+**Do not use a big unsubscribe footer.**
+Use a soft opt-out line only where needed.
+
+For partner emails, use this at the bottom, small and plain:
+
+> If this is not relevant, just reply “not relevant” and I won’t follow up.
+
+That feels human.
+
+For guest invitations, use:
+
+> If this is not relevant for you, no problem — just let me know and I won’t follow up.
+
+## Tell Replit this
+
+Paste:
+
+---
+
+Please remove any visible marketing-style unsubscribe footer from guest, partner, sponsor, media and civic outreach emails.
+
+These emails should feel like direct personal outreach from Lynda’s desk, not email marketing.
+
+Do not add language such as:
+
+* unsubscribe here
+* manage preferences
+* marketing emails
+* campaign subscription
+
+Instead, use a simple human opt-out line only where needed.
+
+For partner / sponsor / media outreach, use:
+
+**If this is not relevant, just reply “not relevant” and I won’t follow up.**
+
+For guest invitation outreach, use:
+
+**If this is not relevant for you, no problem — just let me know and I won’t follow up.**
+
+The backend should still support suppression / Do Not Contact.
+
+If someone replies negatively or asks not to be contacted, mark them as:
+
+**Do Not Contact**
+
+and stop all future follow-ups.
+
+The email should still follow safety rules:
+
+* stop on reply
+* stop on bounce
+* stop if marked Do Not Contact
+* no follow-up after opt-out
+* keep suppression list active
+
+But do not display a marketing-style unsubscribe footer unless legally required by the sending provider.
+
+For now, make the emails look like direct one-to-one outreach from:
+
+**Lynda Johnson [lyndajohnson@eventperfekt.com](mailto:lyndajohnson@eventperfekt.com)**
+
+Signature:
+
+**Lynda Johnson**
+Founder, Event Perfekt Global
+The Woman Who Leads The Room
+[www.eventperfekt.net/iamher](http://www.eventperfekt.net/iamher)
+07984 331 651
+
+---
+
+That’s the right balance.
+
+Human front end.
+Compliance logic in the backend.

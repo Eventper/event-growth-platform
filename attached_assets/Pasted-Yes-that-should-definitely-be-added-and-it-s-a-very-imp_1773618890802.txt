@@ -1,0 +1,229 @@
+Yes — that should definitely be added, and it’s a very important rule.
+
+The system should not rely on people manually creating contracts each time. All major contracts should be **auto-generated from the event and vendor data**, but still remain **editable before sending**.
+
+Here is a clean section you can add for Replit.
+
+---
+
+# Contract Automation Logic Clarification for Replit
+
+Please keep the existing contracts/documents functionality, but extend the logic so that contracts are **automatically generated from the system data**.
+
+The goal is that contracts should not need to be written manually each time.
+
+## Contract Types That Should Be Auto-Generated
+
+The platform should support automatic generation of:
+
+* Client Contracts
+* Vendor Contracts
+* Venue Contracts
+* Service Agreements
+* Addendums / Amendments where needed
+
+These should be generated from the data already stored in the system.
+
+---
+
+## How It Should Work
+
+When a relevant record is created or approved, the system should be able to generate a draft contract automatically.
+
+### Examples
+
+### Client Contract
+
+When an event is confirmed, the system should generate a client contract using:
+
+* client name
+* event name
+* event date
+* event location
+* services selected
+* payment terms
+* company entity
+* contract value
+
+### Vendor Contract
+
+When a vendor is selected for an event, the system should generate a vendor agreement using:
+
+* vendor name
+* vendor category
+* event name
+* event date
+* service scope
+* agreed cost
+* payment terms
+* company details
+
+### Venue Contract
+
+When a venue is confirmed, the system should generate a venue agreement using:
+
+* venue name
+* event details
+* booking date
+* access times
+* agreed venue cost
+* payment schedule
+* terms and conditions
+
+---
+
+## Editable Before Sending
+
+Even though contracts are auto-generated, they must still be:
+
+* editable
+* reviewable
+* approvable
+* sendable from inside the system
+
+This means the workflow should be:
+
+1. System generates contract draft automatically
+2. User reviews draft
+3. User edits if needed
+4. User approves / finalizes
+5. User sends contract from the platform
+6. Contract is stored in the document record
+
+So automation should reduce manual work, but still allow control.
+
+---
+
+## Sending Contracts
+
+The platform should support sending contracts directly from the system.
+
+That means users should be able to:
+
+* send by email
+* attach message / notes
+* track sent status
+* track signed / unsigned status
+* resend if needed
+
+Status examples:
+
+* Draft
+* Ready to Send
+* Sent
+* Viewed
+* Signed
+* Expired
+* Cancelled
+
+---
+
+## Template-Based Contract System
+
+All contracts should be generated from reusable templates.
+
+Templates should exist for:
+
+* client contracts
+* vendor contracts
+* venue contracts
+* payment agreements
+* addendums
+
+The template should automatically pull in the right information from the system fields.
+
+Example:
+
+* client name auto-fills
+* event date auto-fills
+* service package auto-fills
+* company details auto-fill based on entity/location
+
+This ensures consistency and saves time.
+
+---
+
+## Integration With Existing Workflow
+
+This should fit into the current workflow without replacing what is already built.
+
+### In Pre-Planning
+
+* client proposal generated
+* client contract generated
+* client contract sent
+
+### In Vendor Management
+
+* vendor selected
+* vendor contract generated
+* vendor contract reviewed and sent
+
+### In Venue Sourcing / Confirmation
+
+* venue selected
+* venue contract generated
+* venue contract reviewed and sent
+
+---
+
+## Document Repository
+
+All generated contracts should automatically save into the Document Repository and also link back to the specific event.
+
+That means each contract should be visible in:
+
+* the event record
+* the vendor profile if vendor-related
+* the venue record if venue-related
+* the central document repository
+
+---
+
+## Important Instruction
+
+Please do not remove the existing document/contract features already built.
+
+The request is to add the following logic:
+
+* auto-generate contracts from event/system data
+* support client, vendor, and venue contracts
+* allow contracts to be edited before sending
+* allow contracts to be sent directly from the platform
+* track contract status
+* save all contracts automatically to the document repository
+
+---
+
+## Short Version to Add
+
+```text
+Contracts should be automatically generated from the data already stored in the system. This should include client contracts, vendor contracts, and venue contracts. Auto-generated contracts must still be editable before sending. Users should be able to review, amend, approve, and send contracts directly from the platform, with status tracking such as Draft, Sent, Viewed, Signed, and Cancelled. All generated contracts should automatically save to both the event record and the central document repository.
+```
+
+Here’s the clean combined vendor + contract add-on in one block for Replit:
+
+```text
+Please keep the vendor and contract modules already built. They are good.
+
+What needs to be added is the business logic:
+
+Vendors
+- Admin/Management should populate and maintain a master vendor directory
+- Every vendor must belong to a category
+- Every vendor should have a contract/profile stored
+- All vendors must have an approval status
+- There should be at least 6 approved vendors per category where possible
+- Planners should filter and select vendors based on budget and approval status
+- An Add Vendor button should remain, but newly added vendors should go into Pending Review before becoming approved
+
+Contracts
+- Contracts should be automatically generated from system data
+- This should include client contracts, vendor contracts, and venue contracts
+- Contracts must remain editable before sending
+- Users should be able to send contracts directly from the platform
+- Contract statuses should be tracked (Draft, Sent, Viewed, Signed, Cancelled, etc.)
+- All contracts should automatically save to the event record and document repository
+```
+
+I can merge this now into the final full Replit rewrite so you have one finished message.

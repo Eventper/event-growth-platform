@@ -1,0 +1,261 @@
+Build four additional modules inside the ALLI Foundation project in both the staff side and the client portal. All data is shared between staff and client — staff manage, ALLI trustees see in real time.
+
+MODULE 1 — YOUNG PEOPLE CASE MANAGEMENT
+
+STAFF SIDE — at /projects/alli-foundation/young-people
+
+Add a Young People tab to the ALLI Foundation project page.
+
+Case list view showing all referred young people as cards:
+- Reference number — auto generated YP-ALLI-001, YP-ALLI-002 etc
+- First name only — no surnames stored without consent
+- Age
+- Area — London borough or city
+- Referral source — Community, Family, School, NHS, Police, Self, Jibowu, Other
+- Referral date
+- Status badge:
+  - Pending Consent — grey
+  - Consent Received — blue
+  - Assessment Scheduled — amber
+  - Assessment Complete — purple
+  - Matched to Partner — green
+  - Actively Supported — lime green
+  - Case Closed — dark grey
+- Assigned EP team member
+- Last updated
+
+Add New Referral button — opens form:
+- First name
+- Age
+- Gender
+- Area — London borough or postcode district
+- Referral source dropdown
+- Brief circumstances — text area — minimum 50 characters
+- Referring person name and contact — optional
+- Consent status — Pending, Received, Declined
+- Priority — High, Medium, Low
+- Save Referral button
+
+Each case card opens a full case detail page showing:
+
+CASE OVERVIEW TAB:
+- All referral details
+- Status timeline showing journey from referral to support
+- Assigned team member
+- Last updated
+
+CONSENT TAB:
+- Consent status
+- Upload consent letter button — accepts PDF — required before assessment
+- If under 18 — parent or guardian consent letter required
+- If 18 or over — young person consent letter required
+- Consent letter templates:
+  - Under 18 parent guardian consent letter — downloadable Word document
+  - Over 18 young person consent letter — downloadable Word document
+- Once uploaded show: Awaiting Review
+- Review buttons: Accept Consent, Reject Consent, Request Resubmission
+- If rejected — enter reason — letter sent explaining why
+- If accepted — case moves to Assessment Scheduled status automatically
+- All consent documents stored securely — GDPR compliant
+- Consent documents never shared externally without explicit authorisation
+
+ASSESSMENT TAB:
+- Assessment date
+- Assessor name
+- Assessment notes — structured form:
+  - Current situation — text area
+  - Risk level — High, Medium, Low
+  - Immediate needs — text area
+  - Longer term needs — text area
+  - Young person's own goals — text area
+  - Recommended intervention type — Music, Mentoring, Therapy, Education, Employment, Legal Support, Multiple
+  - Recommended partner organisation — dropdown from onboarded partners list
+  - Assessment outcome — text area
+- Save Assessment button
+- On save — status updates to Assessment Complete
+- EP team notified by email
+
+INTERVENTION TAB:
+- Matched partner organisation — selected from partner list
+- Intervention type
+- Start date
+- Review date
+- Funding source — ALLI funded, Pro bono, Partner funded, Grant funded
+- Funding amount if applicable
+- Intervention notes
+- Progress updates — add note button — each note logged with date and author
+- Follow up dates — calendar picker — add multiple follow up dates
+- Outcome — Ongoing, Successful Completion, Withdrew, Lost Contact, Referred Elsewhere
+
+DOCUMENTS TAB:
+- All documents related to this case
+- Upload document button
+- Document types: Consent Letter, Assessment Form, Partner Agreement, Progress Report, Closure Report, Other
+- Each document shows: name, type, uploaded by, date, download button
+- GDPR notice on all documents: This document contains sensitive personal data and must be handled in accordance with GDPR requirements
+
+NOTES TAB:
+- Internal case notes visible to EP team and ALLI trustees only
+- Add note button — text area — save with timestamp and author name
+- Notes cannot be deleted — only marked as superseded
+
+DATABASE — create these tables:
+alli_young_people — id, reference_number, first_name, age, gender, area, referral_source, referral_date, circumstances, referring_person, consent_status, priority, status, assigned_to, created_at, updated_at
+alli_consent_documents — id, young_person_id, document_type, file_url, uploaded_by, uploaded_at, review_status, review_notes, reviewed_by, reviewed_at
+alli_assessments — id, young_person_id, assessment_date, assessor, current_situation, risk_level, immediate_needs, longer_term_needs, young_person_goals, recommended_intervention, recommended_partner, outcome, created_at
+alli_interventions — id, young_person_id, partner_id, intervention_type, start_date, review_date, funding_source, funding_amount, notes, outcome, created_at, updated_at
+alli_case_notes — id, young_person_id, note_text, author, created_at
+alli_case_documents — id, young_person_id, document_type, file_url, uploaded_by, uploaded_at
+
+CLIENT PORTAL VIEW — Young People tab in ALLI client portal:
+- Summary statistics at top: Total Referrals, Awaiting Consent, In Assessment, Matched, Actively Supported, Closed
+- List of all cases — same cards as staff side but read only
+- ALLI trustees can:
+  - View all case details
+  - Upload consent letters directly
+  - Add case notes
+  - View all documents
+  - Cannot delete any records
+- Cannot see EP internal team notes marked as EP Only
+- Add New Referral button — ALLI trustees can add referrals directly
+
+MODULE 2 — PARTNERSHIP PORTAL
+
+STAFF SIDE — at /projects/alli-foundation/partners
+
+Add a Partners tab to the ALLI Foundation project page.
+
+Partner list showing all onboarded partners as cards:
+- Partner name bold
+- Organisation type — NHS, Council, School, Charity, Pro Bono, Corporate, Community
+- Services offered — badges: Music, Mentoring, Therapy, Education, Employment, Legal, Housing, Mental Health
+- Area covered — London boroughs or regions
+- Status — Active, Pending, Pro Bono, Inactive
+- Primary contact name and email
+- Last engagement date
+- Case load — number of young people currently referred to them
+
+Add Partner button — opens form:
+- Organisation name
+- Organisation type
+- Website
+- Primary contact name
+- Primary contact email
+- Primary contact phone
+- Services offered — multi select
+- Area covered — multi select London boroughs or UK regions
+- Capacity — how many young people they can support at once
+- Cost — Free, Pro Bono, Funded, Paid
+- Agreement status — Informal, MOU Signed, Formal Agreement
+- Notes
+- Save Partner button
+
+Each partner card opens full partner detail page showing:
+
+OVERVIEW TAB:
+- All partner details
+- Services and area map showing coverage
+- Current caseload — young people assigned to this partner
+- Capacity indicator — X of Y places filled
+
+MEETINGS TAB:
+- Log of all meetings with this partner
+- Add Meeting Note button — date, attendees, notes, actions agreed
+- Upcoming meetings — linked to calendar
+
+DOCUMENTS TAB:
+- Upload document button
+- Document types: MOU, Partnership Agreement, Service Level Agreement, Referral Protocol, Other
+- Download and delete buttons
+
+NOTES TAB:
+- Internal notes about the partnership
+- Progress updates
+- Any concerns or issues flagged
+
+CLIENT PORTAL VIEW — Partners tab in ALLI client portal:
+- All active partners shown as cards
+- Partner name, type, services, area
+- Contact details visible to trustees
+- Meeting notes visible
+- Documents visible and downloadable
+- When EP onboards a new partner ALLI sees it immediately
+- Map showing all partner locations — use Leaflet.js — dark map tiles
+- Filter by service type and area
+- ALLI trustees can add meeting notes and upload documents
+
+MODULE 3 — EVENTS MANAGEMENT
+
+STAFF SIDE — at /projects/alli-foundation/events
+
+Add an Events tab to the ALLI Foundation project page.
+
+Events list showing all scheduled and past events:
+- Event name
+- Event type — School Speaking, Community Event, Music Session, Awareness Day, Stakeholder Meeting, Intervention Session, Partner Meeting
+- Date and time
+- Location — venue name and address
+- Lead person — Jibowu, Prabhleen, Tolulope, Partner name
+- Target audience — Young People, Parents, Schools, Community, Stakeholders
+- Expected attendance
+- Status — Planned, Confirmed, Completed, Cancelled
+- Outcome — text field for post event notes
+
+Add Event button — opens form with all fields above plus:
+- Event description
+- Preparation notes
+- Resources needed
+- Budget if applicable
+- Link to young people attending — select from case list
+- Link to partners involved — select from partner list
+
+Each event opens detail page with:
+- Full event details
+- Attendee list
+- Pre event preparation checklist
+- Post event outcome notes
+- Documents — upload flyers, agendas, attendance sheets, outcome reports
+- Photos — upload event photos
+
+CLIENT PORTAL VIEW — Events tab in ALLI client portal:
+- Calendar view of all upcoming events — gold event cards
+- List view toggle
+- Filter by event type
+- Click event to see full details
+- ALLI trustees can see who is attending, location, lead person
+- After event — see outcome report and photos
+- Add to their personal calendar button — downloads ICS file
+
+MODULE 4 — CONSENT LETTER TEMPLATES
+
+Create downloadable Word document templates for:
+
+Template 1 — Parent Guardian Consent Letter for Under 18
+Headed: ALLI Foundation — Confidential
+Body:
+Dear Parent or Guardian,
+
+ALLI Foundation is a UK registered charity (No. 1182529) dedicated to supporting young people affected by knife crime and gang involvement. We have been made aware that your child [name] may benefit from our support and referral services.
+
+We would like your permission to:
+- Conduct a brief needs assessment with your child
+- Share relevant information with appropriate support organisations
+- Connect your child with services that may help them
+
+All information will be handled in strict confidence in accordance with GDPR and data protection legislation. Your child's information will not be shared without your explicit consent except where there is a risk to their safety or the safety of others.
+
+If you consent to ALLI Foundation supporting your child please sign below.
+
+Signature: _______________
+Print name: _______________
+Relationship to child: _______________
+Date: _______________
+
+For any questions please contact: adminuk@eventperfekt.com
+
+Template 2 — Young Person Consent Letter for 18 and Over
+Same structure but addressed to the young person directly.
+
+Both templates downloadable from the Consent tab on each case.
+
+Apply all four modules now to both the staff side project page and the ALLI Foundation client portal. Confirm all tabs are working and all URLs are accessible.

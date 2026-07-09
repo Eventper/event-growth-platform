@@ -1,0 +1,258 @@
+Absolutely — here is a clean **Vendor section** you can send to Replit on its own.
+
+---
+
+# Vendor Management Logic Clarification for Replit
+
+Please **keep the vendor module already built**. The vendor form and vendor tools are good. This request is **not to replace the vendor feature**, but to add the correct **business logic and workflow** around it.
+
+The platform should have a **master Vendor Directory** managed by Admin / Management, and planners should use that approved directory when selecting vendors for events.
+
+---
+
+## 1. Master Vendor Directory
+
+The system should include a **central Vendor Directory** that is populated and maintained by Admin / Management.
+
+This means:
+
+* Admin adds vendors into the system
+* Every vendor must belong to a category
+* Every vendor should have a full vendor profile
+* Every vendor should have a contract or agreement stored
+* Every vendor should have an approval status
+* Every vendor should have a budget tier / pricing level
+* Every vendor should have performance and qualification information
+
+The purpose is to ensure planners are selecting from a controlled and trusted supplier pool rather than starting from scratch each time.
+
+---
+
+## 2. Vendor Categories
+
+Every vendor must be assigned to a category.
+
+Example categories include:
+
+* Venue
+* Caterer
+* Decorator
+* Florist
+* Photographer
+* Videographer
+* MC / Host
+* DJ / Entertainment
+* Rental Company
+* Security
+* Transportation
+* Printing / Branding
+* Gifts / Souvenirs
+
+Where possible, there should be **at least 6 approved vendors per category** so planners always have enough options to compare.
+
+---
+
+## 3. Vendor Approval Workflow
+
+All vendors must go through an approval process before they are fully available for planners to use.
+
+Each vendor should have a status such as:
+
+* Approved
+* Pending Review
+* Rejected
+* Suspended
+
+There should also be a **reason field** for the status.
+
+Examples:
+
+* Approved: quality acceptable, contract completed, pricing suitable
+* Pending Review: newly added, documents incomplete
+* Rejected: poor quality, bad pricing, failed review
+* Suspended: issue on previous event, temporarily blocked
+
+This keeps the vendor list controlled and reliable.
+
+---
+
+## 4. Vendor Profile Requirements
+
+Each vendor profile should store:
+
+* business name
+* contact person
+* phone number
+* email address
+* service category
+* pricing / budget tier
+* approval status
+* qualification status
+* performance history
+* internal notes
+* uploaded contract / agreement
+* service terms or pricing sheet
+* supporting documents if needed
+
+This should all live inside the existing vendor record.
+
+---
+
+## 5. Vendor Contract Requirement
+
+Each vendor should have an agreement or contract attached to their profile.
+
+This may include:
+
+* signed vendor contract
+* service agreement
+* payment terms
+* pricing sheet
+* insurance / compliance documents if needed
+
+Please keep the existing contract functionality, but ensure vendor contracts are linked directly to the vendor profile and available when that vendor is used in an event.
+
+---
+
+## 6. Budget Tier Logic
+
+Each vendor should be assigned a **budget tier** so planners can choose vendors that fit the event budget.
+
+Example tiers:
+
+* Budget
+* Mid-Range
+* Premium
+
+When planners are working on an event, they should be able to filter vendors by:
+
+* category
+* budget tier
+* approval status
+* rating / qualification
+* event suitability
+
+This helps planners choose vendors that are realistic for the event and protects profitability.
+
+---
+
+## 7. Vendor Selection in an Event
+
+Once an event is assigned to an Event Manager, the planner should use the approved Vendor Directory inside the event planning stage.
+
+The planner should be able to:
+
+* search the vendor directory
+* filter by category
+* filter by budget tier
+* filter by approval status
+* compare vendors
+* shortlist vendors
+* request quotes
+* select vendors for the event
+
+This should happen inside **Event Workspace → Planning → Vendor Management**.
+
+---
+
+## 8. Vendor Budget Control
+
+When a planner selects a vendor, the system should compare the vendor quote with the allocated event budget for that category.
+
+Example:
+
+Decor Budget: £5,000
+Selected Vendor Quote: £6,500
+
+System Warning: This vendor exceeds the decor budget by £1,500.
+
+The planner can still proceed if allowed, but the system should show the financial impact and, where necessary, request approval.
+
+---
+
+## 9. Profit Protection
+
+Vendor choices should also support margin protection.
+
+The system should make it possible to see:
+
+* event budget
+* allocated vendor budget
+* selected vendor cost
+* impact on overall event margin
+
+If vendor choices reduce the event margin below an acceptable level, the system should warn the planner or manager.
+
+---
+
+## 10. Add Vendor Button
+
+The **Add Vendor** button should remain.
+
+However, the workflow should be:
+
+* if the vendor is not already in the master directory, the user can add them
+* newly added vendors should go into **Pending Review**
+* newly added vendors should not become fully approved until Admin / Management reviews them
+* supporting documents and approval reasons should be attached
+
+This means planners can suggest new vendors, but vendor control remains centralized.
+
+---
+
+## 11. Recommended Vendor Workflow
+
+The vendor flow should be:
+
+1. Admin / Management populates the master Vendor Directory
+2. Every vendor is assigned:
+
+   * category
+   * contract / agreement
+   * approval status
+   * budget tier
+   * contact details
+   * qualification details
+3. There should be at least 6 approved vendors per category where possible
+4. Planner searches and filters the approved directory during event planning
+5. Planner shortlists and compares vendors
+6. Planner selects vendors that match the event budget and quality needs
+7. If a new vendor is needed, planner clicks **Add Vendor**
+8. New vendor goes into **Pending Review** until approved
+
+---
+
+## 12. Important Instruction
+
+Please **do not replace the vendor module already built**.
+
+The request is simply to add the correct logic around it:
+
+* master vendor directory
+* vendor categories
+* vendor contracts
+* vendor approval workflow
+* minimum vendor options per category
+* budget-tier matching
+* add-vendor with pending review logic
+* budget and profit visibility during vendor selection
+
+---
+
+## Short Version
+
+```text
+Please keep the vendor module already built. It is good.
+
+What needs to be added is the business logic:
+- Admin/Management should populate and maintain a master vendor directory
+- Every vendor must belong to a category
+- Every vendor should have a full profile and vendor contract stored
+- All vendors must have an approval status
+- There should be at least 6 approved vendors per category where possible
+- Planners should filter and select vendors based on category, budget tier, approval status, and rating
+- An Add Vendor button should remain, but newly added vendors should go into Pending Review before becoming approved
+- Vendor selection should connect to event budgets and profit protection
+```
+
+If you want, I can now write the **contracts section in the same exact format** so both pieces match.

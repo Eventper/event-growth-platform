@@ -1,0 +1,211 @@
+# I AM HER — Stay & Explore + EP Concierge — Build Spec
+
+**Property:** New page on the I Am Her site (eventperfekt.net/iamher) — suggested URL `/iamher/stay`
+**Event:** The Woman Who Leads The Room — "I Am Her", Friday 28 August 2026, Milton Keynes
+**Purpose:** Turn the ticket into a weekend. Sell Milton Keynes as a destination, then capture stay-over/family/tour intent through an **EP Concierge** callback so the team can build group hotel rates on demand.
+**Status:** Spec ready for build + copy ready to use. Light consent/privacy step required (§7).
+**Imagery:** This page has to feel *exciting* — a real destination people want to spend a weekend in. Every section is image-led, showing the actual city and its attractions. Global art direction in §0.1; per-section shots through the copy in §2.
+
+---
+
+## 0. The model (read first)
+
+**No fixed hotel partnership.** Instead of pre-negotiating one hotel deal, we **capture demand first**, then negotiate **group rates reactively** once we know the numbers. The page inspires the weekend; the **EP Concierge button** captures the lead; a human follows up and groups bookings.
+
+Why this way:
+- No commitment or commission conversation before there's proven demand.
+- EP holds the demand and approaches hotels *with numbers* — the strong negotiating position.
+- It's a repeatable EP service (works for every future event), not a one-off.
+
+**One service runs through the whole page: EP Concierge.** Every section ends with the same single call to action — *"Let our concierge handle it."*
+
+---
+
+## 0.1 Imagery & visual direction (applies to every section)
+
+The job of the imagery here is **persuasion** — make a woman think "actually, yes, I'll make a weekend of it." Where the Story Wall is introspective, this page is the opposite: bright, alive, aspirational.
+
+**Tone:** Vibrant, sunny, premium-travel — think destination brochure, not corporate stock. Late-August energy: blue skies, green open spaces (MK is famous for its parks and greenery), warm light. The page should feel like a place worth getting on a train for.
+
+**It must be about the actual city.** Use real, recognisable Milton Keynes imagery — the specific attractions named on the page (Bletchley Park, Woburn Safari Park, Willen Lake and its Peace Pagoda, centre:mk, MK Gallery, Xscape), not generic "city" or "hotel room" stock. Specificity is what makes it credible and exciting. A real photo of Willen Lake at golden hour sells the weekend; an anonymous lake doesn't.
+
+**Show the experience, not just the place.** People enjoying it — women laughing over dinner and cocktails, a family at the safari park, someone walking the lake at sunrise, friends shopping. Diverse and inclusive, matching the audience, with Black and diaspora women present throughout.
+
+**Two moods for the two tracks:**
+- *Coming for you* — elevated, stylish, restful: rooftop bar, lakeside calm, gallery, good food.
+- *Bringing the family* — joyful, energetic, sunny: safari, theme park, lake activities, kids having fun.
+
+**Sourcing & rights:** Licensed stock, commissioned shots, or — ideal — **official press/media imagery from the attractions and from Destination Milton Keynes**, which is high quality, recognisable and free to use with credit (a good reason to talk to DMK early, see §6). No scraped or unlicensed images. Credit where required.
+
+**Performance:** All images optimised (WebP, responsive `srcset`, lazy-load below the fold), descriptive alt text for accessibility and SEO. This page is image-heavy, so performance matters — don't let it load slowly.
+
+---
+
+## 1. Page placement & structure
+
+- Live at `/iamher/stay`, linked from the main event page AND from the **ticket-confirmation email** (the moment people decide to extend the trip).
+- Two clearly signposted tracks so nobody lands on the wrong content:
+  - **Coming for you** — solo / with friends / colleagues (the "treat weekend").
+  - **Bringing the family** — partner and/or kids.
+- Section order: **Getting here → Where to stay → Explore (Coming for you / Bringing the family) → Where to eat → Getting around → EP Concierge.**
+
+---
+
+## 2. Page copy (ready to use — adjust to house voice)
+
+### Hero
+> **Stay. Explore. Make it yours.**
+> You're already coming for the room. Why not stay for the weekend?
+> Milton Keynes is closer than you think — and there's more here than people expect. Whether you're treating yourself, travelling with friends, or bringing the family, we'll help you make a weekend of it.
+
+**Image — hero (required):** A wide, bright, aspirational shot of MK at its best — sunlit Willen Lake with the Peace Pagoda, or a vibrant centre:mk / MK Gallery scene under blue sky. The "I want to go there" image that sets the tone. Subtle overlay so the headline reads clearly.
+
+### Getting here
+> **By train:** Milton Keynes Central is around 35 minutes from London Euston, and well connected from the Midlands and the North. The venue and the central hotels are a short ride or walk from the station.
+> **By car:** Easy access from the M1 (J14), with plentiful parking around the centre.
+> **By air:** London Luton is the closest airport (about 35 minutes away).
+> *Want us to sort your train tickets or a station transfer? Our concierge can do that — see below.*
+
+**Image — getting here (required):** Something that says "easy and close" — a bright train arriving at Milton Keynes Central, or a clean map graphic showing MK's ~35-min link to London. Reassuring and simple.
+
+### Where to stay
+> Central Milton Keynes hotels are all walkable to each other, the shopping centre and the station. Pick the vibe that suits you:
+> **Treat yourself** — a smart 4-star with a rooftop bar.
+> **Reliable & central** — well-run mid-range hotels minutes from everything.
+> **Keep it simple** — clean, budget-friendly central rooms.
+> **A proper retreat** — a country-house spa hotel a short drive out, if you want to extend the wellbeing theme into a full reset.
+>
+> **Travelling as a group?** Don't book separately. Tell our concierge how many of you there are and we'll arrange a group rate — it's almost always cheaper than booking one by one.
+
+**Images — where to stay (required):** A small gallery, one image per tier — the rooftop bar/view (treat yourself), a smart central room (reliable), and the country-house spa (retreat). Aspirational but honest; use each hotel's own/official imagery where possible.
+
+*(Builder note: list the specific hotels from the agreed shortlist with booking links. Flag that there are TWO Premier Inns on Avebury Boulevard — link the exact one.)*
+
+### Explore — Coming for you (solo / friends)
+> **Bletchley Park.** The WWII codebreaking site where thousands of women did pioneering, largely unrecognised work — the original women behind the title. Powerful, beautiful, and completely on theme. The National Museum of Computing sits on the same site.
+> **Willen Lake & Peace Pagoda.** A calm lakeside walk to start your Sunday — free, reflective, and exactly the wind-down this weekend is about.
+> **centre:mk & MK Gallery.** One of the UK's biggest shopping centres, plus a genuinely good contemporary art gallery next door.
+> **Dinner & cocktails.** Make a night of it — see Where to eat below.
+
+**Images — Coming for you (required):** One image per attraction, in the elevated/restful mood — Bletchley Park's mansion in summer, Willen Lake at golden hour with the Peace Pagoda, MK Gallery interior. Stylish, calm, grown-up.
+
+### Explore — Bringing the family
+> **Woburn Safari Park.** Britain's largest drive-through safari — lions, elephants, the lot — just outside the city. An easy all-day win with kids.
+> **Gulliver's Land & Splash Zone.** A theme park and water park built for ages 2–13.
+> **Willen Lake.** Pedal boats, watersports, walking and play — something for every age, much of it free.
+> **Xscape.** Indoor skiing, trampolines, bowling and cinema all under one roof — the rainy-day backup.
+> **For little train lovers:** the Caldecotte Miniature Railway. **For history:** Bletchley Park runs family events all year.
+
+**Images — Bringing the family (required):** One image per attraction, in the joyful/energetic mood — safari animals up close, the theme park mid-ride, families on pedal boats at the lake. Sunny, fun, full of life. Use the attractions' official press imagery where possible.
+
+### Where to eat
+> **Parrilla** — top-rated halal steakhouse, buzzy, book ahead.
+> **The Oligarch** — stylish, great for a celebration dinner or cocktails with friends.
+> **Cosy Club** — relaxed brunch inside centre:mk the morning after.
+
+**Images — where to eat (required):** Warm, appetising food/interior shots — a beautifully plated steak, cocktails, a buzzy dining room. Make people hungry. Use each venue's own imagery where possible.
+
+### Getting around
+> Central MK is walkable, and licensed taxi firms and rideshare operate across the city. For anything further afield — Woburn, the spa hotel, the airport — our concierge can pre-book your transfers so you're not worrying about it on the day.
+
+*(Builder note: confirm 2–3 current licensed MK taxi operators before publishing; do not list unverified firm names.)*
+
+### EP Concierge (the CTA, repeated through the page)
+> **Making a weekend of it? Let our concierge handle it.**
+> Group hotel rates, restaurant bookings, family days out, train tickets, transfers, or a full 2–3 day Milton Keynes itinerary while you're here for Saturday and Sunday. Tell us what you need — drop your number and we'll call you.
+> **[ Talk to the EP Concierge → ]**
+
+**Image — concierge CTA (required):** A warm, premium "you're looked after" image — a welcoming concierge moment, or a relaxed woman enjoying the city with everything sorted. Reinforces that EP takes the hassle away.
+
+---
+
+## 3. EP Concierge form
+
+Triggered by the CTA button. Keep it short — the goal is the callback, not a full booking online.
+
+| Field | Type | Rules |
+|---|---|---|
+| Full Name | Text | Required |
+| Phone / WhatsApp number | Text | Required (this is a callback request) |
+| Email | Text | Optional |
+| Staying over? | Toggle / select | Yes / No / Not sure yet |
+| Number of nights | Select | 1 / 2 / 3+ (show if staying over) |
+| Who's coming with you? | Select | Just me / Friends or colleagues / Partner / Family with children |
+| Number in your group | Number | Drives group-rate logic |
+| Children & ages | Text | Optional — show if "Family with children" (tailors recommendations) |
+| What can we help with? | Multi-select | Group hotel rate · Restaurant booking · Family things to do · Train tickets · Station/airport transfer · Full weekend itinerary (2–3 days) · Something else |
+| Best time to call | Select | Morning / Afternoon / Evening |
+| Consent | Checkbox | Required (§7) |
+| Request a call | Button | Disabled until required fields + consent complete |
+
+**Success message:**
+> Thank you — your request is with the EP Concierge. We'll be in touch at your preferred time to help you plan your weekend.
+
+---
+
+## 4. Callback flow (what happens after submit)
+
+1. Submission lands in an **EP Concierge queue** (route to the operations mailbox — adminuk@eventperfekt.com — with the Director BCC to info@eventperfekt.com per routing rules). Agent-first: auto-acknowledge instantly by email/SMS, then a human works the queue.
+2. **Group-rate logic:** when several requests share dates / "staying over = yes", batch them. Once there are ~5+ beds in play, the concierge approaches the shortlisted hotels for a group rate and goes back to those guests with a code or held block. (This is the whole point of the model — group on demand, don't pre-commit.)
+3. **Family requests** get the day-out recommendations matched to the children's ages.
+4. **Itinerary requests** (2–3 day tour) get a simple Saturday/Sunday plan the concierge can assemble from the attraction reference (§5).
+5. **Train / transfer requests** — concierge books or advises.
+6. Track each request's status (New → Contacted → Booking in progress → Closed) so nothing is dropped. Keep it on the existing portal/tracker rather than a new system.
+
+---
+
+## 5. Attraction reference (for the page + the concierge)
+
+For internal use building itineraries and recommendations.
+
+- **Bletchley Park** (Bletchley) — WWII codebreaking heritage site; National Museum of Computing (working Colossus) on site. On-theme hero attraction. Family events year-round.
+- **Woburn Safari Park** (just outside MK) — Britain's largest drive-through safari. Family flagship. Book ahead.
+- **Woburn Abbey & Deer Park / Go Ape Woburn** — gardens, deer park, treetop adventure.
+- **Gulliver's Land + Splash Zone** (Livingstone Drive) — theme park & water park, ages ~2–13.
+- **Willen Lake** (Willen) — watersports, pedal boats, walking trails, Peace Pagoda; much of it free.
+- **Caldecotte Miniature Railway** — miniature train rides; budget-friendly, great for young children.
+- **Xscape** (Marlborough Gate) — indoor ski (Snozone), trampolines, bowling, cinema, dining.
+- **centre:mk** — major shopping centre, central.
+- **MK Gallery / Milton Keynes Theatre / The Stables** — culture and shows.
+- **Milton Keynes Museum** (Wolverton) — the city's story; concrete cows heritage.
+- **Stowe Gardens** (National Trust, short drive) — landscape gardens.
+- **Eat:** Parrilla (halal steakhouse, 4.8) · The Oligarch (celebration / cocktails) · Cosy Club (brunch, centre:mk).
+- **Context line for the page:** Milton Keynes is bidding to be UK City of Culture 2029 — a useful credibility note.
+
+---
+
+## 6. Separate note — get I Am Her listed with Destination Milton Keynes (DMK)
+
+**For:** whoever handles partnerships / marketing.
+**Why:** the analytics show a reach gap — too little real, targeted UK traffic. DMK is the city's official tourism body with engaged local social channels (#LoveMK) and an events listing. Getting the event listed there is **free or low-cost, local, and correctly targeted** — the exact audience the campaign is missing.
+
+**Actions:**
+1. Submit *I Am Her* to the **DMK events listing** (the event listing is the cheap, high-value bit — separate from any paid membership). Contact: info@destinationmiltonkeynes.co.uk.
+2. Ask DMK to amplify on their social channels; tag **@DestinationMK** and use **#LoveMK** on our own posts about the event.
+3. Note on membership: free DMK listings are reserved for visitor attractions, accommodation and conference venues. As an events *supplier*, EP would fall under **paid standard membership** if we want a permanent business listing — decide separately whether that's worth it. The **event listing** does not require it.
+4. Use the destination page itself as a reason for DMK to engage — we're actively driving overnight visitors into the city, which is exactly DMK's stated goal (capturing more overnight tourism spend).
+
+---
+
+## 7. Consent & privacy (light — but required)
+
+This is a **solicited** contact (the visitor is asking us to call), so it's low-risk — nothing like an unsolicited send. Still:
+- **Consent checkbox:** ☐ I'd like the EP Concierge to contact me about my visit. I understand my details will be used to help plan my trip.
+- **Privacy note:** state that contact details are processed by Event Perfekt Global Ltd to respond to this request, not added to marketing lists without separate opt-in, and can be deleted on request.
+- Phone numbers stored securely; never displayed publicly.
+
+---
+
+## 8. Acceptance criteria (done when)
+
+1. `/iamher/stay` is live, linked from the event page and the ticket-confirmation email.
+2. Content is split into clear **Coming for you** and **Bringing the family** tracks.
+3. Getting here, Stay, Explore, Eat and Getting around sections all present, each ending in the EP Concierge CTA.
+4. EP Concierge form validates required fields + consent before enabling "Request a call".
+5. Submissions route to the concierge queue with auto-acknowledgement and the correct mailbox + Director BCC.
+6. Group-rate batching logic in place (flag/cluster stay-over requests by date for block negotiation).
+7. Request status tracked to close on the existing portal — no new parallel system.
+8. Taxi operators verified before publishing; the exact Premier Inn linked.
+9. Privacy note published; consent wording matches §7.
+10. Separate DMK listing note actioned by the partnerships/marketing function.
+11. Every section is image-led per §0.1 and §2 — real, recognisable Milton Keynes/attraction imagery (not generic stock), bright and aspirational, two distinct moods for the two tracks, all licensed/credited, optimised (WebP/responsive/lazy-load) with descriptive alt text, and graded to one consistent look.

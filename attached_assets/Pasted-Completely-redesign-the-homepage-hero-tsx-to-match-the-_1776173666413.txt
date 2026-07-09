@@ -1,0 +1,112 @@
+Completely redesign the homepage hero.tsx to match the real Event Perfekt brand. The current homepage reads like a luxury wedding company but Event Perfekt delivers government programmes, corporate events, and Africa regional support. Remove all fake stats, inflated claims, ISO certifications, and luxury wedding language. Replace everything with accurate, professional content that works for government buyers, corporates, NGOs, and private clients.
+
+HERO SECTION:
+Remove: "Making Yours Perfekt", "Transforming visions into legendary experiences", "high-society weddings and global corporate galas", "elite circle", "legendary", "Initialize Planning", "Master Planners", "495./ Elite Rating"
+
+Replace headline with: Programme Delivery. Strategic Events. One Firm.
+Replace sub-headline with: UK-headquartered. Africa-capable. Government-awarded. We deliver programmes and events where execution, governance, and control matter.
+
+Two CTA buttons:
+- Work With Us — gold #E2C87A background dark text — links to /create-event
+- Client Portal — dark background gold border gold text — links to /client-portal/login
+
+STATS BAR:
+Remove all existing fake stats. Replace with:
+- 15+ Years Experience
+- UK Government Contract Holder — CEFAS25-35
+- 9+ Countries Delivered
+- UK and Africa Operations
+
+WHY EVENT PERFEKT SECTION:
+Replace heading with: Built for Environments Where Failure Is Not an Option
+Replace sub with: We work with government bodies, institutions, NGOs, and corporates who need more than a supplier — they need a delivery partner who owns outcomes.
+
+Three columns:
+
+Column 1 — Government and Institutional
+Icon: 🏛️
+Text: CEFAS25-35 sole awarded supplier. DEFRA, FCDO, APHA, MMO and JNCC authorised users. UK government standard compliance built in as standard.
+
+Column 2 — Corporate and Private
+Icon: 🎯
+Text: From Oxford University balls to corporate summits and private celebrations. End-to-end event design and delivery to the standard the moment demands.
+
+Column 3 — Africa Regional
+Icon: 🌍
+Text: Established in-country networks across Nigeria, Ghana, Senegal, Kenya, Uganda, Zambia and beyond. Local supplier relationships and on-the-ground delivery capability.
+
+SERVICES SECTION:
+Replace heading with: Two Disciplines. One Standard of Delivery.
+
+Replace all six service cards with these two groups:
+
+Group 1 heading: Programme and Project Delivery
+
+Card 1 — Cross-Border Programme Management
+Icon: 🌍
+Description: In-country execution, financial governance, and UK government-standard compliance across the UK, Africa, and international markets.
+
+Card 2 — Project Management and PMO
+Icon: 📋
+Description: Portfolio management, programme delivery, governance frameworks, and change management for government and corporate clients.
+
+Card 3 — Stakeholder and Community Engagement
+Icon: 🤝
+Description: Diaspora engagement, community mobilisation, and stakeholder management across complex multi-partner programmes.
+
+Group 2 heading: Strategic Events and Creative Delivery
+
+Card 4 — Corporate Events and Conferences
+Icon: 🏢
+Description: Government summits, product launches, awards ceremonies, conference management, and delegate coordination delivered to brief and on budget.
+
+Card 5 — Private and Celebration Events
+Icon: 🥂
+Description: Weddings, milestone celebrations, university balls, and private parties. From St Anne's College Oxford to intimate family occasions.
+
+Card 6 — End of Year and Gala Events
+Icon: ✨
+Description: Christmas parties, gala dinners, awards nights, and end of year celebrations for corporate and institutional clients across the UK and Nigeria.
+
+HOW WE WORK SECTION:
+Replace heading with: How We Work
+Replace sub with: A structured delivery approach from first conversation to final sign-off.
+
+Four steps:
+Step 1 — Discovery: Tell us what you need. We listen, ask the right questions, and assess fit before making any commitments.
+Step 2 — Proposal: Receive a detailed proposal within 24 hours covering scope, timeline, budget, and delivery approach.
+Step 3 — Mobilisation: We assign your delivery team, brief all partners and suppliers, and build the project plan before anything moves.
+Step 4 — Delivery and Sign-Off: We execute with precision and close with a formal sign-off, post-event report, and lessons learned document.
+
+FINAL CTA SECTION:
+Replace heading with: Ready to Talk to Our Delivery Team?
+Replace sub with: Whether you have a brief, a budget, or just an idea — we would like to hear from you.
+
+Two buttons:
+- Submit an Enquiry — gold background — links to /create-event
+- View Our Work — dark background gold border — links to /projects
+
+FOOTER:
+Remove ISO 9001, ISO 27001, ISO 45001, ISO 14001 certification claims entirely.
+
+Replace footer compliance text with: We are committed to GDPR compliance, data protection, and responsible delivery across all our operations. Event Perfekt Global Ltd is registered in England and Wales. Company No. 15875326.
+
+Update addresses:
+United Kingdom: 20 Wenlock Road, London, N1 7PG
+Nigeria: 25 Kusenla Street, Lagos, Nigeria
+
+Update Platform Access section:
+✦ Submit an Enquiry → /create-event
+🔐 Client Portal Login → /client-portal/login
+📋 Tender Command Centre → /saas-tender
+👥 Staff Portal → /staff
+
+HEADER NAVIGATION:
+Update the three header buttons to:
+- Work With Us → /create-event
+- Client Portal → /client-portal/login
+- Staff Portal → /staff
+
+Remove: Command Centre button from header
+
+Apply all changes now in one pass. Confirm when complete.

@@ -1,0 +1,89 @@
+I Am Her landing page — body content update. Per-section approval before any edits.
+
+Page: /iamher route on eventperfektplanningapp.com
+
+Step 1 — Read-only audit first. Show me:
+(a) Full page body structure with line numbers
+(b) Every instance of "senior" on the page
+(c) Every date reference ("7 August", "7th August", "Friday 7 August", "7 AUGUST 2026" anywhere — body, alt text, structured data, hidden fields, JSON-LD)
+(d) Form structure — both "Get In Touch" and "Waitlist" forms: fields, validation, submit behaviour, database tables
+(e) All three CTAs and their current visual weight: "REQUEST ACCESS", "SEND MESSAGE", "JOIN THE WAITLIST" — same size, colour, prominence? Or already differentiated?
+(f) Image placeholder text "Editorial portrait for the evening" — render gap or static text? Current image src for that block.
+(g) Confirmation flow — when someone submits "REQUEST ACCESS", what happens? Thank-you page? Confirmation email? Calendar invite?
+(h) Mobile rendering — how does the hero stack on mobile? Form usability?
+
+Hold for me after audit. No edits.
+
+Step 2 — Propose changes per spec below. Side-by-side diff per item. Per-item approval.
+
+AUDIENCE FRAMING:
+Audience is "women who lead" — any age, any stage. NOT "senior women" (reads as older women). Open to all ages. What unites them is the role — founder, director, executive, professional, builder, leader.
+
+CHANGE LIST:
+
+ITEM 1 — Remove all "senior" framing
+Strip every instance of "senior" used as an audience descriptor. Replace with role-focused language:
+- "founders, directors, executives, senior professionals" → "founders, directors, executives, professionals, builders"
+- "connecting with senior female leaders and decision-makers" → "connecting with women who lead and shape their fields"
+- "nominating senior women for review" → "nominating women who lead within your organisation for review"
+Per-instance approval. Audit will likely surface more — show me all.
+
+ITEM 2 — Single duplication to remove (others stay intentionally)
+Remove the SECOND instance of "An evening for her." in the hero block (it appears twice — once as strapline under masthead, again immediately below).
+Show me the current hero JSX and the proposed removal. Approve before applying.
+
+KEEP intentionally:
+- Title "The Woman Who Leads the Room" appearing in hero AND as section header (masthead + chapter heading — different functions)
+- "Invitations are issued, not purchased" appearing as eyebrow small-caps AND in the body paragraph closer (intentional bracketing — opens the rule, closes the rule)
+These are luxury-event craft conventions and must NOT be flattened.
+
+ITEM 3 — Date treatment: generic "August 2026" everywhere
+Replace every instance of "7 August 2026" / "7th August" / "Friday 7 August" / "7 AUGUST 2026" with "August 2026". Includes hero date line, body references, image alt text, structured data, hidden fields, form thank-you copy.
+Tolu confirms specific day next week — small follow-up update will land then.
+Per-instance confirmation. Show every location found.
+
+ITEM 4 — Establish dominant CTA: REQUEST ACCESS
+The page currently has three primary CTAs at near-equal visual weight: "REQUEST ACCESS", "SEND MESSAGE", "JOIN THE WAITLIST". This dilutes conversion intent.
+
+Make "REQUEST ACCESS" the dominant primary CTA across the page:
+- Hero CTA = Request Access (primary button, full visual weight, accent colour, prominent placement)
+- Get In Touch form contact "Send Message" → demote to a smaller styled text link or secondary button in the footer area (it's a general enquiry channel, not the primary conversion action)
+- Waitlist "Join the Waitlist" → keep as a secondary path, but visually subordinate to Request Access. Position it as the fallback ("Invitations for August 2026 may already be allocated. Join the waitlist for future evenings.") rather than parallel to Request Access.
+
+Show me the current CTA hierarchy and proposed visual demotion structure. Per-CTA approval before any restyling.
+
+ITEM 5 — Add visible selection criteria
+Add ONE LINE near the "Invitations are issued, not purchased" framing that makes the selection process visible and feel earned, not arbitrary.
+
+Proposed line: "Invitations are issued through nomination, application review, and curated peer referral."
+
+Position: under the eyebrow at top, OR as a small line within the body paragraph closer (your judgement based on layout). Read-only flag — show me both placement options before applying.
+
+ITEM 6 — Resolve "Editorial portrait for the evening" placeholder (flag only)
+Confirm with Tolu whether to (a) wait for actual editorial image, (b) remove placeholder, or (c) replace with holding image. No edit until Tolu confirms.
+
+ITEM 7 — Flag for Tolu (no edits, separate workstreams):
+(a) Mobile rendering audit — confirm hero stacks well, forms tap-friendly, CTAs accessible without zoom
+(b) Confirmation flow — propose a warm thank-you page after Request Access submission. Acknowledge receipt, set expectation ("you'll hear back within 5 working days"), maintain emotional momentum. Don't redirect to a blank page.
+(c) Branching qualification on REQUEST ACCESS — when form submission volume builds, sort by guest / sponsor / press / partner via conditional logic. Not in scope for this commit.
+(d) Connect forms to iam_her_leads database review queue — Tolu and Juliet approval workflow per platform pattern.
+
+KEEP UNCHANGED:
+- All "champagne" references (programme detail, luxury cue)
+- The strong copy: "Most rooms expect something from women. Performance. Leadership. Strength. Output. This room does not." — keep verbatim
+- "Aesthetic Partner — Partner reveal scheduled May 2026" — keep as placeholder for the co-creator naming
+- Section structure (THE INVITATION / WHY THIS EVENING EXISTS / THE EXPERIENCE / FOR ORGANISATIONS WHO BELIEVE IN WOMEN / About Event Perfekt)
+- All luxury voice — slow, intentional, restrained register
+
+OUT OF SCOPE:
+- Form branching (separate workstream)
+- Meta Pixel installation (separate workstream)
+- New hero image content (separate Tolu decision)
+- Database connection workflow (separate workstream)
+
+Step 3 — After all items approved and applied: single commit, no Co-Authored-By, message:
+"I Am Her landing page body — reposition for women who lead, establish dominant CTA hierarchy, add selection criteria, generic August date"
+
+Step 4 — Flag for Tolu post-commit:
+(a) Date will need updating from "August 2026" to specific day next week
+(b) Mobile audit + confirmation flow + branching + database workflow — four separate workstreams queued for sequencing

@@ -1,0 +1,294 @@
+Update Tender Finder to include Twin Trade business opportunities without creating separate routes or portals. Keep everything inside the existing Tender Finder and Tender Dashboard.
+
+Do NOT create separate routes like /event-perfekt or /twin-trade. Instead, use categories, tags, and filters within the same Tender Finder.
+
+Add these new categories and keyword matching:
+
+REMittance / Payments / Disbursement
+- remittance
+- money transfer
+- cross-border payments
+- payment service provider
+- payment gateway
+- bulk payments
+- disbursement services
+- beneficiary payments
+- cash transfer programmes
+- humanitarian cash assistance
+- mobile money
+- wallet payouts
+- voucher payments
+- aid disbursement
+- FX payout services
+- escrow payment infrastructure
+- KYC / AML / sanctions screening linked to payments
+
+Africa Programme Delivery
+- programme delivery Africa
+- donor programme support
+- in-country payment delivery
+- beneficiary payout management
+- multi-country Africa programme logistics
+
+Africa Event Tenders
+- event management Africa
+- conference Africa
+- workshop delivery Africa
+- training events Africa
+
+Add Africa as a selectable region filter, not just Nigeria.
+
+Ensure tenders located in Ghana, Kenya, Zambia, Senegal, Sierra Leone, Morocco, Egypt, Mozambique, Madagascar, Nigeria, and other African countries are included and tagged correctly.
+
+Connect and prioritise these tender sources for Africa remittance, payments, and programme delivery opportunities:
+
+- UNGM (United Nations Global Marketplace)
+- UNDP procurement
+- UNICEF procurement
+- World Bank procurement notices
+- African Development Bank procurement
+- FCDO and UK aid tenders involving Africa
+- Nigeria Bureau of Public Procurement
+- Contracts Finder and Find a Tender (already connected, ensure Africa-related tenders from UK buyers are captured)
+
+Strict filtering rules must remain:
+- Only show OPEN tenders
+- Deadline must be in the future
+- Within recency window (default 60 days)
+- Exclude awarded, cancelled, archived, and expired tenders
+
+Do not change the Tender Dashboard, Bid Workspace, or existing Event Perfekt tender functionality. Just expand the finder so it also captures remittance, payment, and Africa programme tenders.
+
+Why this approach is correct:
+You run one company, but bid for two types of work:
+
+Event management tenders
+
+Remittance / programme delivery tenders (Twin Trade)
+
+So the correct structure is one finder + filters, not two portals.
+
+If you want, I can also tell Replit how to add an automatic daily scraper specifically for Africa payment tenders, which is where most of your future revenue will come from.
+
+exactky o now rwrite what ishoud sendwithout confusing us
+
+
+Paste this exact message to Replit:
+
+Please update the existing Tender Finder so it also finds remittance, payment, disbursement, and Africa programme tenders. Do not create separate routes or portals. Everything must stay inside the current Tender Finder and Tender Dashboard.
+
+Add keyword matching and categories for:
+- Remittance
+- Money transfer
+- Cross-border payments
+- Payment service provider
+- Payment gateway
+- Bulk payments and disbursements
+- Beneficiary payments
+- Cash transfer programmes
+- Humanitarian cash assistance
+- Mobile money and wallet payouts
+- Aid disbursement services
+- Voucher payments
+- Escrow and payout services
+- KYC / AML / sanctions screening linked to payment services
+
+Add “Africa” as a region filter (in addition to UK and Nigeria), and ensure tenders in Ghana, Kenya, Zambia, Senegal, Sierra Leone, Morocco, Egypt, Mozambique, Madagascar, Nigeria, and other African countries are included.
+
+Ensure tenders from these sources are captured where relevant:
+- UNGM (United Nations)
+- UNDP
+- UNICEF
+- World Bank
+- African Development Bank
+- FCDO / UK aid tenders involving Africa
+- Nigeria Bureau of Public Procurement
+- Contracts Finder and Find a Tender (Africa-related tenders posted by UK buyers)
+
+Keep the strict rules already in place:
+- Only show OPEN tenders
+- Deadline must be in the future
+- Within the selected recency window (default 60 days)
+- Exclude awarded, cancelled, archived, and expired tenders
+
+Do not change the existing dashboard, bid workspace, or event tender functionality. Only expand Tender Finder so it also captures remittance, payment, and Africa programme opportunities.
+
+This keeps it simple and ensures Twin Trade–type opportunities appear automatically alongside your event tenders.
+
+so whats the logic he it hets this it should send autotic email to admin@eventperfekt.com , aumtomatios hsoud be daily as we og in we shoud get automations and email should besend on dauily nbasis they shoud bethng sautomatically on wathh list then whats the logic inbiding 
+
+and 
+
+Here is the simple logic your Tender Manager must follow, plus the exact text you can send Replit so it works automatically without manual effort.
+
+1. Core logic: how tenders are found and handled automatically
+
+Every day, the system must run this sequence:
+
+Step 1 — Scan sources automatically (daily scheduler)
+At a fixed time (for example 06:00 UK time), the system checks:
+
+Contracts Finder
+
+Find a Tender Service
+
+UNGM
+
+UNDP
+
+UNICEF
+
+World Bank
+
+African Development Bank
+
+Nigeria procurement portals
+
+Any Africa donor tender feeds
+
+It pulls all new tenders.
+
+Step 2 — Filter automatically
+Only keep tenders that meet ALL rules:
+
+Status = OPEN
+
+Deadline is in the future
+
+Published within last 60 days
+
+Matches your categories:
+
+Events
+
+Training
+
+Project/programme delivery
+
+Remittance / payments / disbursement
+
+Africa programme delivery
+
+Everything else is ignored.
+
+Step 3 — De-duplicate
+If the same tender appears twice (example: UNGM + UNDP), keep one record only.
+
+Step 4 — Auto-add to Watchlist
+Any tender matching your business categories is automatically added to:
+
+Watchlist = “New Opportunities”
+
+You do NOT need to manually star them.
+
+Step 5 — Send automatic email daily
+System sends email to:
+
+admin@eventperfekt.com
+
+Email includes:
+
+Subject example:
+Tender Manager – New Opportunities Found Today (5)
+
+Email body example:
+
+• UNICEF – Payment Disbursement Services – Kenya – Deadline 14 May
+• FCDO – Event Management Framework – Africa – Deadline 2 June
+• UNDP – Cash Transfer Programme – Ghana – Deadline 28 May
+
+Link:
+Open Tender Manager
+
+Step 6 — Show alerts inside dashboard
+When you log in, dashboard shows:
+
+New tenders today
+Urgent deadlines (next 14 days)
+Watchlist
+
+2. Logic for bidding workflow inside Tender Manager
+
+Once a tender appears:
+
+Stage 1 — Research
+Tender automatically appears in Watchlist.
+
+You review and click:
+
+“Move to Active Bid”
+
+Stage 2 — Bid workspace opens
+System prepares:
+
+Executive summary draft
+Methodology draft
+Company profile inserted
+Relevant case studies
+
+Using your stored company profile and documents.
+
+Stage 3 — Document upload
+You upload:
+
+ITT document
+Pricing
+Supporting files
+
+AI uses these to improve responses.
+
+Stage 4 — Submission tracking
+Status changes:
+
+Researching
+In Progress
+Submitted
+Won
+Lost
+
+Deadline reminders are sent automatically.
+
+3. Automation requirements you must send Replit
+
+Paste this exactly:
+
+Add full automation to Tender Manager.
+
+1. Daily automatic tender scan
+The system must automatically scan all connected tender sources once per day (minimum), without manual action.
+
+2. Automatic filtering
+Only keep tenders that are:
+- OPEN
+- deadline in the future
+- published within last 60 days
+- matching our categories (events, training, programme delivery, remittance, payments, disbursement, Africa programme delivery)
+
+3. Automatic watchlist
+Any new matching tender must automatically be added to the Watchlist. Users should not need to manually star tenders.
+
+4. Automatic email notification
+Send a daily email summary to admin@eventperfekt.com showing:
+- new tenders found
+- title
+- organisation
+- country
+- deadline
+- link to Tender Manager
+
+5. Dashboard alerts
+When logging in, dashboard must show:
+- new tenders found today
+- urgent deadlines within 14 days
+- watchlist items
+
+6. Deadline reminders
+Send reminder emails:
+- 14 days before deadline
+- 7 days before
+- 3 days before
+- 1 day before
+
+7. Do not require manual searching. Everything must run automatically via scheduler.
+
+Do not break existing Tender Manager or bid workspace functionality.

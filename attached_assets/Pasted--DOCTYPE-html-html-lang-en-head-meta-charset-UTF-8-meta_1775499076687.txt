@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study: St. Anne's College Oxford — St. Anne's Ball 2023 | Event Perfekt Global</title>
+<meta name="description" content="Event Perfekt Global delivered end-to-end event theme styling for St. Anne's Ball 2023 at St. Anne's College, University of Oxford — 700 guests, Neverland theme, full concept and delivery.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #258807;
+    --white: #ffffff;
+    --black: #000000;
+    --grey: #111111;
+    --mid: #1a1a1a;
+    --muted: #888888;
+    --border: #222222;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1020px; margin: 0 auto; padding: 0 32px; }
+  a { color: var(--green); text-decoration: none; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 560px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    filter: brightness(0.3);
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 55%, transparent 100%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 64px 32px;
+    max-width: 1020px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .breadcrumb {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .breadcrumb span { color: #555; }
+  .hero-content h1 {
+    font-size: clamp(28px, 4vw, 54px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    max-width: 800px;
+  }
+  .hero-content h1 em { color: var(--green); font-style: normal; }
+  .hero-content p {
+    font-size: 17px;
+    color: #cccccc;
+    max-width: 620px;
+    line-height: 1.85;
+  }
+
+  /* ── CLIENT BAR ── */
+  .client-bar {
+    background: var(--green);
+    padding: 22px 0;
+  }
+  .client-bar .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .client-bar p {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .client-bar .detail {
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.85;
+    letter-spacing: 0.8px;
+  }
+
+  /* ── META STRIP ── */
+  .meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid var(--border);
+    border-top: none;
+  }
+  .meta-item {
+    padding: 22px 28px;
+    border-right: 1px solid var(--border);
+    flex: 1;
+    min-width: 140px;
+  }
+  .meta-item:last-child { border-right: none; }
+  .meta-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .meta-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .meta-value.green { color: var(--green); }
+
+  /* ── SECTIONS ── */
+  .section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+  .section-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .section h2 {
+    font-size: clamp(24px, 3vw, 38px);
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .section h2 em { color: var(--green); font-style: normal; }
+  .section p {
+    font-size: 16px;
+    color: #bbbbbb;
+    max-width: 720px;
+    line-height: 1.9;
+    margin-bottom: 18px;
+  }
+
+  /* ── TWO COL ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+    margin-top: 20px;
+  }
+  .two-col img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    filter: brightness(0.8);
+    display: block;
+  }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── STAT ROW ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 52px;
+  }
+  .stat-card {
+    background: var(--grey);
+    padding: 32px 28px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 900;
+    color: var(--green);
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  /* ── DELIVERY GRID ── */
+  .delivery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 52px;
+  }
+  .delivery-card {
+    background: var(--grey);
+    padding: 36px 32px;
+  }
+  .delivery-num {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .delivery-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .delivery-card p {
+    font-size: 14px;
+    color: #999999;
+    line-height: 1.75;
+  }
+
+  /* ── IMAGE ROW ── */
+  .img-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin: 52px 0 0;
+  }
+  .img-row img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    filter: brightness(0.75);
+    display: block;
+  }
+  @media (max-width: 600px) { .img-row { grid-template-columns: 1fr 1fr; } }
+
+  /* ── THEME CALLOUT ── */
+  .theme-callout {
+    background: var(--grey);
+    border-left: 4px solid var(--green);
+    padding: 56px 52px;
+    margin-top: 72px;
+  }
+  .theme-callout h2 {
+    font-size: clamp(22px, 3vw, 36px);
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .theme-callout h2 em { color: var(--green); font-style: normal; }
+  .theme-callout p {
+    font-size: 16px;
+    color: #bbbbbb;
+    max-width: 700px;
+    line-height: 1.9;
+    margin-bottom: 16px;
+  }
+  .theme-callout p:last-child { margin-bottom: 0; }
+
+  /* ── PROOF LIST ── */
+  .proof-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 44px;
+  }
+  .proof-item {
+    background: var(--grey);
+    padding: 26px 36px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .proof-item .arrow {
+    color: var(--green);
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .proof-item p {
+    font-size: 15px;
+    color: #cccccc;
+    line-height: 1.75;
+    margin: 0;
+    max-width: none;
+  }
+  .proof-item p strong { color: var(--white); font-weight: 700; }
+
+  /* ── CTA ── */
+  .case-cta {
+    padding: 90px 0 70px;
+    text-align: center;
+  }
+  .case-cta h2 {
+    font-size: clamp(26px, 3.5vw, 46px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  .case-cta h2 em { color: var(--green); font-style: normal; }
+  .case-cta p {
+    font-size: 17px;
+    color: #999999;
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.85;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--green);
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .cta-btn:hover { opacity: 0.85; }
+
+  @media (max-width: 640px) {
+    .theme-callout { padding: 36px 28px; }
+    .hero-content { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <img class="hero-img"
+    src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1600&auto=format&fit=crop&q=80"
+    alt="Oxford University grand ball venue"
+    loading="eager">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="breadcrumb">Our Work in Action <span>/</span> Case Study</div>
+    <h1>St. Anne's College, Oxford.<br><em>700 Guests. One Night. Neverland.</em></h1>
+    <p>Full end-to-end event theme styling and concept delivery for St. Anne's Ball 2023 — one of Oxford University's most anticipated annual events, delivered by Event Perfekt to brief, on time, and to a standard that matched the institution.</p>
+  </div>
+</div>
+
+<!-- ── CLIENT BAR ── -->
+<div class="client-bar">
+  <div class="container">
+    <div class="inner">
+      <p>Client: St. Anne's College, University of Oxford</p>
+      <span class="detail">Event: St. Anne's Ball 2023 &nbsp;|&nbsp; 11th March 2023 &nbsp;|&nbsp; Oxford</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── META STRIP ── -->
+<div class="container">
+  <div class="meta-strip">
+    <div class="meta-item">
+      <span class="meta-label">Client</span>
+      <span class="meta-value">St. Anne's College, Oxford</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Event</span>
+      <span class="meta-value">St. Anne's Ball 2023</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Theme</span>
+      <span class="meta-value green">Neverland</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Guests</span>
+      <span class="meta-value">700</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">EPG Role</span>
+      <span class="meta-value">Concept &amp; Theme Delivery</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── THE BRIEF ── -->
+<section class="section">
+  <div class="container">
+    <span class="section-tag">The Brief</span>
+    <h2>An Oxford Ball.<br><em>Nothing Less Than Exceptional.</em></h2>
+    <div class="two-col">
+      <div>
+        <p>
+          St. Anne's College Oxford commissioned Event Perfekt to design and deliver the complete theme styling for St. Anne's Ball 2023 — a flagship annual event held on the grounds of one of the University of Oxford's most distinguished colleges.
+        </p>
+        <p>
+          The brief was a full Neverland concept — immersive, theatrical, and worthy of the venue. 700 guests. A seven-hour event running from 7:00pm through to 2:00am. Every detail of the environment — the theming, the atmosphere, the visual execution — was our responsibility to plan, build, and deliver.
+        </p>
+        <p>
+          This was not a logistics exercise. It was creative and operational delivery at the highest level — with the full weight of an Oxford institution's expectations attached.
+        </p>
+      </div>
+      <img
+        src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&auto=format&fit=crop&q=80"
+        alt="Grand event venue styling"
+        loading="lazy">
+    </div>
+
+    <!-- STAT ROW -->
+    <div class="stat-row">
+      <div class="stat-card">
+        <span class="stat-num">700</span>
+        <span class="stat-label">Guests</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">7</span>
+        <span class="stat-label">Hours of Live Event</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">1</span>
+        <span class="stat-label">Theme. Fully Realised.</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">Oxford</span>
+        <span class="stat-label">University Venue</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHAT WE DELIVERED ── -->
+<section class="section">
+  <div class="container">
+    <span class="section-tag">What We Delivered</span>
+    <h2>Concept to Completion.<br>Every Stage Owned by Us.</h2>
+    <p>Our contract covered the full scope of event theme styling — from initial concept development through to on-the-night delivery. Everything visible to those 700 guests was planned, sourced, built, and installed by our team.</p>
+
+    <div class="delivery-grid">
+      <div class="delivery-card">
+        <span class="delivery-num">01 — Concept</span>
+        <h3>Theme Design &amp; Creative Direction</h3>
+        <p>Full creative development of the Neverland concept — translating the theme into a cohesive visual and atmospheric environment that worked across the entire venue at scale.</p>
+      </div>
+      <div class="delivery-card">
+        <span class="delivery-num">02 — Planning</span>
+        <h3>Event Styling Plan &amp; Production Schedule</h3>
+        <p>Detailed planning and production scheduling agreed with St. Anne's College — covering access windows, installation sequencing, supplier coordination, and a clear delivery timeline leading to the 7:00pm start.</p>
+      </div>
+      <div class="delivery-card">
+        <span class="delivery-num">03 — Sourcing</span>
+        <h3>Props, Materials &amp; Supplier Management</h3>
+        <p>Sourcing and procurement of all theming materials, props, and styling elements. Every item selected to deliver the immersive Neverland environment the brief required.</p>
+      </div>
+      <div class="delivery-card">
+        <span class="delivery-num">04 — Installation</span>
+        <h3>Full On-Site Build &amp; Styling</h3>
+        <p>Complete on-site installation — carried out within the access window granted by the college, built to brief, and ready for doors to open at 7:00pm. Styled across all event spaces.</p>
+      </div>
+      <div class="delivery-card">
+        <span class="delivery-num">05 — Delivery</span>
+        <h3>On-the-Night Execution</h3>
+        <p>Live event oversight throughout the evening — ensuring the environment held, the theme was maintained, and the experience delivered for 700 guests across the full seven-hour event.</p>
+      </div>
+      <div class="delivery-card">
+        <span class="delivery-num">06 — Close</span>
+        <h3>Breakdown &amp; Site Reinstatement</h3>
+        <p>Full breakdown of all theming and styling elements following the event — leaving the venue in the condition required by the college. Clean, professional, and complete.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── IMAGE ROW ── -->
+<div class="container">
+  <div class="img-row">
+    <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&auto=format&fit=crop&q=80" alt="Event theme styling installation" loading="lazy">
+    <img src="https://images.unsplash.com/photo-1478146059778-26028b07395a?w=600&auto=format&fit=crop&q=80" alt="Grand ball event decoration" loading="lazy">
+    <img src="https://images.unsplash.com/photo-1496337589254-7e19d01cec44?w=600&auto=format&fit=crop&q=80" alt="Oxford event evening atmosphere" loading="lazy">
+  </div>
+</div>
+
+<!-- ── THEME CALLOUT ── -->
+<div class="container">
+  <div class="theme-callout">
+    <span class="section-tag">The Neverland Theme</span>
+    <h2>Immersive. Theatrical.<br><em>Delivered at Oxford Standard.</em></h2>
+    <p>
+      Neverland as a theme demands more than decoration. It demands an environment — one where guests step out of the everyday and into something that feels completely transformed. At a venue like St. Anne's College, that bar is higher still.
+    </p>
+    <p>
+      We designed and built an event environment that met that expectation. Every space considered. Every detail deliberate. The kind of execution that reflects well not just on the event — but on the institution hosting it.
+    </p>
+  </div>
+</div>
+
+<!-- ── WHAT THIS DEMONSTRATES ── -->
+<section class="section">
+  <div class="container">
+    <span class="section-tag">What This Demonstrates</span>
+    <h2>Why This Engagement Matters<br>to Our Track Record</h2>
+    <div class="proof-list">
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>We operate at institutional level</strong> — St. Anne's College is a University of Oxford institution. The standards expected and the scrutiny applied are not comparable to a standard corporate event brief.</p>
+      </div>
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>We deliver at scale</strong> — 700 guests, a seven-hour event, full venue theming. This is large-format delivery, not boutique event management.</p>
+      </div>
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>We own the full scope</strong> — concept, planning, sourcing, installation, live delivery, and breakdown. No handoffs. No gaps. One team, one accountability.</p>
+      </div>
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>We work within complex venue environments</strong> — Oxford college venues have strict access, compliance, and reinstatement requirements. We navigated all of them without issue.</p>
+      </div>
+      <div class="proof-item">
+        <span class="arrow">→</span>
+        <p><strong>Creative and operational delivery are not separate for us</strong> — the Neverland concept was ours, and so was every step of the execution. That integration is what makes the difference between a themed event and an immersive one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="case-cta">
+  <div class="container">
+    <h2>Planning an Event That<br><em>Has to Be Right?</em></h2>
+    <p>
+      Whether it is a large-scale institutional event, a high-profile corporate occasion, or a flagship community programme — we deliver to the standard the moment demands.
+    </p>
+    <a href="/contact" class="cta-btn">Talk to Our Events Team</a>
+  </div>
+</section>
+
+</body>
+</html>

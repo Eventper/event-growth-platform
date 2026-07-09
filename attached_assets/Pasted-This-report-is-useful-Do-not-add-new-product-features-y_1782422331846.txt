@@ -1,0 +1,165 @@
+This report is useful. Do not add new product features yet.
+
+First stabilise the platform so it is safe to use in production.
+
+Priority fixes:
+
+1. Email sending
+
+Namecheap SMTP passes, Gmail fails.
+
+For now, remove Gmail fallback from the live send path unless valid Gmail credentials are available.
+
+Use Namecheap as the primary verified sender.
+
+Do not allow the system to silently fall back to broken Gmail.
+
+Show email provider status in the admin health page:
+
+* Namecheap: connected / failed
+* Gmail: connected / failed / disabled
+
+2. OpenRouter timeout
+
+Add a 30-second timeout to every OpenRouter fetch call.
+
+Use:
+AbortSignal.timeout(30000)
+
+No AI generation request should hang indefinitely.
+
+3. OpenRouter retry logic
+
+Add retry logic for:
+
+* 429
+* 500
+* 502
+* 503
+* 504
+* network errors
+
+Use:
+
+* maximum 3 attempts
+* exponential backoff
+* jitter
+* clear final error message if all attempts fail
+
+Do not retry on 400 or invalid authentication errors.
+
+4. Duplicate protection
+
+Prevent duplicate sends or duplicate drafts for the same recipient within the same campaign.
+
+Add a duplicate check before creating or sending communication.
+
+Suggested rule:
+clientId + campaignId + recipientEmail + messageType + status
+
+If a draft already exists, return the existing draft instead of creating a new one.
+
+If an email has already been sent, block the duplicate send unless the user explicitly confirms resend.
+
+5. Apollo protection
+
+Add:
+
+* 10-second timeout
+* rate limit wrapper
+* clear error handling for Apollo 429 / quota / invalid key
+* logging for credits used
+
+Apollo should never be called repeatedly without safeguards.
+
+6. Delivery tracking
+
+Add a basic delivery tracking layer.
+
+At minimum, store:
+
+* provider
+* sentAt
+* deliveryStatus
+* providerMessageId
+* errorMessage
+* lastStatusCheckedAt
+
+If webhooks are not ready yet, create placeholder status tracking:
+
+* draft
+* approved
+* queued
+* sent
+* failed
+* suppressed
+* bounced unknown
+
+Do not claim delivered unless delivery is actually confirmed.
+
+7. Background job queue
+
+Move AI generation and email sending to background jobs.
+
+Use a queue system so long-running AI generation or SMTP sending does not block the request.
+
+Minimum job states:
+
+* queued
+* processing
+* completed
+* failed
+* retrying
+
+8. Health page
+
+Create a proper system health page showing:
+
+* OpenRouter status
+* Namecheap SMTP status
+* Gmail status
+* Apollo status
+* Database status
+* Queue status
+* Last successful AI generation
+* Last successful email send
+* Last failed job
+* Suppression status
+
+9. Error messages
+
+Replace generic 500 errors with clear operational messages.
+
+Examples:
+
+* AI generation timed out. Please retry.
+* Email provider unavailable.
+* Recipient is suppressed.
+* Duplicate communication already exists.
+* Apollo quota exceeded.
+* OpenRouter authentication failed.
+
+10. Re-run functional test
+
+After fixes, rerun the full test suite and produce a new report showing:
+
+* AI generation with timeout
+* retry behaviour
+* duplicate protection
+* email send via Namecheap
+* Gmail disabled or fixed
+* Apollo timeout/rate limit
+* queue job completion
+* delivery status captured
+
+Do not call the platform production-ready until these resilience fixes pass.
+
+Current position:
+
+* Core engine: working
+* Auth/security: working
+* AI generation: working
+* Quality gate: working
+* Email delivery: partially working
+* Resilience: not ready
+* Production readiness: not ready

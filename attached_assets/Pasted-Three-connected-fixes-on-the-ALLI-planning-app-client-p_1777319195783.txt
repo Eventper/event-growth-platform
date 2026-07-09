@@ -1,0 +1,52 @@
+Three connected fixes on the ALLI planning app client portal. All in client/src/pages/client-portal/portal-alli-client-hub.tsx unless noted.
+
+============================================================
+FIX 1 — BUILD THE MILESTONE SIGN-OFF UI (Phase 3B was missed earlier)
+============================================================
+
+Yesterday's documents workstream Phase 3B was reported complete but the milestone sign-off UI was never actually built on the client side. Build it now.
+
+Section title: "Milestone Sign-Offs"
+Location: below the kanban board, above the existing per-deliverable list.
+
+For each Phase milestone (Phase 1, Phase 2, Phase 3), render one strip showing:
+- Phase number badge (1/2/3)
+- Milestone title (e.g., "Phase 1 Milestone — Strategic Review Complete")
+- Status pill driven by milestone_state, coloured:
+   * 'draft' → grey "Not yet sent" (no buttons render)
+   * 'ready_for_client' → amber "Ready for your sign-off" (Approve + Request Changes buttons render)
+   * 'client_signed_off' (or whatever the post-approve state is named on staff side — check portal-alli-routes.ts) → green "✓ Signed off on [date]"
+   * 'needs_changes' → red "✗ Changes requested on [date]" with the rejection_comment shown
+- When state is 'ready_for_client':
+   * Big green button "✓ Approve & Sign Off" — opens confirmation dialog: "I confirm I have reviewed all documents in this milestone pack. Sign-off is final and will be recorded with timestamp." → POST /api/client-portal/alli/milestones/:milestone_id/signoff with { decision: 'approved' }
+   * Red secondary button "Request Changes" — opens textarea, requires non-empty comment → POST same endpoint with { decision: 'rejected', rejection_comment: text }
+
+The proxy route POST /api/client-portal/alli/milestones/:milestone_id/signoff already exists in server/client-portal-routes.ts (built yesterday) — wire to it directly. It captures IP and user agent automatically server-side.
+
+Use existing PortalLayout, portalCard, G colour palette. Don't invent new styling.
+
+After signoff success, refresh the milestone data so the strip updates state on the same page (no full reload needed).
+
+============================================================
+FIX 2 — REMOVE THE OBSOLETE PER-DELIVERABLE SIGN-OFF
+============================================================
+
+In portal-alli-client-hub.tsx around line 131, the SignOffPanel component renders an "✓ Approve this deliverable" dialog per individual deliverable (D1–D9). This is the old design from before yesterday's milestone-level decision.
+
+Remove it cleanly:
+- Delete the SignOffPanel component import/usage from the deliverable cards.
+- Delete the SignOffPanel component file itself if it's not used anywhere else (search the codebase first).
+- The deliverable cards should still display title, due date, priority, owner, status — just no Approve button.
+
+Approval now happens only at milestone level (Fix 1 above). Individual deliverables are evidence inside the milestone pack, not separately approvable.
+
+============================================================
+FIX 3 — D9 MISSING FROM CLIENT VIEW
+============================================================
+
+Investigate why deliverable 9 ("Market entry roadmap") is missing from Kehinde's view.
+
+Per the diagnosis, the row has share_with_client=false in the database.
+
+Two possible causes:
+   (a) Data error — D9 should be share_with_client=true like D1–D8. Run a SELECT on the deliverables table to confirm. If it's the only row with false among Phase 1's nine, this is a stray data bug from manual entry. Update it: UPD

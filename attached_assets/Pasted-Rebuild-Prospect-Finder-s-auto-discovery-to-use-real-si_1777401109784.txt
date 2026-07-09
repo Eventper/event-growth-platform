@@ -1,0 +1,183 @@
+Rebuild Prospect Finder's auto-discovery to use real signal sources instead of AI hallucination. The downstream pipeline (RocketReach contact waterfall → email drafting → 7:30am morning job → approval queue → marketing@eventperfekt.com send) is already built and works correctly. We are ONLY changing the upstream "find companies with event triggers" layer.
+
+============================================================
+DESIGN DECISIONS LOCKED
+============================================================
+
+- 3 signal sources for v1: Companies House anniversaries, RSS funding rounds, RSS product launches
+- Geography: UK + Nigeria, with a toggle setting (UI: "Active geographies: [✓] UK [✓] Nigeria")
+- Each trigger drives different email angles
+- Funding-round emails pitch celebration AND wellness/away day options
+- Existing waterfall, approval queue, and morning job stay untouched
+
+============================================================
+PHASE 1 — STOP THE BLEEDING (do first)
+============================================================
+
+1. Disable the existing GPT-4o-mini auto-generator that runs every 5 minutes generating CEFAS/FCDO/Africa-programme prospects. Comment out its scheduler/cron registration. Add a clear note in the code: "DISABLED 28 Apr 2026 — replaced by signal-based discovery in scripts/discovery/. Do not re-enable without explicit instruction."
+
+2. Quarantine the existing 1,565 prospects: add a column quarantined BOOLEAN DEFAULT FALSE on company_prospects. Run an UPDATE setting quarantined=TRUE on every existing row created before today. Update the morning 7:30am job's SQL to add WHERE quarantined IS NOT TRUE. This protects marketing@eventperfekt.com from sending emails to the hallucinated list.
+
+3. Add a "Run Verification" admin button somewhere in the Prospect Intelligence UI that, when clicked, runs the existing RocketReach waterfall against the quarantined prospects in batches of 50. If RocketReach returns a verified contact, set quarantined=FALSE (re-activate). If not, leave quarantined and add a verification_failed_at timestamp. This way real prospects in the existing list get rescued, fictional ones stay quarantined.
+
+============================================================
+PHASE 2 — SIGNAL SOURCE 1: COMPANIES HOUSE ANNIVERSARIES
+============================================================
+
+Create scripts/discovery/anniversary-scanner.ts.
+
+Logic:
+- Use COMPANIES_HOUSE_API_KEY (UK) and a Nigerian equivalent if one exists (CAC API — check if available, otherwise leave a TODO)
+- Daily scan: identify UK companies whose incorporation date matches a milestone anniversary in the next 90 days. Milestones: 5, 10, 15, 20, 25, 30, 40, 50 years.
+- Filter: only companies registered as "active", not "dissolved" or "in liquidation"
+- Filter: only company types worth pursuing (LTD, PLC, LLP — not charity-only or sole trader by default; flag charities separately for a charity-events angle later)
+- For each match, insert into company_prospects with:
+  - milestone_type='anniversary'
+  - milestone_year=N (5, 10, 15, etc.)
+  - milestone_date=calculated upcoming anniversary date
+  - source='companies_house'
+  - country='UK'
+  - industry= SIC code mapped to readable industry
+  - prospect_summary= "Celebrating Nth anniversary on [date]"
+- Geography toggle: only run UK if the Active Geographies setting includes UK
+- Schedule: daily at 06:00 UK time (so the 7:30am morning job picks them up the same day)
+- Idempotency: don't insert duplicates — check on (company_number, milestone_year) unique pair
+
+Quotas (Companies House free tier is 600 calls per 5 minutes):
+- Throttle to max 500 calls per scan
+- Persist scan progress so it can resume mid-scan if it hits quota
+- Log how many candidates found per day in a discovery_runs table
+
+============================================================
+PHASE 3 — SIGNAL SOURCE 2: FUNDING RSS
+============================================================
+
+Create scripts/discovery/funding-scanner.ts.
+
+Sources to poll (all free RSS):
+- TechCrunch funding feed: https://techcrunch.com/category/venture/feed/
+- Crunchbase News funding feed: https://news.crunchbase.com/sections/venture/feed/
+- Sifted (UK/Europe focus): https://sifted.eu/feed
+- Add a Nigerian source — Techpoint Africa funding tag if RSS available, or skip for v1 if not
+
+Logic:
+- Poll each feed every 4 hours
+- For each entry, extract company name from the headline using AI (e.g. "X raises $5M Series A" → "X")
+- Cross-check: is the company registered in Companies House (UK) or has a known African presence?
+- For each match, insert into company_prospects with:
+  - milestone_type='funding'
+  - funding_stage='Seed' | 'Series A' | 'Series B' | 'Series C' | 'Other'
+  - funding_amount=parsed amount if extractable
+  - source='rss_funding'
+  - country=UK or Nigeria based on company match
+  - prospect_summary= "Just raised [stage] [amount] — [angle]"
+
+Idempotency:
+- Don't insert duplicates — check on (company_name, milestone_date) within 90 days
+
+Email angles for funding (when the morning job drafts):
+- Default: "Celebration event for the team and investors"
+- Secondary: "Wellness day or strategy retreat to reset for the growth phase"
+- Tertiary if amount > £5M: "Press launch event for the funding announcement"
+
+(The drafting prompt should generate ONE email but mention available formats it could take — let the trustee/CEO pick the angle that resonates rather than the agent picking for them.)
+
+============================================================
+PHASE 4 — SIGNAL SOURCE 3: PRODUCT HUNT LAUNCHES
+============================================================
+
+Create scripts/discovery/launch-scanner.ts.
+
+Sources:
+- Product Hunt API (free tier — needs API key, get one and store as PRODUCT_HUNT_API_KEY)
+- TechCrunch product launch tag RSS as backup
+
+Logic:
+- Daily scan top launches
+- Filter for company-backed launches (not solo indie hackers — those don't have event budgets)
+- Insert into company_prospects with:
+  - milestone_type='product_launch'
+  - product_name=launch name
+  - launch_date=Product Hunt launch date
+  - source='product_hunt'
+  - country=UK or Nigeria based on company HQ if extractable
+
+Email angles for launches:
+- Launch party
+- Customer/press event
+- Internal launch celebration
+
+============================================================
+PHASE 5 — UI: GEOGRAPHY TOGGLE + DISCOVERY DASHBOARD
+============================================================
+
+In the Prospect Intelligence page, add a small admin panel:
+
+"Discovery Settings"
+- Active geographies: [✓] UK [✓] Nigeria  (checkbox toggle, persisted to settings table)
+- Last scan run: [timestamp per source]
+- Prospects discovered last 7 days: anniversaries N, funding N, launches N, total N
+- "Run discovery now" button (manual trigger)
+
+Don't redesign the existing tabs (Pipeline, All Prospects, Agent Outreach, Marketing, Find New Prospects, Contact Intel, Approval Queue). Just add this small settings panel — could go above the search bar or as a new tab "Discovery Settings".
+
+============================================================
+PHASE 6 — DRAFTING PROMPT UPDATES
+============================================================
+
+The existing email-drafting code uses a generic prompt. Update it so the prompt receives:
+- milestone_type (anniversary | funding | product_launch)
+- milestone_year (for anniversaries)
+- funding_stage and funding_amount (for funding)
+- product_name and launch_date (for launches)
+
+Use these to anchor the email in the actual signal:
+- Anniversaries: "I noticed [Company] is celebrating its [N]th anniversary on [date]..."
+- Funding: "Congratulations on closing the [stage] round — [angle pitch]..."
+- Launches: "Saw [product] go live on Product Hunt — when's the launch event?"
+
+Keep emails 50-125 words, one CTA, subject line under 7 words. These rules are now well-established in 2026 cold email best practice.
+
+============================================================
+RULES
+============================================================
+
+- Don't touch the contact-finding waterfall (server/contact-finder.ts findDecisionMaker). It works.
+- Don't touch the approval queue UI. It works.
+- Don't touch the marketing@eventperfekt.com SMTP/IMAP wiring. It works.
+- Don't change the 7:30am morning job's logic — only its quarantined filter.
+- Don't try to scan LinkedIn, Bark.com, AddToEvent.com, or anywhere that requires scraping or paid tools in v1. Stick to free APIs and RSS.
+- Each new signal source is its own file in scripts/discovery/ — keep them independent so one failing doesn't break the others.
+- All scanners log to a discovery_runs table with timestamp, source, candidates_found, candidates_inserted, errors. Keeps debug easy.
+
+============================================================
+WHAT TO BUILD FIRST
+============================================================
+
+Order of work, ship each step before moving to the next:
+
+1. Phase 1 (kill bleeding) — ship and verify auto-generator stops, 1,565 prospects quarantined, morning job protected
+2. Phase 2 (anniversaries) — ship and verify Companies House scanner runs daily, finds real upcoming anniversaries
+3. Phase 6 (drafting prompt) — wire trigger-aware drafting before adding more sources
+4. Phase 5 (UI toggle + dashboard) — small admin panel
+5. Phase 3 (funding) — RSS scanner
+6. Phase 4 (launches) — Product Hunt scanner
+
+After each phase: typecheck, commit, brief summary of what shipped, what changed in the database. Don't bundle phases into one commit.
+
+============================================================
+SECRETS NEEDED
+============================================================
+
+Before starting, confirm these secrets exist (don't print values):
+- COMPANIES_HOUSE_API_KEY (UK)
+- ANTHROPIC_API_KEY (already set, fixed earlier)
+- ROCKETREACH_API_KEY (for the existing waterfall)
+- HUNTER_API_KEY (for the existing waterfall)
+- MARKETING_EMAIL_USER + MARKETING_EMAIL_PASSWORD (already set)
+
+If COMPANIES_HOUSE_API_KEY is missing, tell me before starting Phase 2 — that one is critical and needs to be obtained from https://developer.company-information.service.gov.uk/ (free).
+
+If PRODUCT_HUNT_API_KEY is missing, tell me before Phase 4 — also free, register at https://api.producthunt.com/v2/oauth/applications.
+
+If anything errors at any phase, paste it back. Don't compound.

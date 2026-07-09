@@ -1,0 +1,124 @@
+Build a weekly task assignment system powered by the Chief of Staff AI. Every Monday morning the Chief of Staff generates and assigns tasks to each team member based on their role, current project priorities, and business goals.
+
+TEAM PROFILES — store these in the database:
+
+1. Jastin Pithdiya
+Email: jastinpithdiya@gmail.com
+Role: Social Media and Marketing Intern
+Companies: Twin Trade Global, TwinPaay
+Focus areas: LinkedIn content creation, TikTok videos, social media engagement, growing Twin Trade and TwinPaay audience, finding potential clients and partners through social channels
+Goals: Grow Twin Trade LinkedIn followers, create weekly content, engage with target audience, find leads
+
+2. Shravani D R
+Email: shravanidr2001@gmail.com
+Role: IT and Research Intern
+Companies: Twin Trade Global
+Focus areas: Portal and app testing and QA, checking all systems work correctly, reporting bugs, IT support, research tasks as directed
+Goals: Ensure all portals work correctly, document any issues found, support the team with IT queries
+
+3. Abraham Taiwo
+Email: abtaiwo123@gmail.com
+Role: Research and Planning Intern
+Companies: Event Perfekt Global Ltd
+Focus areas: Week 1 — prospect finding for Event Perfekt, statistics research, event planning support for Twin Trade. Week 2 onwards — ALLI Foundation research, finding funders and partnerships, day to day research tasks
+Goals: Find qualified prospects for EP, research funding opportunities for ALLI Foundation, support event planning
+
+4. Prabhleen Tak
+Email: prabhleentak@gmail.com
+Role: UK Admin and Project Lead
+Companies: Event Perfekt Global Ltd
+Focus areas: All EP UK admin, managing and responding to emails, CEFAS contract admin and finance, ALLI Foundation project lead managing all 29 deliverables, staff management UK side
+Goals: Keep ALLI project on track, manage all EP UK correspondence, ensure CEFAS compliance, support Director
+
+5. Ololade
+Role: Social Media and Marketing Lead
+Companies: Twin Trade Global, TwinPaay
+Focus areas: LinkedIn strategy and posting, finding corporate partners and sponsors for Twin Trade and TwinPaay, getting signups and contacts, building brand presence
+Goals: Grow Twin Trade and TwinPaay brand, secure partnerships, generate leads and signups
+
+WEEKLY TASK GENERATION — CHIEF OF STAFF AI:
+
+Every Monday at 8:00 AM the Chief of Staff calls Claude API claude-sonnet-4-20250514 to generate weekly tasks for each team member.
+
+For each person send this to Claude:
+
+System prompt: You are the Chief of Staff for Event Perfekt Group. You manage a team across Event Perfekt Global Ltd, Twin Trade Global, and TwinPaay. Your job is to assign practical, specific, achievable weekly tasks that drive business growth. Tasks must be actionable today — not vague. Each task should have a clear outcome. Focus on growth — getting clients, finding partners, creating content, managing projects. Always push for progress on the most important priorities.
+
+User prompt for each person: Generate 5 tasks for [name] for the week of [current week]. Their role is [role]. Their focus areas are [focus areas]. Current business priorities are: ALLI Foundation project ongoing — Prabhleen leads. Twin Trade LinkedIn growth — Jastin and Ololade driving. TwinPaay client acquisition — Joseph proposal pending. Event Perfekt prospects — Abraham finding leads. Portal QA — Shravani testing systems. Generate tasks as JSON array with: title, description (2 sentences specific and actionable), priority (High/Medium/Low), due_day (Monday to Friday), estimated_hours, success_criteria (1 sentence — what does done look like).
+
+Parse JSON and create tasks in the database assigned to each person for that week.
+
+TASK DISPLAY:
+
+Each person sees only their own tasks when they log into the portal.
+Tasks show on their personal dashboard as cards:
+- Task title bold
+- Description
+- Priority badge — red High, amber Medium, grey Low
+- Due day
+- Estimated hours
+- Success criteria
+- Status buttons: Start, Complete, Blocked
+- Notes field — person can add updates
+
+When a task is marked Complete the Chief of Staff is notified and logs it.
+When a task is marked Blocked the Chief of Staff generates a suggested solution using Claude.
+
+WEEKLY REVIEW — FRIDAY 5PM:
+
+Every Friday at 5:00 PM the Chief of Staff generates a weekly review report:
+- Tasks completed per person
+- Tasks incomplete or blocked
+- Progress towards weekly goals
+- Suggested priorities for next week
+
+Send to adminuk@eventperfekt.com:
+Subject: EP Group — Weekly Team Review — Week of [date]
+Body: Full report per person — completed, incomplete, blocked, next week suggestions.
+
+OLOLADE SPECIFIC:
+
+Ololade has already started posting on LinkedIn. The Chief of Staff should:
+- Ask her to upload her LinkedIn content plan to the portal documents
+- Assign tasks around finding corporate partners and sponsors for Twin Trade and TwinPaay
+- Track her LinkedIn engagement metrics weekly
+- Set targets: 5 new connections per week, 2 posts per week, 1 partnership conversation started per week
+
+JASTIN SPECIFIC:
+
+Jastin covers social media and marketing for Twin Trade and TwinPaay:
+- Weekly content creation tasks — LinkedIn posts, TikTok videos, short form content
+- Engagement tasks — respond to comments, follow target accounts, join relevant groups
+- Research tasks — find trending topics in trade finance, diaspora business, cross-border payments
+- Track metrics — follower growth, post engagement, reach
+
+SHRAVANI SPECIFIC:
+
+Shravani tests all portals and apps weekly:
+- Test eventperfektplanningapp.com — check all features work
+- Test Twin Trade portal — check all modules
+- Test TwinPaay compliance gateway — check onboarding flow
+- Report any bugs found with screenshots and steps to reproduce
+- Log all issues in RAID register
+
+ABRAHAM SPECIFIC — WEEK 1:
+- Find 10 qualified prospects for Event Perfekt Global Ltd — companies likely to need event management
+- Research knife crime statistics and funding opportunities for ALLI Foundation
+- Find 5 potential funders for ALLI Foundation — trusts and foundations
+- Research upcoming corporate events in London that EP could pitch for
+- Support Prabhleen with any ALLI Foundation research requests
+
+ABRAHAM SPECIFIC — WEEK 2 ONWARDS:
+- ALLI Foundation funder research — identify and profile specific trusts and foundations
+- Draft introductory emails to potential ALLI funders
+- Find partnership opportunities for ALLI Foundation
+- Continue prospect finding for EP
+
+PRABHLEEN SPECIFIC:
+- Daily: check and respond to all emails at adminuk@eventperfekt.com within 24 hours
+- ALLI Foundation: update project tasks, manage deliverables, prepare for gateway meetings
+- CEFAS: manage any correspondence, finance admin, compliance requirements
+- Staff: coordinate with all interns, brief them on priorities, review their work
+- Weekly report to Tolu Johnson every Friday
+
+Apply all task generation now. Run the first weekly assignment immediately for the week of 14 April 2026. Confirm tasks have been assigned to each person and they can see them when they log in.

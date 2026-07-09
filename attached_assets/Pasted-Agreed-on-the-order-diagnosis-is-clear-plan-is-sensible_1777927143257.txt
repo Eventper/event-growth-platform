@@ -1,0 +1,40 @@
+Agreed on the order — diagnosis is clear, plan is sensible. Three conditions before proceeding:
+1. Build the bridge properly.
+Token-passed auto-login from Group Portal tiles → Planning App event tools. Specifically:
+
+Director clicks Event Management Services tile on Group Portal → token generated → redirects to Planning App with token in URL → Planning App validates token, auto-creates session, lands user at the right tool
+Same flow per role, with role-appropriate landing:
+Director → full event tools dashboard
+Faye (Country Manager Nigeria) → Nigeria events filtered view
+Juliet (Admin/Lagos) → Nigeria events
+Mercy / Omotolani (Guest Manager) → Guest Management tool, scoped to events they're assigned
+Mariam / Idris / Oluwatofunmi (Warehouse / Assistant Planner) → Decor Inventory, full access
+Erikan (Operations Manager) → Operations dashboard, Vendors, Run Sheets
+Bidemi (Day Coordinator) → Run Sheets / Resource Lead views
+Paul (3D Floor Plan Head) / Frank (Decorator Assistant) → Floor Plans / Decor module
+
+Token mechanism:
+
+Short-lived (15-minute expiry on the token, then session takes over)
+Signed (JWT or HMAC)
+Carries: user_id, role, scope (which tools they can access)
+Single-use (can't be replayed)
+
+2. Test the bridge per role on production:
+Before declaring the bridge done, click-through test as each role above, send screenshot of where they land. Don't ship if any role fails.
+3. Once bridge is verified working, ship the cleanup in single commit:
+a. Delete every duplicate /group-portal/* route created today on Planning App
+b. Re-quarantine /create-event — restore SAAS-PAUSED redirect to Group Portal login
+c. Re-enable redirects on /get-started, /private-event-form, /corporate-event-form
+d. Update CLAUDE.md and replit.md to document the bridge as the one canonical path
+4. Do NOT skip step 3. The duplicate /group-portal/* routes are temporary scaffolding. Once the bridge works, they come down. If they survive, we accept architectural drift permanently — and that's not the deal.
+5. Until the bridge is live, the duplicate routes you created today are acceptable as the only access path so the Nigeria team can do their work. But this is a holding pattern, not the architecture.
+6. Don't make the Nigeria team rely on the duplicate routes for more than a few days. If the bridge takes more than 48 hours to build, escalate immediately.
+Brief me with:
+
+Estimated time to build the bridge properly
+Then the bridge implementation diff for sign-off
+Then the cleanup commit (deletion of duplicates + re-quarantine)
+Documentation update on both sides
+
+Standing rules apply.

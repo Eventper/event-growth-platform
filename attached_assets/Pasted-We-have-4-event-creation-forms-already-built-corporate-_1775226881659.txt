@@ -1,0 +1,211 @@
+We have 4 event creation forms already built:
+- corporate-event-form.tsx
+- private-event-form.tsx
+- create-event-simple.tsx
+- create-event.tsx (125KB full wizard)
+
+The problem: each form saves data differently and none of them trigger the full automation cascade on submission. Fix this by wiring ALL four forms into one unified post-submission cascade. Do not rebuild the forms — just ensure every form, regardless of type, triggers the same downstream automation when submitted.
+
+---
+
+# THE UNIVERSAL CASCADE FUNCTION
+
+Create a single reusable function: `triggerEventCascade(enquiryData, source)` that runs after ANY form submission. Call it from all 4 forms.
+
+This function must do ALL of the following in sequence:
+
+**Step 1 — Normalise the data**
+Map each form's field names to a standard event object:
+```
+{
+  // Client
+  clientFirstName, clientLastName, clientEmail, clientPhone,
+  clientCompany, clientCountry,
+  // Event
+  eventType, eventSubtype, preferredDate, guestCount,
+  budget, currency, eventLocation,
+  // Venue
+  hasVenue, venueName, venueCity,
+  // Services
+  servicesRequired: [],
+  // Vision
+  vision, specialRequirements, urgency,
+  // Contact prefs
+  preferredContact, bestTimeToContact,
+  // Meta
+  source, // 'corporate-form' | 'private-form' | 'simple-form' | 'full-wizard' | 'internal'
+  reference: 'EP-' + generateRef(),
+  gdprConsent, marketingConsent
+}
+```
+
+For corporate form: map companyName → clientCompany, attendees → guestCount, etc.
+For private form: map name → clientFirstName + clientLastName, guests → guestCount, etc.
+For simple form: use defaults for any missing fields
+For full wizard: already has most fields — just map to standard object
+
+**Step 2 — Save enquiry to database**
+- Insert into enquiries table with all normalised fields
+- Generate reference EP-XXXXXX (6 random alphanumeric)
+- Return enquiry ID
+
+**Step 3 — Create Lead Pipeline entry**
+- Stage: New Enquiry
+- Source: from form type
+- Priority: based on budget (>£50k = High, £10k-50k = Medium, <£10k = Standard)
+- Auto-assign to available manager (round-robin or lowest load)
+
+**Step 4 — Create Intake Queue entry**
+- Status: new_intake
+- Link to enquiry ID
+- Flag urgency if event date < 8 weeks away
+
+**Step 5 — Send client acknowledgement email (SendGrid)**
+- Subject: "Your Event Perfekt enquiry is confirmed — ref EP-[ref]"
+- Personalised: first name, event type, date, reference number
+- 24-hour proposal promise
+- Burgundy #8B1538 EP branding
+- Only send if source is NOT 'internal'
+
+**Step 6 — Send internal manager notification**
+- To: all users with role = admin or planner (manager level)
+- Content: event type, date, guest count, budget, country, reference, direct link to intake queue
+- Send via SendGrid + in-app notification
+
+**Step 7 — Log in audit trail**
+- Action: enquiry_received
+- Source: form type
+- Details: client name, event type, reference
+
+---
+
+# ON MANAGER APPROVAL (triggerApprovalCascade)
+
+Create a second function: `triggerApprovalCascade(enquiryId, managerId, assignedPlannerId)`
+Call this when manager clicks Approve in the Intake Queue.
+
+**Step 1 — Create Event record**
+Auto-generate event name based on type:
+- Corporate: "[Company] [Event Type]" e.g. "Goldman Sachs Corporate Gala"
+- Private: "[Last Name] [Event Type]" e.g. "Johnson Wedding"
+- Set workflowStatus = 'assigned'
+- Set onboarding_step = 1
+- Copy ALL fields from enquiry record
+
+**Step 2 — Pre-populate all Event Dashboard tabs:**
+
+Overview tab:
+- Event name, type, date, guest count, budget, client details, services, vision — all pre-filled
+
+Budget tab — auto-allocate based on event type + services:
+- Corporate Full Planning: Venue 40%, Catering 30%, Decor 15%, Staffing 10%, Misc 5%
+- Corporate Day Coordination: Staffing 60%, Misc 40%
+- Private Wedding: Venue 35%, Catering 25%, Decor 20%, Photography 10%, Staffing 10%
+- Private Birthday/Anniversary: Venue 30%, Catering 30%, Decor 25%, Entertainment 15%
+- Apply % splits to total budget amount
+- Set currency from form
+
+Timeline tab — auto-generate milestones based on event date:
+- If event > 12 weeks: Venue confirmed, Guest list sent, Catering brief, Vendor quotes, Run sheet draft, Final numbers, Day briefing
+- If event 4-12 weeks: condensed milestone set
+- If event < 4 weeks: urgent milestone set with tighter dates
+- Calculate each milestone date backwards from event date
+
+Vendors tab — pre-create vendor category slots based on services selected:
+- Full Planning: Venue, Catering, Decor, Photography, Entertainment, Transport, Staffing
+- Day Coordination: Venue (existing), Staffing, Transport
+- Decor only: Decor, Florals, Lighting
+- Each slot shows as empty with "Add vendor" prompt
+
+Tasks tab — auto-generate task checklist based on event type + timeline:
+- Corporate Full Planning: 20+ tasks generated automatically (confirm venue, sign catering contract, send guest invites, etc.)
+- Private Wedding: wedding-specific task list
+- Day Coordination: day-of task list only
+- Each task has: title, due date (calculated from event date), assigned role, priority
+
+Guests tab:
+- Set guest count target from form
+- Set currency
+- If corporate: pre-create groups (VIP, Delegates, Staff, Press)
+- If private wedding: pre-create groups (Bride's Side, Groom's Side, Family, Friends, VIP)
+- If private birthday/anniversary: pre-create groups (Family, Friends, VIP, Colleagues)
+
+**Step 3 — Agent generates proposal draft**
+- Call OpenAI gpt-4o-mini
+- Prompt includes: all form data, event type, services, vision, budget
+- Generate: executive summary, understanding of requirements, proposed approach, scope of services, investment, why Event Perfekt, next steps
+- Tone: premium, confident, warm. Use EP language: 'perfekt', 'legendary', 'precision'
+- Corporate events: include ROI angle, professionalism emphasis
+- Private events: include emotional resonance, personal touch emphasis
+- Save to proposals table as Draft
+- Never say "AI" in the proposal — say "our planning intelligence"
+
+**Step 4 — Auto-generate contract draft**
+- Use existing contract generation system
+- Service scope from services selected on form
+- All 12 sections auto-filled
+- Status: Draft (do not send yet)
+
+**Step 5 — Create client portal account**
+- Role: client
+- Auto-generate temp password
+- Send welcome email with portal link + credentials
+- Corporate: address to company contact name, reference their company
+- Private: more personal tone, reference their event type
+
+**Step 6 — Initialise onboarding**
+- Step 1 (Enquiry received) — auto-complete
+- Remaining steps pending
+- Progress bar shows in Event Dashboard
+
+**Step 7 — Assign planner**
+- Set assigned planner from approval dialog
+- Send planner notification: event summary + direct link
+- Add to planner My Assignments
+
+**Step 8 — Log all cascade actions in audit trail**
+
+---
+
+# FORM-SPECIFIC ROUTING
+
+Update homepage and nav so the right form opens based on context:
+- "Start Planning" (homepage hero) → opens form chooser: Corporate Event / Private Event / Quick Enquiry
+- "Initialize Planning" (homepage CTA) → same form chooser
+- "Plan Event" (nav) → same form chooser
+- "Corporate" tile on homepage → opens corporate-event-form.tsx directly
+- "Weddings" tile → opens private-event-form.tsx directly
+- "Day Coordination Only" → opens create-event-simple.tsx
+- Internal "+ Create Event" in sidebar → opens create-event.tsx (full wizard, internal mode)
+
+All forms call triggerEventCascade() on submit.
+All manager approvals call triggerApprovalCascade() on approve.
+
+---
+
+# VERIFICATION CHECKLIST:
+[ ] triggerEventCascade() function exists and is called by all 4 forms
+[ ] triggerApprovalCascade() function exists and called on manager approve
+[ ] Corporate form data maps correctly to standard event object
+[ ] Private form data maps correctly to standard event object
+[ ] Simple form data maps correctly to standard event object
+[ ] Full wizard data maps correctly to standard event object
+[ ] Reference EP-XXXXXX generated for every submission
+[ ] Client acknowledgement email sends on submission (not for internal)
+[ ] Manager notification sends on submission
+[ ] Lead Pipeline entry created on submission
+[ ] Intake Queue entry created on submission
+[ ] Event record fully pre-populated on approval
+[ ] Budget auto-allocated by event type with correct % splits
+[ ] Timeline milestones auto-generated from event date
+[ ] Vendor category slots pre-created from services selected
+[ ] Task checklist auto-generated by event type
+[ ] Guest groups pre-created by event type
+[ ] Agent proposal draft generated on approval
+[ ] Contract draft generated on approval
+[ ] Client portal account created with welcome email
+[ ] Onboarding step 1 auto-complete on approval
+[ ] Planner notified and event in My Assignments
+[ ] All actions logged in audit trail
+[ ] Homepage form chooser routes to correct form by event type
+[ ] Zero instances of "AI" in any user-facing text

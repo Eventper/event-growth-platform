@@ -1,0 +1,40 @@
+Plan signed off. Build the bridge per your proposed diff. Five additions before you start:
+1. Token mechanism — make it production-grade:
+a. JWT signed with HS256 using shared secret (EP_BRIDGE_SECRET) — different from EP_CROSS_SYSTEM_KEY (different scope, different rotation cadence)
+b. Payload: user_id, role, scope (array of tool slugs), nonce, issued_at, expires_at
+c. 15-minute expiry on the token, then session takes over (already in your plan)
+d. Single-use enforced via nonce table — once redeemed, mark used, reject replays
+e. If token expired or invalid: redirect back to Group Portal home with a friendly "session expired, click again" message, NOT to Planning App login (that's still SAAS-PAUSED)
+2. Role landing scope — confirm against the Nigeria team:
+RoleLands atScopeDirectorEvent tools dashboard, all eventsFullCountry Manager Nigeria (Faye)Nigeria events filtered viewNigeria scopeAdmin/Lagos Client Manager (Juliet)Nigeria eventsNigeria scopeHead Events Manager (Ololade Olalere)Nigeria events, all event-tool tabsNigeria scopeOperations Manager / Decor Lead (Erikan)Operations dashboard + Vendors + Run SheetsNigeria scopeDay Coordinator (Bidemi)Run Sheets / Resource Lead viewsAssigned eventsGuest Manager (Mercy, Omotolani)Guest Management toolAssigned eventsWarehouse & Content Manager (Mariam)Decor Inventory full editFull inventoryAssistant Event Planner (Oluwatofunmi)Decor Inventory full editFull inventoryWarehouse & Operations (Idris)Decor Inventory + warehouse viewFull inventoryEvent Coordinator (Oluwafisayomi)Event details + run sheet viewAssigned events3D Floor Plan Head (Paul)Floor Plans / Decor moduleAssigned eventsDecorator Assistant (Frank)Decor module read accessAssigned events
+Plus existing roles:
+
+ALLI Operations (Abraham, Nigeria scope) — same as Director-level for Nigeria event tools
+Finance (Prab) — read-only access to event invoicing data via bridge
+
+3. Audit log every bridge launch:
+Each token generation + redemption logs to a new bridge_audit_log table:
+
+timestamp, user_id, role, scope_granted, target_tool, source_tile, redemption_status (success / expired / invalid / replay_attempt)
+
+Standing rule: every cross-system handoff is auditable. If Faye launches into Decor Inventory at 09:15, that's logged on both sides.
+4. Production verification before cleanup:
+Test the bridge as ALL 14 Nigeria team roles + Director on production. Send screenshot of where each lands. Don't proceed to cleanup until every role passes.
+5. Cleanup — single commit AFTER verification:
+Per your plan:
+
+Re-quarantine /create-event with redirect to Group Portal login
+Re-enable redirects on /get-started, /private-event-form, /corporate-event-form
+Delete every duplicate /group-portal/* route created on Planning App today (list them in commit message for traceability)
+Update replit.md (Planning App side) AND CLAUDE.md (Group Portal side) with canonical bridge architecture
+
+6. Time bound:
+Your estimate of 4-8 hours is reasonable. Target: bridge built and tested by end of day Tuesday 5 May. Cleanup commit by end of day Wednesday 6 May. If you slip past Wednesday, escalate immediately.
+Don't let cleanup get postponed indefinitely — duplicate routes are temporary scaffolding, not architecture.
+Standing rule reinforced: SAAS-PAUSED is deliberate. The bridge is the only legitimate path from Group Portal to Planning App tools. If you find more "broken" routes during build, stop and ask before unpausing anything.
+Brief me with:
+
+Bridge implementation diff for sign-off (before you ship)
+Production verification screenshots per role (before cleanup)
+Cleanup commit (single commit, after sign-off on verification)
+Documentation diff on both repos

@@ -1,0 +1,105 @@
+Rebuild the Prospect Intelligence system as a fully autonomous proactive SaaS platform. The system must run itself. The user's only job is to create campaigns, approve emails, and respond to positive leads. Everything else is automated.
+PART 1 — CAMPAIGN MANAGER
+Build a Campaign Manager as the entry point to the entire Prospect Intelligence system. It sits above all nine tabs. Every action in the system belongs to a campaign.
+Create New Campaign form:
+
+Campaign name — free text
+Campaign description — free text — who are we targeting and why
+Target audience — free text — e.g. senior women in leadership Milton Keynes, event directors at London banks
+Target job titles — tag input — add as many as needed — e.g. CEO, Director, MD, Founder, HR Director, Head of
+Target sectors — tag input — e.g. banking, recruitment, professional services, hospitality, technology
+Target locations — country plus city — multi select — e.g. UK — Milton Keynes, London, Buckinghamshire
+Exclude locations — tag input — locations to ignore
+Search sources — toggles — Web Search, Companies House, RocketReach — on or off per campaign
+Search frequency — dropdown — Daily, Weekly, Monthly, One time only
+Search day and time — if recurring — day of week and time to run
+Email tone — dropdown — Professional and Formal, Warm and Inviting, Premium and Exclusive, Friendly and Casual, Personal and Intimate
+Approval rule — toggle — Auto send or Manual approval required for every email
+Campaign status — Active or Paused
+Save Campaign button
+
+Each saved campaign appears as a tile in the Campaign Manager showing campaign name, status pill, next scheduled run, prospects found, emails sent, and replies received.
+All nine tabs in Prospect Intelligence filter automatically to the selected campaign. Switching campaigns switches the entire view. No hardcoded campaign names anywhere in the codebase. Everything is dynamic and user-defined.
+Remove all hardcoded references — I Am Her, Nigeria Outreach, Corporate Events, and any other hardcoded category — from the codebase entirely. Replace with dynamic campaign data.
+
+PART 2 — AUTONOMOUS DAILY OPERATION
+Every morning at 7am the system runs the following sequence automatically for every Active campaign:
+Step 1 — Prospect Discovery
+Run the search engine against the campaign parameters. Find new prospects matching the target audience, job titles, sectors, and locations. Web Search and Companies House run based on campaign settings.
+Step 2 — Contact Verification
+For every new prospect found — immediately run RocketReach to find the named decision maker. Full name, job title, verified email, LinkedIn profile URL. Any prospect where RocketReach cannot find a named contact is quarantined — not added to the live pipeline — and flagged for manual review.
+Step 3 — Deduplication
+Before saving any prospect — check if the company or individual already exists in the pipeline for this campaign. If duplicate — skip. Never add the same prospect twice.
+Step 4 — Email Drafting
+For every new verified prospect — draft a personalised outreach email using the campaign tone, campaign description, and contact details. Use the Claude API. The email is specific to the prospect — not a generic template.
+Step 5 — Approval Queue
+Every drafted email goes to the Approval Queue tagged with the campaign name. If the campaign approval rule is Manual — the email waits for human approval. If the campaign approval rule is Auto — the email is sent automatically at 9am without human review.
+Step 6 — Sending
+Approved or auto-approved emails send at 9am. Never send outside 9am to 5pm Monday to Friday. Never send on weekends or UK public holidays.
+Step 7 — Reply Monitoring
+Every 15 minutes the system polls for replies. Every reply is classified automatically — Positive, Not Now, Unsubscribe, Out of Office, Auto Reply, Unclassified.
+Step 8 — Pipeline Movement
+Based on reply classification the system automatically moves the prospect through the pipeline:
+
+Positive reply — move to Meeting — send immediate notification to info@eventperfekt.com
+Not Now reply — move to Contacted — schedule a follow up in 30 days
+Unsubscribe — move to Lost — add email to suppression list immediately
+Bounce — move to Lost — flag for manual review
+Out of Office — no pipeline change — reschedule follow up for when they return if date is in the email
+
+Step 9 — Daily Summary
+Every day at 6pm send a summary email to info@eventperfekt.com showing for each active campaign: prospects found today, emails drafted, emails sent, replies received, positive leads, and any items requiring attention.
+
+PART 3 — TAB BY TAB FIXES
+TAB 1 — PIPELINE
+Make the pipeline fully automatic. Do not rely on manual drag and drop for stage changes driven by system events. Stage changes triggered by reply classification, email sends, and bounces happen automatically. Manual drag and drop remains available for human overrides only. Show a campaign filter at the top — All Campaigns or select a specific campaign. Each prospect card shows the campaign tag it belongs to.
+TAB 2 — ALL PROSPECTS
+Add campaign filter at the top. Add a Today's Priority section at the top of the list showing the top 10 prospects that need attention today — prospects with positive replies, prospects overdue for follow up, and prospects flagged for manual review. Flag any prospect that has been in New stage for more than 7 days with an amber Overdue badge.
+TAB 3 — AGENT OUTREACH
+Remove the manual Refresh Recommendations button. Recommendations are generated automatically every morning as part of the daily 7am run. When the user opens this tab they see the current recommendations already generated. A Last updated timestamp shows when recommendations were last run. A Run Now button allows manual trigger if needed outside the scheduled run.
+TAB 4 — MARKETING
+Remove manual service and region selection. When a campaign is selected — the marketing tab pulls campaign parameters automatically. User selects the campaign, the tone and targeting are pre-filled from campaign settings. User clicks Generate to draft emails for all prospects in that campaign who have not yet been contacted. Batch processing is visible — shows progress bar and which prospect is being processed. Run Next Batch button appears after each batch of 5.
+TAB 5 — FIND NEW PROSPECTS
+Remove hardcoded category tiles. Replace with active campaigns listed as tiles. Clicking a campaign tile runs a search using that campaign's parameters. Search results persist in session storage when user switches tabs — results do not disappear. Save All to Pipeline button saves all verified results in one click. Remove AddToEvent as a search source. Remove Bark as a default source — make it opt-in per campaign.
+TAB 6 — CONTACT INTEL
+Contact Intel runs automatically for every new prospect added to the pipeline — whether added by the daily automated run or manually by the user. Manual lookup remains available for one-off searches. When a contact is found for a company that already exists in the pipeline — automatically attach it to that prospect record without requiring manual save. Show a queue of prospects with no verified contact — so the user can see what still needs a contact found.
+TAB 7 — APPROVAL QUEUE
+Add campaign filter at the top. Show campaign tag on every email card. Add Approve All for Campaign button — approves and sends all pending emails for a selected campaign in one click. Show a count of pending emails per campaign. Keep individual approve, edit, and reject controls on each card.
+TAB 8 — SUPPRESSIONS
+Auto-add any email to the suppression list when a reply is classified as Unsubscribe. Also auto-add when a reply contains the words stop, remove me, not interested, unsubscribe, or please remove. Never require manual addition for unsubscribe replies. Show whether each suppression was added automatically or manually.
+TAB 9 — REPLY TRIAGE
+When a reply is classified as Positive — immediately send a notification email to info@eventperfekt.com with the full reply content, the prospect name, company, and campaign name. Subject: Positive Reply — [Prospect Name] — [Campaign Name]. Do not wait for the user to open the platform. Push the notification immediately. Show a live unread count badge on the Reply Triage tab so the user knows when new replies have arrived.
+
+PART 4 — SECURITY FIXES
+Fix the readAuth logic in outreach-routes.ts. Change readAuth from optionalAuth to authenticateToken on all GET endpoints for pending-outreach, suppressions, and replies. These endpoints must require proper authentication.
+Remove the duplicate GET /api/company-prospects/:id/sequences route from outreach-routes.ts.
+Only show the WhatsApp button on a prospect card when a verified phone number exists in the contact record. Hide it entirely if no phone number is stored.
+
+PART 5 — WHAT MUST NEVER BE HARDCODED
+The following must never appear hardcoded in the codebase:
+
+Any campaign name
+Any audience description
+Any job title list
+Any sector list
+Any location
+Any email tone name beyond the five standard options
+Any search category name
+
+Everything above is user-defined in the Campaign Manager and stored in the database. The platform reads from the database at runtime. Adding a new campaign type requires zero code changes and zero Replit involvement.
+
+PART 6 — CONFIRMATION REQUIRED
+When complete confirm the following:
+
+Campaign Manager is built and a new campaign can be created without touching any code
+The 7am daily automated run fires and completes all nine steps
+All nine tabs filter by campaign dynamically
+Positive reply notification emails fire immediately to info@eventperfekt.com
+The daily 6pm summary email fires to info@eventperfekt.com
+No hardcoded campaign references remain in the codebase
+All security fixes are applied
+Search results persist on tab switch
+WhatsApp button only shows when phone number exists
+Batch email generation shows progress and Run Next Batch button
+
+Show me the Campaign Manager screen and confirm all ten points."

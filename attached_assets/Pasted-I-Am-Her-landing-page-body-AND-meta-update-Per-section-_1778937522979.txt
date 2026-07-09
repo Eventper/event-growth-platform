@@ -1,0 +1,132 @@
+I Am Her landing page — body AND meta update. Per-section approval before any edits.
+
+Page: /iamher route on eventperfektplanningapp.com
+
+Step 1 — Read-only audit first. Show me:
+(a) Full page body structure with line numbers
+(b) Full current meta block — every tag and value
+(c) Every instance of "senior", "beauty", "beauticians", "therapists", "therapy", "cosmetic surgery", "makeup artists", "aesthetic professionals", "beauty professionals" on the page (body AND meta)
+(d) Every date reference ("7 August", "7th August", "Friday 7 August", "7 AUGUST 2026" — anywhere)
+(e) Form structure — both forms: fields, validation, submit behaviour, database tables
+(f) All three CTAs and current visual weight: "REQUEST ACCESS", "SEND MESSAGE", "JOIN THE WAITLIST"
+(g) "Editorial portrait for the evening" placeholder — render gap or static text?
+(h) Confirmation flow after REQUEST ACCESS submission
+(i) Mobile rendering of the hero
+
+Hold for me after audit. No edits.
+
+AUDIENCE — CRITICAL CLARIFICATION:
+
+The audience is CORPORATE WOMEN WHO LEAD — founders, directors, executives, senior professionals working in corporate roles, business owners, leaders within established organisations. Any age, any stage.
+
+The audience is NOT:
+- Beauticians / beauty therapists / beauty professionals
+- Makeup artists
+- Cosmetic surgery clinicians or practitioners
+- Aesthetic practitioners
+- Therapists (massage, wellbeing, etc.)
+- Any vendor/service-provider category in the beauty or wellness industry
+
+Those professionals may provide services AT the event, but they are not the audience FOR the event. The page must recruit corporate women, not the people who serve them.
+
+Step 2 — Propose changes per spec below. Side-by-side diff per item. Per-item approval.
+
+CHANGE LIST:
+
+ITEM 1 — STRIP all beauty-industry vendor language from meta and body
+
+From meta keywords, remove ALL of these:
+- "beauty professionals Milton Keynes"
+- "cosmetic surgery event UK"
+- "therapy networking event"
+- "makeup artists event"
+- Any other beauty/cosmetic/therapy/practitioner-targeted keywords
+
+From meta descriptions and OG tags, remove ALL recruiting language for beauty/therapy/aesthetic professionals. The audience descriptor must be corporate women who lead, not the practitioners who serve them.
+
+From body, audit and strip:
+- Any references that recruit beauty industry professionals into attending
+- Any audience descriptors that include therapists, beauticians, makeup artists, cosmetic surgery practitioners
+- Any framing that suggests the event is FOR the beauty industry (it's not — the beauty industry may serve the event, but is not the audience)
+
+Per-instance approval. Show me every hit before stripping.
+
+ITEM 2 — Remove all "senior" framing
+Strip every instance of "senior" used as an audience descriptor. Replace with role-focused language:
+- "founders, directors, executives, senior professionals" → "founders, directors, executives, professionals, builders"
+- "connecting with senior female leaders and decision-makers" → "connecting with women who lead and shape their fields"
+- "nominating senior women for review" → "nominating women who lead within your organisation for review"
+Per-instance approval.
+
+ITEM 3 — Remove ONE hero duplication
+Remove the SECOND instance of "An evening for her." in the hero block (it appears twice).
+
+KEEP intentionally (do NOT remove):
+- Title "The Woman Who Leads the Room" appearing in hero AND as section header — masthead + chapter heading, different functions
+- "Invitations are issued, not purchased" appearing as eyebrow small-caps AND in the body paragraph closer — intentional bracketing, opens and closes the rule
+These are luxury-event craft and must stay.
+
+ITEM 4 — Date treatment: generic "August 2026" everywhere
+Replace every "7 August 2026" / "7th August" / "Friday 7 August" / "7 AUGUST 2026" with "August 2026". Includes body, alt text, structured data, hidden fields, form thank-you copy.
+
+ITEM 5 — Establish dominant CTA: REQUEST ACCESS
+Make REQUEST ACCESS the dominant primary CTA. Demote others:
+- Get In Touch "Send Message" → smaller styled text link in footer
+- Waitlist "Join the Waitlist" → visually subordinate, positioned as fallback ("Invitations for August 2026 may already be allocated. Join the waitlist for future evenings.")
+Show me current CTA hierarchy and proposed visual demotion before restyling.
+
+ITEM 6 — Add visible selection criteria
+Add ONE LINE making selection visible and feel earned:
+"Invitations are issued through nomination, application review, and curated peer referral."
+Position near the existing "Invitations are issued, not purchased" framing. Show both placement options before applying.
+
+ITEM 7 — REWRITE meta for corporate audience focus
+
+Proposed new meta values (per-tag approval before applying):
+
+<title>
+"The Woman Who Leads the Room | A Private Event for Women Who Lead | Milton Keynes August 2026"
+
+<meta name="description">
+"For the women who lead — at work, at home, in business, in life. A private invitation-only evening for 100 women in Milton Keynes and Buckinghamshire, curated around health, wellbeing, confidence and identity. August 2026."
+
+<meta name="keywords">
+"women in business event Milton Keynes, women's event UK, private women's event Milton Keynes, women founders UK, women in leadership UK, women's wellbeing event UK, women's identity event UK, women's confidence event UK, women entrepreneurs Milton Keynes, women leaders network UK, women's empowerment event UK, women's wellness event UK, female founders UK, female executives UK, women in business Buckinghamshire, women's network Milton Keynes, Event Perfekt, Shujo Aesthetics, The Woman Who Leads the Room, I Am Her event"
+
+<meta property="og:title">
+"The Woman Who Leads the Room | A Private Evening for Women Who Lead | Milton Keynes August 2026"
+
+<meta property="og:description">
+"For the women who lead — at work, at home, in business, in life. A private invitation-only evening for 100 women in Milton Keynes and Buckinghamshire. Curated around health, wellbeing, confidence and identity. August 2026. Hosted by Event Perfekt × Shujo Aesthetics."
+
+<meta property="og:image:alt">
+"A private evening for women who lead — in business, in life — in Milton Keynes"
+
+<meta name="twitter:description">
+"A private evening for 100 women who lead. Milton Keynes, August 2026. For the women who carry it all and rarely have a space curated for them."
+
+ITEM 8 — Resolve "Editorial portrait for the evening" placeholder (flag only)
+Confirm with Tolu: wait for image / remove placeholder / use holding image. No edit until confirmed.
+
+ITEM 9 — Flag for Tolu (separate workstreams, no edits in this commit):
+(a) Mobile audit
+(b) Confirmation flow after REQUEST ACCESS submission
+(c) Branching qualification on form (guest / sponsor / press)
+(d) Connect to iam_her_leads database review queue
+(e) Meta Pixel installation
+(f) New hero image content
+
+KEEP UNCHANGED:
+- "Most rooms expect something from women. Performance. Leadership. Strength. Output. This room does not." — verbatim
+- All champagne references (programme detail, luxury cue)
+- "Aesthetic Partner — Partner reveal scheduled May 2026" — co-creator placeholder
+- Section structure (THE INVITATION / WHY THIS EVENING EXISTS / THE EXPERIENCE / FOR ORGANISATIONS WHO BELIEVE IN WOMEN / About Event Perfekt)
+- Luxury voice — slow, intentional, restrained
+
+Step 3 — After all items approved and applied: single commit, no Co-Authored-By, message:
+"I Am Her body + meta — strip beauty-industry recruiting language, refocus on corporate women who lead, establish dominant CTA hierarchy, add selection criteria, generic August date"
+
+Step 4 — Post-commit flags for Tolu:
+(a) Date update from "August 2026" to specific day next week — small follow-up commit
+(b) Six workstreams queued: mobile, confirmation flow, branching, database, Pixel, image
+(c) The Experience section currently lists "Aesthetic and wellbeing consultations" — confirm whether this remains in the run of show (it's a programme element, not an audience descriptor, so KEEP unless Tolu wants it changed). Flag only, no edit.

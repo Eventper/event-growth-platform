@@ -1,0 +1,299 @@
+One message to paste into Replit. Copy everything in the box below as-is.
+
+---
+
+```
+I'm wiring the planning-app client portal to consume new endpoints from the Twin Trade bridge: RAID register, and trustee Client Action Requests (Endpoint 5/5b). Apply all changes below exactly. Don't redesign, don't add styling decisions, don't ask me — just apply.
+
+============================================================
+STEP 1 — VERIFY ONE THING FIRST
+============================================================
+
+Open the trustee/client portal login route (likely in server/client-portal-routes.ts, search for "jwt.sign" with PORTAL_JWT_SECRET).
+
+Look at what fields are signed into the JWT. I need to know the exact field name for the trustee's email.
+
+If the field is called `email` → use `req.portalUser.email` everywhere in Step 2 below (it's already correct).
+
+If the field is anything else (e.g. `userEmail`, `emailAddress`, `clientEmail`) → in Step 2 below, replace BOTH occurrences of `req.portalUser?.email` with the correct field name before pasting.
+
+Tell me which field name you found. Then proceed.
+
+============================================================
+STEP 2 — ADD THREE SERVER ROUTES
+============================================================
+
+File: server/client-portal-routes.ts
+
+Find the existing handler:
+  app.get("/api/client-portal/alli/risks", authenticateClientPortal, ...)
+
+Immediately AFTER that handler closes (after its `});`), paste this block:
+
+// GET /api/client-portal/alli/raid — RAID register grouped by type
+app.get("/api/client-portal/alli/raid", authenticateClientPortal, async (_req: any, res) => {
+  try {
+    const data = await fetchTwinTradeSync("/api/alli-sync/raid");
+    res.json(data);
+  } catch (e: any) {
+    console.error("[ClientPortal] raid proxy error:", e.message);
+    res.status(500).json({ message: e.message });
+  }
+});
+
+// GET /api/client-portal/alli/client-action-requests — trustee inbox (Endpoint 5)
+app.get("/api/client-portal/alli/client-action-requests", authenticateClientPortal, async (req: any, res) => {
+  try {
+    const email = req.portalUser?.email;
+    if (!email) return res.status(400).json({ message: "No email on session" });
+    const qs = `?assignee_email=${encodeURIComponent(email)}`;
+    const data = await fetchTwinTradeSync(`/api/alli-sync/client-action-requests${qs}`);
+    res.json(data);
+  } catch (e: any) {
+    console.error("[ClientPortal] client-action-requests proxy error:", e.message);
+    res.status(500).json({ message: e.message });
+  }
+});
+
+// POST /api/client-portal/alli/client-action-requests/:id/respond — trustee response (Endpoint 5b)
+app.post("/api/client-portal/alli/client-action-requests/:id/respond", authenticateClientPortal, async (req: any, res) => {
+  try {
+    const email = req.portalUser?.email;
+    if (!email) return res.status(400).json({ message: "No email on session" });
+    const { id } = req.params;
+    const { response_text } = req.body || {};
+    if (!response_text || !response_text.trim()) {
+      return res.status(400).json({ message: "Response text is required" });
+    }
+    const data = await fetchTwinTradeSync(`/api/alli-sync/client-action-requests/${id}/respond`, {
+      method: "POST",
+      body: JSON.stringify({ client_email: email, response_text: response_text.trim() }),
+    });
+    res.json(data);
+  } catch (e: any) {
+    console.error("[ClientPortal] client-action-request respond error:", e.message);
+    res.status(500).json({ message: e.message });
+  }
+});
+
+============================================================
+STEP 3 — ADD STATE TO HOME PAGE
+============================================================
+
+File: client/src/pages/client-portal/home.tsx
+
+Find this line:
+  const [actionSaving, setActionSaving] = useState<Record<number, boolean>>({});
+
+Immediately AFTER it, add:
+
+  const [raid, setRaid] = useState<{ risk: any[]; assumption: any[]; issue: any[]; dependency: any[] }>({ risk: [], assumption: [], issue: [], dependency: [] });
+  const [raidTab, setRaidTab] = useState<"risk" | "assumption" | "issue" | "dependency">("risk");
+  const [requests, setRequests] = useState<any[]>([]);
+  const [requestReply, setRequestReply] = useState<Record<number, string>>({});
+  const [requestSaving, setRequestSaving] = useState<Record<number, boolean>>({});
+
+============================================================
+STEP 4 — EXTEND THE Promise.all FETCH
+============================================================
+
+Same file. Find this exact block:
+
+  const [p, d, m, a, r, i, ac] = await Promise.all([
+    portalFetch("GET", "/api/client-portal/project").catch(() => null),
+    portalFetch("GET", "/api/client-portal/alli/deliverables").catch(() => []),
+    portalFetch("GET", "/api/client-portal/messages").catch(() => []),
+    portalFetch("GET", "/api/client-portal/activity").catch(() => ({ documents: [], events: [] })),
+    portalFetch("GET", "/api/client-portal/alli/risks").catch(() => []),
+    portalFetch("GET", "/api/client-portal/invoices").catch(() => []),
+    portalFetch("GET", "/api/client-portal/alli/client-actions").catch(() => []),
+  ]);
+
+Replace it with:
+
+  const [p, d, m, a, r, i, ac, rd, rq] = await Promise.all([
+    portalFetch("GET", "/api/client-portal/project").catch(() => null),
+    portalFetch("GET", "/api/client-portal/alli/deliverables").catch(() => []),
+    portalFetch("GET", "/api/client-portal/messages").catch(() => []),
+    portalFetch("GET", "/api/client-portal/activity").catch(() => ({ documents: [], events: [] })),
+    portalFetch("GET", "/api/client-portal/alli/risks").catch(() => []),
+    portalFetch("GET", "/api/client-portal/invoices").catch(() => []),
+    portalFetch("GET", "/api/client-portal/alli/client-actions").catch(() => []),
+    portalFetch("GET", "/api/client-portal/alli/raid").catch(() => ({ risk: [], assumption: [], issue: [], dependency: [] })),
+    portalFetch("GET", "/api/client-portal/alli/client-action-requests").catch(() => []),
+  ]);
+
+Then find this line:
+  setActions(Array.isArray(ac) ? ac : []);
+
+Immediately AFTER it, add:
+
+  setRaid({
+    risk: Array.isArray(rd?.risk) ? rd.risk : [],
+    assumption: Array.isArray(rd?.assumption) ? rd.assumption : [],
+    issue: Array.isArray(rd?.issue) ? rd.issue : [],
+    dependency: Array.isArray(rd?.dependency) ? rd.dependency : [],
+  });
+  setRequests(Array.isArray(rq) ? rq : []);
+
+============================================================
+STEP 5 — PATCH THE RISKS COUNTER (raid_type compat)
+============================================================
+
+Same file. Find these three lines:
+
+  const activeRisks = risks.filter(r => r.status === "open" && r.category !== "issue").length;
+  const openIssues = risks.filter(r => r.status === "open" && r.category === "issue").length;
+  const resolved = risks.filter(r => r.status === "resolved").length;
+
+Replace with:
+
+  const activeRisks = risks.filter(r => r.status === "open" && ((r.raid_type || r.category) === "risk")).length;
+  const openIssues = risks.filter(r => r.status === "open" && ((r.raid_type || r.category) === "issue")).length;
+  const resolved = risks.filter(r => r.status === "resolved").length;
+
+============================================================
+STEP 6 — RENDER RAID PANEL + TRUSTEE REQUEST INBOX
+============================================================
+
+Same file. Find the END of the existing Action Items block — search for the line that contains "🎯 My Action Items" to locate it, then scroll to where that whole block closes with `)}` (it's the block that opens with `{actions.length > 0 && (`).
+
+Immediately AFTER the closing `)}` of that Action Items block, paste this block:
+
+      {(raid.risk.length + raid.assumption.length + raid.issue.length + raid.dependency.length) > 0 && (
+        <div style={{ ...portalCard({ padding: "20px 24px", marginBottom: 20, borderTop: `3px solid ${G.red}` }), animation: "portalFadeUp 0.95s ease both" }}>
+          <div style={{ marginBottom: 14 }}>
+            <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: G.text, textTransform: "uppercase", letterSpacing: 0.5 }}>RAID Register</h3>
+            <p style={{ margin: "4px 0 0", fontSize: 12, color: G.muted }}>Risks, Assumptions, Issues and Dependencies tracked by your delivery team</p>
+          </div>
+          <div style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
+            {([
+              { key: "risk", label: "Risk", count: raid.risk.length },
+              { key: "assumption", label: "Assumption", count: raid.assumption.length },
+              { key: "issue", label: "Issue", count: raid.issue.length },
+              { key: "dependency", label: "Dependency", count: raid.dependency.length },
+            ] as const).map(t => (
+              <button key={t.key} onClick={() => setRaidTab(t.key)} style={{
+                padding: "7px 14px",
+                borderRadius: 999,
+                border: `1px solid ${raidTab === t.key ? G.red : G.border}`,
+                background: raidTab === t.key ? G.red : "#fff",
+                color: raidTab === t.key ? "#fff" : G.text,
+                fontSize: 12,
+                fontWeight: 700,
+                cursor: "pointer",
+              }}>
+                {t.label} ({t.count})
+              </button>
+            ))}
+          </div>
+          {raid[raidTab].length === 0 ? (
+            <div style={{ color: G.muted, fontSize: 13, padding: "14px 0" }}>
+              0 open {raidTab === "dependency" ? "dependencies" : raidTab + "s"}.
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {raid[raidTab].map((row: any) => (
+                <div key={row.id} style={{ border: `1px solid ${G.border}`, borderLeft: `4px solid ${G.red}`, borderRadius: 8, padding: "10px 14px", background: "#fff" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", gap: 8, marginBottom: 4 }}>
+                    <span style={{ fontWeight: 700, fontSize: 13, color: G.text }}>{row.title || row.description}</span>
+                    {row.severity && <span style={{ fontSize: 10, fontWeight: 800, color: G.muted, textTransform: "uppercase" }}>{row.severity}</span>}
+                  </div>
+                  {row.description && row.title && (
+                    <div style={{ fontSize: 12, color: G.muted, lineHeight: 1.5 }}>{row.description}</div>
+                  )}
+                  {row.mitigation && (
+                    <div style={{ fontSize: 12, color: G.text, marginTop: 6 }}><strong>Mitigation:</strong> {row.mitigation}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {requests.length > 0 && (
+        <div style={{ ...portalCard({ padding: "20px 24px", marginBottom: 20, borderTop: `3px solid ${G.gold}` }), animation: "portalFadeUp 0.97s ease both" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
+            <div>
+              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: G.text, textTransform: "uppercase", letterSpacing: 0.5 }}>📨 Requests From Your Delivery Team</h3>
+              <p style={{ margin: "4px 0 0", fontSize: 12, color: G.muted }}>Specific questions or decisions needing your input as Trustee</p>
+            </div>
+            <span style={{ background: G.gold, color: "#fff", borderRadius: 99, padding: "3px 12px", fontSize: 12, fontWeight: 800 }}>
+              {requests.filter((r: any) => r.status === "open").length} open
+            </span>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {requests.map((r: any) => {
+              const isClosed = r.status === "responded" || r.status === "closed";
+              const isHigh = r.priority === "high";
+              return (
+                <div key={r.id} style={{
+                  border: `1px solid ${isHigh ? "#fde68a" : G.border}`,
+                  borderLeft: `4px solid ${isClosed ? G.green : isHigh ? G.amber : G.gold}`,
+                  borderRadius: 10,
+                  padding: "14px 16px",
+                  background: isClosed ? "#f0fdf4" : "#fffdf7",
+                }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, marginBottom: 6 }}>
+                    <div style={{ fontWeight: 700, fontSize: 13, color: G.text }}>{r.title}</div>
+                    <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+                      {isHigh && <span style={{ background: G.amber, color: "#fff", fontSize: 10, fontWeight: 800, borderRadius: 99, padding: "2px 8px" }}>HIGH</span>}
+                      <span style={{ background: isClosed ? G.green : G.gold, color: "#fff", fontSize: 10, fontWeight: 700, borderRadius: 99, padding: "2px 8px", textTransform: "capitalize" }}>{r.status}</span>
+                    </div>
+                  </div>
+                  {r.message && <div style={{ fontSize: 12, color: G.muted, marginBottom: 10, lineHeight: 1.5 }}>{r.message}</div>}
+                  {r.response_text && (
+                    <div style={{ fontSize: 12, color: G.green, fontStyle: "italic", marginBottom: 6 }}>✓ Your response: {r.response_text}</div>
+                  )}
+                  {!isClosed && (
+                    <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
+                      <input
+                        value={requestReply[r.id] || ""}
+                        onChange={e => setRequestReply(s => ({ ...s, [r.id]: e.target.value }))}
+                        placeholder="Type your response…"
+                        style={{ flex: 1, padding: "7px 10px", border: `1px solid ${G.border}`, borderRadius: 7, fontSize: 12, outline: "none", color: G.text }}
+                      />
+                      <button
+                        onClick={async () => {
+                          const text = requestReply[r.id]?.trim();
+                          if (!text) return;
+                          setRequestSaving(s => ({ ...s, [r.id]: true }));
+                          try {
+                            await portalFetch("POST", `/api/client-portal/alli/client-action-requests/${r.id}/respond`, { response_text: text });
+                            setRequestReply(s => ({ ...s, [r.id]: "" }));
+                            const refreshed = await portalFetch("GET", "/api/client-portal/alli/client-action-requests").catch(() => null);
+                            if (Array.isArray(refreshed)) setRequests(refreshed);
+                          } catch {}
+                          setRequestSaving(s => ({ ...s, [r.id]: false }));
+                        }}
+                        disabled={requestSaving[r.id] || !requestReply[r.id]?.trim()}
+                        style={{ padding: "7px 14px", background: G.gold, color: "#fff", border: "none", borderRadius: 7, fontSize: 12, fontWeight: 700, cursor: !requestReply[r.id]?.trim() ? "not-allowed" : "pointer", opacity: !requestReply[r.id]?.trim() ? 0.4 : 1, whiteSpace: "nowrap" }}
+                      >
+                        {requestSaving[r.id] ? "…" : "Respond"}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+============================================================
+DONE
+============================================================
+
+Restart the dev server. Confirm:
+1. The home page still loads with all existing widgets unchanged.
+2. The new RAID Register panel appears under Action Items if Twin Trade returns any RAID rows.
+3. The new "Requests From Your Delivery Team" panel appears if there are any client-action-requests assigned to this trustee's email.
+4. If both come back empty, the panels stay hidden — no empty boxes.
+
+If anything errors, paste the error back to me.
+```
+
+---
+
+That's it. Paste the whole thing into Replit's chat. It'll do the work and tell you if anything fails. Send any error back here and I'll fix.

@@ -1,0 +1,55 @@
+1. The "Shredder" Protocol (Data Retention Logic)
+
+* Logic: Implement a TTL (Time To Live) or a Cron Job script.
+
+* Action: DELETE or NULLIFY sensitive fields (phone_number, passport_no, travel_itinerary) exactly X hours after event_end_timestamp.
+
+* Replit Implementation: Use a background worker to trigger a cleanup_sensitive_data() function.
+
+2. Tiered Access Control (RBAC)
+
+* Logic: Defined User Roles: SuperAdmin, LeadProtocol, Staff, Catering.
+
+* Constraint: Staff and Catering roles must have Masked Data (e.g., +234 *** 89). Only LeadProtocol can "Reveal" the full number for emergency contact.
+
+* Replit Implementation: Middleware that checks user.role before returning JSON guest objects.
+
+3. The "Plus-Ten" Entourage Mapping
+
+* Logic: One-to-Many Relationship.
+
+* Field: primary_guest_id linked to entourage_members[].
+
+* Function: When a VIP RSVPs "Yes," the system must trigger a sub-form: "How many security/aides are traveling with you?"
+
+* Constraint: Entourage counts must update the global total_catering_count but remain hidden from the seating_chart_main_hall.
+
+4. Cultural Intelligence Flags (The "Royalty" Add-on)
+
+* Logic: Boolean flags for specific protocols.
+
+* Fields:
+
+◦ public_dining_allowed: Boolean (Default: True)
+
+◦ private_room_required: Boolean
+
+◦ pre_packed_meal_flag: Boolean
+
+* Trigger: If public_dining_allowed == False, automatically flag the "Catering Dashboard" to prepare a separate "Dignitary Suite" meal.
+
+5. Proxy RSVP & Authentication
+
+* Logic: Unique GUID (Globally Unique Identifier) links.
+
+* Action: Allow a "Protocol Officer" to log in and update status for a "Primary Guest."
+
+* Audit Trail: Every change must log updated_by to show whether the King RSVP’d personally or his PA did it on his behalf.
+
+6. Cybersecurity & Anti-Harvesting
+
+* Logic: No 3rd-party trackers (No Google Analytics, No Meta Pixels).
+
+* Access Control: All links must be Token-Based and expire after 3 failed attempts.
+
+* Encryption: Ensure AES-256 encryption for the phone_number field in the database.

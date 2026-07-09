@@ -1,0 +1,20 @@
+Excellent investigation. The architecture is clearer than I expected — the planning app proxies through its own server rather than calling Twin Trade directly from the browser. That's the right pattern and it shapes the build.
+Live diagnostics from my side (you can't access browsers, so I'll handle these):
+a. Will verify after Twin Trade Lock & Send — currently I'm still uploading the PDF on the Twin Trade tracker side. Will confirm 9 cards moved Approved → Ready for Review once Twin Trade publishes the milestone state. Treat this as "pending live verification — proceed with code work."
+f. The Twin Trade host is configured server-side via TWIN_TRADE_SYNC_URL env var. I'll verify that env var is set in this Replit and confirm reachability from the server (you can do curl from the server side or have a one-shot route try it). Show me what TWIN_TRADE_SYNC_URL is currently set to (or whether it's empty), and propose a server-side test route or one-time script that calls Twin Trade's /api/alli-sync/phase-milestones with the existing key and prints the JSON. Read-only, no commits.
+Build plan — two layers:
+Layer 1: Server-side proxy in server/client-portal-routes.ts. Mirror the existing /api/client-portal/alli/deliverables pattern. Add:
+
+GET /api/client-portal/alli/phase-milestones — calls Twin Trade GET ${TWIN_TRADE_SYNC_URL}/api/alli-sync/phase-milestones with the x-alli-sync-key header. Returns proxied JSON to the browser. Uses the same portal-session auth gate the existing deliverables route uses.
+POST /api/client-portal/alli/phase-milestones/:phase/signoff — accepts { client_name, notes? } from browser. Calls Twin Trade POST ${TWIN_TRADE_SYNC_URL}/api/alli-sync/phase-milestones/:phase/signoff with { signed_off_by_email: <Kehinde's email from session>, notes } plus the x-alli-sync-key header. Returns proxied JSON.
+
+Layer 2: Client UI in client/src/pages/client-portal/project.tsx. Add a Phase 1 Milestone banner ABOVE the kanban:
+
+In load(): also call portalFetch("GET", "/api/client-portal/alli/phase-milestones") and store result.
+Render banner only when there's a Phase 1 milestone with milestone_state === 'ready_for_client'. Otherwise hidden.
+Banner shows: milestone_title, "9 deliverables ready for your review", Download Phase 1 Pack link (if milestone_document_url present), Sign Off Milestone button.
+Sign Off Milestone button uses the SAME ReviewModal component as per-deliverable sign-off. Modal copy: "Sign off Phase 1 Milestone? This signs off all 9 Phase 1 deliverables in one action. This cannot be undone."
+On confirm: call portalFetch("POST", "/api/client-portal/alli/phase-milestones/1/signoff", { client_name: "Kehinde Alli", notes: <optional from textarea> }). On 200: re-run load(), banner hides, 9 cards move from Ready for Review to Approved column, show toast "Phase 1 signed off."
+Per-deliverable Sign Off buttons stay unchanged as fallback.
+
+Show me each layer's diff before you commit, in this order: Layer 1 server-side first, then I review, then Layer 2 client-side. Single bundled commit at the end.

@@ -1,0 +1,57 @@
+Now build the core portal pages inside the Group Portal. These go under /group-portal/* routes.
+
+Build these pages one at a time. Start with the most important ones first:
+
+PAGE 1 — PROJECTS at /group-portal/projects
+Replace the current stub page with a real projects module:
+
+- List view showing all projects for the active company (filter by entity from localStorage group_active_company)
+- Each project card shows: title, status badge (Planning, Active, On Hold, Complete), deadline, assigned team members, progress bar
+- Create Project button — opens a modal with fields: title, description, company, start date, end date, status, priority
+- Click project card — opens project detail page at /group-portal/projects/:id showing:
+  - Project overview tab: title, description, dates, status, team
+  - Tasks tab: task list with add task, assign to team member, due date, status
+  - Files tab: upload and view project files
+  - Notes tab: team notes and updates
+  - Activity tab: audit log of all changes
+
+Dark theme #0A0A0A throughout, gold #E2C87A accents, Poppins font.
+Backend routes in server/group-portal-routes.ts:
+GET /api/group-portal/projects?entity=
+POST /api/group-portal/projects
+GET /api/group-portal/projects/:id
+PATCH /api/group-portal/projects/:id
+GET /api/group-portal/projects/:id/tasks
+POST /api/group-portal/projects/:id/tasks
+PATCH /api/group-portal/tasks/:id
+
+PAGE 2 — DOCUMENTS at /group-portal/documents
+Replace stub with real document library:
+- Folder structure by category: Contracts, Policies, HR Documents, Finance, Compliance, General
+- Upload button per folder
+- Each file shows: name, size, uploaded by, date, download button, delete button
+- Files separated by entity
+- Search bar to find documents
+
+Backend routes:
+GET /api/group-portal/documents?entity=
+POST /api/group-portal/documents/upload (multer)
+DELETE /api/group-portal/documents/:id
+GET /api/group-portal/documents/:id/download
+
+PAGE 3 — TEAM CHAT at /group-portal/chat
+Replace stub with real team chat:
+- Left sidebar: list of channels — General, each company channel, Direct Messages
+- Main area: message thread
+- Message input at bottom with send button
+- Messages show sender name, timestamp, message text
+- New channel button
+- Real time feel — poll for new messages every 5 seconds
+
+Backend routes:
+GET /api/group-portal/chat/channels?entity=
+POST /api/group-portal/chat/channels
+GET /api/group-portal/chat/channels/:id/messages
+POST /api/group-portal/chat/channels/:id/messages
+
+Build all three pages now. Confirm each one is complete.

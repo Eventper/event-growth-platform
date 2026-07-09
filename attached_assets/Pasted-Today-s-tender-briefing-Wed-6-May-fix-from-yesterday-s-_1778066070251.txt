@@ -1,0 +1,31 @@
+Today's tender briefing (Wed 6 May) — fix from yesterday's paste hasn't worked. Three tenders surfaced, all zero EP fit:
+
+Procurement of Energy Storage System — Chemonics International
+Procurement of Household Appliances — Chemonics International
+Procurement of vehicle (Flatbed truck) — Chemonics International
+
+Plus all three show value = £1 (parsing bug).
+
+Diagnostic required:
+
+Was yesterday's tender business-fit fix applied? Show me the current scoring code and confirm last commit timestamp.
+If applied, why are these three passing through? Specifically:
+
+
+"Energy Storage System" = engineering procurement → NOT in any EP domain → should score 0
+"Household Appliances" = consumer goods → NOT in any EP domain → should score 0
+"Vehicle (Flatbed truck)" = vehicle procurement → should hit "vehicle maintenance, fleet, transport infrastructure" negative keyword list → should score 0
+
+
+Are these scoring through because of weak generic matches like "procurement" or "international"? Both are too generic to count as EP domain matches.
+Confirm the negative keyword exclusion list is actually wired to reject. The vehicle tender should have been excluded outright.
+Value parsing bug — all three show £1. Show me the value extraction logic. Is it stripping currency formatting wrong, defaulting to £1 when value can't be parsed, or genuinely pulling £1 from source?
+
+
+Required immediate actions:
+a. Confirm yesterday's domain keyword + negative exclusion code is actually deployed (not just specced)
+b. If deployed, fix the scoring logic so "Energy Storage System", "Household Appliances", "vehicle procurement" score 0 and never surface
+c. Add Chemonics International to a watchlist as buyer that consistently produces zero-fit tenders for EP — not auto-block (some Chemonics work might fit one day) but flag in audit log so we know
+d. Fix value parsing — investigate why £1 is appearing universally and correct
+e. Run dry-run on past 30 days of tenders that would have surfaced under fixed scoring — show me what passes vs fails. Confirm FCDO UK-Africa Remittance scores high (should be 30+). Confirm any random construction / utility / equipment tender scores 0.
+f. Tomorrow's briefing (Thu 7 May 07:00 UK) must show genuine EP-relevant tenders OR show "0 matches today" rather than padding with irrelevant tenders.

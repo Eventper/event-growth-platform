@@ -1,0 +1,134 @@
+ALLI Foundation — Partner Directory and Funder Directory: match the Young People Case Management form-based UI exactly. Single operation.
+Pre-action checks (do these first, report back before any changes):
+
+Confirm DB target is PROD (Neon via PROD_DB_URL), not dev/helium.
+Confirm the Young People Case Management module is the reference UI — empty state by default with stats panel at top, "+ Add" button top right opens a modal form, form has all fields, Save creates a record, click on a record opens the same form pre-populated for editing.
+Report exact count of existing records in Partner Directory and Funder Directory. Expected: 20 partners, 15 funder records (13 funders with MOPAC ×3 boroughs). DO NOT lose any data.
+Back up both tables before any change.
+
+
+STEP 1 — Match the Case Management UI pattern exactly across both directories
+Page layout (same on both directories, identical to Young People Case Management):
+
+Page title and subtitle at top ("Partner Directory" / "ALLI Foundation — Partner Engagement & Tracking")
+Back breadcrumb top left ("← Back to ALLI Clients")
+Search bar
+Stats panel below header — clickable to filter
+"+ Add Partner" / "+ Add Funder" button top right
+Records displayed below
+
+
+STEP 2 — The "+ Add" button opens a modal form (mirrors New Referral exactly)
+Partner Directory form fields:
+
+Organisation Name * (text, required)
+Type (dropdown: Statutory / Charity / Community / Council / Funder / Pro Bono Network / Infrastructure / Other)
+Services (multi-select: Statutory / Mentoring / Mental Health / Therapy / Education / Employment / Legal / Housing / Safeguarding / Funding / Infrastructure)
+Boroughs Covered (multi-select: Lambeth / Lewisham / Southwark / Pan-London / National / Other)
+Website (text)
+Contact Name (text)
+Contact Email (text — validated email or blank, NO placeholder text)
+Contact Phone (text — validated phone or blank, NO placeholder text)
+Engagement Status (dropdown, default "Not Started": Not Started / Approached / Pending Response / In Conversation / Engaged — Active Partnership / Declined — Revisit / Closed)
+Owner (dropdown, default "ALLI Foundation": ALLI Foundation / Trustees / DSL / Project Lead / Operations)
+Date Approached (date picker)
+Date Last Contact (date picker)
+Next Action Date (date picker)
+Next Action (text, 200 char)
+Notes (long text, auto-stamps date + user on each save)
+
+Bottom buttons: "Save Partner" (filled, EPG accent colour) | "Cancel" (outline)
+Funder Directory form fields:
+
+Funder Name * (text, required)
+Tier * (dropdown, required: Tier 1 / Tier 2 / Tier 3)
+Grant Range (text)
+Eligibility (long text)
+Fit for ALLI (long text)
+Route In (long text)
+Contact (text — role-based email)
+Application URL (text)
+When to Apply (text)
+Status (dropdown, default "Not Started": Not Started / In Preparation / Submitted / Pending Decision / Successful / Declined — Revisit / Closed)
+Owner (dropdown, default "ALLI Foundation")
+Amount Applied For (currency, optional)
+Amount Awarded (currency, optional)
+Date Submitted (date picker)
+Decision Date (date picker)
+Next Action Date (date picker)
+Next Action (text)
+Notes (long text, auto-stamps date + user)
+
+Bottom buttons: "Save Funder" | "Cancel"
+
+STEP 3 — Save behaviour
+When "Save Partner" / "Save Funder" is clicked:
+
+New record is written to the database
+Modal closes
+Record appears in the directory view (the existing cards or whatever the current display mode is)
+Stats panel at top updates the count
+No placeholder text (no email@example.com, no +44...) — empty fields save as NULL
+
+
+STEP 4 — Click on a record to edit
+When any existing record is clicked from the directory view:
+
+The SAME modal form opens
+All fields pre-populated with that record's existing data
+Bottom button now says "Save Changes" instead of "Save Partner" / "Save Funder"
+"Cancel" closes without saving
+"Delete" button appears (was hidden in add mode), requires confirmation prompt
+
+When "Save Changes" is clicked:
+
+Existing record is updated in the database
+Last Modified Date auto-stamps
+Modal closes
+Directory view refreshes to show the updated record
+
+One form. Two modes. The button text and the presence of "Delete" button signal which mode the user is in.
+
+STEP 5 — Seed all existing records into the directory
+Partner Directory must show exactly 20 records (the 20 partners from the Partner Engagement Playbook).
+Funder Directory must show exactly 15 records (13 funders with MOPAC ×3 boroughs).
+If any records are missing, top up using data from the original seeding pastes. DO NOT lose any existing data during the UI work.
+
+STEP 6 — Data scrub during migration
+Search both directories for placeholder text:
+
+email@example.com → set to NULL
++44... → set to NULL
+example.com → set to NULL
+Whitespace-only fields → normalise to NULL
+
+Fix the insertion logic so future modal form saves cannot insert placeholder text. Empty fields save as NULL.
+Specifically Dwaynamics had email@example.com against Pastor Lorraine Jones — set email to NULL and add Note: "Contact via Dwaynamics website or Lambeth Council community safety team for introduction."
+
+STEP 7 — Stats panel above the records (matches Case Management pattern)
+Partner Directory: Not Started | Approached | Pending Response | In Conversation | Engaged | Declined / Closed
+Funder Directory: Not Started | In Preparation | Submitted | Pending Decision | Successful | Declined / Closed
+Each stat clickable to filter the displayed records.
+
+STEP 8 — D6 governance gate (Funder Directory only)
+Preserve the D6 rule. Funder Status cannot move from "Not Started" to "In Preparation" until a Trustee has marked D6 resolution as Complete. Banner warning visible until the gate is released.
+
+After completion, confirm:
+
+Page layout matches Young People Case Management UI exactly — page title + subtitle + breadcrumb + search + stats panel + "+ Add" button
+"+ Add Partner" / "+ Add Funder" button top right opens the modal form
+Form contains every required field — nothing simplified or dropped
+Save creates a new record, modal closes, record appears in the directory view, stats update
+Clicking an existing record opens the SAME form pre-populated with that record's data
+"Save Changes" updates the record, "Cancel" closes without saving, "Delete" requires confirmation
+Partner Directory contains exactly 20 records visible
+Funder Directory contains exactly 15 records visible
+No placeholder text anywhere (no email@example.com, no +44...)
+Insertion logic fixed so future saves cannot insert placeholder text
+Notes field auto-stamps date and user on every save
+Stats panel counts accurate and clickable for filtering
+D6 governance gate active on Funder Directory
+Form save validation works — required fields cannot be empty, email format validated where applicable
+Discussion thread note posted: "Partner Directory and Funder Directory upgraded to match Young People Case Management form-based UI exactly. Add via + button opens modal form. Click any existing record to edit. Same form for both add and edit. All 20 partner and 15 funder records preserved. Three modules now use one consistent UI pattern."
+
+Report back with all fifteen confirmations and preview links.

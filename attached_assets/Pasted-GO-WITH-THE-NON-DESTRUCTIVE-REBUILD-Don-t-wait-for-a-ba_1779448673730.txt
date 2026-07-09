@@ -1,0 +1,66 @@
+GO WITH THE NON-DESTRUCTIVE REBUILD. Don't wait for a background task or platform escalation.
+
+EXECUTION ORDER
+
+(1) PULL THE GOOD VERSION
+
+git show 075c7b5:server/routes.ts > /tmp/routes-good.ts
+
+Confirm:
+  wc -l /tmp/routes-good.ts  (expect ~22541 lines)
+  tail -5 /tmp/routes-good.ts (confirm file ends with proper closing brace, not mid-statement)
+
+If the file is truncated even at 075c7b5, fall back to 69656e2faf775cf0076ed2c7ba0a5f139c702a98 (the commit before) and try again.
+
+(2) OVERWRITE THE BROKEN FILE WITH THE GOOD CONTENT
+
+cp /tmp/routes-good.ts server/routes.ts
+
+Or via file write tool — whichever mechanism you have that overwrites file content. Not git operations, just standard file write.
+
+(3) BOOT TEST IMMEDIATELY
+
+npm run dev (or whichever start command the app uses)
+
+Watch the log. Three outcomes:
+  (a) Boots clean to "listening on port X" → proceed to (4)
+  (b) Different error → surface, I steer
+  (c) Same EOF error → 075c7b5 isn't actually clean, try 69656e2 instead
+
+Don't wait on this — try immediately.
+
+(4) IF BOOTS CLEAN — RECONCILE THE 50 LINES OF LOST ROUTE ADDITIONS
+
+After restoring to 075c7b5 base, you need to re-add what came after. Show me:
+
+  git show 075c7b5 -- server/routes.ts | head -200
+  (the 45 insertions from 075c7b5 itself)
+
+  git show 2e3b54e -- server/routes.ts
+  (the 5 insertions / 1841 deletions from the breaking commit)
+
+Important on 2e3b54e — the 1841 deletions is what corrupted the file. The 5 insertions are what we want. Show me the additions only — strip the deletions context.
+
+After I see both diffs, I tell you which lines to re-apply. Don't auto-apply. Show first.
+
+(5) RE-APPLY THE GOOD ADDITIONS, RE-BOOT, RE-VERIFY
+
+After re-applying the legitimate additions on top of the 075c7b5 base:
+  - Boots clean
+  - Server log shows "listening"
+  - Curl /api/summary/iam-her with EP_CROSS_SYSTEM_KEY → 200 JSON
+  - Curl same endpoint with wrong key → 401
+  - Load /iam-her preview → renders
+  - Load /iam-her/register → form renders, test submission writes to event_applications, fires confirmation email
+  - Load /iam-her/esther → tasks/documents/messages render
+  - demo-token call from /iam-her dashboard is gone (was removed earlier)
+
+(6) COMMIT THE RECOVERED STATE
+
+Once verified working:
+  git add server/routes.ts
+  git commit -m "recovery: rebuild server/routes.ts from 075c7b5 + re-apply route handler additions"
+
+If commit is also a destructive git op blocked by policy — surface and I'll handle the commit separately via the workspace Shell tab outside the Agent. Working file matters more than the commit.
+
+GO. Step 1 immediately.

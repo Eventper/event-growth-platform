@@ -1,0 +1,169 @@
+"Build a dedicated I Am Her project module in the EP Planning App. This is a standalone section just like the ALLI Foundation tracker — not a sub-tab under a general projects area. It has its own navigation entry, its own dashboard, and its own client portal.
+NAVIGATION
+Add I Am Her to the main left sidebar navigation of the EP Planning App with its own icon — use a subtle star or diamond icon in gold. It sits alongside other main modules like ALLI Foundation, Event Planning, Client Portal.
+I AM HER DASHBOARD — STAFF SIDE
+URL: eventperfektplanningapp.com/iam-her
+Header:
+I Am Her — The Woman Who Leads the Room
+Friday 7 August 2026 · Milton Keynes · By Invitation Only
+Four metric cards at the top:
+
+Days to Event — auto-calculating countdown from today to 7 August 2026
+Co-Creators Confirmed — number — starts at 1 — Esther
+Corporate Partners — number — starts at 0
+Guest Applications — number — starts at 0 — pulls from registration form
+
+TAB 1 — OVERVIEW
+Project details:
+
+Event name: I Am Her — The Woman Who Leads the Room
+Date: Friday 7 August 2026
+Location: Milton Keynes — Private Venue TBC
+Capacity: 100 women — invitation only
+Project Lead: Tolu Johnson
+Project Manager: Juliet Ike
+Status: Active — In Planning
+
+Programme timeline:
+7:00pm — Arrival and welcome drinks and goodie bag collection
+7:30pm — Skin panel — Esther and colleague
+8:30pm — Laser clinic — 10 minutes
+8:45pm — Brand moments — 2 minutes each
+9:00pm — Makeup
+9:30pm — Open floor and wine
+11:00pm — Close
+TAB 2 — CO-CREATORS
+Shows all co-creation partners. Each partner has:
+
+Name and organisation
+Status — Confirmed / In Discussion / Invited
+Tasks assigned — with completion status
+Documents uploaded
+Link to their client portal page
+
+Pre-populate with:
+
+Esther — Shujo Aesthetics — Confirmed — 10 tasks — link to client portal
+
+Add Co-Creator button — opens a form to add new co-creator name organisation email and tasks
+TAB 3 — CORPORATE PARTNERS
+Tracks all corporate sponsorship conversations. Table with:
+
+Company name
+Contact name and email
+Package — Founding Partner / Brand Partner / Community Partner
+Status — Outreach Sent / Responded / Call Booked / Confirmed / Declined
+Value — £2,500 / £1,500 / £750
+Notes
+Follow up date
+
+Pre-populate with all seven companies already contacted:
+
+VWFS UK — Katie Benson — katie.benson@vwfs.co.uk — Outreach Sent — 13 May 2026
+Network Rail — Terri Cave — terri.cave@networkrail.co.uk — Outreach Sent — 13 May 2026
+Lloyds Banking Group — Rachel Osikoya — rachel.osikoya@lloydsbanking.com — Outreach Sent — 13 May 2026
+HSBC Balance Network — balance@hsbc.com — Outreach Sent — 13 May 2026
+MIB — Alison — HR Partner — Outreach Sent — 13 May 2026
+Women Leaders MK — Jan — info@womenleadersuk.org — Outreach Sent — 13 May 2026
+Hays MK — Bernice Randall — 01908 870252 — Outreach Sent — 13 May 2026
+
+Total pipeline value card at top of tab: £0 confirmed — £X in discussion — calculated automatically
+TAB 4 — GUEST LIST
+Tracks all guest applications and invitations. Table with:
+
+Full name
+Job title
+Company
+Email
+Phone
+How they heard about I Am Her
+Status — Applied / Invited / Confirmed / Waitlist / Declined
+Nominated by — which co-creator or corporate partner nominated them
+Notes
+
+Pulls automatically from the registration form at eventperfektplanningapp.com/i-am-her
+Add guest manually button for direct invitations from Tolu
+Export to CSV button for Juliet
+TAB 5 — TASKS
+Master task list for the whole project. All tasks across all team members in one view.
+Columns: Task — Owner — Due Date — Status — Priority
+Pre-populate with:
+JULIET — PROJECT MANAGER:
+
+Open Esther client portal — Due 14 May 2026 — Complete
+Send Esther meeting brief on WhatsApp — Due 14 May 2026 — In Progress
+Monitor registration inbox — Ongoing
+Create I Am Her folder in Group Portal — Due 14 May 2026
+Track co-creator confirmations — Ongoing
+Chase partners with no response after 7 days — Due 20 May 2026
+Weekly status report to Tolu every Friday — Ongoing
+
+ESTHER — SHUJO AESTHETICS:
+
+Confirm co-creation participation — Due 20 May 2026
+Send partner pack to Cetaphil — Due 25 May 2026
+Send partner pack to Obagi — Due 25 May 2026
+Invite laser clinic — Due 25 May 2026
+Invite filler company — Due 25 May 2026
+Contact Lisardam — Due 25 May 2026
+Confirm Adex goodie bag products — Due 30 May 2026
+Provide top 10 client guest list — Due 30 June 2026
+Provide brand bio and logo — Due 30 June 2026
+Deliver goodie bag products — Due 25 July 2026
+
+TOLU — PROJECT LEAD:
+
+Confirm venue — Due 31 May 2026
+Confirm all corporate partners — Due 30 June 2026
+Review and approve guest list — Due 15 July 2026
+Approve all brand materials — Due 15 July 2026
+Final programme sign off — Due 25 July 2026
+
+TAB 6 — DOCUMENTS
+All I Am Her documents in one place. Organised by category:
+
+Event brief
+Co-creator packs
+Corporate sponsorship pack
+Guest list
+Programme
+Brand assets
+Photography
+Contracts and agreements
+
+Upload button — Juliet and Tolu can upload documents
+All documents uploaded by Esther via her client portal appear here automatically
+CLIENT PORTAL — ESTHER SIDE
+URL: eventperfektplanningapp.com/iam-her/esther
+This is Esther's private page. Accessible via direct URL only for now. No login required. Password protection to be added later.
+Design: dark background — gold and white accents — Poppins font — mobile optimised
+Four sections:
+WELCOME:
+Welcome, Esther
+I Am Her — The Woman Who Leads the Room — 7 August 2026
+Your project manager is Juliet Ike — juliet@eventperfekt.com
+YOUR TASKS:
+Her 10 tasks displayed as a checklist. She can update status and add notes. When she marks complete send email notification to info@eventperfekt.com and juliet@eventperfekt.com
+UPLOAD DOCUMENTS:
+Labelled upload slots:
+
+Brand logo — high resolution PNG or SVG
+Brand bio — Word or PDF
+Cetaphil partner confirmation — any format
+Obagi partner confirmation — any format
+Laser clinic confirmation — any format
+Filler company confirmation — any format
+Lisardam confirmation — any format
+Adex goodie bag confirmation — any format
+Guest list — Excel or Word
+Any other documents — open upload
+
+When Esther uploads send email notification to info@eventperfekt.com and juliet@eventperfekt.com
+MESSAGES:
+Simple message thread between Esther and Event Perfekt team. Pre-populate with one welcome message from Juliet:
+Hi Esther — welcome to the I Am Her co-creator portal. This is your home for everything related to the evening. You can update your tasks, upload documents, and message us any time. So excited to be working with you. Juliet x
+All data from Esther's client portal syncs automatically to the I Am Her staff dashboard in real time.
+Confirm when built and give me both URLs:
+
+Staff dashboard — eventperfektplanningapp.com/iam-her
+Esther client portal — eventperfektplanningapp.com/iam-her/esther"

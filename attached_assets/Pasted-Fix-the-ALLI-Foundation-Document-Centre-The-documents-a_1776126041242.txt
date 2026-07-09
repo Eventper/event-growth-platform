@@ -1,0 +1,52 @@
+Fix the ALLI Foundation Document Centre. The documents are showing but several features are broken or missing.
+
+FIX 1 — DOCUMENT SIGNING
+Add a Sign Document button to each document that has category Legal.
+
+When clicked:
+- Opens a signing modal
+- Shows document name
+- Shows: By signing you confirm you have read and agree to this document
+- Full name field — pre-filled from client portal user
+- Date field — pre-filled with today
+- Signature pad OR typed signature option — Show a text field: Type your full name as your digital signature
+- Confirm and Sign button — gold
+- On sign: update document record with signed_by, signed_at, signature_text
+- Show green Signed badge on the document card with date
+
+Add signed_by, signed_at, signature_text, is_signed columns to the client portal documents table if they do not exist.
+
+FIX 2 — READ CONFIRMATION
+Add a Mark as Read button to every document.
+When clicked update document record with read_by, read_at.
+Show blue Read badge with date on the document card.
+Unread documents show a small amber dot indicator.
+
+FIX 3 — FIX CLIENT UPLOADS
+The upload section exists but is not working. Fix it:
+- Accept any file type
+- Maximum 10MB per file
+- Show upload progress bar
+- On success show the uploaded file in the Client Uploads tab immediately
+- Send notification email to adminuk@eventperfekt.com:
+Subject: ALLI Foundation — New Document Uploaded — [filename]
+Body: Kehinde Alli has uploaded a new document to the ALLI Foundation portal. File: [filename]. View at: https://eventperfektplanningapp.com/client-portal
+
+FIX 4 — DOCUMENT STATUS TRACKING
+Add a status column to each document card showing:
+- Shared by EP — grey badge — document sent by Event Perfekt
+- Unread — amber badge — not yet opened
+- Read — blue badge — opened but not signed
+- Signed — green badge — signed with date
+- Uploaded by Client — purple badge — uploaded by ALLI Foundation
+
+FIX 5 — DISCUSSION AND COMMENTS
+The Comment button exists but does nothing. Fix it:
+- Opens a comments panel on the right side
+- Shows existing comments with name and timestamp
+- Text area to add a new comment
+- Submit comment button
+- Comments visible to both Event Perfekt team and ALLI Foundation client
+- New comment sends email notification to adminuk@eventperfekt.com
+
+Apply all five fixes now and confirm each one is working.

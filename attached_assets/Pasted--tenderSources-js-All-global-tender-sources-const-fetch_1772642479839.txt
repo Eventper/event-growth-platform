@@ -1,0 +1,363 @@
+// tenderSources.js — All global tender sources
+
+const fetch = require("node-fetch");
+const { XMLParser } = require("fast-xml-parser");
+
+const today = new Date().toISOString().slice(0, 10);
+const BAD_STATUS = ["awarded","closed","cancelled","void","expired","withdrawn","complete","unsuccessful"];
+
+function isValid(t) {
+  if (!t.title) return false;
+  if (t.deadline && t.deadline < today) return false;
+  if (BAD_STATUS.some(s => (t.status||"").toLowerCase().includes(s))) return false;
+  if (BAD_STATUS.some(s => (t.title||"").toLowerCase().includes(s))) return false;
+  return true;
+}
+
+function clean(str) {
+  return (str || "").replace(/<[^>]*>/g, "").trim().slice(0, 300);
+}
+
+// ── 1. CONTRACTS FINDER (UK) — Free, no key ───────────────────
+async function searchContractsFinder(keyword) {
+  try {
+    const res = await fetch(
+      "https://www.contractsfinder.service.gov.uk/Published/Notices/PublishedNotice/Search",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          searchCriteria: {
+            keywords: keyword,
+            statuses: ["published"],
+            publishedFrom: "2026-01-01",
+            size: 10, from: 0,
+            sortField: "publishedDate",
+            sortOrder: "DESC"
+          }
+        })
+      }
+    );
+    const data = await res.json();
+    return (data.results || []).map(n => ({
+      title: n.notice?.title || "",
+      buyer: n.notice?.organisationName || "",
+      value: n.notice?.value ? `£${Number(n.notice.value).toLocaleString()}` : "Not stated",
+      deadline: n.notice?.deadlineDate?.slice(0,10) || "",
+      description: clean(n.notice?.description),
+      url: `https://www.contractsfinder.service.gov.uk/Notice/${n.notice?.id}`,
+      source: "Contracts Finder",
+      country: "UK",
+      status: "Open"
+    })).filter(isValid);
+  } catch(e) { console.error("ContractsFinder:", e.message); return []; }
+}
+
+// ── 2. FIND A TENDER (UK) — Free, no key ─────────────────────
+async function searchFindATender(keyword) {
+  try {
+    const res = await fetch(
+      `https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?indexFrom=0&pageSize=10&q=${encodeURIComponent(keyword)}&orderBy=publicationDate&order=DESC&stages=tender`,
+      { headers: { "Accept": "application/json" } }
+    );
+    const data = await res.json();
+    return (data.releases || []).map(r => ({
+      title: r.tender?.title || "",
+      buyer: r.buyer?.name || "",
+      value: r.tender?.value?.amount ? `£${Number(r.tender.value.amount).toLocaleString()}` : "Not stated",
+      deadline: r.tender?.tenderPeriod?.endDate?.slice(0,10) || "",
+      description: clean(r.tender?.description),
+      url: `https://www.find-tender.service.gov.uk/Notice/${r.ocid?.replace("ocds-b5fd17-","")}`,
+      source: "Find a Tender (FTS)",
+      country: "UK",
+      status: "Open"
+    })).filter(isValid);
+  } catch(e) { console.error("FindATender:", e.message); return []; }
+}
+
+// ── 3. WORLD BANK — Free, no key ─────────────────────────────
+async function searchWorldBank(keyword) {
+  try {
+    const res = await fetch(
+      `https://search.worldbank.org/api/v2/procnotices?qterm=${encodeURIComponent(keyword)}&format=json&rows=10&os=0&noticeType=RFC,RFB,RFP,EOI&orderby=deadlinedate&order=asc`,
+      { headers: { "Accept": "application/json" } }
+    );
+    const data = await res.json();
+    const notices = data.procnotices?.procnotice || [];
+    return notices.map(n => ({
+      title: n.project_name || n.notice_type || "",
+      buyer: n.borrower || "World Bank",
+      value: n.contract_amount ? `$${Number(n.contract_amount).toLocaleString()}` : "Not stated",
+      deadline: n.submission_date_deadline?.slice(0,10) || "",
+      description: clean(n.notice_text || n.project_name),
+      url: n.url || `https://projects.worldbank.org/en/projects-operations/procurement/noticedetail?id=${n.id}`,
+      source: "World Bank",
+      country: n.country_name || "International",
+      status: "Open"
+    })).filter(isValid);
+  } catch(e) { console.error("WorldBank:", e.message); return []; }
+}
+
+// ── 4. UNGM — UN Global Marketplace — Free, no key ───────────
+async function searchUNGM(keyword) {
+  try {
+    const res = await fetch(
+      `https://www.ungm.org/Public/Notice?pageIndex=1&pageSize=10&deadline=true&noticeTypes=0,2,4&keyword=${encodeURIComponent(keyword)}`,
+      { headers: { "Accept": "application/json", "X-Requested-With": "XMLHttpRequest" } }
+    );
+    const data = await res.json();
+    return (data.notices || data.Notices || []).map(n => ({
+      title: n.Title || n.title || "",
+      buyer: n.AgencyName || n.agency || "UN Agency",
+      value: "Not stated",
+      deadline: n.Deadline?.slice(0,10) || n.deadline?.slice(0,10) || "",
+      description: clean(n.Description || n.description),
+      url: `https://www.ungm.org/Public/Notice/${n.Id || n.id}`,
+      source: "UN Global Marketplace",
+      country: n.Country || "International",
+      status: "Open"
+    })).filter(isValid);
+  } catch(e) { console.error("UNGM:", e.message); return []; }
+}
+
+// ── 5. TED — European Union Tenders — Free, no key ───────────
+async function searchTED(keyword) {
+  try {
+    const res = await fetch(
+      `https://ted.europa.eu/api/v3.0/notices/search?q=ND%3D*+AND+PD%3D[20260101+TO+20301231]+AND+AC%3D3&scope=3&fields=ND,TI,AU,DT,TY,NC,PR&page=1&pageSize=10&paginationMode=PAGE&onlyLatestVersions=true&text=${encodeURIComponent(keyword)}`,
+      { headers: { "Accept": "application/json" } }
+    );
+    const data = await res.json();
+    return (data.notices || []).map(n => ({
+      title: n.TI?.[0] || "",
+      buyer: n.AU?.[0] || "EU Body",
+      value: "Not stated",
+      deadline: n.DT?.slice(0,10) || "",
+      description: `EU tender — ${n.TY?.[0] || "Contract"} — ${n.NC?.[0] || ""}`,
+      url: `https://ted.europa.eu/en/notice/-/detail/${n.ND}`,
+      source: "TED (EU)",
+      country: n.PR?.[0] || "Europe",
+      status: "Open"
+    })).filter(isValid);
+  } catch(e) { console.error("TED:", e.message); return []; }
+}
+
+// ── 6. DEVEX — Global Development — Needs SerpAPI ────────────
+async function searchDevex(keyword, serpKey) {
+  if (!serpKey) return [];
+  try {
+    const res = await fetch(
+      `https://serpapi.com/search?engine=google&q=site:devex.com+tender+"${encodeURIComponent(keyword)}"+2026&api_key=${serpKey}&num=8`,
+      { headers: { "Accept": "application/json" } }
+    );
+    const data = await res.json();
+    return (data.organic_results || []).map(r => ({
+      title: r.title,
+      buyer: "Devex",
+      value: "Check portal",
+      deadline: "Check portal",
+      description: clean(r.snippet),
+      url: r.link,
+      source: "Devex",
+      country: "International",
+      status: "Open"
+    }));
+  } catch(e) { console.error("Devex:", e.message); return []; }
+}
+
+// ── 7. FCDO (UK Foreign Aid) — RSS Feed ───────────────────────
+async function searchFCDO(keyword) {
+  try {
+    const res = await fetch(
+      `https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?indexFrom=0&pageSize=10&q=${encodeURIComponent(keyword + " FCDO international development")}&orderBy=publicationDate&order=DESC`,
+      { headers: { "Accept": "application/json" } }
+    );
+    const data = await res.json();
+    return (data.releases || []).map(r => ({
+      title: r.tender?.title || "",
+      buyer: r.buyer?.name || "FCDO",
+      value: r.tender?.value?.amount ? `£${Number(r.tender.value.amount).toLocaleString()}` : "Not stated",
+      deadline: r.tender?.tenderPeriod?.endDate?.slice(0,10) || "",
+      description: clean(r.tender?.description),
+      url: `https://www.find-tender.service.gov.uk/Notice/${r.ocid?.replace("ocds-b5fd17-","")}`,
+      source: "FCDO / Find a Tender",
+      country: "UK/International",
+      status: "Open"
+    })).filter(isValid);
+  } catch(e) { console.error("FCDO:", e.message); return []; }
+}
+
+// ── 8. USAID — Free, no key ───────────────────────────────────
+async function searchUSAID(keyword) {
+  try {
+    const res = await fetch(
+      `https://www.usaid.gov/api/solicitations?keyword=${encodeURIComponent(keyword)}&status=open&format=json`,
+      { headers: { "Accept": "application/json" } }
+    );
+    const data = await res.json();
+    return (data.data || data.solicitations || []).map(s => ({
+      title: s.title || s.name || "",
+      buyer: "USAID",
+      value: s.estimated_value || "Not stated",
+      deadline: s.response_date?.slice(0,10) || s.deadline?.slice(0,10) || "",
+      description: clean(s.description || s.summary),
+      url: s.url || "https://www.usaid.gov/work-usaid/contract-opportunities",
+      source: "USAID",
+      country: s.country || "International",
+      status: "Open"
+    })).filter(isValid);
+  } catch(e) { console.error("USAID:", e.message); return []; }
+}
+
+// ── 9. NIGERIA — BPP — RSS Feed ───────────────────────────────
+async function searchNigeria(keyword) {
+  try {
+    const parser = new XMLParser();
+    const res = await fetch(
+      `https://nocopo.bpp.gov.ng/api/tenders?keyword=${encodeURIComponent(keyword)}&status=open`,
+      { headers: { "Accept": "application/json" } }
+    );
+    const data = await res.json();
+    return (data.tenders || data.data || []).map(t => ({
+      title: t.title || t.description || "",
+      buyer: t.entity || t.ministry || "Federal Government of Nigeria",
+      value: t.budget || "Not stated",
+      deadline: t.closing_date?.slice(0,10) || "",
+      description: clean(t.description || t.scope),
+      url: t.url || "https://nocopo.bpp.gov.ng",
+      source: "Nigeria BPP",
+      country: "Nigeria",
+      status: "Open"
+    })).filter(isValid);
+  } catch(e) { console.error("Nigeria BPP:", e.message); return []; }
+}
+
+// ── 10. KENYA — Public Procurement — Free ─────────────────────
+async function searchKenya(keyword) {
+  try {
+    const res = await fetch(
+      `https://tenders.go.ke/api/tenders?q=${encodeURIComponent(keyword)}&status=open&format=json`,
+      { headers: { "Accept": "application/json" } }
+    );
+    const data = await res.json();
+    return (data.tenders || data.results || []).map(t => ({
+      title: t.title || "",
+      buyer: t.procuring_entity || t.organisation || "",
+      value: t.budget || "Not stated",
+      deadline: t.closing_date?.slice(0,10) || t.deadline?.slice(0,10) || "",
+      description: clean(t.description || t.scope_of_work),
+      url: t.url || `https://tenders.go.ke/tenders/${t.id}`,
+      source: "Kenya Tenders",
+      country: "Kenya",
+      status: "Open"
+    })).filter(isValid);
+  } catch(e) { console.error("Kenya:", e.message); return []; }
+}
+
+// ── 11. AfDB — African Development Bank ───────────────────────
+async function searchAfDB(keyword) {
+  try {
+    const res = await fetch(
+      `https://www.afdb.org/api/en/projects-and-operations/procurement?keyword=${encodeURIComponent(keyword)}&status=ongoing&format=json`,
+      { headers: { "Accept": "application/json" } }
+    );
+    const data = await res.json();
+    return (data.data || data.tenders || []).map(t => ({
+      title: t.title || t.project_name || "",
+      buyer: t.borrower || "African Development Bank",
+      value: t.contract_value || "Not stated",
+      deadline: t.deadline?.slice(0,10) || "",
+      description: clean(t.description || t.project_name),
+      url: t.url || "https://www.afdb.org/en/projects-and-operations/procurement",
+      source: "African Development Bank",
+      country: t.country || "Africa",
+      status: "Open"
+    })).filter(isValid);
+  } catch(e) { console.error("AfDB:", e.message); return []; }
+}
+
+// ── 12. SAM.GOV — US Federal (large international contracts) ──
+async function searchSAMGov(keyword) {
+  try {
+    const res = await fetch(
+      `https://api.sam.gov/opportunities/v2/search?api_key=DEMO_KEY&q=${encodeURIComponent(keyword)}&active=true&limit=10&postedFrom=01/01/2026`,
+      { headers: { "Accept": "application/json" } }
+    );
+    const data = await res.json();
+    return (data.opportunitiesData || []).map(o => ({
+      title: o.title || "",
+      buyer: o.fullParentPathName || o.organizationName || "US Federal",
+      value: o.award?.amount ? `$${Number(o.award.amount).toLocaleString()}` : "Not stated",
+      deadline: o.responseDeadLine?.slice(0,10) || "",
+      description: clean(o.description),
+      url: `https://sam.gov/opp/${o.noticeId}/view`,
+      source: "SAM.gov (US Federal)",
+      country: "USA / International",
+      status: "Open"
+    })).filter(isValid);
+  } catch(e) { console.error("SAM.gov:", e.message); return []; }
+}
+
+// ── MASTER SEARCH — runs all sources in parallel ───────────────
+async function searchAllPortals(category, keywords) {
+  const keyword = keywords[0];
+  const serpKey = process.env.SERP_API_KEY || null;
+
+  const sources = await Promise.allSettled([
+    searchContractsFinder(keyword),
+    searchFindATender(keyword),
+    searchWorldBank(keyword),
+    searchUNGM(keyword),
+    searchTED(keyword),
+    searchFCDO(keyword),
+    searchUSAID(keyword),
+    searchNigeria(keyword),
+    searchKenya(keyword),
+    searchAfDB(keyword),
+    searchSAMGov(keyword),
+    searchDevex(keyword, serpKey),
+  ]);
+
+  const all = sources
+    .filter(r => r.status === "fulfilled")
+    .flatMap(r => r.value || []);
+
+  // Dedupe by title similarity
+  const seen = new Set();
+  const unique = all.filter(t => {
+    const key = t.title.toLowerCase().replace(/[^a-z0-9]/g,"").slice(0,40);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  // Sort by deadline ascending
+  return unique.sort((a,b) => {
+    if (!a.deadline) return 1;
+    if (!b.deadline) return -1;
+    return a.deadline.localeCompare(b.deadline);
+  });
+}
+
+module.exports = { searchAllPortals };
+
+Then in server.js just use:
+javascriptconst { searchAllPortals } = require("./tenderSources");
+
+app.post("/api/search-tenders", async (req, res) => {
+  const { category, keywords } = req.body;
+  try {
+    const results = await searchAllPortals(category, keywords);
+    console.log(`Returned ${results.length} tenders from all portals`);
+    res.json(results);
+  } catch(err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+Install one extra package:
+bashnpm install fast-xml-parser node-fetch
+
+Tell Replit Agent:
+
+Create tenderSources.js exactly as above. It searches 12 portals in parallel — Contracts Finder, Find a Tender, World Bank, UN Global Marketplace, TED EU, FCDO, USAID, Nigeria BPP, Kenya Tenders, African Development Bank, SAM.gov, and Devex. All run simultaneously using Promise.allSettled so one failing portal never breaks the others. Results are deduped and sorted by deadline. Only open 2026 tenders are returned. No AI needed — direct API calls only.

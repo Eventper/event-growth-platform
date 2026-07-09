@@ -1,0 +1,50 @@
+age: eventperfekt.net/iamher landing page
+Issue: The current "I Am Her Campaign" section features placeholder women (Esther O., Amina K., Chloe R., Nia J.) which read as either real or made-up — creating confusion. The campaign should only feature real, confirmed women with their consent. Until those women are confirmed and onboarded, the section needs to communicate the campaign concept without using placeholder profiles.
+Current section to remove:
+The Campaign
+I Am Her
+
+In the weeks before 28 August, the room reveals itself.
+Every woman who joins The Woman Who Leads the Room is invited into the I Am Her campaign — an editorial spotlight celebrating who she is, what she leads, and the business she has built.
+
+Her name. Her statement. Her business. Her presence.
+Featured across our platforms, her own, and the women in the room with her.
+
+This is not promotion. It is recognition — for the woman behind the title.
+
+[Placeholder cards — Esther O. / Amina K. / Chloe R. / Nia J.]
+
+This room is by invitation.
+[Request Access →]
+Replace with:
+The Campaign
+I Am Her
+
+In the weeks before 28 August, the room reveals itself.
+
+Every woman confirmed in The Woman Who Leads the Room is invited into the I Am Her editorial campaign — a curated spotlight celebrating who she is, what she leads, and the business she has built.
+
+Her name. Her statement. Her presence.
+Featured across our platforms, her own, and the women in the room with her.
+
+This is not promotion. It is recognition — for the woman behind the title.
+
+The women of the I Am Her 2026 campaign will be revealed in the weeks before 28 August.
+
+This room is by invitation.
+[Request Access →]
+Visual treatment to remove: The four placeholder profile cards (E, A, C, N) should be removed.
+Visual treatment to replace with: Where the cards currently sit, please add a single elegant placeholder strip — same width as the card row was — containing only the line:
+"Featured women revealed in the weeks before 28 August."
+Styling: same premium burgundy/gold colour palette as the rest of the page, centred, generous spacing above and below. No images, no avatars, no placeholder names.
+Important — for the future: The placeholder strip will be replaced with real confirmed women's editorial cards as they're added to the campaign over the coming weeks. Each card will then contain a real woman's name, business, and statement (provided by the woman herself with her consent and approved imagery). Please design the section so that real cards can be slotted in to replace the placeholder strip when ready, with the section flowing naturally as more women are added (2-3 cards initially, scaling up to 10-12 over time, then a "and more revealed soon" link to a fuller page).
+Other consistency check while you're in there:
+Please ensure across the whole page:
+
+Event name appears as "The Woman Who Leads the Room" (with "I Am Her" only as the campaign/anthem, never as the event name)
+Date appears consistently as "Friday 28 August 2026"
+URL is www.eventperfekt.net/iamher (not the old eventperfektplanningapp.com address)
+"100 Women. One Room." as the recurring headline phrase
+"Request Access" or "Request Your Invitation" used consistently as the CTA — pick one and use it throughout
+
+Thanks!

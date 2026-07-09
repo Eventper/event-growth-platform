@@ -1,0 +1,187 @@
+You are helping me build a high-quality prospect list in Apollo for a premium private event.
+
+Project:
+The Woman Who Leads The Room
+
+Positioning:
+A private editorial leadership dinner for accomplished women across the UK — founders, directors, executives, business owners, investors and senior decision-makers — hosted in Milton Keynes.
+
+Important limitation:
+Apollo may not reliably filter by gender, so do not search only by “women.” Instead, build lists using titles, industries, seniority, company type, location, and then prioritise profiles that appear likely to be women based on name/profile review. All final prospects must be manually checked before outreach.
+
+Goal:
+Build a prospect list of high-calibre women who would add quality to the room, not people looking to sell to the room.
+
+Target locations:
+- London
+- Milton Keynes
+- Birmingham
+- Oxford
+- Cambridge
+- Northampton
+- Bedford
+- Luton
+- Hertfordshire
+- Buckinghamshire
+- Warwickshire
+- The Midlands
+- Wider UK where relevant
+
+Target seniority:
+- Owner
+- Founder
+- C-Suite
+- Partner
+- VP
+- Director
+- Head
+
+Target job titles:
+- Founder
+- Co-Founder
+- Owner
+- Managing Director
+- CEO
+- Director
+- Company Director
+- Partner
+- Principal
+- Finance Director
+- Operations Director
+- HR Director
+- People Director
+- Clinic Director
+- Practice Owner
+- Property Investor
+- Investor
+- Developer
+- Managing Partner
+- Senior Partner
+- Retail Founder
+- Brand Founder
+- Hospitality Owner
+- Studio Owner
+
+Target industries:
+- Private healthcare
+- Medical practice
+- Aesthetics
+- Beauty
+- Cosmetics
+- Financial services
+- Wealth management
+- Accounting
+- Legal services
+- Real estate
+- Property
+- Construction
+- Architecture
+- Interior design
+- Hospitality
+- Retail
+- Luxury goods
+- Professional services
+- Human resources
+- Business operations
+- Manufacturing
+- Logistics
+
+Exclude these titles and keywords:
+- Coach
+- Life coach
+- Business coach
+- Mindset coach
+- Trainer
+- Sales trainer
+- Personal trainer
+- Sales
+- Business development
+- SDR
+- BDR
+- Account executive
+- Lead generation
+- Funnel
+- Social media manager
+- VA
+- Virtual assistant
+- Recruiter
+- MLM
+- Network marketing
+- Course creator
+- Influencer
+- Student
+
+Important exclusion rule:
+Do not include people whose main reason for attending would be to sell into the room. Avoid coaches, trainers, salespeople, recruiters, lead gen sellers, social media sellers and anyone who appears to prospect aggressively.
+
+Quality criteria:
+Prioritise prospects who show at least 3 of the following:
+- Owns, leads or operates a real business
+- Senior decision-maker
+- Has budget authority
+- Employs people or manages a team
+- Premium personal or business brand
+- Visible leadership role
+- Likely to attend premium dinners, awards, panels or leadership events
+- Likely to value recognition, connection and curated rooms
+- Would raise the calibre of the room
+
+Create separate Apollo lists:
+
+1. Hot Fit — Invite First
+Women who clearly match the calibre and are likely to value the event.
+
+2. Good Fit — Research More
+Strong prospects, but profile needs more checking before outreach.
+
+3. Corporate Senior Women
+HR directors, finance directors, operations directors, people directors, senior executives.
+
+4. Founders & Business Owners
+Female founders, owners, managing directors, CEOs, company directors.
+
+5. Clinics, Aesthetics & Private Healthcare
+Clinic owners, medical directors, aesthetic clinic owners, private healthcare founders.
+
+6. Legal, Finance & Property
+Law firm partners, accountants, financial planners, wealth professionals, property investors, developers.
+
+7. Do Not Contact
+People who match exclusion criteria or appear to be wrong fit.
+
+For each prospect, collect:
+- Full name
+- LinkedIn URL
+- Apollo profile URL
+- Job title
+- Company
+- Company website
+- Location
+- Industry
+- Seniority
+- Email if available
+- Phone if available
+- Fit score from 1–5
+- Reason they may be a fit
+- Any red flags
+- Suggested outreach angle
+
+Fit scoring:
+5 = excellent fit, invite first
+4 = good fit, worth outreach
+3 = maybe, needs manual review
+2 = weak fit, do not prioritise
+1 = wrong fit, do not contact
+
+Start by building the first 300 prospects, but only save high-quality matches. Do not prioritise volume over quality.
+
+After building the list, produce a summary:
+- Number of prospects found
+- Number by list/category
+- Top 50 prospects to contact first
+- Most common job titles found
+- Most promising industries
+- Any filters that produced bad-fit leads
+- Recommended next search refinements
+
+Do not send any outreach messages yet. Only build and organise the prospect list.

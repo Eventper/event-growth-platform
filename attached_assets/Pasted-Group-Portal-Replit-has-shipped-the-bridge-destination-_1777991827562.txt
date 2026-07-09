@@ -1,0 +1,16 @@
+Group Portal Replit has shipped the bridge destination fix. Bridge now sends destination "planner-dashboard" for all roles.
+Confirm three things on your end:
+a. Bridge-redeemed sessions land authenticated on /planner-dashboard
+User arriving via /bridge/redeem?token=... lands on Planner Dashboard authenticated, no separate login prompt. Confirm this works for Director, Faye (COUNTRY_MANAGER_NIGERIA), Mariam (GUEST_MANAGER_NIGERIA), Frank (DECORATOR_NIGERIA).
+b. Role string mapping
+Group Portal sends the following portal_role values in JWT. Confirm Planner Dashboard sidebar scoping recognises each:
+Group Portal sends (portal_role)Expected sidebar scopeDIRECTORFull sidebar, all entitiesCOUNTRY_MANAGER_NIGERIA (Faye)Full sidebar, Nigeria-scopedLAGOS_CLIENT_MANAGER (Juliet)Full sidebar, Nigeria-scopedEVENTS_MANAGER_NIGERIA (Ololade)Full event tools, Nigeria clientsOPERATIONS_MANAGER_NIGERIA (Erikan)Decor inventory, ops, run sheetsEVENT_COORDINATOR_NIGERIA (Bidemi / Oluwafisayomi / Tofunmi)Run sheets, calendar, guest summariesGUEST_MANAGER_NIGERIA (Mercy / Omotolani / Mariam)Guest management, RSVPs, dietaryDECORATOR_NIGERIA (Frank / Paul)Decor studio, floor plans, inventory read-onlyWAREHOUSE_NIGERIA (Idris)Inventory warehouse, stock movementsALLI_OPERATIONS (Abraham)ALLI client view, cross-functional toolsFINANCE (Prab)Invoicing, expenses, payment tracking
+If any role string doesn't match what Planner Dashboard expects internally, send the corrected mapping and Group Portal will update the JWT role value on their end.
+c. /create-event quarantine confirmed intact
+Bridge users land on /planner-dashboard, never hit /create-event. Confirm /create-event remains SAAS-PAUSED for tenant SaaS use only.
+
+Once (a) and (b) are confirmed, run screenshot tests per role:
+Redeem a bridge session as each role, screenshot the Planner Dashboard sidebar showing scoped tools per the table above. Director full / Faye full Nigeria-scoped / Mariam guest scope / Frank decorator scope at minimum.
+If sidebar role-scope is not yet built (per your earlier flag — "PlannerLayout doesn't have explicit sidebar scoping by bridge role"), then for today: bridge users land on Planner Dashboard with full sidebar visibility. That's acceptable for the walkthrough phase — Nigeria team is exploring tools anyway. Sidebar scoping ships within 24-48 hours as agreed.
+Brief me with confirmation on (a), (b), (c) plus any corrections to role string mapping.
+Standing rules apply.

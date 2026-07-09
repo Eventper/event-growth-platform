@@ -1,0 +1,39 @@
+Architectural decision REVERSED. Stop the migration plan.
+What I missed earlier: today's session has been actively improving Group Portal's tender stack with real fixes:
+
+World Bank parser fix (strip HTML, cap titles at 120 chars, reject whitespace-only)
+Contract Award exclusion (never enter pipeline)
+Geographic filter (UK / Nigeria / Africa Regional only — Pakistan, Cambodia, Mozambique excluded)
+Deadline sanity (>12 months out flagged for review)
+Auto-draft only when submission_deadline IS NOT NULL AND in future
+Business-fit scoring filter (100 → 19 relevant tenders)
+Markdown rendering and empty-deadline suppression in briefing emails
+
+All of this is on Group Portal's tender stack. It works. It produces the daily briefings.
+The April 13 plan to disable Group Portal's tender manager and migrate to Planning App SaaS Tender Command Centre was never completed. Today's fixes superseded that plan.
+Decision:
+
+Keep Group Portal's tender stack as the EP tender pipeline. Don't migrate. Don't delete. It's the working system.
+Planning App's SaaS Tender Command Centre stays as-is — partial, legacy, not the canonical EP tender system. Its role is uncertain (possibly future SaaS feature for tenant clients, possibly dead code). Don't extend it. Don't delete it tonight either. Decide its fate separately, not as part of EP tender architecture.
+Cancel Phases 1-6 of the migration plan. No canonical schema on Planning App. No bridge-facing API. No Group Portal switchable fallback. No deletion. None of it.
+Memory entry #10 corrected accordingly. Group Portal is canonical for EP tenders.
+Update CLAUDE.md (Group Portal):
+
+
+Tender architecture (locked 4 May 2026):
+
+EP's tender pipeline runs on Group Portal
+server/tender-discovery.ts is the discovery agent (14 hardcoded source handlers)
+tender_sources table is UI-display only — discovery uses hardcoded SOURCE_HANDLERS map
+Cron: 7:05 AM UTC daily, calls discoverTenders()
+Outputs daily morning briefing email to info@eventperfekt.com (BCC rule applies)
+Audience: Prab (Project Lead), Abraham (Operations), Tolu (Director)
+Today's parser improvements stay locked: HTML strip, 120-char cap, Contract Award exclusion, geographic filter, deadline sanity, auto-draft gating, business-fit scoring
+Planning App's SaaS Tender Command Centre is separate/legacy — not part of EP's tender pipeline
+
+
+
+Update replit.md (Planning App):
+
+
+SaaS Tender Command Centre on Planning App: partial/legacy. NOT consumed by Group Portal. Group Portal has its own canonical tender stack. Future state of this module is undecided — do not extend or delete without explicit instruction.

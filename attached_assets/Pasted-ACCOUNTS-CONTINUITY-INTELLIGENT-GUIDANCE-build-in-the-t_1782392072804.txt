@@ -1,0 +1,22 @@
+ACCOUNTS, CONTINUITY & INTELLIGENT GUIDANCE — build in the three parts below. Stop at the checkpoint, report. Build only this.
+Part 1 — Real user accounts (the foundation).
+
+Add proper user accounts with secure login (email + password, hashed; standard session/JWT auth).
+Every event, prospect, campaign, preference and piece of data is owned by a user and scoped to them — a user sees ONLY their own data, never another user's. This data separation is mandatory and applies everywhere.
+ownerId is now required, not optional — it is set from the logged-in user on every record automatically.
+Keep secrets in Replit Secrets; never expose another user's data through any endpoint.
+
+Part 2 — Memory & resume-where-they-left-off.
+
+Memory always works now that identity is real: the platform remembers a user's events, preferences (tier, house style, exclusions) and history across sessions and across events. Never re-ask what's already known.
+Resume: when a user returns, show them clearly where they left off — the event they were working on, the stage they reached (mid-wizard, screening half-done, queue part-approved), and the single next action. No blank screen they have to reconstruct.
+Persist in-progress state per user per event so nothing is lost when they step away mid-flow.
+
+Part 3 — Intelligent guidance (Elizabeth challenges, then the human decides).
+
+Where a user's choice looks weak or inconsistent, the platform surfaces a respectful challenge WITH a better option and the reasoning — e.g. "£90 for a premium venue may undersell it; comparable events price at £300+. Keep £90, or revise?"
+It ALWAYS offers; it NEVER overrides. The user's final decision stands, every time. After advising once, it respects the choice and does not nag.
+Apply this at the high-leverage decision points: pricing vs tier, persona/targeting, and message tone vs positioning.
+
+Hard rules: event-agnostic; data scoped per user; secrets only; existing send gate, opt-out, provenance and model-routing all stay in force; build only this, then stop.
+Checkpoint: two separate accounts can log in and each sees only their own events and data; a returning user is shown where they left off with a clear next step; the wizard never re-asks a remembered preference; and on a deliberately weak choice (e.g. mass-market price on a premium event) the platform challenges with a better option but lets the user keep their choice. Then stop and report.

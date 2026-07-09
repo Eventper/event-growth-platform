@@ -1,0 +1,25 @@
+Stop. You are reverting to the architecture we explicitly killed last night.
+Memory locked architecture (verify against CLAUDE.md):
+
+Staff log into Group Portal only. Not Planning App.
+Planning App /staff-login and /staff routes are SAAS-PAUSED. They were intentionally disabled last night with redirects to Group Portal. Tagged in code with // SAAS-PAUSED for future SaaS reactivation only.
+All event creation happens via Group Portal's Add Project flow (/portal/projects/new or equivalent). Staff select project_type = "Event project," fill the form, the cross-system bridge auto-creates the linked event on Planning App. Staff never navigate to Planning App directly to create events.
+Nigeria staff use the Event Management Services tile on Group Portal — token-passed auto-login link to access existing event tools on Planning App. No staff login on Planning App side.
+/create-event on Planning App is bridge-only. Direct staff access to it was killed last night. If it's currently redirecting into Group Portal login flow, that's the SAAS-PAUSED redirect working as intended.
+
+Three things to confirm:
+
+Where do /prospect-finder and /saas-tender-dashboard actually live — Group Portal or Planning App? They should be on Group Portal for staff. If they're on Planning App, that's parallel infrastructure that needs migrating.
+Confirm /staff-login and /staff redirects are still firing per last night's quarantine. Don't re-enable them. They stay SAAS-PAUSED.
+Confirm the create-event flow Tolu uses is /portal/projects/new (or equivalent on Group Portal) with project_type = "Event project," NOT direct navigation to Planning App's create-event page.
+
+Standing rule: stop reverting architecture decisions. If you find code that contradicts a previous decision, ask before assuming the older code is the right path. Memory and CLAUDE.md hold the locked architecture. Anything tagged SAAS-PAUSED is deliberately disabled — don't reactivate without explicit instruction.
+Brief me on:
+
+Current state of /staff-login and /staff (still redirecting? Or somehow re-enabled?)
+Location of /prospect-finder and /saas-tender-dashboard (which app?)
+Confirmed staff path for creating events
+
+Don't change anything until you've confirmed against me.
+
+Send that.

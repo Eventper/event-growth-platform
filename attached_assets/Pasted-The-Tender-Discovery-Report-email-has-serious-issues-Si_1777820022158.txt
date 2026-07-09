@@ -1,0 +1,37 @@
+The Tender Discovery Report email has serious issues. Six fixes needed before next discovery run:
+1. World Bank parser is dumping raw page content as tender titles.
+Multiple tenders have 200+ character "titles" that are actually scraped paragraphs of procurement boilerplate. Fix the World Bank source parser:
+
+Extract the actual project title field, not the page content body
+Cap title length at 120 characters maximum
+If the parser can't find a clean title, do NOT add the tender to the pipeline — log as parser failure for review
+
+2. Whitespace-only tenders being added.
+Entry 7 in tonight's report has an empty title field. Filter rule: if title is empty or whitespace-only, do NOT add to pipeline.
+3. Stop auto-drafting on tenders with no deadline.
+All 8 tenders in tonight's report have deadline "TBC." 7 of them auto-drafted 4 bid sections each — that's wasted Claude API spend on tenders we can't even confirm are open.
+Auto-draft rule: only fire if submission_deadline IS NOT NULL AND is in the future. If deadline is TBC, queue the tender for manual review, no auto-draft.
+4. Geographic filter missing.
+Event Perfekt's relevant geographies are UK, Nigeria, and broader Africa (per CEFAS contract). Tenders from Pakistan, Cambodia, Mozambique need separate handling:
+
+If country is in EP relevant list (UK, Nigeria, Africa) → standard pipeline
+If country is outside but project type involves Africa or has international relevance → flag for manual review, no auto-draft
+If country is outside and project is local-only → exclude entirely
+
+5. Scoring logic is broken.
+Empty whitespace tender scored 75/100. That's impossible if scoring is real. Audit the scoring function:
+
+Show me the criteria each tender is scored against
+Show me how a blank tender scored 75
+Re-run scoring on tonight's pipeline after the parser fix
+
+6. Discovery report should preview before commit.
+Currently auto-discovery adds tenders directly to pipeline, then the report tells me what was added. Reverse the flow:
+
+Discovery runs and produces a candidate list
+Email me the candidate list with scores and deadlines
+I approve which to add (or auto-add only those scoring above a threshold and within geographic filter)
+Auto-draft fires only after manual approval (or after auto-promotion threshold)
+
+Cleaner: candidates → review → committed pipeline → auto-draft. Today: dump everything → auto-draft → review.
+Standing rules apply — additive only, show diffs. Send a fresh discovery report to adminuk@ once parser + filters fixed. Until then, suspend the auto-discovery cron — it's spending Claude budget on garbage.

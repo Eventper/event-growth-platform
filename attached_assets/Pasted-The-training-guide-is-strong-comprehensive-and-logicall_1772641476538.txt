@@ -1,0 +1,241 @@
+The training guide is strong, comprehensive, and logically sequenced. It covers the full lifecycle for both clients and planners, and it reflects a mature, end‑to‑end event management platform. The structure is intuitive: discovery → booking → planning → execution → post‑event.
+
+But there are three big opportunities to elevate it:
+
+Turn it into a true “operational playbook” rather than a feature list.
+
+Make the flows modular so new staff can learn in layers.
+
+Add clarity around permissions, roles, and responsibilities.
+
+Below is a deeper breakdown.
+
+1. The Client Flow is strong but could benefit from “decision checkpoints”
+Right now, the client flow is linear. Real events are not. Clients jump back and forth, change budgets, revise guest counts, etc.
+
+Adding decision checkpoints would make the training more realistic:
+
+After consultation → “Does the client qualify?”
+
+After proposal → “Is the budget approved?”
+
+Before contract → “Are vendors secured?”
+
+Before event day → “Is the run sheet signed off?”
+
+This helps planners understand where delays happen and how to manage them.
+
+2. The Planner Flow is excellent but needs “role clarity”
+The planner flow is detailed and powerful, but it assumes:
+
+Every planner does everything
+
+Every planner has full permissions
+
+Every planner is equally trained
+
+In reality, you will have:
+
+Senior planners
+
+Junior planners
+
+Assistants
+
+Vendors
+
+Admins
+
+Finance roles
+
+The training guide should include:
+
+Who can do what
+
+What permissions each role has
+
+What actions require approval
+
+This prevents mistakes like:
+
+A junior planner sending a contract
+
+A vendor seeing financial data
+
+A staff member editing the run sheet without approval
+
+3. The Feature Areas are strong but need “use cases”
+Each feature is listed, but staff need to know:
+
+When to use it
+
+Why to use it
+
+What problem it solves
+
+For example:
+
+Vendor Portal
+Use when: onboarding new vendors, collecting documents, assigning vendors to events.
+Why: ensures compliance, reduces manual chasing, centralises vendor data.
+
+Decor Inventory
+Use when: planning decor, checking availability, tracking losses.
+Why: prevents double-booking, reduces loss, improves accountability.
+
+Tender Manager
+Use when: searching for government contracts.
+Why: expands revenue opportunities for corporate clients.
+
+Adding these “use cases” makes the training more practical.
+
+4. The system is powerful — but staff need “workflow examples”
+For example:
+
+Example Workflow: Booking a Wedding
+Lead comes in
+
+Planner assigns themselves
+
+Consultation call
+
+Proposal created
+
+Contract sent
+
+Vendors sourced
+
+Decor inventory checked
+
+Guest list uploaded
+
+Run sheet created
+
+Event day execution
+
+Post-event survey
+
+These examples help new staff understand how the pieces fit together.
+
+5. The AI Assistant is a major advantage — but under-explained
+The AI Assistant is described as “context-aware help,” but staff need to know:
+
+What it can do
+
+What it cannot do
+
+How to use it efficiently
+
+How it integrates with each page
+
+For example:
+
+On Lead Pipeline → “Draft a follow-up message”
+
+On Event Dashboard → “Generate a vendor shortlist”
+
+On Budget → “Suggest budget allocations”
+
+On Run Sheet → “Create a timeline from the event brief”
+
+This turns the AI from a “nice-to-have” into a core productivity tool.
+
+6. The training guide should include “common mistakes and how to avoid them”
+Examples:
+
+Forgetting to update the lead stage
+
+Not assigning vendors early enough
+
+Missing document uploads
+
+Not locking the run sheet before event day
+
+Forgetting to send surveys
+
+This reduces onboarding time dramatically.
+
+7. The training guide should include “service standards”
+For example:
+
+Leads must be contacted within 2 hours
+
+Proposals must be sent within 48 hours
+
+Contracts must be reviewed within 24 hours
+
+Vendors must be confirmed 30 days before event
+
+Run sheet must be finalised 7 days before event
+
+This creates consistency across planners.
+
+8. The training guide should include “KPIs for planners”
+Examples:
+
+Lead conversion rate
+
+Client satisfaction score
+
+Vendor rating average
+
+Event profitability
+
+On-time task completion
+
+This helps planners understand what success looks like.
+
+9. The training guide should include “client communication templates”
+Such as:
+
+Consultation confirmation
+
+Proposal email
+
+Contract email
+
+Change request response
+
+Pre-event reminder
+
+Post-event thank you
+
+This ensures brand consistency.
+
+10. The training guide should include “emergency protocols”
+For example:
+
+Vendor cancellation
+
+Weather issues
+
+Venue problems
+
+Technical failures
+
+Guest incidents
+
+This prepares planners for real-world challenges.
+
+My overall recommendation
+The training guide is a great foundation, but it needs to evolve into a full operational manual with:
+
+Decision checkpoints
+
+Role permissions
+
+Use cases
+
+Workflow examples
+
+AI usage guidance
+
+Mistake prevention
+
+Service standards
+
+KPIs
+
+Templates
+
+Emergency protocols

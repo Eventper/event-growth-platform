@@ -1,0 +1,34 @@
+Bridge test FAILED. The Group Portal tile isn't firing the bridge (Group Portal Replit is fixing). But two issues on Planning App side need immediate action:
+1. Delete the duplicate /group-portal/ routes on Planning App NOW. Don't wait for Wednesday cleanup commit.*
+Specifically: https://eventperfektplanningapp.com/group-portal/login is currently serving a fake Group Portal login page on the wrong domain. Even shows "Invalid credentials" if Director password entered — meaning that page is hitting Planning App's auth, not Group Portal's. This is a security concern: someone could enter Director credentials thinking they're on Group Portal, credentials go to wrong system.
+Delete every duplicate route created during this morning's over-correction:
+
+/group-portal/login
+/group-portal/projects
+/group-portal/hr (and sub-routes)
+/group-portal/compliance
+/group-portal/crm
+/group-portal/marketing
+/group-portal/ep-agent
+/group-portal/twinpaay/* (all sub-routes)
+/group-portal/lightbulb/* (all sub-routes)
+/group-portal/documents
+/group-portal/chat
+/group-portal/settings
+/group-portal/knowledge-base or /knowledge-base if you added a stub
+
+Replace each with a redirect to https://tradenow.thetwintrade.co.uk/[same-path] so any cached link still routes to real Group Portal.
+2. Confirm EP_BRIDGE_SECRET in Planning App Replit Secrets.
+Must match the value Group Portal uses (Group Portal Replit holds the source value). If not set, coordinate with Group Portal Replit to share the value securely.
+3. Confirm bridge redeem endpoint is intact and untouched by the cleanup.
+When the cleanup deletes duplicate /group-portal/* routes, do NOT delete the bridge endpoints (/api/bridge/redeem, /api/bridge/audit, the bridge_nonces and bridge_audit_log tables, and the /bridge/redeem frontend page). Those are the legitimate bridge infrastructure and stay.
+Sequence:
+
+Delete duplicate /group-portal/* routes (with redirects to real Group Portal domain)
+Confirm EP_BRIDGE_SECRET in Planning App production Secrets
+Confirm bridge endpoints intact
+Re-quarantine /create-event, /get-started, /private-event-form, /corporate-event-form per yesterday's lock
+Update replit.md to remove references to the deleted routes
+
+Don't wait for Wednesday. Cleanup ships tonight.
+Standing rules apply. Brief me when complete.

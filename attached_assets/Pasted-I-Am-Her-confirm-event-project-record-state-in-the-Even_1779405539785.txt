@@ -1,0 +1,43 @@
+I Am Her — confirm event project record state in the Event Planning module.
+
+CONTEXT
+
+I Am Her — Milton Keynes — Friday 28 August 2026. Currently has a standalone /iam-her dashboard, Esther co-creator portal, and (being built) public registration form + bridge endpoint. Separately, Group Portal has the campaign/outreach side (72 target companies, lead pipeline).
+
+What I need to confirm is whether the operational event-planning side is wired through the standard Event Planning module on Planning App, or whether the /iam-her dashboard is operating off parallel iam_her_* tables in isolation.
+
+CHECK AND REPORT:
+
+(1) Event Planning module — does I Am Her exist as a project record there?
+    Search event_projects (or equivalent canonical table) for name/slug matching I Am Her or 28 Aug 2026.
+    If exists: return the project ID, all fields, link.
+    If not: confirm absence, propose what's needed to create it.
+
+(2) /iam-her dashboard data source
+    Where does each tab on /iam-her read its data from?
+    - Overview / countdown: which table provides event date?
+    - Co-creators tab: iam_her_co_creators (or equivalent standalone) or canonical event_team / event_partners?
+    - Corporate partners tab: iam_her_corporate_partners or canonical event_partners?
+    - Guest list: guest_applications (new) or canonical event_guests?
+    - Tasks: iam_her_tasks or canonical event_tasks?
+    - Documents: iam_her_documents or canonical event_documents?
+    
+    For each tab, name the table the data comes from.
+
+(3) Event Planning module capabilities
+    What does the standard Event Planning module provide out of the box for an event project?
+    Specifically: task management with assignees/dependencies, supplier/vendor list, budget tracking (costs vs revenue), run-of-show, guest list with RSVP/dietary/accessibility, document repository, post-event reporting.
+    Which of these are already in the module? Which would I Am Her need but the module doesn't have?
+
+(4) Consolidation question
+    If /iam-her is currently reading from parallel iam_her_* tables, what's the cost/risk of consolidating onto the canonical Event Planning module's tables?
+    - Schema migration scope
+    - Code changes required (dashboard reads from canonical tables)
+    - Risk of breaking what currently works
+    - Time estimate
+    
+    Recommendation: should we consolidate, or keep /iam-her as a standalone surface and just sync key data points?
+
+DO NOT MAKE ANY CHANGES YET. Return the audit. I'll decide consolidation strategy based on what you find.
+
+Don't invent the answers — if a table doesn't exist or a tab is hardcoded with mock data, say so. Honest audit only.

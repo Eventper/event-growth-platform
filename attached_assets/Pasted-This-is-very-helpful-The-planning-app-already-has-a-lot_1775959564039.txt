@@ -1,0 +1,251 @@
+This is very helpful. The planning app already has a lot built. Key findings:
+
+---
+
+**What already exists that we can use:**
+
+- `clients` table — already there
+- `client_sessions` table — already there
+- `/client-login` route — already exists
+- `projects` table — already there
+- `project_tasks`, `project_milestones`, `project_notes` — all exist
+- `contracts`, `invoices`, `proposals`, `documents` — all exist
+- `messages`, `conversations` — already there
+- JWT auth — already working
+- SendGrid — email already configured
+- OpenAI — AI already integrated
+
+**This means we do NOT need to build from scratch.** We extend what exists.
+
+---
+
+**What we need to add:**
+
+1. A client view scoped to their specific project — ALLI only sees ALLI
+2. Deliverable tracking per phase
+3. Document sharing with client approval
+4. Message thread between client and EP team
+
+---
+
+Paste this into Claude Code in the **planning app Replit:**
+
+```
+/allowed-tools all
+
+Do not rebuild anything that already exists. Extend the existing system to add a client project portal for ALLI Foundation.
+
+AUDIT FIRST:
+
+1. Read the existing clients table schema
+2. Read the existing client_sessions table schema  
+3. Read what /client-login currently does
+4. Read the existing projects table schema
+5. Read the existing messages or conversations table schema
+
+Report what each looks like then proceed with the build.
+
+BUILD 1 — CLIENT DELIVERABLES TABLE:
+
+Add to the database if it does not exist:
+
+CREATE TABLE IF NOT EXISTS client_deliverables (
+  id SERIAL PRIMARY KEY,
+  client_id INTEGER REFERENCES clients(id),
+  project_id INTEGER REFERENCES projects(id),
+  phase_number INTEGER NOT NULL,
+  phase_name VARCHAR(200) NOT NULL,
+  deliverable_name VARCHAR(500) NOT NULL,
+  status VARCHAR(50) DEFAULT 'pending',
+  due_date TIMESTAMP,
+  document_url TEXT,
+  document_name VARCHAR(300),
+  shared_with_client BOOLEAN DEFAULT false,
+  client_approved BOOLEAN DEFAULT false,
+  client_feedback TEXT,
+  approved_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+BUILD 2 — ALLI FOUNDATION PROJECT DATA:
+
+Find or create the ALLI Foundation client record in the clients table.
+Find or create a project record linked to this client.
+
+Then seed all 29 deliverables across 3 phases:
+
+Phase 1 — Strategic Definition — 2 weeks:
+1. Organisational review and gap analysis
+2. Website and positioning audit
+3. Facilitation model audit
+4. Key risks and opportunities identified
+5. Positioning statement
+6. Market entry roadmap
+7. Strategic foundation document
+8. Partner landscape mapping
+9. Jibowu case study documented as proof of concept
+
+Phase 2 — Model Design and Infrastructure — 4 weeks:
+10. Participant pathway designed
+11. Programme framework built
+12. Content and delivery model
+13. Audience segmentation
+14. Safeguarding structure
+15. Funding-ready blueprint
+16. Formal referral and intake process designed
+17. Partner identification
+18. Young person sourcing strategy
+19. Funding source identification
+
+Phase 3 — Funding and Commercialisation — 6 weeks:
+20. Borough and school doors opened
+21. Sponsors identified and approached
+22. Sponsorship proposals written
+23. Sponsor a Young Person model designed and pitched
+24. Go-to-market plan delivered
+25. Revenue conversations started
+26. Partner outreach completed
+27. Funding applications initiated
+28. Referral network activated and documented
+29. Sponsor a Young Person's Journey pitched to private partners
+
+BUILD 3 — CLIENT PORTAL PAGES:
+
+Create these new pages using the existing stack — React Wouter shadcn Tailwind:
+
+Use Event Perfekt branding:
+Primary: burgundy #3D0B0B
+Accent: gold #C9A84C
+Font: existing app font
+Clean white background
+
+PAGE A — /client-portal/login:
+
+Extend or use the existing /client-login page if it already has working auth.
+If it does not work for project-scoped clients create a new login at /client-portal/login.
+
+After login store the client session and redirect to /client-portal/home.
+
+PAGE B — /client-portal/home:
+
+Top bar: Event Perfekt Global Ltd left — client name and organisation right — Sign Out
+
+Welcome section:
+Welcome back [first name]
+[Organisation] — [Project Name]
+
+Four stat cards:
+- Current Phase — which phase is active
+- Deliverables Complete — X of Y with progress bar
+- Days Remaining — calculated from project end date
+- Next Deliverable — name of next pending item
+
+Phase timeline — three horizontal steps:
+Phase 1 — tick if all deliverables complete — circle if in progress — grey if not started
+Phase 2 — same
+Phase 3 — same
+
+Quick links: View Project, View Documents, Send Message
+
+PAGE C — /client-portal/project:
+
+Show all three phases with their deliverables.
+
+For each phase — burgundy header with phase name and timeline:
+
+Deliverables list — clean table:
+Deliverable name | Status badge | Due date | Action
+
+Status badges:
+pending — grey
+in_progress — amber
+complete — green
+delivered — burgundy
+
+Action column:
+If status = delivered and not yet approved:
+  Green Approve button
+  Amber Request Changes button
+If approved: green tick Approved
+If changes requested: amber badge Changes Requested — show their comment below
+
+PAGE D — /client-portal/documents:
+
+Show all documents where shared_with_client = true for this client.
+
+Group by phase.
+
+Each document:
+- Document name
+- Phase badge
+- Upload date
+- Download button — burgundy
+
+PAGE E — /client-portal/messages:
+
+Use the existing messages or conversations table if suitable.
+If not suitable create a simple client_messages table.
+
+Chat-style interface:
+EP team messages left — client messages right
+Message input at bottom
+Send button
+
+When client sends message:
+Create notification for EP team
+Send email to info@eventperfekt.com:
+Subject: New message from ALLI Foundation — [project name]
+Body: [client name] sent a message. Log in to reply.
+
+BUILD 4 — EP TEAM SIDE — CLIENT MANAGEMENT:
+
+Add a simple client project management view accessible to EP staff:
+
+Route: /epglobal/clients or /project-management/clients
+
+This is where EP staff:
+- See all client deliverables and update their status
+- Upload documents and toggle Share with Client
+- Read and reply to client messages
+- See client approvals and change requests
+
+Deliverable status update:
+Dropdown — pending, in_progress, complete, delivered
+Save button
+
+Document upload:
+Upload file button
+Toggle: Share with Client
+When toggled on — client sees it in their documents
+
+Message reply:
+EP team types reply
+Client gets email notification
+
+BUILD 5 — WIRE UP ROUTES:
+
+Register all new routes in App.tsx:
+/client-portal/login — public
+/client-portal/home — requires client session
+/client-portal/project — requires client session
+/client-portal/documents — requires client session
+/client-portal/messages — requires client session
+/epglobal/clients — requires EP staff session
+
+BUILD 6 — EMAIL NOTIFICATIONS:
+
+Use existing SendGrid integration for all emails.
+
+Client receives email when:
+- Document shared with them — Subject: New document available — [project name]
+- EP team replies to message — Subject: New message from Event Perfekt
+- Deliverable marked as delivered — Subject: New deliverable ready for review — [deliverable name]
+
+EP team receives notification when:
+- Client sends message
+- Client approves a deliverable
+- Client requests changes on a deliverable
+
+Run npm run build and confirm clean. Report what was built and what existing functionality was reused.
+```

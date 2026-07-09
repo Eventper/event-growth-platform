@@ -1,0 +1,107 @@
+# I Am Her — Platform Reality Test
+
+**Run this before letting the platform touch a single real prospect.**
+Roughly 30 minutes. The goal is to confirm the machine produces *true, premium, on-brief* output — not generic test data. Tick each box only when it genuinely holds.
+
+---
+
+## The real I Am Her brief (type these exact facts into the wizard)
+
+- **Event:** The Woman Who Leads The Room (I Am Her)
+- **Date:** 28 August **2026**
+- **Location:** Milton Keynes
+- **Venue:** Hotel La Tour (4-star, luxury)
+- **Format:** Private, invitation-only, curated
+- **Audience:** ~60 curated female founders, business owners, executives and senior leaders — established and scaling, often on their second or third business
+- **Ticket price:** £360
+- **Positioning:** Premium / luxury. Restrained, status-oriented. NOT generic empowerment.
+- **Confirmed speakers:** Dr Sarah Jenkins; Esther Emenike-Okorie (Featured Wellbeing Authority)
+- **Media partner:** MKFM
+
+---
+
+## Test 1 — Does the wizard hold the premium tier?
+
+Re-run the Strategy Wizard on the brief above.
+
+- [ ] Ticket price comes back as **£360** — not £100, not a guess, not overridden
+- [ ] Positioning reads **premium / status-oriented** — concrete, elevated language
+- [ ] Tagline is NOT generic empowerment ("Empowering Women, Leading Change" = FAIL)
+- [ ] Capacity reflects **~60 curated**, not "200+"
+- [ ] Audience persona captures **established / scaling** women, not just generic senior titles
+
+**If price slid to £100 or the language went generic, STOP.** The tier-hardening didn't survive into this build — fix that before anything else.
+
+---
+
+## Test 2 — Is the date correct everywhere?
+
+- [ ] Event shows **August 2026**, not 2025
+- [ ] Check any generated site or deck preview — the date is right there too
+- [ ] No "2025" hardcoded in seed/example data
+
+---
+
+## Test 3 — Does Apollo return the right women, and spend only on approval?
+
+Run **one** audience discovery against the approved persona.
+
+- [ ] Results are genuinely **on-profile** — senior women in/around the catchment, not random titles
+- [ ] A plain search costs **£0 enrichment** (search is free; storing names is free)
+- [ ] Enrichment credit is spent **only** when you select specific prospects and click enrich
+- [ ] The credit counter is **visible** and ticks only on your action
+- [ ] Duplicates are skipped; sources are recorded
+
+**If a plain search burns Apollo credits, STOP** — the spend rule is wrong and will run away at scale.
+
+---
+
+## Test 4 — Is the outreach true and in the right voice?
+
+Generate **one** sponsor message and **one** audience invitation.
+
+- [ ] Written in the **premium I Am Her voice** (restrained, specific) — not mass-market
+- [ ] Uses **only real, verified facts** about the prospect — no invented "recent partnership with [Company]"
+- [ ] Any sponsor tier / price quoted matches your **real** numbers, not an AI guess
+- [ ] Content generation is routing to **Claude** (the voice model), not defaulting to the cheaper model
+- [ ] Every email carries a clear **opt-out**
+
+**If it invents a fact about a person, STOP** — fix personalisation to use stored data only before any real send.
+
+---
+
+## Test 5 — Does a real enquiry close the dead-end?
+
+On your **live** site (eventperfekt.net/iamher), submit a genuine test enquiry.
+
+- [ ] It appears in the platform's **pipeline / inbound leads** within moments
+- [ ] It lands against the **right event**, with source = website
+- [ ] Nothing falls on the floor — the dead-end is closed
+
+---
+
+## The hard gate (confirm it still holds)
+
+- [ ] Try to send outreach **without approving it** — it must be **blocked**
+- [ ] Approve, then send — allowed
+- [ ] A suppressed / opted-out contact — send is **blocked**
+
+**Nothing sends without a human. If anything auto-sends, STOP.**
+
+---
+
+## Before the first real send at scale
+
+- [ ] Quick compliance word with Lara on cold outreach to individuals (GDPR/PECR)
+- [ ] Individuals/sole traders default to **LinkedIn**, not cold email
+- [ ] Your own eyes on each early outreach before approving — the gate stops accidents, not rushed approvals
+
+---
+
+### Verdict
+
+If all five tests and the hard gate hold → the machine is trustworthy. Start filling the room.
+
+If any slip → you've caught it before a prospect did. Fix, re-test that one item, then proceed.
+
+*Build outcomes, not activities. Every search, score and send must end in a captured lead, a booked guest or a signed sponsor — never a dead end.*

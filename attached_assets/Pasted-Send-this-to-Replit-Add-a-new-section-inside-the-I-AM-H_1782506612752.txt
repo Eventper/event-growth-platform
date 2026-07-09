@@ -1,0 +1,66 @@
+Send this to Replit:
+
+Add a new section inside the I AM HER “Stay & Enjoy” page called:
+
+The Businesses Behind The City
+
+Purpose:
+This should sit naturally within Stay & Enjoy, not as a separate standalone site for now.
+
+Section narrative:
+As The Woman Who Leads The Room welcomes visitors into Milton Keynes, we want to showcase the businesses, people and places that make the city worth staying for.
+
+This is a curated space for local businesses to share their story, be discovered by visitors, and become part of the wider Stay & Enjoy Milton Keynes experience.
+
+Add four feature cards:
+
+1. Stay
+   Hotels, serviced apartments, guest accommodation and weekend stays.
+
+2. Eat & Drink
+   Restaurants, cafés, bars, brunch spots and after-hours venues.
+
+3. Enjoy
+   Beauty, wellness, shopping, attractions, culture and local experiences.
+
+4. Invest & Relocate
+   Property consultants, relocation experts, commercial agents, professional services and businesses supporting people considering Milton Keynes as a place to live, work, invest or grow.
+
+Add a CTA button:
+
+Feature Your Business
+
+Button should lead to a new form/page:
+
+/iamher/feature-your-business
+
+Form fields:
+
+* Business name
+* Founder / contact name
+* Business category
+* Website
+* Instagram / social media
+* Email
+* Telephone
+* Tell us about your business
+* What makes your business worth discovering?
+* Would you like to offer an exclusive discount or experience for visitors?
+* Are you interested in commercial partnerships, sponsorship or future Event Perfekt opportunities?
+* Upload image / logo if possible
+
+After submission:
+Show a thank-you message:
+“Thank you. Your business has been submitted for review. If selected, we may feature your business as part of the Stay & Enjoy Milton Keynes experience.”
+
+Also create a surfaced section on the Stay & Enjoy page where approved businesses can later appear as cards under:
+
+* Stay
+* Eat & Drink
+* Enjoy
+* Invest & Relocate
+
+Do not publish all submissions automatically. They must be reviewed first.
+
+Keep the visual style aligned with I AM HER:
+deep burgundy, ivory, soft gold accents, editorial luxury, clear readable text.

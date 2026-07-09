@@ -1,0 +1,197 @@
+The reality test is passed. Now build the next commercial layer.
+
+Do not change the core event setup. Keep:
+
+* Event: The Woman Who Leads The Room / I Am Her
+* Date: 28 August 2026
+* Venue: Hotel La Tour, Milton Keynes
+* Ticket price: £360
+* Positioning: premium
+* Capacity: approx. 60
+* Model routing: Claude Sonnet 4 for premium outreach
+
+Now add the following:
+
+1. Build a sponsor pipeline
+
+Create sponsor stages:
+
+* Discovered
+* Qualified
+* Decision Maker Found
+* Outreach Drafted
+* Approved to Contact
+* Contacted
+* Meeting Booked
+* Proposal Sent
+* Negotiation
+* Confirmed
+* Declined
+
+Add sponsor fields:
+
+* Organisation name
+* Sector
+* Website
+* Contact name
+* Contact title
+* Email
+* LinkedIn
+* Sponsor fit score
+* DEI / CSR / wellbeing alignment
+* Women leadership relevance
+* Brand prestige level
+* Estimated sponsorship potential
+* Notes
+* Status
+
+2. Add lead scoring
+
+Create separate scoring for:
+
+* Guest leads
+* Sponsor leads
+* PR leads
+
+Guest scoring should consider:
+
+* Seniority
+* Founder / CEO / Director status
+* Location fit
+* LinkedIn presence
+* Influence / community relevance
+* Sector relevance
+* Likelihood to attend
+
+Sponsor scoring should consider:
+
+* Women-focused initiatives
+* CSR / DEI / wellbeing relevance
+* Luxury / lifestyle / finance / beauty / wellness fit
+* Local or regional relevance
+* Previous partnership or sponsorship activity
+* Brand prestige
+* Likelihood to sponsor
+
+PR scoring should consider:
+
+* Outlet relevance
+* Journalist fit
+* Human-interest relevance
+* Women leadership relevance
+* Local / regional fit
+* Likelihood of coverage
+
+3. Build a PR pipeline
+
+Create PR stages:
+
+* Opportunity Found
+* Angle Identified
+* Pitch Drafted
+* Approved to Send
+* Sent
+* Journalist Responded
+* Interview Requested
+* Coverage Secured
+* Declined
+
+PR lead fields:
+
+* Outlet name
+* Journalist name
+* Email
+* Deadline
+* Topic
+* Angle
+* Fit score
+* Draft pitch
+* Status
+* Notes
+
+4. Add referral engine
+
+After a guest is approved or registered, allow:
+
+* Nominate another woman
+* Recommend a sponsor
+* Submit a story
+* Share event link
+* Request corporate invitation pack
+
+Track:
+
+* Referrer name
+* Referral type
+* Referral status
+* Conversion source
+
+5. Add commercial dashboard
+
+Create a live dashboard showing:
+
+* Guest prospects discovered
+* Guest applications received
+* Guests approved
+* Tickets sold
+* Guest revenue
+* Sponsor prospects discovered
+* Sponsor meetings booked
+* Sponsor proposals sent
+* Sponsorship revenue forecast
+* Confirmed sponsorship revenue
+* PR opportunities found
+* Pitches sent
+* Media responses
+* Coverage secured
+* Email open rate
+* Click-through rate
+* Conversion rate
+* Cost per acquisition
+
+6. Add corporate organisation targeting
+
+Create a search/filter function for organisations likely to sponsor or send women, including:
+
+* Companies with women leadership programmes
+* Organisations with DEI initiatives
+* Companies with menopause or wellbeing policies
+* Financial services firms
+* Beauty, wellness, skincare and aesthetic brands
+* Luxury hospitality and lifestyle brands
+* Automotive brands
+* Local Milton Keynes, Buckinghamshire, Bedfordshire and Northamptonshire organisations
+
+7. Maintain approval gates
+
+Do not allow:
+
+* outreach to be sent without approval
+* suppressed contacts to be contacted
+* sponsor proposals to be sent without approval
+* PR pitches to be sent without approval
+
+8. Add message types
+
+Create Claude-generated drafts for:
+
+* Guest invitation
+* Sponsor introduction
+* Corporate partnership pitch
+* PR journalist pitch
+* Follow-up email
+* Thank-you response
+* Meeting booking email
+
+All drafts must stay premium, concise, non-generic and aligned to the event positioning.
+
+The goal is no longer just prospect discovery.
+
+The goal is to predict and prioritise who is most likely to:
+
+* attend
+* buy
+* sponsor
+* refer
+* amplify
+* give media coverage

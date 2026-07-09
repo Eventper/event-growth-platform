@@ -1,0 +1,183 @@
+⭐ REPLIT — SINGLE SOURCE OF TRUTH = www.eventperfekt.com
+Everything you build MUST visually match the homepage at:
+
+👉 https://www.eventperfekt.com
+
+This includes:
+
+✔ Typography
+Poppins font
+
+Same weights
+
+Same sizes
+
+Same spacing
+
+Same line‑height
+
+✔ Colours
+Black (#000000)
+
+White (#FFFFFF)
+
+Dark Burgundy (the exact hex used on the homepage — sample directly from the site)
+
+NO gold
+
+NO grey
+
+NO green
+
+NO extra accents
+
+✔ Layout
+Same section spacing
+
+Same container width
+
+Same padding
+
+Same margins
+
+Same alignment
+
+Same button style
+
+Same rounded corners
+
+Same hover effects
+
+Same card style
+
+Same image style
+
+✔ Visual tone
+Minimal
+
+Editorial
+
+High‑contrast
+
+Premium
+
+Black/white/burgundy only
+
+⭐ WHAT TO BUILD (MATCHING THE HOMEPAGE STYLE)
+Page: /projects-and-programmes  
+Design: Must look like it belongs inside www.eventperfekt.com.
+
+🎥 SECTION 1 — HERO (VIDEO)
+Use the same hero layout as the homepage:
+
+Full‑width
+
+Centered text
+
+White text
+
+Dark overlay
+
+Same heading size
+
+Same button style
+
+Replace background image with a video.
+
+Content:
+
+Code
+H1: Projects & Programmes
+Subtext: Governance‑aligned delivery across the UK, Africa & international markets.
+Button: View Our Work
+🧩 SECTION 2 — INTRO (MATCH HOMEPAGE ABOUT SECTION)
+Two‑column layout identical to the homepage:
+
+Left = text
+Right = image
+
+Use the same:
+
+Text width
+
+Font sizes
+
+Image rounding
+
+Image shadow
+
+Spacing
+
+🗂️ SECTION 3 — PROJECT CARDS (MATCH HOMEPAGE SERVICE CARDS)
+Use the exact card style from the homepage:
+
+White background
+
+Rounded corners
+
+Soft shadow
+
+Image on top
+
+Title
+
+Paragraph
+
+Button (burgundy background, white text)
+
+Hover: invert
+
+Cards to include:
+
+DEFRA / CEFAS – Africa Regional Support Programme
+
+Remittance & Financial Coordination
+
+Programme Funding & Development Projects
+
+TwinPay Platform
+
+Twin Trade Network
+
+University of Oxford – St Anne’s College Ball 2023
+
+Each card uses the same design as your homepage service cards.
+
+🛠️ SECTION 4 — CAPABILITY STRIP (MATCH HOMEPAGE ICON STRIP)
+Use the same:
+
+Icon style (black line icons)
+
+5‑column layout
+
+Spacing
+
+Typography
+
+🌍 SECTION 5 — REGIONAL DELIVERY (MATCH HOMEPAGE GRID)
+Use the same grid style as the homepage “Where We Operate” section.
+
+📞 SECTION 6 — CTA STRIP (MATCH HOMEPAGE CTA)
+Use the same:
+
+Burgundy background
+
+White text
+
+Centered layout
+
+Button style
+
+🧱 SECTION 7 — FOOTER
+Use the exact same footer as www.eventperfekt.com.
+
+⭐ SEO REQUIREMENTS
+Meta title:
+
+Code
+Projects & Programmes | Event Perfekt Global Ltd
+Meta description:
+
+Code
+Explore Event Perfekt’s governance‑aligned programmes across the UK, Africa, and Europe. Trusted by DEFRA, CEFAS, and the University of Oxford for PMO leadership, compliance, and cross‑border delivery.
+Alt text for all images.

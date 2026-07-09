@@ -1,0 +1,127 @@
+Tell Replit this:
+
+Update the I AM HER story submission flow so it feels like an editorial feature opportunity, not just a form.
+
+Change the main CTA language from “Submit Your Story” to:
+
+“Be Featured in I AM HER”
+
+Add supporting text:
+
+“Share the story behind your title, your business, your journey, and the work you are building. Selected stories will be featured as part of the I AM HER editorial campaign.”
+
+Update the form structure as follows:
+
+SECTION 1: About You
+
+Fields:
+
+* Full name, required
+* Email address, required, never published
+* Share anonymously, toggle
+* Job title, optional
+* Business / Organisation, optional
+* Website, optional
+* LinkedIn profile, optional
+* Instagram handle, optional
+
+Helper text:
+“If you choose to be featured publicly, we may include your name, title, organisation, website, and social links with your story.”
+
+SECTION 2: Your Work
+
+Add field:
+“What do you do?” textarea, optional, 50–150 words
+
+Helper text:
+“Tell us about your business, organisation, mission, service, or the work you lead.”
+
+SECTION 3: Your Story
+
+Fields:
+
+* Story title, optional
+* Story category, required dropdown
+* Your story, required textarea, minimum 100 characters
+
+Prompt text above textarea:
+“What happened? What changed? What did leadership, business, confidence, wellbeing, identity, health, family, grief, burnout, or growth teach you?”
+
+Add optional field:
+“What do you wish another woman knew?” textarea
+
+SECTION 4: Your Journey
+
+Keep the existing multi-select checkbox list, but rename the question to:
+
+“What part of your journey has shaped you most?”
+
+Keep options:
+
+* Menopause or perimenopause
+* Hormonal changes
+* Skin health or appearance concerns
+* Stress or burnout
+* Anxiety or low confidence
+* Sleep challenges
+* Weight or body changes
+* Motherhood or caregiving responsibilities
+* Financial pressure
+* Workplace challenges
+* Relationship or family challenges
+* Death, grief or loss
+* Other
+
+SECTION 5: Support and Recognition
+
+Change “Did you seek support?” to:
+
+“Did anyone or anything help you through this season?”
+
+Options:
+
+* Yes
+* No
+* Prefer not to say
+
+If yes, show:
+“Who or what supported you?”
+
+Multi-select:
+
+* Esther Emenike-Okorie
+* Dr Sarah Jenkins
+* Laser Clinics
+* GP / NHS Services
+* Counsellor or Therapist
+* Women’s Health Specialist
+* Beauty / Skin Clinic
+* Workplace Support Programme
+* Financial Adviser or Business Coach
+* Mentor or Coach
+* Friend or Family Member
+* Faith / Prayer
+* Other
+
+Keep:
+“Would you share a few words about the support you received?”
+
+SECTION 6: Photo and Consent
+
+Fields:
+
+* Upload your photo, optional
+* Photo consent, shown only if photo uploaded
+* May we contact you regarding your story or experience?, checkbox
+* Required consent to share the story
+
+Consent wording:
+“I confirm that I am happy for Event Perfekt / I AM HER to review, edit for clarity, and potentially publish my story as part of the I AM HER campaign. I understand my email will not be published.”
+
+On successful submission, show:
+
+“Thank you. Your story has been received.
+
+You have shared more than a story — you have added your voice to a room being built for women behind the titles.
+
+If selected, we may contact you before publication.”

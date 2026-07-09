@@ -1,0 +1,316 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: growth
+    description: Growth Intelligence Platform
+  - name: ai
+    description: AI test operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /growth/events:
+    get:
+      operationId: listGrowthEvents
+      tags: [growth]
+      summary: List all growth events
+      responses:
+        "200":
+          description: List of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GrowthEvent"
+    post:
+      operationId: createGrowthEvent
+      tags: [growth]
+      summary: Create a new growth event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GrowthEventInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GrowthEvent"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /growth/events/{id}:
+    get:
+      operationId: getGrowthEvent
+      tags: [growth]
+      summary: Get a single growth event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Event found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GrowthEvent"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    patch:
+      operationId: updateGrowthEvent
+      tags: [growth]
+      summary: Update a growth event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GrowthEventUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GrowthEvent"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteGrowthEvent
+      tags: [growth]
+      summary: Delete a growth event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /growth/dashboard:
+    get:
+      operationId: getGrowthDashboard
+      tags: [growth]
+      summary: Growth dashboard summary
+      responses:
+        "200":
+          description: Dashboard data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GrowthDashboard"
+  /ai/test:
+    post:
+      operationId: testAi
+      tags: [ai]
+      summary: Test AI connectivity via OpenRouter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AiTestInput"
+      responses:
+        "200":
+          description: AI response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AiTestResult"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: AI service error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    GrowthEvent:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: ["string", "null"]
+        type:
+          type: string
+        status:
+          type: string
+        startDate:
+          type: ["string", "null"]
+        endDate:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        updatedAt:
+          type: ["string", "null"]
+      required:
+        - id
+        - name
+        - type
+        - status
+        - createdAt
+    GrowthEventInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        type:
+          type: string
+          default: "general"
+        status:
+          type: string
+          default: "draft"
+        startDate:
+          type: string
+        endDate:
+          type: string
+      required:
+        - name
+    GrowthEventUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+    GrowthDashboard:
+      type: object
+      properties:
+        totalEvents:
+          type: integer
+        totalProspects:
+          type: integer
+        totalCampaigns:
+          type: integer
+        totalSpend:
+          type: number
+        status:
+          type: string
+        version:
+          type: string
+      required:
+        - totalEvents
+        - totalProspects
+        - totalCampaigns
+        - totalSpend
+        - status
+        - version
+    AiTestInput:
+      type: object
+      properties:
+        prompt:
+          type: string
+          default: "Say hello and confirm you are working."
+      required:
+        - prompt
+    AiTestResult:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        response:
+          type: string
+        model:
+          type: string
+        usage:
+          type: object
+          properties:
+            prompt_tokens:
+              type: integer
+            completion_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+        cost:
+          type: number
+        latency_ms:
+          type: integer
+      required:
+        - ok
+        - response
+        - model
+        - latency_ms
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error

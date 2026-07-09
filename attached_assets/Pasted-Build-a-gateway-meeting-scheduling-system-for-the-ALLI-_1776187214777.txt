@@ -1,0 +1,158 @@
+Build a gateway meeting scheduling system for the ALLI Foundation client portal. This works like a Doodle poll — EP proposes time slots, all attendees pick their preferences, the most popular slot is automatically selected and confirmed.
+
+GATEWAY MEETING SCHEDULER:
+
+Create three gateway meeting scheduling events in the ALLI Foundation project:
+
+Gateway Meeting 1 — Phase 1 Review — week of 28 April 2026
+Gateway Meeting 2 — Phase 2 Review — week of 12 May 2026
+Gateway Meeting 3 — Phase 3 Review and Project Completion — week of 25 May 2026
+
+HOW IT WORKS:
+
+STEP 1 — EP TEAM PROPOSES SLOTS
+In the staff portal project page for ALLI Foundation add a Schedule Gateway Meeting button on each phase milestone.
+
+When clicked opens a slot proposer:
+- Select meeting: Gateway 1, 2, or 3
+- Select 6 to 8 available time slots across the relevant week
+- Each slot: date, start time, duration
+- Add agenda for the meeting
+- Click Send to All Attendees
+
+This sends a scheduling email to all attendees.
+SENDER: Prabhleen Tak — prabhleen@eventperfekt.com
+REPLY TO: prabhleen@eventperfekt.com
+
+To: kehindeballi@gmail.com
+CC: agboola.ogundeyin@gmail.com
+CC: adminuk@eventperfekt.com
+CC: prabhleen@eventperfekt.com
+
+Subject: ALLI Foundation — Phase [X] Gateway Meeting — Please Select Your Availability
+
+Dear [name],
+
+I hope you are well. I am writing to schedule our Phase [X] Gateway Review Meeting for the ALLI Foundation engagement.
+
+Please click the link below to select the times that work best for you. This will only take a moment.
+
+[SELECT YOUR AVAILABILITY — gold button linking to scheduling page]
+
+Please respond by [deadline — 3 days before earliest proposed slot].
+
+We look forward to presenting our Phase [X] deliverables and hearing your feedback.
+
+Warm regards,
+
+Prabhleen Tak
+Project Lead — ALLI Foundation Engagement
+Event Perfekt Global Ltd
+prabhleen@eventperfekt.com
+www.eventperfekt.com
+
+STEP 2 — ATTENDEES SELECT AVAILABILITY
+Public scheduling page at /meeting/alli-gateway-[1/2/3] — no login required
+
+Page shows:
+- Meeting title and agenda
+- List of all proposed time slots as selectable cards
+- Each slot shows: date, day of week, time
+- Attendee enters their name
+- Clicks green tick on slots that work — can select multiple
+- Clicks amber question mark on slots that might work
+- Clicks red X on slots that do not work
+- Submits availability
+
+Page updates in real time showing:
+- How many people have responded
+- Which slots have most green ticks
+- Colour coding: dark green — everyone available, light green — most available, amber — some available, red — conflicts
+
+STEP 3 — AUTO SELECTION
+When all attendees have responded OR deadline passes:
+- System automatically selects the slot with most green ticks
+- If tie — select earlier slot
+
+Send confirmation email to all attendees.
+SENDER: Prabhleen Tak — prabhleen@eventperfekt.com
+
+Subject: ALLI Foundation — Phase [X] Gateway Meeting CONFIRMED — [Date] [Time]
+
+Dear [name],
+
+Thank you for sharing your availability. I am pleased to confirm our Phase [X] Gateway Meeting.
+
+Date: [date]
+Time: [time]
+Duration: [duration]
+Format: Video call — link to follow shortly
+
+Agenda:
+[agenda items]
+
+Please add this to your calendar. A calendar invite will follow separately.
+
+We look forward to seeing you then.
+
+Warm regards,
+
+Prabhleen Tak
+Project Lead — ALLI Foundation Engagement
+Event Perfekt Global Ltd
+prabhleen@eventperfekt.com
+www.eventperfekt.com
+
+STEP 4 — CALENDAR UPDATE
+Confirmed meeting automatically added to:
+- ALLI Foundation client portal calendar — gold gateway meeting card
+- Countdown updated: Next Gateway Meeting confirmed — [date] [time] — X days away
+- Staff portal ALLI project calendar
+
+STEP 5 — REMINDER
+3 days before confirmed meeting send reminder to all attendees.
+SENDER: Prabhleen Tak — prabhleen@eventperfekt.com
+
+Subject: Reminder — ALLI Foundation Phase [X] Gateway Meeting — [Date] [Time]
+
+Dear [name],
+
+This is a friendly reminder that our Phase [X] Gateway Meeting is coming up in 3 days.
+
+Date: [date]
+Time: [time]
+
+Before the meeting please login to your client portal to review the Phase [X] deliverables — your feedback will be invaluable during our discussion.
+
+Login: https://eventperfektplanningapp.com/client-portal/login
+
+See you soon.
+
+Warm regards,
+
+Prabhleen Tak
+Project Lead — ALLI Foundation Engagement
+Event Perfekt Global Ltd
+prabhleen@eventperfekt.com
+www.eventperfekt.com
+
+DATABASE:
+Create gateway_meetings table:
+id, project_id, phase, title, agenda, status, confirmed_date, confirmed_time, created_at
+
+Create meeting_slots table:
+id, meeting_id, proposed_date, proposed_time, duration_minutes
+
+Create meeting_availability table:
+id, meeting_id, slot_id, attendee_name, attendee_email, availability (available, maybe, unavailable), responded_at
+
+STYLING:
+Dark background matching client portal
+Gold accents #E2C87A for available slots
+Green for confirmed
+Amber for maybe
+Red for unavailable
+Poppins font throughout
+Consistent with existing client portal design
+
+Apply now and confirm the scheduling pages are working. Give me the URL for a test scheduling page.

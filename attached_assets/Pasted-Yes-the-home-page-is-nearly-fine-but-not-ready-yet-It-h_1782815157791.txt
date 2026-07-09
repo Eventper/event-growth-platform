@@ -1,0 +1,201 @@
+Yes — the **home page is nearly fine**, but not ready yet.
+
+It has the right ingredients. The problem is the **headline category is still too soft**.
+
+Right now the page says:
+
+> “A private luxury dinner and wellbeing evening…” 
+
+That weakens the commercial/civic positioning. It sounds like a nice restorative evening. But the guest list you’re building is CEOs, founders, COOs, CFOs, directors and serious operators.
+
+So the homepage should lead with **leadership dinner**, not **wellbeing evening**.
+
+## What to change on the home page
+
+### 1. Hero headline / subheadline
+
+Replace the current hero line with:
+
+**A private leadership dinner for 100 accomplished women across the UK — founders, directors, executives, business owners and senior decision-makers.**
+
+Then underneath:
+
+**Hosted in Milton Keynes on Friday 28 August 2026, the evening brings together women from different industries for dinner, expert conversation, editorial portraiture, visibility and strategic connection.**
+
+This is stronger. It sells the room.
+
+### 2. Keep the “not this” section
+
+This bit is good:
+
+**Not a networking event. Not a women-in-business conference. Not a room full of advice.** 
+
+Keep it.
+
+But add:
+
+**Not a coaching room.**
+
+So it becomes:
+
+**Not a networking event.
+Not a women-in-business conference.
+Not a coaching room.
+Not a room full of advice.**
+
+### 3. Change “Wellbeing Session”
+
+The programme currently calls the 20:00 section **Wellbeing Session**. 
+
+That sounds too soft.
+
+Change it to:
+
+**Leadership, Health & Confidence Conversation**
+
+Subline:
+
+**Led by Dr Sarah Jenkins and Esther Emenike-Okorie, this conversation explores the physical, emotional and confidence realities of leading at this level.**
+
+That keeps the value but raises the positioning.
+
+### 4. Remove “live music” unless confirmed
+
+The page says “Live music.” 
+
+If it is not confirmed, change it to:
+
+**Music. Soft light. The right mood.**
+
+Do not overclaim.
+
+### 5. Fix “special discounts”
+
+The homepage says:
+
+**Special discounts available for guests staying the weekend** 
+
+Only keep that if confirmed.
+
+Otherwise use:
+
+**Guest stay options and local recommendations will be shared with confirmed guests.**
+
+### 6. Partner section is good but too long
+
+The partner section is strategically useful, but on the main guest page it can distract from applications. It talks about financial institutions and brand partners in detail. 
+
+Keep it, but compress it.
+
+Use one short section:
+
+**Partnership Opportunities**
+
+**We are inviting a small number of aligned financial, lifestyle, hospitality, beauty, wellness and media partners to be meaningfully present within the evening. Partnership details are available on request.**
+
+Buttons:
+
+**Explore Partnership**
+**Email Us Directly**
+
+That’s enough. Don’t turn the guest page into a sponsorship deck.
+
+## Send this to Replit
+
+Paste this:
+
+---
+
+Please tighten the homepage positioning.
+
+The event should lead as a **private leadership dinner**, not a wellbeing evening.
+
+### Hero section
+
+Replace the current hero description with:
+
+**A private leadership dinner for 100 accomplished women across the UK — founders, directors, executives, business owners and senior decision-makers.**
+
+Add subline:
+
+**Hosted in Milton Keynes on Friday 28 August 2026, the evening brings together women from different industries for dinner, expert conversation, editorial portraiture, visibility and strategic connection.**
+
+Keep:
+
+**100 invited women · Champagne welcome · Three-course dinner · Women’s health and confidence conversation · Editorial portraiture · I Am Her campaign feature**
+
+### Programme section
+
+Rename:
+
+**Wellbeing Session**
+
+to:
+
+**Leadership, Health & Confidence Conversation**
+
+Replace the description with:
+
+**Led by Dr Sarah Jenkins and Esther Emenike-Okorie, this conversation explores the physical, emotional and confidence realities of leading at this level. Not a workshop — a grounded conversation for women carrying real responsibility.**
+
+### Not-this section
+
+Change to:
+
+**Not a networking event.
+Not a women-in-business conference.
+Not a coaching room.
+Not a room full of advice.**
+
+### Stay section
+
+Replace:
+
+**Special discounts available for guests staying the weekend**
+
+with:
+
+**Guest stay options and local recommendations will be shared with confirmed guests.**
+
+### Music wording
+
+If live music is not confirmed, replace:
+
+**Live music. Soft light. The right mood.**
+
+with:
+
+**Music. Soft light. The right mood.**
+
+### Partnership section
+
+Compress the partner section.
+
+Use:
+
+**Partnership Opportunities**
+
+**We are inviting a small number of aligned financial, lifestyle, hospitality, beauty, wellness and media partners to be meaningfully present within the evening. Partnership details are available on request.**
+
+Buttons:
+
+**Explore Partnership**
+**Email Us Directly**
+
+---
+
+## My call
+
+The homepage is **80% there**.
+
+The gap is not design. It is category.
+
+Right now it sounds like:
+
+**luxury wellbeing dinner**
+
+It needs to sound like:
+
+**high-calibre leadership dinner with wellbeing, visibility and connection built in**
+
+That is the difference between “nice event” and “worth my calendar.”

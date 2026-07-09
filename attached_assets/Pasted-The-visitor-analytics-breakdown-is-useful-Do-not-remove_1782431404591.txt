@@ -1,0 +1,124 @@
+The visitor analytics breakdown is useful. Do not remove the figures, page breakdown, countries, cities, funnels or traffic source data.
+
+Keep the detailed analytics.
+
+What is missing is an executive layer above it.
+
+Add a new top section called:
+
+Executive Overview
+
+This should sit above the charts and figures.
+
+It should work like a senior Growth Council / Campaign Board giving the user a clear interpretation of the data.
+
+The Executive Overview should answer:
+
+1. What is happening?
+2. What does it mean?
+3. What is the risk?
+4. What is the opportunity?
+5. What should we do next?
+6. What should we do today?
+7. What should we do this week?
+
+Use this structure:
+
+Executive Overview
+
+Campaign Status:
+Example:
+Interest is building, but conversion is weak.
+
+What This Means:
+Example:
+People are visiting the I Am Her pages, but they are not yet giving contact details or taking action. The issue is not awareness. The issue is conversion.
+
+Main Risk:
+Example:
+If we continue to attract visitors without capturing emails, we will lose warm interest and have no way to follow up.
+
+Main Opportunity:
+Example:
+Direct traffic is high, which means people are already hearing about the brand. We should now focus on converting existing awareness into access requests, story submissions and partner enquiries.
+
+Top 3 Actions:
+
+1. Add a stronger lead capture offer on /iamher.
+2. Improve the CTA on /access and /iamher/partnership.
+3. Use UTM links on every Instagram, LinkedIn and WhatsApp post.
+
+Today’s Priority:
+Example:
+Fix email capture immediately. This is the fastest way to stop losing warm visitors.
+
+This Week’s Priority:
+Example:
+Run founder-led content and partnership outreach while tracking every link.
+
+Expected Impact:
+Example:
+Better capture and tracking should increase measurable enquiries and show which channels are worth investing in.
+
+Confidence Level:
+Example:
+High — based on 288 views and 148 sessions in the last 7 days.
+
+Important: this should not replace the existing analytics.
+
+The executive section should interpret the data in plain English.
+
+The user should be able to read it in 30 seconds and understand exactly what to do.
+
+Also fix these issues:
+
+1. Never show NaN.
+   If there is not enough data, say:
+   “Not enough data yet.”
+
+2. Replace “AI Creative Director” with:
+   “Growth Advisor”
+   or
+   “Campaign Advisor”
+
+3. Replace “Fix This” with:
+   “Review Recommendation”
+   or
+   “Optimise”
+
+4. Replace priority numbers with human-readable labels:
+
+* Critical
+* High
+* Medium
+* Opportunity
+
+5. Do not recommend impossible actions.
+   Example:
+   If venue is TBC, do not recommend “show the venue.”
+
+6. Recommendation cards should use this format:
+
+Observation:
+What the data says.
+
+Meaning:
+Why it matters.
+
+Recommended Action:
+What to do.
+
+Expected Impact:
+What could improve.
+
+Confidence:
+Low / Medium / High.
+
+7. Keep all detailed figures below the Executive Overview.
+
+The goal is:
+
+Detailed analytics below.
+Executive judgement above.
+
+The dashboard should feel like a Growth Director is interpreting the numbers, not just displaying them.

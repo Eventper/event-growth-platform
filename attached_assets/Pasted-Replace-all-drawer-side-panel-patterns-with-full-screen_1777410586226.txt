@@ -1,0 +1,83 @@
+Replace all drawer/side-panel patterns with full-screen modals across the planning app. Same rule as the Twin Trade refactor.
+
+============================================================
+RULE
+============================================================
+
+Drawers (right-side slide-out panels at ~30-40% width) are banned for any view that contains:
+- Editable form fields
+- Generated email text or chat threads
+- Long-form content (notes, descriptions, summaries)
+- Multiple sections that need to be visible together
+
+Allowed for drawers ONLY:
+- Quick filter pickers
+- Confirmation dialogs
+- Toast notifications
+
+Everything else → full-screen modal:
+- 95% width, 95% height
+- Centered overlay on darkened backdrop
+- Close button top-right
+- Esc closes, backdrop click closes
+- Scrollable internal content
+- Sticky header + sticky footer
+- White background, dark text — no dark-on-dark
+
+============================================================
+SCOPE
+============================================================
+
+Audit for drawer patterns. Likely locations:
+
+1. Prospect Finder — prospect detail view, generated email preview, contact intel results
+2. Approval Queue — when reviewing a draft email before approval
+3. Replies Inbox — when viewing a reply thread
+4. Suppressions admin
+5. Tender Centre — tender detail panels, bid section editors, document preview, requirements view, learning vault entries
+6. Client Portal (Kehinde's side) — any detail drawers for documents, weekly reports, milestones
+7. Group CRM — if it exists on the planning app side too (check)
+
+Search patterns:
+- *Drawer*, *SlidePanel*, *SidePanel* components
+- right-0 + fixed + narrow width Tailwind combos
+- shadcn Sheet used for content
+- translate-x animation patterns
+
+============================================================
+DESIGN
+============================================================
+
+Use a shared FullScreenModal component (create if not present, or reuse the equivalent already existing — check first):
+- Backdrop: black 50% opacity
+- Container: 95vw × 95vh, centered, rounded, shadow, white background
+- Sticky header with title + close button
+- Sticky footer with action buttons
+- Scrollable content area
+- 200ms fade + scale animation
+
+Don't redesign content inside — just the container.
+
+============================================================
+RULES
+============================================================
+
+- Don't break ALLI client portal panels that already work as collapsible cards (those stay)
+- Don't break the milestone sign-off card or document download dialogs (already modals)
+- Don't touch shadcn AlertDialog confirmations (small modals stay)
+- Don't change business logic — wrapper only
+- Test ESC close, backdrop close, X button close, scrolling
+
+============================================================
+COMMITS
+============================================================
+
+1. feat(ui): add shared FullScreenModal component (or align with existing if present)
+2. refactor(prospect): convert Prospect Finder drawer panels
+3. refactor(approval): convert Approval Queue drawer panels
+4. refactor(tender): convert Tender Centre drawer panels
+5. refactor(client-portal): convert any remaining client portal drawer panels (if any)
+
+After each: typecheck, brief summary.
+
+If anything errors, paste it back.

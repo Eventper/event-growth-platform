@@ -1,0 +1,35 @@
+modules = ["nodejs-24", "python-3.11", "postgresql-16"]
+
+[deployment]
+router = "application"
+deploymentTarget = "autoscale"
+
+[deployment.postBuild]
+args = ["pnpm", "store", "prune"]
+env = { "CI" = "true" }
+
+[workflows]
+runButton = "Project"
+
+[agent]
+stack = "PNPM_WORKSPACE"
+expertMode = true
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 20000
+
+[nix]
+channel = "stable-25_05"
+
+[userenv]
+
+[userenv.shared]
+EP_CROSS_SYSTEM_KEY = "test-key-dev-only"
+JWT_SECRET = "640e16072dd6fe1c26cbad26f5ed30d204c0a55e9441a2c961886bea45b009d7"
+LYNDA_EMAIL = "lyndajohnson@eventperfekt.com"
+
+[userenv.production]
+
+[objectStorage]
+defaultBucketID = "replit-objstore-3ea940ba-7392-41f8-89ac-c347af54610f"

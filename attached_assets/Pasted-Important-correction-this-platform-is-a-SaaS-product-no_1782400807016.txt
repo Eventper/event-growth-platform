@@ -1,0 +1,239 @@
+Important correction: this platform is a SaaS product, not an I Am Her-only system.
+
+Build the AI Communications Engine so it can support any client, any event, any campaign, and any sector.
+
+Do not hard-code I Am Her rules into the core system.
+
+Use a layered architecture:
+
+1. Global SaaS Rules
+
+These apply to every client and every campaign:
+
+* Never generate generic emails.
+* Never lead with weak phrases like "We are hosting..." unless the context specifically requires it.
+* Always identify the strongest story, commercial or relationship angle before writing.
+* Always adapt the message to the audience and channel.
+* Never include prices, ticket fees, sponsorship rates or commercial package costs by default.
+* Always use a soft CTA linking to more information, such as:
+
+  * Learn more
+  * View details
+  * Request access
+  * Request the partnership pack
+  * Register interest
+  * Book a call
+* Always protect brand integrity.
+* Always write like a senior communications professional, not an AI assistant.
+
+2. Client-Level Memory
+
+Each SaaS client should have its own memory profile.
+
+Store:
+
+* Brand voice
+* Approved phrases
+* Banned phrases
+* Preferred tone
+* Audience segments
+* Commercial rules
+* CTA rules
+* Pricing visibility rules
+* Brand positioning
+* Sector
+* Key offers
+* Past successful communications
+* Compliance restrictions
+
+Example:
+Client A may want luxury and minimal.
+Client B may want warm and community-led.
+Client C may want corporate and technical.
+
+3. Campaign-Level Memory
+
+Each campaign should have its own memory.
+
+Store:
+
+* Campaign name
+* Campaign objective
+* Target audience
+* Key messages
+* Story angles
+* Offers
+* Event or product details
+* Approved spokespersons
+* Approved links
+* Visual assets
+* Dates
+* Locations
+* CTA
+* Exclusions
+* Commercial sensitivity
+
+For I Am Her, the system can store:
+
+* Premium women’s leadership experience
+* Invitation-led positioning
+* No prices in outreach
+* Link to learn more
+* PR should focus on human-interest and social issue angles
+* Sponsors should receive partnership-led messaging
+* Guests should receive access-led messaging
+
+But these must live in campaign memory, not global logic.
+
+4. Persona Library
+
+Create reusable expert personas that any client can select or the system can auto-select.
+
+Personas:
+
+* PR Consultant
+* Features Editor
+* ITV Producer
+* BBC Researcher
+* Luxury Brand Copywriter
+* Corporate Affairs Director
+* Sponsorship Consultant
+* Sales Development Strategist
+* Investor Relations Writer
+* Community Engagement Specialist
+* LinkedIn Thought Leadership Writer
+* Direct Response Copywriter
+* Executive Communications Adviser
+
+5. Use Case Types
+
+The system must support multiple communication types:
+
+* PR pitch
+* Sponsor pitch
+* Corporate partnership email
+* Guest invitation
+* Sales outreach
+* LinkedIn DM
+* Follow-up email
+* Thank-you email
+* Speaker invitation
+* Press response
+* Proposal cover email
+* Investor update
+* Community announcement
+
+Each use case should have its own prompt framework and quality standard.
+
+6. Pre-Writing Intelligence Layer
+
+Before writing, the AI must determine:
+
+* Who is the recipient?
+* What is the objective?
+* What is the strongest angle?
+* Why would this person care?
+* What should they feel?
+* What should they do next?
+* What should be excluded?
+* Which persona should write this?
+* Which CTA is appropriate?
+
+Only after this should it draft the message.
+
+7. Quality Gate
+
+Before showing the output, the system must assess:
+
+* Is this generic?
+* Is this relevant to the recipient?
+* Is the hook strong?
+* Does it lead with value?
+* Does it protect the client’s brand?
+* Does it avoid exposing pricing unless requested?
+* Is the CTA appropriate?
+* Does it sound human and senior?
+
+If it fails, regenerate before showing the user.
+
+8. Pricing Rule
+
+Global rule:
+
+Never include price, ticket cost, sponsorship fee, commercial package fee or rate in outreach unless the client explicitly enables pricing visibility for that campaign or message type.
+
+Default CTA should be a link to learn more, request access, request the pack, or book a call.
+
+9. Links Rule
+
+Every campaign should have approved links.
+
+The AI should use the correct approved link instead of inserting raw commercial details.
+
+Examples:
+
+* Learn more
+* Request access
+* Partnership pack
+* Event details
+* Book a call
+* Media kit
+* Press assets
+
+10. Analytics Learning
+
+The SaaS should learn from results.
+
+Track by client, campaign, persona and message type:
+
+* Open rate
+* Reply rate
+* Click-through rate
+* Meeting booked
+* Conversion
+* Media coverage
+* Sponsor interest
+* Ticket enquiry
+* Unsubscribe rate
+* Manual edits made by user
+
+Use these results to improve future outputs.
+
+11. UI Requirement
+
+In the UI, separate:
+
+* Global rules
+* Client memory
+* Campaign memory
+* Persona selected
+* Message type
+* CTA selected
+* Approved links
+* Quality score
+* Reasoning summary
+* Final draft
+
+The user should be able to see why the AI chose a specific angle without seeing unnecessary technical detail.
+
+12. I Am Her as First Use Case
+
+Use I Am Her only as the first demo campaign.
+
+Do not build the product around it.
+
+The product must be reusable for:
+
+* events
+* PR campaigns
+* founders
+* consultants
+* agencies
+* brands
+* sponsors
+* corporate partnerships
+* community campaigns
+* product launches
+* media outreach
+
+The goal is to build a SaaS platform that behaves like an expert communications agency for any client, not a single event outreach tool.

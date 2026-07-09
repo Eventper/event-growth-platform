@@ -1,0 +1,210 @@
+PROJECT:  
+Build a standalone mini‑site called Projects & Programmes for Event Perfekt Global Ltd.
+This must follow the visual style of our Wix site, but be built entirely in Replit.
+
+OUTPUT:  
+A mini‑site with:
+
+Main Page: /projects-and-programmes
+
+Five Sub‑Pages:
+
+/projects/cefas
+
+/projects/remittance
+
+/projects/funding
+
+/projects/twinpay
+
+/projects/twintrade
+
+All pages must follow the same design system as our Wix site:
+clean, modern, white space, rounded cards, bold headings, Poppins font, brand colours.
+
+⭐ TECHNICAL REQUIREMENTS
+1. File Structure
+Code
+/projects-and-programmes
+    index.html
+    styles.css
+    script.js
+    /assets
+        hero-video.mp4
+        images/
+    /projects
+        cefas.html
+        remittance.html
+        funding.html
+        twinpay.html
+        twintrade.html
+2. Global Requirements
+Use Poppins font (Google Fonts)
+
+Use brand colours (Event Perfekt):
+
+Gold (#D4AF37)
+
+Black (#000000)
+
+White (#FFFFFF)
+
+Light grey (#F5F5F5)
+
+Mobile responsive
+
+Smooth scroll
+
+Buttons must match Wix style (rounded, bold, hover effect)
+
+⭐ MAIN PAGE: /projects-and-programmes/index.html
+SECTION 1 — HERO (VIDEO BACKGROUND)
+Requirements:
+
+Full‑width section
+
+Background video (loop, muted, autoplay)
+
+Dark overlay (rgba(0,0,0,0.4))
+
+Centered white text
+
+Content:
+
+Code
+H1: Projects & Programmes
+Sub‑headline: Governance‑aligned delivery across the UK, Africa & international markets.
+Button: View Our Work (scroll to next section)
+HTML Structure:
+
+Code
+<section id="hero-video">
+    <video autoplay muted loop>
+        <source src="assets/hero-video.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+    <div class="hero-content">
+        <h1>Projects & Programmes</h1>
+        <p>Governance-aligned delivery across the UK, Africa & international markets.</p>
+        <a href="#portfolio" class="btn">View Our Work</a>
+    </div>
+</section>
+SECTION 2 — INTRO (TWO COLUMNS)
+Left: text
+Right: image
+
+Content:
+
+Code
+H2: Delivering Programmes With Governance, Compliance & Leadership
+
+Event Perfekt Global Ltd delivers high-assurance programmes for UK Government agencies,
+public-sector bodies, corporate organisations, and international partners. Our work spans
+governance, compliance, PMO leadership, operational delivery, and cross-border programme
+support — ensuring every project is delivered with clarity, accountability, and measurable impact.
+SECTION 3 — PROJECT GRID (5 CARDS)
+3‑column grid on desktop
+1‑column on mobile
+
+Card Content:
+
+Card 1 — DEFRA / CEFAS – Africa Regional Support Programme
+Code
+Governance-aligned delivery, regional operations, compliance, PMO support.
+Button: View Programme → /projects/cefas
+Card 2 — Remittance & Financial Coordination
+Code
+Cross-border payments, compliance, financial governance, operational support.
+Button: View Programme → /projects/remittance
+Card 3 — Programme Funding & Development Projects
+Code
+Multi-agency governance, risk management, stakeholder leadership.
+Button: View Programme → /projects/funding
+Card 4 — TwinPay Platform
+Code
+Compliance-driven cross-border payments infrastructure.
+Button: Explore Platform → /projects/twinpay
+Card 5 — Twin Trade Network
+Code
+Cross-border partnership ecosystem with governance oversight.
+Button: Explore Platform → /projects/twintrade
+SECTION 4 — CAPABILITY STRIP (ICONS)
+5 icons horizontally.
+
+Content:
+
+Code
+Governance Frameworks
+Compliance & Risk Management
+PMO Leadership
+Executive Programme Leadership
+Cross-Border Operational Delivery
+SECTION 5 — REGIONAL DELIVERY (4 COLUMNS)
+Code
+United Kingdom
+Africa & West Africa
+Europe
+Middle East
+SECTION 6 — WHY ORGANISATIONS TRUST US
+Two‑column bullet list.
+
+Content:
+
+Code
+• Proven UK Government delivery (DEFRA/CEFAS)
+• Governance-aligned programme management
+• Compliance & risk capability
+• Cross-regional operational delivery
+• Scalable PMO and leadership support
+• Transparent, audit-ready reporting
+SECTION 7 — CTA STRIP
+Full‑width, brand colour background.
+
+Content:
+
+Code
+H2: Ready to Deliver Your Next Programme?
+
+Buttons:
+• Request a Case Study
+• Book a Consultation
+• Contact Us
+SECTION 8 — FOOTER
+Use same structure as Event Perfekt Wix footer.
+
+⭐ CSS REQUIREMENTS
+Hero Video
+Code
+#hero-video {
+    position: relative;
+    height: 90vh;
+    overflow: hidden;
+}
+
+#hero-video video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+}
+
+#hero-video .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    top: 50%;
+    transform: translateY(-50%);
+}

@@ -1,0 +1,186 @@
+/allowed-tools all
+
+Upgrade the SaaS Tender Finder tab to match and 
+beat the Tender Explorer platform.
+
+CURRENT GAPS TO FIX:
+
+FIX 1 — ADD STATS BAR AT TOP OF FINDER TAB:
+
+Show live stats from the last search results:
+Results Found — count of current results
+Active Tenders — count with status open
+Average Value — average of all values in results
+Closing Soon — count with deadline within 7 days
+
+Update dynamically when filters change.
+
+FIX 2 — ADD STATUS TABS:
+
+Below stats bar add clickable tabs:
+Open — filter to open only
+Awarded — filter to awarded contracts
+Closed — filter to closed
+Planned — future pipeline
+Cancelled
+All — show everything
+
+Each tab shows count badge.
+
+Awarded tab is important — shows competitive 
+intelligence — who won previous contracts.
+
+FIX 3 — ADD MISSING FILTERS:
+
+Add to existing filter panel:
+- SME-suitable only toggle — filters tenders 
+  flagged as SME appropriate in the API
+- Winner field — search awarded contracts by 
+  winning supplier name
+- Sector Code — CPV code search field
+- Procedure Type — Open, Restricted, Negotiated,
+  Competitive Dialogue, Innovation Partnership
+- Region code — UK region selector with all 
+  ITL codes: UKC, UKD, UKE, UKF, UKG, UKH, 
+  UKI, UKJ, UKK, UKL, UKM, UKN
+- Publication date range — from and to
+- Source selector — Contracts Finder only, 
+  Find a Tender only, or Both
+
+FIX 4 — ADD EXPORT CSV:
+
+Export CSV button top right of results.
+When clicked downloads all current results as CSV:
+Title, Buyer, Value, Published, Deadline, 
+Status, Source, Region, Category, URL
+
+FIX 5 — IMPROVE EACH RESULT CARD:
+
+Each tender result must show:
+- Title bold and clickable
+- Status badge — Open green, Awarded blue, 
+  Closed grey, Planned amber, Cancelled red
+- Description snippet — first 150 chars
+- Buyer name
+- Value — show Estimate if estimated, 
+  Not specified if unknown
+- Published date
+- Deadline — red if within 7 days
+- Region code badge
+- Source badge — FTS or CF
+- Category tag
+- Match Score badge — your AI scoring — 
+  this is what beats the competition
+- Save to Watchlist button — star icon
+- Add to Pipeline button
+- Generate Bid Outline button — EP Agent
+- Details button — opens full tender
+
+FIX 6 — AWARDED CONTRACTS INTELLIGENCE:
+
+When Awarded tab is selected show:
+- All awarded contracts matching search
+- Winner name prominently shown
+- Contract value
+- Duration
+- Award date
+
+Add Competitive Intelligence panel:
+When you click a buyer in the results:
+Show panel: [Buyer Name] — Procurement History
+- Total contracts awarded in last 2 years
+- Average contract value
+- Which suppliers won most
+- Categories they buy most
+- Upcoming renewals — contracts ending soon
+- Similar contracts you could bid on
+
+This is the killer feature — no other free 
+platform does this well.
+
+FIX 7 — CONNECT CONTRACTS FINDER API:
+
+In server/saas-tender-routes.ts update the 
+search function:
+
+Contracts Finder API:
+GET https://www.contractsfinder.service.gov.uk/Published/Notices/PublicSearch/Search
+Parameters:
+  Keyword: from user search
+  NoticeType: 1 for contract notices, 2 for awards
+  PostedFrom: publication date from
+  PostedTo: publication date to
+  RegionCodes: array of UK region codes
+  CPVCodes: sector codes
+  Page: pagination
+  PageSize: 20
+
+Parse response and normalise to standard format:
+{
+  id, title, description, buyer, value, 
+  value_estimated, published_date, deadline,
+  status, source, region, category, url,
+  cpv_codes, procedure_type, sme_suitable,
+  winner, award_date, award_value
+}
+
+FIX 8 — FIND A TENDER API:
+
+When process.env.FIND_A_TENDER_CDP_KEY is set:
+
+Find a Tender OCDS API:
+GET https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages
+Headers: CDP-Api-Key: [key]
+Parameters:
+  q: keywords
+  published_from: date
+  published_to: date
+  status: active/complete/cancelled
+  region: ITL code
+
+Parse OCDS format and normalise to same 
+standard format as Contracts Finder.
+
+Merge results from both sources.
+Deduplicate by title and buyer.
+Sort by chosen sort option.
+
+If CDP key not set — show banner:
+Connect Find a Tender API to access 
+high-value contracts above £139,688.
+Get your free CDP key at find-tender.service.gov.uk
+[Connect Now button]
+
+FIX 9 — SORT OPTIONS:
+
+Add sort dropdown:
+Best match — AI relevance score
+Newest first — published date desc
+Oldest first — published date asc
+Deadline soonest — closest deadline first
+Deadline latest — furthest deadline first
+Value highest — contract value desc
+Value lowest — contract value asc
+
+FIX 10 — PAGINATION:
+
+Show: Page 1 of 55 — Next — Previous
+Results per page selector: 10, 20, 50
+
+FIX 11 — MATCH SCORE INTEGRATION:
+
+For each result call the existing scoreTender() 
+function from the SaaS tender to generate a 
+match score based on the user's company profile 
+and saved search config.
+
+Show as a badge:
+95% — Excellent — dark green
+80-94% — Strong — green
+65-79% — Good — amber
+50-64% — Possible — yellow
+Below 50% — Low — grey
+
+Sort by Best Match uses this score.
+
+Run npm run build and confirm clean.

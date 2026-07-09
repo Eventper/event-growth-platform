@@ -1,0 +1,33 @@
+Context: eventperfekt.net, /iamher. This is a repositioning of the page's core copy — the audience is women running established, scaling businesses (second/third/fourth ventures), not startups, and the event is explicitly NOT a women-in-business or empowerment event. Copy and section-order changes only; don't touch the rendering work (Job 1 is still open separately), the meta/SEO layer, or the email-capture wiring. Report what changed.
+Job A — Replace the hero subline.
+
+Current: "A luxury leadership wellbeing experience for founders, executives, and women who lead."
+
+New:
+
+The Woman Who Leads the Room
+
+For women who've already built it — and are deciding what the next decade looks like.
+Job B — Add a "this is not that" positioning statement directly below the hero, as the first text block (before any atmospheric copy):
+
+This is not a women-in-business event. There's no stage of five-step frameworks, no one telling you how to start up. The women in this room have already done that — twice, three times, four. You're past the advice. What you rarely get is a room of people at your level, talking honestly about what comes next.
+Job C — Add the core "What we actually talk about" section, immediately after the positioning statement and the speakers (Dr Sarah + Esther sit here too). This becomes the lead content, ahead of the existing mood copy:
+Heading: The conversations that don't happen anywhere else
+
+Longevity — your business and your body. You've spent years scaling. What does sustaining it for the next decade actually take — in the company, and in you?
+Women's health as you lead. With Dr Sarah Jenkins (Harley Street, women's health & menopause) — the physical and hormonal realities of leading at this level that no one schedules time for.
+How you show up. With Esther Emenike-Okorie — confidence, presence, and how you carry yourself when you're the one others look to.
+Financial longevity. A frank conversation about building wealth that lasts — property, investment, sustainability — for women past the first-round stage. (Frame as a conversation being convened, NOT a named/confirmed partner.)
+The room itself. Founders and leaders of established businesses across industries. The woman two seats away may need exactly what you've built — and you may need what she has.
+
+Job D — Add the closing distinction line near the CTA:
+
+No one performs here. No one lectures. No one hands you a worksheet. Just the right women — at the right altitude — having the conversations that matter, in a room built for restoration, not output.
+Job E — Surface the weekend value (currently buried in "Stay & Explore").
+
+Add a short block within the value section: it's on a Friday by design — make it a weekend, bring family, and confirmed guests get sorted discounted stays and the best of Milton Keynes. Don't relegate this to a separate page only; reference it on the main page as part of the experience.
+Important wording guardrails:
+
+Sell the room and the calibre, never outcomes. "May need what you've built" is fine; do NOT write "you'll win clients / close deals."
+The financial strand is a conversation being convened, not a confirmed partner — keep it true.
+Don't name any fragrance or champagne brand, or any hotel, until confirmed.

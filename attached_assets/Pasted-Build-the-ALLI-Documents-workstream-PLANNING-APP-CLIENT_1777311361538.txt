@@ -1,0 +1,81 @@
+Build the ALLI Documents workstream — PLANNING APP CLIENT SIDE. The Twin Trade staff-side build (Endpoint 7) has already shipped. This Replit consumes it.
+
+============================================================
+DESIGN DECISIONS LOCKED (do not redesign)
+============================================================
+
+- External + Weekly Reports lanes only — internal is filtered out at the bridge
+- Version history visible to Kehinde, latest + past versions
+- Milestone sign-off has Approve and Request Changes options
+- Audit trail: capture client IP and user agent server-side, forward to bridge
+
+============================================================
+PHASE 2B — PROXY ROUTES
+============================================================
+
+In server/client-portal-routes.ts add (matching existing fetchTwinTradeSync pattern):
+
+  GET /api/client-portal/alli/documents
+    - authenticateClientPortal
+    - proxy to /api/alli-sync/documents
+    - return upstream response as-is (already filtered server-side at bridge)
+
+  GET /api/client-portal/alli/documents/:id/history
+    - authenticateClientPortal
+    - proxy to /api/alli-sync/documents/:id/history
+
+  POST /api/client-portal/alli/milestones/:milestone_id/signoff
+    - authenticateClientPortal
+    - capture client_ip from req.ip (or x-forwarded-for header if behind proxy)
+    - capture client_user_agent from req.headers['user-agent']
+    - capture signed_by_email and signed_by_name from req.portalUser
+    - body from client: decision, rejection_comment (if rejected)
+    - forward all fields to bridge POST /api/alli-sync/milestones/:milestone_id/signoff
+    - return upstream response
+
+============================================================
+PHASE 2C — CLIENT DOCUMENTS PAGE
+============================================================
+
+Create client/src/pages/client-portal/documents.tsx:
+- Two tabs: "Project Documents" (external lane) and "Weekly Reports" (weekly_reports lane).
+- Each tab lists docs with: title, description, version badge ("v3"), uploaded date, file size, download button (links to storage_url).
+- "Version history" link per doc → expands to prior versions, all downloadable.
+- Reuse PortalLayout, portalCard, G palette from existing client portal pages.
+- Empty states: "No documents shared yet" / "No weekly reports published yet."
+
+Wire route in App.tsx at /client-portal/documents.
+Add nav link in PortalLayout next to existing client portal nav items.
+
+============================================================
+PHASE 3B — MILESTONE SIGN-OFF UI
+============================================================
+
+Find the milestone view on Kehinde's side (likely client/src/pages/client-portal/project.tsx — search for where milestones render). For each milestone block:
+
+- Show external-lane documents attached to this milestone (filtered by milestone_id from the documents fetch).
+- If milestone state is 'awaiting_signoff' (or equivalent staff-side label for ready-for-client):
+  * Big green button "✓ Approve & Sign Off" — confirmation dialog: "I confirm I have reviewed all documents in this milestone pack. Sign-off is final and will be recorded with timestamp." → POST decision=approved
+  * Red secondary button "Request Changes" — opens textarea, requires non-empty comment → POST decision=rejected with rejection_comment
+- After signoff, show inline result: "✓ Signed off on 27 Apr 2026" (green) or "✗ Changes requested on 27 Apr 2026 — your comment: ..." (red).
+- Collapsible "Sign-off history" below showing past signoff rows (will populate from a future endpoint — for now, just show the most recent decision).
+
+============================================================
+RULES
+============================================================
+
+- Don't change anything outside scope. Home page, RAID, weekly reports panel, client actions, request inbox, kanban — leave alone.
+- Reuse existing helpers (portalFetch, fetchTwinTradeSync, PortalLayout, portalCard, portalBadge, G palette).
+- If a file has shifted since you last read it, re-read it fresh.
+- Each phase is independent. If 2B ships clean and 2C errors, don't revert 2B.
+
+============================================================
+WRAP UP
+============================================================
+
+Typecheck. Commit:
+  feat(alli-docs): documents workstream client side — documents page with version history, milestone signoff with reject flow, audit trail metadata capture
+
+Reply EXACTLY: "Documents workstream complete on both sides."
+
+If errors, stop and paste back.

@@ -1,0 +1,119 @@
+Send this as an addition/change request to Replit:
+
+Additional Feature Request – AI Outreach Workspace
+
+Please add an interactive AI Outreach Workspace to the Event Growth Intelligence Platform.
+
+This should not behave like a standard CRM template builder. It should work more like an AI editing workspace where the user can refine messages interactively before approving them.
+
+Core Requirement
+
+For each approved prospect, the platform should generate an outreach message and allow the user to edit it conversationally before sending.
+
+Example user actions:
+
+* Make this shorter
+* Make this more premium
+* Make this less salesy
+* Add the event date
+* Mention Dr Sarah Jenkins
+* Remove the wellbeing reference
+* Make it stronger for a CEO
+* Add a clearer call to action
+* Create a sponsor version
+* Create a VIP guest version
+* Create a LinkedIn version
+* Create an email version
+
+The AI should rewrite the message instantly based on the instruction.
+
+Human Approval Gate
+
+No message should send automatically.
+
+The workflow should be:
+
+Generate message
+→ User reviews
+→ User edits with AI
+→ User approves
+→ Message moves to outreach queue
+→ User sends
+
+Message Types
+
+The workspace should support:
+
+* LinkedIn connection request
+* LinkedIn first message
+* LinkedIn follow-up
+* Email introduction
+* Email follow-up
+* Sponsor outreach
+* VIP guest invitation
+* Speaker invitation
+* Media outreach
+* Partnership request
+
+Message Quality Score
+
+Add a message scoring panel showing:
+
+* Personalisation
+* Clarity
+* Tone
+* Length
+* Relevance
+* Call to action
+* Overall score
+
+The AI should provide improvement suggestions such as:
+
+* This message is too long for LinkedIn.
+* The CTA could be stronger.
+* This sounds too generic.
+* Add why this person was selected.
+* Use a more premium tone for this audience.
+
+Attachment Recommendations
+
+Add a recommended attachments panel.
+
+Depending on the prospect type, suggest:
+
+* Sponsor deck
+* Event brochure
+* VIP invitation pack
+* Speaker profile
+* Media pack
+* Partnership proposal
+* Story submission guide
+
+The user should be able to attach the recommended document to an approved email or outreach sequence.
+
+Learning Loop
+
+Track which message versions perform best.
+
+The platform should learn from:
+
+* Reply rate
+* Positive response rate
+* Sponsor interest
+* Meeting bookings
+* Applications
+* Ticket conversions
+
+Elizabeth should use this data to recommend better message styles over time.
+
+Example:
+
+“CEO prospects responded better to shorter invitation messages.”
+“Sponsor prospects responded better when the sponsorship deck was attached.”
+“Messages mentioning audience quality performed better than messages mentioning event features.”
+
+Purpose
+
+This feature should make outreach feel strategic, premium and human-led, not like mass CRM automation.
+
+The goal is to help users say the right thing to the right prospect, approve it, and then send with confidence.

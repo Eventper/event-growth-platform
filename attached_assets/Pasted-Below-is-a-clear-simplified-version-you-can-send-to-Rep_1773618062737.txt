@@ -1,0 +1,304 @@
+Below is a **clear, simplified version you can send to Replit**.
+The goal is to **remove confusion** and clearly explain:
+
+* what stays
+* how the system should be structured
+* where each section sits
+* how the workflow moves through the platform
+
+It avoids long explanations and focuses on **structure + logic** so developers can implement it easily.
+
+---
+
+# Event Perfekt – Platform Structure Clarification for Replit
+
+The current system already has many of the right tools (event creation, planning tools, vendor management, guest management, contracts, invoices, design tools, communication tools, event-day tools, etc.). These tools should **remain in the system**.
+
+The issue is not the tools themselves. The improvement required is **clearer workflow structure and navigation**, so the platform reflects how the business actually operates.
+
+The system should be organized into **six major areas**.
+
+---
+
+# 1. Dashboard
+
+The dashboard is the main landing page for users after login.
+
+It should show:
+
+* My Assignments
+* Upcoming Events
+* Calendar
+* Notifications
+* Event Readiness Overview
+
+Purpose:
+Allow users to immediately see what events they are responsible for.
+
+---
+
+# 2. Marketing & Sales
+
+This section handles **business development before an event is created**.
+
+Marketing should operate like a CRM with prospecting and a sales pipeline.
+
+### Marketing & Sales Structure
+
+Prospecting
+
+* Prospect Finder
+* Prospect Database
+* Referral Tracking
+
+Lead Management
+
+* Lead Capture
+* Website Enquiries
+* Contact Management
+
+Sales Pipeline
+
+* Opportunity Pipeline
+* Proposal Tracking
+* Follow-ups
+
+Campaigns
+
+* Email Marketing
+* Social Media Scheduling
+* Campaign Manager
+* Promotion Analytics
+
+When a prospect becomes a confirmed event, the system creates an event record.
+
+Flow:
+
+Prospect → Lead → Opportunity → Proposal → Confirmed Event → Create Event
+
+---
+
+# 3. Event Intake
+
+Once an event is created (by client, planner, or marketing conversion), it enters the intake process.
+
+### Event Intake
+
+* Create Event
+* Event Intake Queue
+* Manager Review
+
+When an event is submitted, it should automatically:
+
+* generate an event ID
+* notify the manager
+* appear in the Manager Review queue
+* set status to **New Intake**
+
+---
+
+# 4. Manager Control
+
+The Manager (for example Lalade) reviews and prepares the event before assigning it to an Event Manager.
+
+Manager responsibilities include:
+
+* reviewing event details
+* creating the initial budget
+* checking profitability
+* estimating vendor costs
+* ensuring the event is financially viable
+* assigning an Event Manager
+
+### Manager Control Area
+
+Budget Setup
+Financial Review
+Vendor Budget Guidance
+Assign Event Manager
+
+When the manager assigns the Event Manager, the event moves into the Event Workspace.
+
+---
+
+# 5. Event Workspace (Planning & Delivery)
+
+This is where the Event Manager and team plan and deliver the event.
+
+### Pre-Planning
+
+Initial event preparation before full planning begins.
+
+* Proposals
+* Contracts
+* Client Brief
+* Initial Budget Review
+* Venue Sourcing
+
+---
+
+### Planning
+
+Core event planning tools.
+
+* Project Management
+* Vendor Management
+* Guest Management
+* Budget Planning
+* Calendar
+* Timeline / Gantt
+* Reminders
+
+---
+
+### Design & Experience
+
+* Design Studio
+* Themes & Style
+* AI Decor Agent
+* 3D Venue Designer
+* Floor Plan
+* Decor Inventory
+* Graphics & Branding
+* Souvenirs & Gifts
+
+---
+
+### Communication
+
+* WhatsApp
+* SMS
+* Invitations
+* Client Messages
+
+---
+
+### Team Workspaces
+
+Specialists work in their own areas.
+
+Guest Manager – RSVP, seating, check-in
+Decorator – styling and decor planning
+Graphic Designer – invitations and branding
+Vendor Coordinator – vendor sourcing and contracts
+Day Coordinator – event-day operations
+
+Each role should see only the tools relevant to them.
+
+---
+
+# 6. Event Day
+
+These tools are used during the live event.
+
+Event Day
+
+* Run Sheet
+* Guest Check-in (QR)
+* Badge Generator
+* Staff Coordination
+* Issue Log
+
+---
+
+# 7. Post Event
+
+After the event finishes.
+
+Post Event
+
+* Analytics & Reports
+* Guest Surveys
+* Vendor Ratings
+* Photo Gallery
+* Event Closure
+
+---
+
+# 8. Client Portal
+
+Clients should have a separate portal that shows only relevant information.
+
+Client Portal
+
+* Event Overview
+* Approvals
+* Guest Upload
+* Documents
+* Payments
+* Messages
+
+Clients should **not see internal planning tools or internal budgets**.
+
+---
+
+# 9. Business Operations
+
+Company-level functions should be separated from event operations.
+
+### Finance
+
+* Financial Dashboard
+* Invoicing
+* Payment Plans
+* Expense Tracker
+* Profit & Loss
+* Vendor Payments
+
+### HR / Team
+
+* Employees
+* Onboarding
+* Time Monitoring
+* Role Permissions
+
+### Document Repository
+
+* Contracts
+* Proposals
+* Templates
+* Vendor Agreements
+* Event Documents
+
+### System Administration
+
+* Automation
+* Audit Trail
+* Issue Tickets
+* Admin Panel
+
+---
+
+# Final System Flow
+
+The complete workflow should be:
+
+Prospect / Lead
+→ Sales Pipeline
+→ Confirmed Event
+→ Event Intake
+→ Manager Review
+→ Budget Setup
+→ Assign Event Manager
+→ Event Planning
+→ Team Workstreams
+→ Event Day
+→ Post Event
+→ Financial Closure & Archive
+
+---
+
+# Core Principle
+
+The system must always make it clear:
+
+* who owns the event
+* what phase the event is in
+* who is assigned to the event
+* what the next step is
+
+This structure keeps the powerful tools already built but organizes them into a **clear operational workflow**.
+
+---
+
+If you'd like, I can also help you create a **very short one-page version for Replit engineers** (about 40% shorter) that is easier for developers to implement quickly.

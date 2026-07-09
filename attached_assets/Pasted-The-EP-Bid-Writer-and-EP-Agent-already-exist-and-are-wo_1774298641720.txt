@@ -1,0 +1,40 @@
+The EP Bid Writer and EP Agent already exist and are working. Do not rebuild or change them. I need the following enhancements only:
+Enhancement 1: One-Click Full Bid Generation
+On the EP Bid Writer modal, add a "✦ Generate Full Bid" button that automatically runs all 9 sections in sequence without the user clicking each one individually:
+Executive Summary → Methodology → Social Value → Experience → Team → Pricing → Mobilisation → Risk → Cover Letter
+— Show a live progress bar as each section generates
+— Each section should use whatever context is already in the modal (word limits, scoring criteria)
+— When complete show: "✓ Full bid generated — 9/9 sections ready"
+— All sections saved to that tender record automatically
+Enhancement 2: ITT/RFP Document Parser
+Add a "📎 Upload Tender Doc" button in the tender detail view
+— Accepts PDF or Word (.docx) upload
+— Automatically extracts and populates: tender title, buyer, deadline, budget, all questions with word limits, evaluation criteria and weightings, compliance requirements
+— Use pdf-parse for PDFs and mammoth for Word docs
+— User should never have to manually copy/paste tender details again
+— New endpoint: POST /api/tender-ai/parse-tender-doc
+Enhancement 3: Upgrade AI Prompt Quality
+Update the existing generate-section and answer-questions prompts to use this structure:
+You are an expert UK public sector bid writer for Event Perfekt Global Ltd.
+
+COMPANY CONTEXT: {company_profile from DB}
+BID VAULT REFERENCE: {relevant vault docs}
+TENDER: {buyer}, {title}, {budget}, {deadline}
+
+RULES:
+- STAR format for experience questions
+- Reference specific Event Perfekt contracts and case studies
+- UK public sector language: Value for Money, Social Value, TUPE
+- No generic filler — every sentence must be specific and evidence-based
+- Respect word limits — stay within 10% of limit given
+- First person plural: "We have delivered..."
+- Address the buyer's evaluation criteria directly in every answer
+Enhancement 4: Compliance Check (already referenced in flow)
+Wire up the existing POST /api/tender-ai/compliance-check endpoint to a "✓ Check Compliance" button in the bid writer modal
+— Shows pass/fail/warnings for: word limits, all questions answered, GDPR mentioned, H&S mentioned, safeguarding, EDI, insurance, social value, pricing
+— Displays as a simple checklist with green ticks and red flags
+Enhancement 5: Bid Strength Score (already referenced in flow)
+Wire up POST /api/tender-ai/score-bid to a "⭐ Score Bid" button
+— Shows score 0-10 per section with one specific improvement tip per weak section
+— Traffic light: green (8-10), amber (5-7), red (0-4)
+Do not touch any existing routes, the EP Agent, the Bid Vault, or the Tender Finder. Existing functionality must remain exactly as is.

@@ -1,0 +1,98 @@
+Build four additional modules inside the ALLI Foundation project in both the staff side and the client portal. All data is shared between staff and client — staff manage, ALLI trustees see in real time.
+
+MODULE 1 — YOUNG PEOPLE CASE MANAGEMENT
+
+STAFF SIDE — at /projects/alli-foundation/young-people
+
+Add a Young People tab to the ALLI Foundation project page.
+
+Case list view showing all referred young people as cards:
+- Reference number — auto generated YP-ALLI-001, YP-ALLI-002 etc
+- First name only — no surnames stored without consent
+- Age
+- Area — London borough or city
+- Referral source — Community, Family, School, NHS, Police, Self, Jibowu, Other
+- Referral date
+- Status badge:
+  - Pending Consent — grey
+  - Consent Received — blue
+  - Assessment Scheduled — amber
+  - Assessment Complete — purple
+  - Matched to Partner — green
+  - Actively Supported — lime green
+  - Case Closed — dark grey
+- Assigned EP team member
+- Last updated
+
+Add New Referral button — opens form:
+- First name
+- Age
+- Gender
+- Area — London borough or postcode district
+- Referral source dropdown
+- Brief circumstances — text area — minimum 50 characters
+- Referring person name and contact — optional
+- Consent status — Pending, Received, Declined
+- Priority — High, Medium, Low
+- Save Referral button
+
+Each case card opens a full case detail page showing:
+
+CASE OVERVIEW TAB:
+- All referral details
+- Status timeline showing journey from referral to support
+- Assigned team member
+- Last updated
+
+CONSENT TAB:
+- Consent status
+- Upload consent letter button — accepts PDF — required before assessment
+- If under 18 — parent or guardian consent letter required
+- If 18 or over — young person consent letter required
+- Consent letter templates:
+  - Under 18 parent guardian consent letter — downloadable Word document
+  - Over 18 young person consent letter — downloadable Word document
+- Once uploaded show: Awaiting Review
+- Review buttons: Accept Consent, Reject Consent, Request Resubmission
+- If rejected — enter reason — letter sent explaining why
+- If accepted — case moves to Assessment Scheduled status automatically
+- All consent documents stored securely — GDPR compliant
+- Consent documents never shared externally without explicit authorisation
+
+ASSESSMENT TAB:
+- Assessment date
+- Assessor name
+- Assessment notes — structured form:
+  - Current situation — text area
+  - Risk level — High, Medium, Low
+  - Immediate needs — text area
+  - Longer term needs — text area
+  - Young person's own goals — text area
+  - Recommended intervention type — Music, Mentoring, Therapy, Education, Employment, Legal Support, Multiple
+  - Recommended partner organisation — dropdown from onboarded partners list
+  - Assessment outcome — text area
+- Save Assessment button
+- On save — status updates to Assessment Complete
+- EP team notified by email
+
+INTERVENTION TAB:
+- Matched partner organisation — selected from partner list
+- Intervention type
+- Start date
+- Review date
+- Funding source — ALLI funded, Pro bono, Partner funded, Grant funded
+- Funding amount if applicable
+- Intervention notes
+- Progress updates — add note button — each note logged with date and author
+- Follow up dates — calendar picker — add multiple follow up dates
+- Outcome — Ongoing, Successful Completion, Withdrew, Lost Contact, Referred Elsewhere
+
+DOCUMENTS TAB:
+- All documents related to this case
+- Upload document button
+- Document types: Consent Letter, Assessment Form, Partner Agreement, Progress Report, Closure Report, Other
+- Each document shows: name, type, uploaded by, date, download button
+- GDPR notice on all documents: This document contains sensitive personal data and must be handled in accordance with GDPR requirements
+
+NOTES TAB:
+- Internal case notes

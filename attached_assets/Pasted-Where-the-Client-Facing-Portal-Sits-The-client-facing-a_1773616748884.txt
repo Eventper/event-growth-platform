@@ -1,0 +1,193 @@
+Where the Client-Facing Portal Sits
+
+The client-facing area should sit parallel to the Event Workspace, not inside Admin or Planning tools.
+
+Platform Structure
+Dashboard
+Event Intake
+Event Workspace
+Event Day
+Post Event
+Business & Admin
+Client Portal
+
+The Client Portal connects to the Event Workspace, but shows only client-relevant information.
+
+Client Portal Structure
+
+When a client logs in, they should see a simplified interface.
+
+Client Dashboard
+
+Event overview
+
+Event date
+
+Countdown to event
+
+Key updates
+
+Upcoming meetings
+
+Event Details
+
+Event summary
+
+Venue
+
+Guest estimate
+
+Event schedule (simplified)
+
+Approvals
+
+Clients approve things here.
+
+Examples:
+
+design concepts
+
+decor themes
+
+floor plans
+
+vendor options
+
+budgets if required
+
+Guest Management (if allowed)
+
+Clients may be able to:
+
+upload guest list
+
+view RSVP status
+
+approve seating arrangements
+
+But the Guest Manager still controls the system.
+
+Documents
+
+Clients can access documents such as:
+
+proposals
+
+contracts
+
+invoices
+
+event briefs
+
+important agreements
+
+Payments
+
+Clients can:
+
+view invoices
+
+pay deposits
+
+follow payment plans
+
+download receipts
+
+Communication
+
+Clients can communicate with the planner through:
+
+messaging
+
+meeting scheduling
+
+updates
+
+This avoids losing conversations in email or WhatsApp.
+
+What Clients Should NOT See
+
+Clients should never see:
+
+internal team notes
+
+vendor negotiation prices
+
+internal budgets
+
+staff assignments
+
+internal issue tracking
+
+internal profit margins
+
+Those remain inside the Event Workspace.
+
+Updated System Structure (Including Client Portal)
+
+This is the clean version to send to Replit:
+
+DASHBOARD
+- My Assignments
+- Calendar
+- Notifications
+
+EVENT INTAKE
+- Create Event
+- Event Intake Queue
+- Assignment Review
+
+EVENT WORKSPACE
+- Pre-Planning
+- Planning
+- Design & Experience
+- Communication
+
+EVENT DAY
+- Run Sheet
+- Guest Check-in
+- Badge Generator
+
+POST EVENT
+- Analytics
+- Surveys
+- Vendor Ratings
+- Event Closure
+
+CLIENT PORTAL
+- Client Dashboard
+- Event Overview
+- Approvals
+- Guest Upload
+- Documents
+- Payments
+- Messages
+
+BUSINESS & ADMIN
+- Finance
+- Employees
+- Automation
+- Audit Trail
+- Admin Panel
+How the Client Portal Connects
+
+Example flow:
+
+Client creates event
+↓
+Manager assigns Event Manager
+↓
+Event Manager plans event
+↓
+Client portal shows:
+- updates
+- approvals
+- documents
+- payments
+
+The portal mirrors selected parts of the event workspace.
+
+Simple Rule
+
+Internal system = run the event
+Client portal = see and approve the event

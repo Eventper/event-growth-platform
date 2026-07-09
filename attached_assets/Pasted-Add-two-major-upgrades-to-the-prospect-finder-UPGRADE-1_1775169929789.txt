@@ -1,0 +1,136 @@
+Add two major upgrades to the prospect finder:
+
+---
+
+# UPGRADE 1 — CRM ACTIVITY TIMELINE PER PROSPECT
+
+Every prospect must have a unified chronological activity timeline showing every interaction in one place.
+
+**Create new database table: prospect_activities**
+```
+id, prospect_id, type, subject, content, sent_by (user_id), created_at, metadata (JSON)
+```
+
+**New API endpoints:**
+- GET /api/company-prospects/:id/activities — returns full timeline sorted by created_at desc
+- POST /api/company-prospects/:id/activities — log new activity manually
+
+**Activity types to track:**
+- email_sent — subject, preview, sent_by, timestamp
+- email_opened — via SendGrid webhook
+- email_replied — manual log or webhook
+- whatsapp_sent — message preview, timestamp
+- whatsapp_replied — manual log
+- call_logged — date, duration (mins), outcome, notes
+- meeting_logged — date, type (call/video/in-person), notes
+- note_added — free text
+- stage_changed — from stage, to stage, changed_by
+- proposal_sent — timestamp
+- contract_sent — timestamp
+- won — reason
+- lost — reason
+
+**Timeline UI — inside each prospect card as an Activity tab:**
+
+Display each entry with:
+- Icon per type (email=envelope, call=phone, WhatsApp=message bubble, meeting=calendar, note=pencil, stage=arrow)
+- Timestamp (date + time, relative e.g. "2 days ago")
+- Who logged it (user avatar + name)
+- One-line summary (e.g. "Email sent: Celebrate Your 10th Anniversary" or "Call — 12 mins — Interested, wants proposal")
+- Click to expand full content
+
+**Quick log buttons above the timeline:**
+- Log Call → form: date, duration (mins), outcome dropdown (Interested / Not interested / No answer / Left voicemail / Follow-up agreed / Meeting booked), notes
+- Log Meeting → date, type, notes
+- Log Note → free text
+- Log Reply → channel (email/WhatsApp), paste their message
+
+**Auto-logged without manual action:**
+- Every email sent via platform → auto-creates email_sent activity
+- Every WhatsApp sent via platform → auto-creates whatsapp_sent activity
+- Every stage change → auto-creates stage_changed activity
+- Every Agent-generated email approved and sent → auto-logs
+
+**Activity summary on prospect card (collapsed view):**
+- Show last activity type + date (e.g. "Last contact: Email sent 3 days ago")
+- Show total activity count badge
+- Show days since last contact — highlight red if >14 days with no contact
+
+---
+
+# UPGRADE 2 — SEMI-AUTO OUTREACH SEQUENCES
+
+The Agent recommends the next outreach action. The user reviews and approves. Then it sends and auto-logs.
+
+**HOW SEQUENCES WORK:**
+
+When a prospect is saved to pipeline or moves to Contacted stage, the Agent generates a recommended sequence:
+
+Default sequence (Agent generates all content upfront):
+- Touch 1 — Day 0: Personalised intro email (Agent-generated based on company, milestone, country, industry)
+- Touch 2 — Day 4: WhatsApp follow-up (short, friendly, references the email)
+- Touch 3 — Day 9: Second email (different angle — focus on a specific service relevant to their event type)
+- Touch 4 — Day 14: Final follow-up email (light touch, leave the door open)
+
+The Agent generates all 4 messages upfront in one batch. User reviews all 4, edits any, approves the sequence. System then sends each one automatically on schedule.
+
+**SEQUENCE APPROVAL UI:**
+
+When Agent generates a sequence, show a review panel:
+- Timeline showing Touch 1 through 4 with scheduled send dates
+- Each touch shows: channel (email/WhatsApp), scheduled day, subject (for emails), full message preview
+- Edit button on each — user can rewrite before approving
+- Approve All button — locks in the sequence
+- Approve individually — approve touch by touch
+- Skip a touch — remove one step from sequence
+- Reschedule — change the day gap between touches
+
+**SENDING:**
+- Approved emails send via SendGrid at scheduled time
+- Approved WhatsApps queue for manual send with one-click confirm (do not auto-send WhatsApp — user must click send)
+- Each sent touch auto-logs to activity timeline
+- If prospect replies at any stage — sequence pauses automatically and flags for user attention
+
+**SEQUENCE STATUS on prospect card:**
+- Show sequence progress: "Sequence active — Touch 2 of 4 — next: WhatsApp in 2 days"
+- Paused sequences flagged: "Sequence paused — reply received — action needed"
+- Completed sequences: "Sequence complete — no response — consider manual follow-up"
+
+**AGENT SEQUENCE GENERATION PROMPT:**
+Pass to gpt-4o-mini:
+- Company name, industry, country, milestone type, milestone detail, budget range
+- Tone rules per country (UK=formal/concise, Nigeria=warm/relationship-first, USA=ROI-focused, UAE=prestige-focused, etc.)
+- Service focus (Full Planning / Day Coordination / Venue Search / Decor)
+- Generate: 4 messages (2 emails + 1 WhatsApp + 1 final email), each unique angle, no repetition
+- Return as JSON: [{touch: 1, channel: 'email', day: 0, subject: '', body: ''}, ...]
+
+**SMART OUTREACH TAB UPDATE:**
+Update the existing Smart Outreach tab to use sequences:
+- "Load Smart Outreach" → Agent ranks prospects by urgency as before
+- Select prospects → instead of "Generate Batch Emails" change to "Generate Sequences"
+- For each selected prospect, Agent generates full 4-touch sequence
+- User reviews all sequences in one approval panel
+- Approve → all sequences activate
+
+---
+
+# VERIFICATION CHECKLIST:
+[ ] prospect_activities table created in database
+[ ] GET + POST /api/company-prospects/:id/activities endpoints working
+[ ] Activity tab visible on every prospect card
+[ ] Timeline shows all activity types with correct icons and timestamps
+[ ] Log Call / Log Meeting / Log Note / Log Reply buttons work and save
+[ ] Emails sent via platform auto-log to timeline
+[ ] WhatsApps sent via platform auto-log to timeline
+[ ] Stage changes auto-log to timeline
+[ ] Last contact date shows on collapsed prospect card
+[ ] Red highlight if no contact in 14+ days
+[ ] Agent generates 4-touch sequence per prospect as JSON
+[ ] Sequence review panel shows all 4 touches with edit capability
+[ ] Approve All activates the sequence
+[ ] Emails send on schedule via SendGrid
+[ ] WhatsApp touches queue for one-click manual send
+[ ] Sequence pauses automatically when reply received
+[ ] Sequence status shows on prospect card
+[ ] Smart Outreach tab updated to generate sequences not single emails
+[ ] Zero instances of "AI" in UI — always "Agent"

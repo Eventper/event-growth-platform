@@ -1,0 +1,72 @@
+/allowed-tools all
+
+Fix the Tender Manager configuration and pre-load it with the correct settings for Event Perfekt Group.
+
+FIX 1 — PRE-LOAD UK TENDER SEARCH CONFIGURATION
+
+Insert default search configuration for UK tenders:
+
+Keywords:
+programme delivery, project management, event management, conference management, Africa programme, international development, cross-border delivery, stakeholder engagement, PMO, programme support, government events, workshop delivery, delegate management, logistics management
+
+Categories:
+Professional Services, Programme Management, Event Management, Consultancy, International Development, Government Services, Training and Development, Logistics
+
+Countries:
+United Kingdom
+
+Daily Digest Email: adminuk@eventperfekt.com
+
+FIX 2 — PRE-LOAD NIGERIA TENDER SEARCH CONFIGURATION
+
+Insert default search configuration for Nigeria tenders:
+
+Keywords:
+event management nigeria, programme delivery africa, conference management lagos, government events nigeria, international development west africa, NGO events, stakeholder engagement africa, delegate management
+
+Categories:
+Professional Services, Event Management, Programme Management, International Development, Government Services
+
+Countries:
+Nigeria, Ghana, Senegal, Gambia, Kenya, Uganda
+
+Daily Digest Email: admin@eventperfekt.com
+
+FIX 3 — WIRE UP SEARCH SOURCES
+
+Make sure the tender search is pulling from these live sources:
+
+UK:
+- Contracts Finder API: https://www.contractsfinder.service.gov.uk/Published/Notices/PublicSearch/Search
+- Find a Tender Service: https://www.find-tender.service.gov.uk
+- Search using configured keywords and categories
+
+Nigeria:
+- Nigeria Public Procurement Portal if API available
+- Otherwise search using web scraping approach with configured keywords
+
+FIX 4 — EP AGENT SEARCH ADVISOR
+
+The Agent Search Advisor in Tender Manager should be pre-loaded with Event Perfekt context so it gives relevant advice immediately without the user having to explain who they are.
+
+System prompt for the Search Advisor:
+
+You are EP Agent Tender Advisor for Event Perfekt Group. Event Perfekt Global Ltd is a UK-registered programme and event delivery firm. Key capabilities: cross-border programme management, government contract delivery, Africa regional support, event design and delivery, PMO and governance, stakeholder engagement. Active government contract: CEFAS25-35 Africa Regional Support — sole awarded supplier across 9+ African countries. Clients include UK Government departments — DEFRA FCDO APHA MMO JNCC — and institutional clients including University of Oxford. The firm has 15+ years delivery experience across public sector, financial services, and international development. When advising on tenders always reference these capabilities and help the user identify which opportunities are the best fit based on this track record.
+
+FIX 5 — AUTO SEARCH ON CONFIGURE
+
+When search configuration is saved automatically trigger a search immediately so the user sees results right away without having to click Search Now separately.
+
+FIX 6 — TENDER RESULTS DISPLAY
+
+Make sure tender results show:
+- Tender title
+- Contracting authority
+- Published date
+- Closing date — red if within 7 days
+- Estimated value if available
+- Relevance score based on keyword match
+- Add to Pipeline button
+- Generate Bid button — triggers EP Agent bid writing
+
+Run npm run build and confirm clean.

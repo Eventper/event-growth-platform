@@ -1,0 +1,53 @@
+Here's Phase 3. This is where prospects become approved, ready-to-send outreach — so it's written strict on the two things that protect you: the **human gate** (nothing sends without you) and **lawful, opt-out-clean** outreach. Paste it only once Phase 2's checkpoint holds and you have a clean, sourced prospect list.
+
+---
+
+**PHASE 3 — Scoring, Screening & Outreach Generation. Build this phase only, then stop and report.**
+
+Phase 2 is signed off — there is a clean, de-duplicated, sourced prospect list, separated into audience and sponsor, tagged individual/corporate. Build Phase 3 now. Do not start Phase 4 or any later phase. Reach the checkpoint, stop, report.
+
+Governing sequence reminder: **Research → Strategy → Audience → Sponsors → Build → Campaign → Learn.** Phase 3 is the front of Campaign — but only up to *approved, ready* outreach. Live pipelines and the website feed are Phase 4.
+
+**1. Scoring.** Each prospect gets a score against the approved strategy-pack persona:
+   - Audience prospects → an **Audience Score**; sponsor prospects → a **Sponsor Score**.
+   - Factors: location fit, industry/sector fit, company size, seniority, strategic fit to the persona, and online activity where available.
+   - Score is a ranking aid for the human, not a gate that auto-acts. Show the score and the *reasons* behind it so the reviewer can judge.
+
+**2. The human screen — this is a required gate, not optional.**
+   - Present each prospect to the reviewer with full name, title, company, location, profile/LinkedIn URL and score, so fit can be confirmed by eye — including audience-specific fit such as gender for a women's event.
+   - **No automated gender inference.** The system never filters or bins by guessing gender from a name. The human confirms fit.
+   - The individual-vs-corporate tag from Phase 2 is shown here, because it determines the outreach channel and lawful basis (see rule 4).
+   - Only prospects a human marks **approved for outreach** move forward. Rejected ones are excluded.
+
+**3. Outreach generation (via OpenRouter, Claude for the writing).**
+   - For approved prospects, generate the right asset for the type: LinkedIn message, email, follow-ups, sponsor pitch, or event invitation.
+   - Written in the event's **approved voice and tier** from the strategy pack (for I Am Her: restrained, premium, status-oriented — never generic empowerment language).
+   - Use the proven **4-touch cadence**: Day 0 initial, Day 4 light follow-up, Day 9 new angle, Day 14 breakup.
+   - Personalise from the prospect's real stored data (role, company) — never invent facts about a person.
+
+**4. The HARD GATE — nothing sends automatically. This rule cannot be optimised away.**
+   - All generated outreach lands in an **approval queue** with status `pending`. A human approves or rejects before anything sends. There is no auto-send path anywhere.
+   - **Every email carries a clear opt-out / unsubscribe.** No exceptions.
+   - **Channel routing by lawful basis:** corporate role-based contacts may receive email; **individuals / sole traders default to LinkedIn, not cold email**, unless a human explicitly overrides per contact. This protects you under UK GDPR/PECR.
+   - A suppression/unsubscribe list is respected before anything is queued — anyone who has opted out is never re-queued.
+
+**5. Reply handling.**
+   - Poll the inbox; classify replies: positive / not now / unsubscribe / out-of-office / auto-reply.
+   - Auto-suppress unsubscribes. Pause the sequence on a positive reply and **flag it for a human to close** — the system never auto-negotiates or auto-closes a sponsor or a guest.
+   - "Not now" → pause and set a re-engage date.
+
+**6. Sending identity.** Outbound email uses the correct event sender identity from config (not a hardcoded address), BCC/notify the director address, and respects the no-named-partners rule — aggregate phrasing only; no partner or prospect named externally until commercials are signed.
+
+**Hard rules (unchanged):** event-agnostic; secrets only; respect AI spend ceiling; build only this phase. AI generation is cheap (fractions of a cent) — but still generate only for human-approved prospects, not the whole list speculatively.
+
+**Checkpoint:** Approved prospects are scored with visible reasons; a human screen confirms fit and nothing proceeds without approval; approved prospects produce tier-correct draft outreach sitting in the approval queue; approving one sends it (with opt-out, via the correct channel for individual vs corporate); replies are polled and classified; unsubscribes are suppressed and positives flagged for a human. Nothing — at any point — sends without human approval. Then stop and report.
+
+---
+
+Two notes for you, not the Agent:
+
+When you test this, deliberately try to make it send something *without* approving it. It shouldn't be possible. That's the single most important thing to verify in this whole phase — the gate is what keeps you on the right side of GDPR and stops a bad draft going to a real prospect. If anything auto-sends, stop and fix it before going near real contacts.
+
+And before you send a single *real* outreach at scale, this is the natural point to have Lara/compliance glance at the approach — the cold-email-to-individuals question is exactly her territory, and a five-minute review now protects you. The build can be finished and tested with your own test addresses first; the compliance nod is about the live sending, not the build.
+
+When the gate holds and replies classify correctly, Phase 4 (the pipelines, dashboard and the live website API feed) is the last core phase — and that's the one where the room you're filling finally becomes visible in one place.

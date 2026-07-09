@@ -1,0 +1,36 @@
+Good progress. Close out the placeholder key now — it's the same demo-token security pattern we just removed, in a different surface. Don't ship with it.
+
+(1) BRIDGE KEY — PROPER FLOW
+
+The /api/summary/iam-her endpoint should accept the same shared key Group Portal uses to call other Planning App bridge endpoints. Per the architecture, that's EP_CROSS_SYSTEM_KEY (used for /api/cross-system/ping, /api/events/create-from-project, etc.) — same Bearer / header pattern.
+
+Wire the endpoint to:
+  - Validate the incoming x-cross-system-key (or Authorization Bearer, whichever the existing bridge endpoints use — match the existing pattern, don't introduce a new one)
+  - Return 401 if missing or wrong
+  - Return 200 + JSON if valid
+
+(2) DASHBOARD INTERNAL CALL — SAME-DOMAIN, NOT BRIDGE
+
+If /iam-her dashboard is on the same Planning App domain, it shouldn't be calling the bridge endpoint at all — that endpoint is for Group Portal to call cross-system. Dashboard should call the internal route that serves the same data (or query the underlying tables directly via the dashboard's own server-side render).
+
+Two ways to fix:
+  (a) Dashboard reads from the internal endpoint /api/iam-her/summary (no shared key needed, uses session auth) — bridge endpoint stays separate, only Group Portal calls it cross-system
+  (b) Dashboard reads same DB tables directly server-side, no API call at all
+  
+Pick (a) or (b) — whichever matches existing dashboard patterns elsewhere in the Planning App.
+
+(3) STANDING SECURITY LIST
+
+Log: bridge endpoint accepting placeholder key was a temporary state for the build session. Now closed out. Add to the standing security review alongside ALLI_SYNC_KEY rotation, PROD_DB_URL setup (currently placeholder text on Group Portal — Arpit), demo-token removal (done earlier), .replit plaintext secrets.
+
+(4) VERIFY
+
+After fix:
+  - Curl /api/summary/iam-her with the correct shared key → 200 JSON
+  - Curl same endpoint with no key or wrong key → 401
+  - Load /iam-her dashboard logged out → guest count renders correctly (because it reads from internal route or DB, not bridge)
+  - Group Portal Project record Dashboard tab calls bridge endpoint with EP_CROSS_SYSTEM_KEY → returns live numbers
+
+Confirm all four pass. Report curl outputs.
+
+After that's done: nothing else to build on Planning App tonight. Tomorrow morning is operational.

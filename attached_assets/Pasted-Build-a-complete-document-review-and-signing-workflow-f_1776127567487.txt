@@ -1,0 +1,117 @@
+Build a complete document review and signing workflow for the ALLI Foundation client portal Document Centre.
+
+DOCUMENT WORKFLOW:
+
+Each document goes through this flow:
+Shared by EP → Client Reads → Client Approves and Signs OR Rejects → If rejected back and forth via chat → Revised version uploaded → Client reads and signs → Final signed version saved
+
+FIX THE DOCUMENT VIEWER
+When client clicks a document name or a Read button:
+- Open the document in a full screen viewer inside the portal — do not just download it
+- Show the document content rendered in the portal
+- For PDF files render using PDF.js embedded viewer
+- For Word documents show the content as formatted HTML
+- Show a progress indicator — Page 1 of X
+- Mark document as Read automatically when opened — update read_at and read_by in database
+- Show Read confirmation banner at top: You read this document on [date]
+
+ADD APPROVE AND SIGN BUTTON
+Below the document viewer show two buttons:
+- Approve and Sign — gold button
+- Reject and Request Changes — red button
+
+APPROVE AND SIGN FLOW:
+Clicking Approve and Sign opens a signing panel below the document:
+- Heading: Digital Signature
+- Statement: By signing below I confirm I have read, understood and agree to the contents of [document name]
+- Full name field — pre-filled from logged in client user
+- Date — pre-filled with today — not editable
+- Typed signature field: Type your full legal name as your digital signature
+- Confirm and Sign button — gold
+- On signing:
+  - Save signature, name, date to document record
+  - Update document status to SIGNED
+  - Show green SIGNED badge with date on document card
+  - Save signed copy to the Legal folder automatically with filename: [DocumentName]-SIGNED-[Date].pdf
+  - Send notification to adminuk@eventperfekt.com:
+    Subject: ALLI Foundation — Document Signed — [Document Name]
+    Body: Kehinde Alli has signed [document name] on [date]. View in portal.
+  - Show confirmation message: Document signed successfully and saved to your Legal folder
+
+REJECT AND REQUEST CHANGES FLOW:
+Clicking Reject and Request Changes opens a panel:
+- Heading: Request Changes or Clarification
+- Document name shown
+- Reason dropdown: Request Edit, Request Clarification, Incorrect Information, Other
+- Text area: Please describe the changes or clarification needed — required — minimum 20 characters
+- Submit Request button — red
+- On submit:
+  - Update document status to CHANGES REQUESTED
+  - Show amber CHANGES REQUESTED badge on document card
+  - Open the document chat thread automatically
+  - Send notification to adminuk@eventperfekt.com:
+    Subject: ALLI Foundation — Changes Requested — [Document Name]
+    Body: Kehinde Alli has requested changes to [document name]. Reason: [reason]. Details: [text]. Respond in portal chat.
+
+DOCUMENT CHAT THREAD
+Every document has its own chat thread for back and forth communication.
+
+Chat panel opens as a side drawer on the right side of the document viewer.
+
+Chat shows:
+- Messages from ALLI Foundation — right aligned, dark card
+- Messages from Event Perfekt team — left aligned, gold left border
+- Timestamp and sender name on every message
+- Text input at bottom with Send button
+- File attachment button — to upload revised document versions
+
+When Event Perfekt replies:
+- Send email notification to Kehinde Alli: Event Perfekt has responded to your query on [document name]. Login to view.
+
+When revised document is uploaded via chat attachment:
+- Create new version of the document — increment version number v1 to v2 etc
+- Show version history on document card — Versions button shows v1, v2, v3 with dates
+- New version status resets to UNREAD — client must read and sign again
+- Send notification to Kehinde: A revised version of [document name] has been uploaded. Please review and sign.
+
+DOCUMENT STATUS BADGES
+Each document card shows one status badge:
+- UNREAD — amber — not yet opened
+- READ — blue — opened, not yet actioned  
+- CHANGES REQUESTED — orange — client requested edits
+- SIGNED — green with date — fully executed
+- SUPERSEDED — grey — older version replaced by newer
+
+DOCUMENT FOLDER ORGANISATION
+Signed documents automatically filed in correct folder:
+- Legal documents → Legal folder
+- SOW → Pre-Engagement folder
+- Meeting notes → Correspondence folder
+- Invoices → Post Engagement folder
+
+VERSION HISTORY
+Versions button on each document opens a modal showing:
+- v1 — Original — uploaded date — status
+- v2 — Revised — uploaded date — status — who uploaded
+- Download button per version
+- Current version highlighted in gold
+
+DATABASE CHANGES
+Add these columns to client portal documents table if not existing:
+- is_read BOOLEAN DEFAULT FALSE
+- read_at TIMESTAMP
+- read_by TEXT
+- is_signed BOOLEAN DEFAULT FALSE  
+- signed_at TIMESTAMP
+- signed_by TEXT
+- signature_text TEXT
+- status TEXT DEFAULT 'UNREAD'
+- current_version INTEGER DEFAULT 1
+
+Add document_chat_messages table:
+id, document_id, sender_type (client/ep_team), sender_name, message, attachment_url, created_at
+
+Add document_versions table:
+id, document_id, version_number, file_url, file_name, uploaded_by, uploaded_at, status
+
+Apply all changes now and confirm the complete workflow is working.

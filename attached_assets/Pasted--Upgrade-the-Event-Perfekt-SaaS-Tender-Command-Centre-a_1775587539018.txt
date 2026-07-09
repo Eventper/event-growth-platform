@@ -1,0 +1,220 @@
+"Upgrade the Event Perfekt SaaS Tender Command Centre at eventperfektplanningapp.com with the following additions. Do not rebuild what already exists — only add what is missing.
+
+UPGRADE 1 — REPLACE OPENAI WITH CLAUDE THROUGHOUT
+Find every OpenAI API call in the entire codebase and replace with Claude. Search for: openai, gpt-4, gpt-3.5-turbo, gpt-4o, ChatGPT, openai.chat.completions.create
+Replace every instance with:
+typescriptconst response = await fetch('https://api.anthropic.com/v1/messages', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': process.env.ANTHROPIC_API_KEY,
+    'anthropic-version': '2023-06-01'
+  },
+  body: JSON.stringify({
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 4000,
+    system: systemPrompt,
+    messages: [{ role: 'user', content: userPrompt }]
+  })
+});
+const data = await response.json();
+const content = data.content[0].text;
+Apply this to every AI call in the system — bid generation, compliance extraction, intelligence feed, TwinPaay finder, contact verification, AI advisor.
+
+UPGRADE 2 — REPLACE EP AGENT SYSTEM PROMPT
+Find the current EP Agent system prompt used in the Bid Writer tab and replace it entirely with this:
+You are EP Agent — the most advanced bid writing specialist in the UK. You have a track record of winning tens of thousands of bids across every sector and contract type. You outperform every bid writing agency and platform in the UK including Thornton and Lowe, Hudson Succeed, Bid Solutions, and Proposal Guru. Your win rate is exceptional because you combine deep procurement knowledge, persuasive writing, and laser-focused evaluation criteria matching that human bid writers cannot match at your speed or consistency.
+You write exclusively on behalf of Event Perfekt Global Ltd for UK bids and Event Perfekt Management Services for Nigeria bids. Every response must be professional, specific, compelling, and written to win. You do not produce generic content under any circumstances.
+Before writing any bid section you automatically research and draw upon all available information about Event Perfekt from their website at www.eventperfekt.com. You use this website as a live reference for the company's services, portfolio, team, capabilities, and credentials. Always reflect the company accurately as presented on their website.
+You also search the Learning Vault before writing any bid. The Learning Vault contains feedback and lessons from previous bids. Apply every relevant lesson to the current bid. Never repeat mistakes from previous bids.
+ABOUT EVENT PERFEKT GLOBAL LTD (UK ENTITY):
+
+UK-registered company, Company No. 15875326
+Registered address: 22 Wenlock Street, London, N1 7NX
+Director: Tolulope Kumolu-Johnson
+Website: www.eventperfekt.com
+Live government contract: CEFAS25-35 Africa Regional Support
+Core capabilities: Event management, corporate programme delivery, project management, cross-border trade facilitation, Africa regional support, diaspora business engagement, stakeholder engagement, community mobilisation
+Markets: UK, Nigeria, wider Africa, international development sector, corporate sector
+Key sectors: Government, international development, corporate, NGO, diaspora, private events
+
+ABOUT EVENT PERFEKT MANAGEMENT SERVICES (NIGERIA ENTITY):
+
+Nigerian-registered company
+Managing all Africa-based operations and programme delivery
+Core capabilities: Event management, corporate programmes, community initiatives, stakeholder engagement across the African continent
+Director: Tolulope Kumolu-Johnson
+
+YOUR BID WRITING RULES — FOLLOW THESE WITHOUT EXCEPTION:
+Rule 1 — Never be generic. Every sentence must be specific to this tender and this company. Never write phrases like we are committed to excellence without immediately backing them up with specific evidence.
+Rule 2 — Lead with evidence. Open every section with the strongest evidence first.
+Rule 3 — Match experience to the tender. Select the most relevant credentials for each specific tender. For Africa or international development bids reference CEFAS25-35. For corporate events reference the event portfolio. For PMO reference project management credentials. Never force irrelevant credentials into a bid.
+Rule 4 — Match the evaluation criteria exactly. Structure every answer to directly address each criterion in order. Use the evaluator's own language. Make it impossible to score anything other than maximum marks.
+Rule 5 — Use STAR method. Situation, Task, Action, Result. Always include quantifiable results.
+Rule 6 — Social value must be genuine and quantitative. Always include numbers, percentages, measurable outcomes. Always include diverse delivery methods. Lesson from GM BGH bid: social value lost points because of lack of quantitative data — never repeat this.
+Rule 7 — Risk management must be specific. Real risks for this specific tender with specific mitigations.
+Rule 8 — Write to the word limit. Hit 90 to 100 percent of word limit. Never go over.
+Rule 9 — Professional tone matched to buyer. UK public sector: formal evidence-led British English. Nigeria public sector: professional warm relationship-first. Corporate: confident commercial outcome-focused.
+Rule 10 — Every section must stand alone.
+Rule 11 — Know your buyer. Research the buying organisation. Mirror their language and priorities.
+Rule 12 — Geography awareness. When writing for a geography where Event Perfekt has no direct delivery history write a subcontractor sourcing strategy. Flag geography gaps to the bid manager. This is a flag not a block — Event Perfekt can always bring in local subcontractors or experts.
+Rule 13 — Price to win. Competitive and transparent. Show exceptional value for money. Lesson from GM BGH: lost 1 point on price — always sharpen pricing.
+Rule 14 — Case study local relevance. Check if case studies are geographically relevant. If not acknowledge the transfer of learning explicitly. Lesson from GM BGH: neither case study was in Greater Manchester — address geographic relevance proactively.
+SECTION SPECIFIC INSTRUCTIONS:
+Executive Summary: Strongest reason to win first. Clear offer. Confident close.
+Company Overview: Most relevant credential first. Registration details and website.
+Methodology: STAR format. Specific tools, frameworks, governance mechanisms.
+Team and Experience: Real team members. Tolulope Kumolu-Johnson as Director.
+Social Value: Quantitative data always. Diverse methods. Genuine not aspirational.
+Risk Management: Three to five real risks. Specific mitigations.
+Timeline: Phased. Quick wins in Phase 1.
+Quality Assurance: Specific KPIs, reporting cadences, review gates.
+Innovation: Genuine. Reference digital tools and networks.
+Sustainability: Long-term thinking. Capacity building.
+Cost Analysis: Competitive. Transparent breakdown. Value for money.
+References: Most relevant for this tender.
+Compliance: Direct and categorical.
+Scoring Criteria: Structure entire response around criteria. Quote each one.
+Always produce content that could be submitted directly to a buyer without editing.
+
+UPGRADE 3 — 16 SECTION BID GENERATION
+Update the Bid Writer tab to generate all 16 sections structured as follows:
+Add a Generate All 16 Sections button alongside the existing Generate Bid button.
+The 16 sections are:
+
+Executive Summary
+Company Overview
+Methodology
+Team and Experience
+Social Value including Environmental Impact
+Risk Management
+Timeline and Implementation
+Quality Assurance
+Innovation
+Sustainability
+Cost Analysis
+References
+Compliance Statement
+Appendices
+Cover Letter
+Scoring Criteria Response
+
+Each section generates separately and displays in its own editable card with:
+
+Section title bold
+Word count live counter — green if 90-100 percent of limit, amber if under 80, red if over
+Edit button — inline editing
+Regenerate button — regenerate this section only
+Save button — saves to database with version history
+Send to Governance button — sends to approval queue
+
+Also add individual Generate buttons per section so sections can be generated one at a time.
+
+UPGRADE 4 — BID GOVERNANCE APPROVAL WORKFLOW
+Add a new tab called Bid Governance to the existing 16 tabs.
+The Bid Governance tab shows all bid sections that have been sent for review.
+For each section show:
+
+Tender name
+Section name
+Date generated
+Word count
+Status: Draft, Awaiting Review, Approved, Changes Requested, Rejected
+
+Three action buttons per section:
+
+APPROVE — marks section as approved — lime green
+REQUEST CHANGES — opens modal for feedback — amber — feedback sent back to EP Agent for rewrite
+REJECT — opens modal for rejection reason — dark red
+
+When all 16 sections are approved show Submit Package button that exports the complete bid as a formatted Word document.
+Log all governance actions with user name and timestamp.
+Nothing can be submitted externally without all sections approved. This gate cannot be bypassed.
+Email notifications:
+
+Section ready for review — send to adminuk@eventperfekt.com for UK bids
+Section ready for review — send to admin@eventperfekt.com for Nigeria bids
+All sections approved — send to correct inbox based on entity
+
+
+UPGRADE 5 — WIN LOSS LEARNING VAULT
+Add a Learning Vault section to the Knowledge Base tab.
+On every tender with status Submitted add outcome buttons:
+
+WON — lime green
+LOST — dark red
+NO DECISION — grey
+
+When LOST is clicked:
+
+Upload feedback letter field — PDF
+Score fields per evaluation criterion
+What feedback was given — text field
+What would you do differently — text field
+
+When feedback PDF uploaded Claude automatically extracts:
+
+Scores per criterion
+Winner scores per criterion
+Gaps identified
+Specific feedback points
+Lessons learned
+
+Display as structured analysis card with score comparison table.
+Pre-load this lesson into the Learning Vault immediately:
+Tender: GM BGH Event Management Enterprise Festival
+Reference: T25003
+Buyer: GM Business Growth Hub — Greater Manchester
+Date: 1 October 2025
+Outcome: Lost — 86 percent vs winner 88 percent
+Winner: Elevate GM Ltd
+Score breakdown:
+Capability Knowledge and Resource: 20 of 20
+Methodology: 12 of 15
+Case Studies: 10 of 10
+Understanding of GM BGH: 5 of 5
+Social Value: 14 of 20 — CRITICAL GAP — lost 6 points
+Value for Money: 10 of 10
+Price: 15 of 20 — lost 1 point
+Key lessons:
+
+Social value must include quantitative data — numbers percentages measurable outcomes
+Case studies must demonstrate local geographic relevance — for Greater Manchester use Manchester examples or explicitly address transfer of learning
+Price must be sharper for competitive local authority bids
+Buyer understanding must go deeper — demonstrate knowledge of specific economic ecosystem
+Diverse social value delivery methods score higher than single method approaches
+
+EP Agent must apply these lessons to any future Greater Manchester, local authority, or enterprise support bids.
+
+UPGRADE 6 — EMAIL ROUTING
+All notifications, alerts, and system emails must route based on active entity:
+UK entity (GB mode) — Event Perfekt Global Ltd:
+All emails to: adminuk@eventperfekt.com
+Nigeria entity (NG mode) — Event Perfekt Management Services:
+All emails to: admin@eventperfekt.com
+Apply this routing to every automated email in the system.
+
+UPGRADE 7 — AUTOMATION
+Add the following automated functions:
+Discovery — every 6 hours search all portals for new tenders matching Event Perfekt keywords and add to pipeline with status Auto-Discovered. Send email to correct inbox with results.
+Scoring — immediately after discovery Claude scores each tender for fit on a scale of 0 to 100. High score 75 plus triggers auto bid generation. Medium score 50 to 74 flags for manual review. Low score below 50 logs but does not action.
+Auto bid generation — for tenders scoring 75 plus EP Agent automatically generates all 16 sections. Sections placed in Bid Governance queue as Auto-Generated Awaiting Review. Email sent to correct inbox.
+Morning briefing — every day at 7:00 AM send email to correct inbox with: deadlines this week, bids awaiting review, new tenders discovered overnight, pipeline summary, EP Agent recommended actions.
+Deadline alerts — 7 days before: amber alert email. 3 days before: urgent email. 1 day before: final alert email.
+Geography scoring — when scoring a tender check if Event Perfekt has local delivery history. If geography gap detected add flag: Geography gap identified for [location]. Consider naming a local subcontractor. This is a flag not a block.
+Manual override buttons:
+
+Run Discovery Now
+Score All Tenders
+Generate Bid Now per tender
+Run Morning Briefing Now
+
+Automation settings panel in Overview tab:
+
+Auto-discovery on/off — default on
+Discovery frequency — 3, 6, 12 hours or daily — default 6 hours
+Auto-bid generation on/off — default on
+Minimum score to auto-generate — slider 0-100 — default 75
+Morning briefing on/off — default on
+Briefing time — default 7:00 AM
+

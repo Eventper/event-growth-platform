@@ -1,0 +1,28 @@
+TRUST LAYER — build this before any Express/auto mode. Build it in the four parts below, stop at the checkpoint, report. Do not build Express Mode yet.
+This is what makes hands-off automation safe. Build only what's described here. Don't start Express Mode until this is signed off.
+Part 1 — Data provenance on every prospect.
+
+Every prospect record must store AND display on its card: source (Apollo / Companies House / website), a source reference, a confidence level, and verified vs unverified status.
+Never present a guess as fact. An unverified email is labelled "unverified," never shown as confirmed.
+A prospect list must be able to show, e.g., "31 verified, 9 unconfirmed" — not a bare list with no provenance.
+
+Part 2 — Right model on every generation path, verifiably.
+
+Audit EVERY place the platform generates content: all 9 message types in Messaging Studio, the AI Workspace, presentation generation, and strategy generation.
+Lock the routing: reasoning, strategy and premium/voice copy → Claude (anthropic/claude-sonnet-4). High-volume mechanical work (reply classification, dedupe) → a cheap model.
+Record which model produced each output, and surface it, so I can verify Claude is actually doing the voice work everywhere — not just the outreach path.
+Report back a list of every generation path and which model it currently uses, so I can see nothing is still silently on GPT-4o for voice.
+
+Part 3 — No re-prompting / memory.
+
+The wizard must persist what it's been told within a session AND across the user's events. Running a second event must not require re-explaining tier, house style or preferences already given.
+Never re-ask a question already answered. Ask only what's genuinely needed.
+
+Part 4 — Tiered confidence checkpoints (this governs how auto mode will behave later).
+
+HARD STOP, always, regardless of confidence: before spending Apollo enrichment credits, and before sending to any real person. Human approval mandatory.
+CONDITIONAL STOP, at the strategy/persona stage only: if the platform is genuinely low-confidence (vague or contradictory input, thin data), pause and ask before continuing. If confident, continue without interrupting.
+FLAG AND CONTINUE, for everything cheap and reversible (drafting, scoring, research): generate it, mark it "review me," keep moving.
+
+Hard rules (unchanged): event-agnostic; secrets only; respect spend ceilings; build only this. The existing send gate and opt-out/suppression rules stay fully in force.
+Checkpoint: prospect cards show source + confidence + verified status; a report lists every generation path and confirms Claude is on all voice/strategy work; running a second event does not re-ask answered questions; and the tiered stop/flag behaviour works (hard-stop before money and sends, conditional-stop on a deliberately vague brief, flag-and-continue on drafts). Then stop and report.

@@ -1,0 +1,59 @@
+Restore the full file from the last good commit. Don't roll back the five changes — tables are in the DB, code work is intact except this one file. Surgical recovery only.
+
+EXECUTION ORDER
+
+(1) FIND THE LAST GOOD VERSION OF server/routes.ts
+
+git log --oneline server/routes.ts -20
+
+Identify the most recent commit BEFORE the truncation started. The chain "Restore missing closing code" → "Restore truncated route file" → "Fix server routing issue by completing a truncated function" tells me the file got truncated in one of the changes prior to 5ea63c1. Find the last commit where server/routes.ts was complete and parseable.
+
+(2) VERIFY THAT VERSION IS PARSEABLE BEFORE RESTORING
+
+git show <good-commit-hash>:server/routes.ts | wc -l
+
+Returns line count. Compare with current truncated version (~20849 lines). If the good version is significantly longer, that's the missing tail.
+
+Also do a quick syntax check:
+git show <good-commit-hash>:server/routes.ts > /tmp/routes-check.ts
+npx tsc --noEmit /tmp/routes-check.ts 2>&1 | head -20
+
+If clean — that's your restore target.
+
+(3) RESTORE THE FILE
+
+git checkout <good-commit-hash> -- server/routes.ts
+
+This pulls just that one file from the good commit, leaves everything else (the five new feature changes, the new tables, the bridge endpoint, the registration form) untouched.
+
+(4) RECONCILE — WERE THERE ANY ADDITIONS TO server/routes.ts AFTER THE GOOD COMMIT?
+
+Critical check before declaring done. Between the good commit and now, the five tonight's changes (bridge endpoint, dashboard live data, Esther persistence, registration form, demo-token removal) may have added routes to server/routes.ts.
+
+If yes — those routes were truncated off when the file got broken. After restoring the good base, you need to re-add them.
+
+For each of the five changes, identify whether they touched server/routes.ts:
+  git log --oneline --follow server/routes.ts -10
+
+If any of the five made route additions in routes.ts, surface what they added so we can re-apply on top of the restored base.
+
+If none touched server/routes.ts (all routes were added to other files like portal-iam-her-routes.ts or similar), the restore is clean and we're done.
+
+(5) RESTART AND VERIFY
+
+After restore + reconcile:
+  - Run button starts the app cleanly
+  - Server log shows no ERROR Unexpected end of file
+  - npm run dev or equivalent boots to "listening on port X"
+  - Curl localhost on a known route → 200
+  - Curl /api/summary/iam-her with EP_CROSS_SYSTEM_KEY → 200 JSON
+  - Load /iam-her in browser preview → renders
+  - Load /iam-her/register → form renders
+
+REPORT AT EACH STEP. Don't bundle.
+
+If anywhere along the way the good version turns out to also be broken (truncation happened earlier than the commit chain shows), surface and we go to plan B — rebuild the file from git blame on key route handlers.
+
+If reconcile in (4) shows there were additions to routes.ts that get lost in restore — surface the additions, we add them back on top of the restored base.
+
+GO.

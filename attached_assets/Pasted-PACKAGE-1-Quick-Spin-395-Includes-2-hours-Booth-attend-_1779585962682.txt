@@ -1,0 +1,168 @@
+PACKAGE 1
+-----------------------------------
+
+Quick Spin
+
+£395
+
+Includes:
+
+- 2 hours
+- Booth attendant
+- Unlimited 360 videos
+- Basic event overlay
+- Setup & pack down
+
+Small note underneath:
+
+VAT and travel charged separately where applicable.
+
+£150 refundable holding deposit required for private event bookings.
+
+Tooltip/info note:
+
+Refundable holding deposit is returned within 48 hours after the event subject to no damage, misuse, theft, loss or excessive cleaning requirements.
+
+Button:
+
+Check Availability
+
+-----------------------------------
+PACKAGE 2
+-----------------------------------
+
+MOST POPULAR
+
+Signature Experience
+
+£495
+
+Includes:
+
+- 3 hours
+- Unlimited 360 videos
+- Custom event overlay
+- Props
+- Instant sharing
+- Booth attendant
+- Setup & pack down
+
+Small note underneath:
+
+VAT and travel charged separately where applicable.
+
+£150 refundable holding deposit required for private event bookings.
+
+Tooltip/info note:
+
+Refundable holding deposit is returned within 48 hours after the event subject to no damage, misuse, theft, loss or excessive cleaning requirements.
+
+Button:
+
+Check Availability
+
+Highlight this package visually as premium and featured.
+
+-----------------------------------
+PACKAGE 3
+-----------------------------------
+
+Luxe Event Experience
+
+£695
+
+Includes:
+
+- 4 hours
+- Unlimited 360 videos
+- Premium event overlay
+- Props
+- Premium setup
+- Booth attendant
+- Setup & pack down
+
+Small note underneath:
+
+VAT and travel charged separately where applicable.
+
+£150 refundable holding deposit required for private event bookings.
+
+Tooltip/info note:
+
+Refundable holding deposit is returned within 48 hours after the event subject to no damage, misuse, theft, loss or excessive cleaning requirements.
+
+Button:
+
+Check Availability
+
+-----------------------------------
+CORPORATE SECTION
+-----------------------------------
+
+Corporate & Brand Activations
+
+From £850
+
+Text:
+
+Branded 360 booth experiences for corporate events, launches, awards nights, office parties and brand activations.
+
+Small note underneath:
+
+VAT and travel charged separately where applicable.
+
+Refundable holding deposit may apply depending on booking type.
+
+Button:
+
+Request Corporate Quote
+
+-----------------------------------
+IMPORTANT WEBSITE WORDING
+-----------------------------------
+
+Use wording:
+
+Refundable Holding Deposit
+
+DO NOT use:
+
+Damage Deposit
+
+DO NOT use:
+
+Pay & Book
+
+Replace all booking CTA buttons with:
+
+Check Availability
+Secure My Date
+Request Corporate Quote
+
+-----------------------------------
+QUOTE / BOOKING CALCULATION LOGIC
+-----------------------------------
+
+When quote is generated, calculate separately:
+
+Service Fee
+VAT
+Travel
+Refundable Holding Deposit
+
+Show clear total due.
+
+Holding deposit must show as refundable item.
+
+-----------------------------------
+STYLE
+-----------------------------------
+
+Luxury premium look
+Clean
+Modern
+Black text only
+Burgundy accent
+No cheap party flyer look
+Premium booking conversion style
+Mobile responsive

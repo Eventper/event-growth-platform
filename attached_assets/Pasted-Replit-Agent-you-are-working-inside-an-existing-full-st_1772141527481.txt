@@ -1,0 +1,141 @@
+Replit Agent, you are working inside an existing full-stack app called Event Perfekt. The Event Planner system already exists with all features described below. Your job is to run a full product-quality audit and then implement fixes and improvements so the entire Event Planner journey works smoothly end-to-end. Do not delete features. Do not simplify by removing modules. Preserve existing data and structures unless a change is required to fix a bug.
+
+Goal: make the Event Planner experience stable, connected, consistent, and demo-ready.
+
+Required end-to-end flow that must work:
+
+Homepage
+
+User can click “Log In” in the header or select “Event Planner” from role cards.
+
+Both routes must work and take user to auth.
+
+Authentication
+
+Login and registration must work.
+
+Seeded demo planner account must work: info@eventperfekt.com
+ / EventPerfekt2024!
+
+Planner role must redirect to /planner/dashboard.
+
+Session must persist on refresh and protect planner routes.
+
+Planner Dashboard
+Must render real data without errors:
+
+Quick stats: total events, urgent, active, upcoming
+
+Event cards list; clicking opens the correct event dashboard
+
+Quick Notes: create/edit/save/load reliably
+
+Team Chat: messages save and load reliably
+
+Who’s Online: show active or recently active users (if true live presence is not implemented, implement “recently active” based on lastSeen timestamps)
+
+Create Event Wizard (5 steps)
+
+Step 1 Event details
+
+Step 2 Location
+
+Step 3 Guest count & categories
+
+Step 4 Budget & currency
+
+Step 5 Services needed & style preferences
+Requirements:
+
+Wizard must validate input and show clear errors.
+
+Progress must save reliably; no lost data.
+
+On completion, create an event record and redirect to its Event Dashboard.
+Wedding requirement:
+
+If event type = Wedding, allow optional creation of child events (Traditional Engagement, Church Wedding, Reception, After Party).
+
+Each child event must be created as its own event with independent budget/timeline/tasks.
+
+Event Dashboard with 10 tabs
+All tabs must work, persist data, and have no broken routes:
+
+Tasks: CRUD, assign owners, due dates, phases, filters
+
+Budget: category/subcategory structure, qty × unit cost calculations, markup, contingency, totals; all persist reliably
+
+Vendors: CRUD, document upload, verification status persists
+
+Staff: allocate staff to roles; save/load reliably
+
+Timeline: milestones/deadlines display correctly and update
+
+Decor: floor plan and palette/preferences persist; fix any rendering errors
+
+Team: invite collaborators; permission levels (Co-Planner, Editor, Viewer) enforced
+
+Planning Log: audit trail of meaningful actions is recorded and viewable
+
+Analytics: show RSVP breakdown and budget analysis (if computed data is missing, implement minimal calculations based on existing stored data)
+
+Chat: event-specific messages save/load; colour-coded types (general, meeting, follow-up, important)
+
+Sidebar tools (global modules)
+These must be accessible and properly connected:
+
+Guest Hub: manage guests, RSVPs, dietary needs, table assignments, QR codes, invitations; must reflect event guests
+
+Vendor Management: global vendor portfolio across events
+
+Contract Management: generate contracts and save them to files/artifacts; ensure download works
+
+Invoicing: create invoices, track status, export to PDF; invoice lines should be pullable from budget items
+
+Budget Management: cross-event financial overview; totals should aggregate correctly
+
+Venue Design Studio: ensure it loads without crashes; if any AI button exists, it must not error even if AI is stubbed
+
+Artifacts: store and organise files; uploads and downloads must work
+
+Management Dashboard: business-wide analytics, revenue/performance metrics; if metrics are missing, compute minimal viable metrics from existing data
+
+Event App (public event page)
+Each event must have a shareable public page that requires no login and shows:
+
+Event name/type/description
+
+Venue cards with full address and “Get Directions” map link
+
+Countdown timer
+
+RSVP form
+RSVP submissions must save into the event Guest Hub and update analytics.
+
+Audit + Fix Plan (must execute)
+A) First, scan the entire repo and map the current routes, components, API endpoints, database models, and auth middleware. Identify mismatches with the required flow.
+B) Identify and fix: broken links, missing routes, console errors, failing API calls, schema mismatches, null pointer crashes, duplicate record creation, lost session issues.
+C) Ensure every form has validation, success state, and error state. Add loading states to major pages.
+D) Ensure consistent UI navigation: header + sidebar; no dead ends.
+E) Add empty states for lists (no events, no tasks, no vendors, no guests).
+F) Ensure mobile responsiveness doesn’t break key flows.
+
+Data and compatibility constraints
+
+Do not remove existing budget categories, vendors, guests, tasks, or files.
+
+If migrations are needed, write safe migrations that preserve data.
+
+If file storage exists, preserve it; if broken, fix paths and linking.
+
+Keep the demo account and seed data working; add more seed data only if it helps demos (3 events minimum, some tasks, budget lines, vendors, guests).
+
+Deliverables
+
+A short “Audit Summary” note in a README or /docs file listing what you found and what you fixed.
+
+A “How to Demo” checklist: login, create event, open event dashboard tabs, invite collaborator, add budget items, generate invoice PDF, open public event page, submit RSVP, verify guest list updated.
+
+Ensure the app runs without runtime errors and the full flow is demonstrably working.
+
+Proceed now: audit the code, implement fixes, and ensure the full Event Planner journey works end-to-end.

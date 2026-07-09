@@ -1,0 +1,74 @@
+/allowed-tools all
+
+Connect the Planning App client portal to the Group Staff Portal for ALLI Foundation.
+
+PART 1 — MEETINGS AND EVENTS VISIBLE IN CLIENT PORTAL
+
+When EP staff create a meeting or event linked to ALLI Foundation in the Planning App:
+- It appears in the client portal under a new Calendar tab
+- Client sees: meeting title, date, time, description, who is attending from EP
+- Client can Accept or Decline
+- Their response is logged and EP team gets a notification
+
+Add to client portal navigation:
+Calendar tab — shows upcoming meetings and events
+Each item: title, date, time, EP attendees, Accept button green, Decline button red
+Accepted shows green tick
+Declined shows grey — EP team notified
+
+When client accepts: email to info@eventperfekt.com — [client name] has accepted [meeting name] on [date]
+When client declines: email to info@eventperfekt.com — [client name] has declined [meeting name] — please reschedule
+
+PART 2 — RAID SUMMARY IN CLIENT PORTAL
+
+Add a Project Status tab in the client portal showing:
+A simplified risk summary — not the full RAID detail — just what the client needs to know
+
+Show three sections:
+Active Risks: any open risks at Medium or above — show title and mitigation summary only — no severity scores
+Open Issues: any open issues affecting the client — show title and what EP is doing about it
+Resolved: recently closed items — shows client EP is on top of things
+
+Do NOT show: financial risks, internal EP risks, or anything marked internal only
+Do NOT show severity scores or probability ratings to the client
+Keep language positive and professional — risks described as items being monitored
+
+PART 3 — AUDIT TRAIL IN PLANNING APP
+
+Mirror the audit trail from the Group Staff Portal in the Planning App staff view.
+
+In /epglobal/clients — ALLI Foundation detail page:
+Add Activity tab showing all audit log entries for this client in chronological order.
+Most recent first.
+Each entry: timestamp, action type badge, description, performed by.
+
+PART 4 — INVOICE VISIBILITY IN CLIENT PORTAL
+
+Add Payments tab in client portal:
+
+Shows all invoices for this client:
+Invoice reference, description, amount, date issued, status badge
+Pending — amber
+Paid — green
+Overdue — red
+
+Download invoice PDF button per invoice.
+
+When invoice is sent by EP team client gets email notification:
+Subject: Invoice from Event Perfekt Global Ltd — [reference]
+Body: A new invoice is available in your client portal. Log in to view and download.
+
+PART 5 — SEED KICKOFF MEETING FOR ALLI
+
+Create a kickoff meeting in the system:
+Title: ALLI Foundation — Project Kickoff Meeting
+Description: Introduction to the engagement, review of SOW and deliverables, Phase 1 planning, communication protocols, timeline confirmation.
+Date: TBC — to be confirmed with client
+Status: pending confirmation
+Attendees EP side: info@eventperfekt.com, prabhleentak@gmail.com
+Client: hello@allifoundation.org
+Location: Video call — link to be sent
+
+This meeting appears in ALLI Foundation client portal immediately when they log in.
+
+Run npm run build and confirm clean.

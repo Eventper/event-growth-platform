@@ -1,0 +1,164 @@
+Build the missing operational pieces of Prospect Finder. Diagnostic from previous session confirmed:
+- Approve-on-queue → send works
+- Sequencing data model exists, no executor
+- Suppression list does not exist
+- Reply triage does not exist
+- IMAP inbox reading helper exists (readMarketingInbox)
+
+Build these in order, ship and verify each before moving to the next.
+
+============================================================
+PIECE 1 — SUPPRESSION LIST (mandatory before anything sends in volume)
+============================================================
+
+Why first: any other piece that sends without checking the suppression list is a deliverability risk. Build this before the executor.
+
+1. Create a new table prospect_suppressions:
+   - id (pk)
+   - email TEXT (lowercased, indexed)
+   - domain TEXT (extracted from email, indexed) — supports blocking entire domains
+   - reason ENUM ('unsubscribe', 'bounce', 'complaint', 'manual', 'do_not_contact')
+   - source TEXT — where the suppression came from (e.g. "reply: 'remove me'", "manual: Tolu", "bounce: 550 user unknown")
+   - added_at TIMESTAMP DEFAULT NOW()
+   - notes TEXT NULL
+
+2. Add a helper module server/suppression.ts exporting:
+   - isSuppressed(email): boolean — returns true if email or its domain is on the list
+   - addSuppression({ email, reason, source, notes? }): inserts a row
+   - removeSuppression(email): deletes (admin only — for re-engagement after long pause)
+
+3. Wire isSuppressed() as a guard before any send:
+   - In sendMarketingEmail() (server/marketing-email.ts), call isSuppressed(to) at the top. If true, return early with status 'suppressed' and log to a sent_emails table or similar. Do not actually send.
+   - Same guard in the Approve handler before it calls sendMarketingEmail.
+   - This is belt-and-braces: even if the executor or approval queue has a bug, the SMTP layer itself enforces suppression.
+
+4. Add one-click unsubscribe header to all outgoing marketing emails:
+   - List-Unsubscribe: <mailto:marketing@eventperfekt.com?subject=unsubscribe>, <https://eventperfektplanningapp.com/unsubscribe?token={token}>
+   - List-Unsubscribe-Post: List-Unsubscribe=One-Click
+   - Token can be a HMAC of the email address with a server secret — recoverable, no DB lookup needed
+   - Implement GET /api/unsubscribe?token=... — verifies the token, decodes the email, calls addSuppression, shows a simple "You've been unsubscribed" page.
+
+5. Add a small admin UI panel "Suppressions" inside Prospect Intelligence:
+   - Search field
+   - List of suppressed emails with reason, source, date
+   - "Add suppression" form (email + reason + notes) for manual blocks
+   - "Remove suppression" button per row (only Tolu can use)
+
+============================================================
+PIECE 2 — REPLY TRIAGE (close the feedback loop)
+============================================================
+
+Without this, anyone replying "STOP" still gets follow-ups. Mandatory before sequences fire.
+
+1. Add a new table inbound_replies:
+   - id (pk)
+   - message_id TEXT — IMAP message ID
+   - in_reply_to TEXT — what message we sent that they're replying to
+   - from_email TEXT
+   - subject TEXT
+   - body_text TEXT
+   - received_at TIMESTAMP
+   - prospect_id INT NULL — matched prospect if found
+   - outbound_email_id INT NULL — matched outbound email if found
+   - classification ENUM ('positive', 'not_now', 'unsubscribe', 'out_of_office', 'auto_reply', 'unclassified')
+   - classified_at TIMESTAMP NULL
+   - actioned BOOL DEFAULT FALSE
+   - notes TEXT NULL
+
+2. Build a poller server/reply-poller.ts that:
+   - Runs every 15 minutes via cron
+   - Calls readMarketingInbox({ since: last_run_timestamp })
+   - For each new message:
+     a) Match to outbound by In-Reply-To header against sent_emails or pending_outreach (whichever table tracks sent IDs)
+     b) Match to prospect by from_email against prospect contact emails
+     c) Insert into inbound_replies
+   - Mark messages as read in IMAP after processing
+
+3. Build a classifier (call AI with the body text) that assigns:
+   - positive: shows interest, asks a question, wants to talk
+   - not_now: polite decline, "send next year", "not the right time"
+   - unsubscribe: any "remove me", "stop", "unsubscribe", "do not contact"
+   - out_of_office: standard auto-reply, vacation, OOO
+   - auto_reply: other automated bounces or system replies
+   - unclassified: human review needed
+
+4. Action rules based on classification:
+   - unsubscribe → addSuppression({email, reason: 'unsubscribe', source: 'reply'}) AND pause any active sequences for this prospect
+   - out_of_office / auto_reply → ignore, do not pause sequence (they'll be back)
+   - positive → pause sequence, mark prospect status='engaged', flag in dashboard for Tolu review
+   - not_now → pause sequence, set re_engage_at = NOW() + 90 days
+   - unclassified → flag for human review in dashboard
+
+5. UI: "Replies Inbox" tab in Prospect Intelligence
+   - Three sections: Needs Action (positive + unclassified), Auto-Handled (unsubscribe + not_now), Auto-Replies (OOO etc.)
+   - Each row: from, subject, snippet, classification, date, "View thread" button
+   - Manual reclassify dropdown per row
+
+============================================================
+PIECE 3 — SEQUENCE EXECUTOR (multiplies reply rate ~2x)
+============================================================
+
+The data model exists (prospect_sequences, sequenced_messages, scheduled_day). Build the worker that fires them.
+
+1. Define the default sequence (4 touches over 14 days):
+   - Day 0: Initial outreach (already exists — current single email)
+   - Day 4: Follow-up 1 — "checking the email landed, light bump"
+   - Day 9: Follow-up 2 — "different angle, new value"
+   - Day 14: Final — "should I close the file?"
+
+2. When a prospect's first email is approved and sent, create a prospect_sequence row with the 4 scheduled steps relative to the send date.
+
+3. Build a daily worker server/sequence-executor.ts (cron at 06:00 UK):
+   - Find sequence steps where scheduled_day = today AND status = 'pending'
+   - For each: skip if prospect is suppressed, sequence is paused, or prospect has replied. Otherwise call the existing draft generator with sequence_step context.
+   - Drop drafts into the same approval queue (so Tolu still reviews each one)
+   - Mark sequence step as 'drafted'
+
+4. PACING: when the executor processes 50 prospects, draft generation can be parallel, but DO NOT fire sends. All drafts go to approval queue. Sends still need human approval per email — same rule as initial outreach.
+
+   This means there's no actual SMTP burst issue, because sends are always 1-at-a-time human-clicked. Pacing concern handled.
+
+5. Pause logic:
+   - If a reply arrives at any step → set sequence status='paused', stop firing future steps
+   - If suppression added at any step → set sequence status='cancelled', stop firing
+   - If Tolu manually pauses a sequence → set status='paused_manual'
+
+6. UI: in the prospect detail view, show the sequence:
+   - "Step 1 of 4 sent on 28 Apr"
+   - "Step 2 scheduled for 2 May" (with a Pause button)
+   - "Step 3 scheduled for 7 May"
+   - "Step 4 scheduled for 12 May"
+
+============================================================
+PIECE 4 — SEND PACING (lower priority — only matters if you ever auto-send)
+============================================================
+
+Currently sends are 1-at-a-time human-clicked, so pacing isn't urgent. Build this only if the operating model ever shifts to auto-send (which we are NOT doing in v1). For now: skip this and document as a future enhancement in TECH_DEBT.md.
+
+Add a one-line entry to TECH_DEBT.md:
+- "PROSPECT FINDER: Send pacing not implemented. Currently sends fire on-click without throttling. Acceptable for human-approval workflow. Build a queue worker with 5-7 minute randomized intervals if/when auto-send mode is ever enabled."
+
+============================================================
+RULES
+============================================================
+
+- Don't change the existing approve flow, draft generator, contact waterfall, or marketing email helper signatures. Only add guards (suppression check) and new modules.
+- Don't enable auto-send anywhere. Every email still requires manual approval click.
+- All new tables: add migrations, don't manually CREATE TABLE in app code.
+- Every send (whether initial or sequence step) must check suppression — belt-and-braces in the SMTP layer is the rule.
+- Reply poller: be defensive — bad IMAP responses, malformed messages, network errors should log and continue, not crash the worker.
+
+============================================================
+ORDER + COMMIT BOUNDARIES
+============================================================
+
+Build and commit each piece separately:
+
+1. Suppression (commit: feat(prospect): suppression list + unsubscribe header + admin UI)
+2. Reply triage (commit: feat(prospect): reply poller + AI classifier + replies inbox)
+3. Sequence executor (commit: feat(prospect): 4-touch sequence executor with approval-queue drops)
+4. TECH_DEBT.md update for pacing (commit: chore: log send pacing as future enhancement)
+
+After each: run typecheck, summarize what shipped, what changed in DB, and any errors. Don't bundle into one commit.
+
+If any piece errors, paste it back and stop. Don't compound.

@@ -1,0 +1,76 @@
+# Event Perfekt — llms.txt
+# https://eventperfekt.net/llms.txt
+# Last updated: 2026-06-15
+
+## About
+Event Perfekt is a UK-based professional event planning and management company
+delivering weddings, corporate events, government programmes, and private
+experiences across the UK and Africa. It also curates invitation-only leadership
+experiences for women who lead.
+
+Company entities:
+- UK: Event Perfekt Global Ltd, 20 Wenlock Road, London, N1 7PG
+- Nigeria: Event Perfekt Management Services Limited, 25 Kusenla Street, Lagos
+
+Tagline: "…making yours perfekt"
+
+## Sitemap
+https://eventperfekt.net/sitemap.xml
+
+## Primary public sections
+
+### Marketing & Home
+- https://eventperfekt.net/home — Homepage, overview of services
+- https://eventperfekt.net/about — About Event Perfekt
+- https://eventperfekt.net/contact — Contact the team
+- https://eventperfekt.net/booking-enquiry — I Am Her registration form
+- https://eventperfekt.net/consultation-request — Request a consultation or case study
+
+### Projects & Programmes
+- https://eventperfekt.net/projects-and-programmes — Full overview of public sector projects and programmes
+- https://eventperfekt.net/projects/cefas — DEFRA / CEFAS Africa Regional Support Programme
+- https://eventperfekt.net/projects/remittance — Remittance & financial coordination
+- https://eventperfekt.net/projects/funding — Programme funding & development
+- https://eventperfekt.net/projects/twinpay — Twinpaay cross-border payments platform
+- https://eventperfekt.net/projects/twintrade — Twin Trade Global cross-border partnership
+
+### Case Studies
+- https://eventperfekt.net/case-studies/cefas — CEFAS Africa Regional Support (public sector)
+- https://eventperfekt.net/case-studies/oxford — St. Anne's Ball 2023, University of Oxford (education)
+- https://eventperfekt.net/case-studies/twinpay — Cross-border payments pilot (financial services)
+- https://eventperfekt.net/case-studies/youth — UK youth charity repositioning (charity/third sector)
+- https://eventperfekt.net/case-studies/energy — National energy corporation CSR events, Nigeria (energy)
+- https://eventperfekt.net/case-studies/sector/public-sector — Public sector case studies by sector
+- https://eventperfekt.net/case-studies/sector/education — Education sector case studies
+
+### I Am Her — Leadership Wellbeing Experience
+- https://eventperfekt.net/iamher — The Woman Who Leads the Room (main event page)
+- https://eventperfekt.net/iamher/media — Media & press coverage
+- https://eventperfekt.net/iamher/stories — Leadership stories
+- https://eventperfekt.net/iamher/submit-story — Share your story
+- https://eventperfekt.net/iamher/stay — Stay & explore Milton Keynes
+- https://eventperfekt.net/iamher/community — Community
+- https://eventperfekt.net/iamher/card — I Am Her card
+- https://eventperfekt.net/iamher/feature — I Am Her campaign
+- https://eventperfekt.net/iamher/partnership — Partnership brochure
+- https://eventperfekt.net/iamher/partnership/product-brands — Product brand partnership tiers
+- https://eventperfekt.net/iamher/partnership/payment — Partnership payment
+- https://eventperfekt.net/iamher/partnership/founding-assessment — Founding partner assessment
+- https://eventperfekt.net/iamher/partnership/table-nominations — Table nominations
+- https://eventperfekt.net/meet-the-room — Meet the women attending the room
+- https://eventperfekt.net/access — Request access / invitation
+
+### Services
+- https://eventperfekt.net/360-booth-hire-milton-keynes — 360 photo booth hire in Milton Keynes & Buckinghamshire
+- https://eventperfekt.net/photo-booth-nigeria — Photo booth hire Nigeria
+
+### Legal
+- https://eventperfekt.net/privacy-policy — Privacy policy (UK GDPR, DPA 2018, NDPR)
+- https://eventperfekt.net/terms-of-service — Terms of service
+
+## Most authoritative pages for search and citation
+1. https://eventperfekt.net/iamher — flagship leadership wellbeing event
+2. https://eventperfekt.net/projects-and-programmes — public sector project credentials
+3. https://eventperfekt.net/case-studies/cefas — DEFRA / CEFAS delivery evidence
+4. https://eventperfekt.net/360-booth-hire-milton-keynes — 360 booth hire service
+5. https://eventperfekt.net/home — company overview

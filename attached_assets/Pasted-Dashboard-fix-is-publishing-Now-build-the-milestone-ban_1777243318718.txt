@@ -1,0 +1,22 @@
+Dashboard fix is publishing. Now build the milestone banner.
+Two layers — Layer 1 (server proxy), Layer 2 (UI). Show me each diff before commit. Two commits, not one.
+Layer 1 — Server proxy in server/client-portal-routes.ts. Mirror the existing /api/client-portal/alli/deliverables proxy pattern (fetchTwinTradeSync + portal session auth). Add:
+
+GET /api/client-portal/alli/phase-milestones — calls Twin Trade GET /api/alli-sync/phase-milestones with x-alli-sync-key header. Returns proxied JSON.
+POST /api/client-portal/alli/phase-milestones/:phase/signoff — accepts { client_name, notes? } from browser. Calls Twin Trade POST /api/alli-sync/phase-milestones/:phase/signoff with { signed_off_by_email: <Kehinde's email from session>, notes } and x-alli-sync-key. Returns proxied JSON.
+
+Show me the diff. After I approve, commit Layer 1 only. Then proceed to Layer 2.
+Layer 2 — Banner component above the Project Deliverables kanban on /client-portal/project. Same file you just edited (client/src/pages/client-portal/project.tsx).
+
+In the load() function, also fetch /api/client-portal/alli/phase-milestones
+Render banner ONLY when there's a Phase 1 milestone with milestone_state === 'ready_for_client'. Otherwise hidden — IMPORTANT, must not appear when state is 'draft'
+Banner content: milestone_title (large), "9 deliverables ready for your review", "Download Phase 1 Pack" link if milestone_document_url present (target=_blank), "Sign Off Milestone" button (primary, burgundy)
+Use existing EP brand styling — burgundy/white. Match the rest of the page
+Sign Off Milestone button uses the SAME ReviewModal component as per-deliverable sign-off
+Modal copy: Title "Sign off Phase 1 Milestone?" Body "This signs off all 9 Phase 1 deliverables in one action. This cannot be undone."
+On confirm: call POST /api/client-portal/alli/phase-milestones/1/signoff with { client_name: "Kehinde Alli", notes: <textarea content if any> }
+On 200: re-run load(), banner hides, toast "Phase 1 signed off"
+On error: error toast, banner stays visible
+
+Show me Layer 2 diff. After I approve, commit. Then I'll Republish and tell you to verify by uploading the PDF on Twin Trade and clicking Lock — that's the trigger for state to flip to 'ready_for_client' and the banner to appear on Kehinde's view.
+Existing per-deliverable Review buttons stay unchanged.

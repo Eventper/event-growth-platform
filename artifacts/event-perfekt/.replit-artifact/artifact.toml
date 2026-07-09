@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Event Perfekt Planning App"
+version = "1.0.0"
+id = "artifacts/event-perfekt"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20125
+
+[services.development]
+run = "pnpm --filter @workspace/event-perfekt run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/event-perfekt", "run", "build" ]
+publicDir = "artifacts/event-perfekt/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20125"
+BASE_PATH = "/"

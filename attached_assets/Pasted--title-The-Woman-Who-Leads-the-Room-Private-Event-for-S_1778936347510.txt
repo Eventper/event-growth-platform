@@ -1,0 +1,26 @@
+<title>: 
+"The Woman Who Leads the Room | Private Event for Senior Women | Milton Keynes August 2026"
+
+<meta name="description">: 
+"For founders, directors and executives carrying everything. A private invitation-only evening for 100 senior women — curated around health, wellbeing, confidence and identity. Milton Keynes & Buckinghamshire. August 2026."
+
+(The "carrying everything" line hooks the emotional state, not the demographic. That's what makes it click when a tired senior woman is half-reading at 11pm.)
+
+<meta name="keywords">: 
+"women in business event Milton Keynes, private women's event UK, senior women's wellbeing UK, women founders Milton Keynes, women executive wellbeing, women leaders mental health, women in leadership identity, executive women network UK, women's empowerment event UK, women's wellness event UK, women's identity workshop UK, perimenopause working women, women founders network, women directors UK, women's confidence event UK, Buckinghamshire women in business, Milton Keynes women's network, women leaders Milton Keynes, Event Perfekt, Shujo Aesthetics, The Woman Who Leads the Room, I Am Her event"
+
+(I've added the adjacent terms: wellbeing, mental health, identity, empowerment, wellness, confidence, perimenopause. These pull traffic from women searching their actual concerns, not from women searching for events.)
+
+<meta property="og:title">: 
+"The Woman Who Leads the Room | A Private Evening for Senior Women | Milton Keynes August 2026"
+
+<meta property="og:description">: 
+"For the women who lead in their work and at home, and rarely make space for themselves. A private invitation-only evening for 100 senior women — founders, directors, executives. Curated around health, wellbeing, confidence and identity. Milton Keynes & Buckinghamshire. August 2026. Hosted by Event Perfekt × Shujo Aesthetics."
+
+(This is the version that gets shared on LinkedIn and WhatsApp. The opening sentence is the emotional hook. The rest is the credibility.)
+
+<meta property="og:image:alt">: 
+"A private evening for senior women in business — founders, directors and executives — in Milton Keynes"
+
+<meta name="twitter:description">: 
+"A private evening for 100 senior women — founders, directors, executives. Milton Keynes, August 2026. For the women who lead and rarely have a space curated for them."

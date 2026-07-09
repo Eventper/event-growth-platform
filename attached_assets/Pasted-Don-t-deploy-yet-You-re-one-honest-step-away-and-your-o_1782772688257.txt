@@ -1,0 +1,28 @@
+Don't deploy yet. You're one honest step away, and your own audit just named the gap precisely.
+The hero and meta are aligned now — that's real progress. But you've correctly identified that the deeper body sections still carry the old emotional spine, and here's why that's not a "review later" item: those sections are where a senior visitor actually lingers. The hero gets a three-second skim; the Programme, the schedule, and "Why This Evening Exists" get read. If the top of the page says "leadership room of accomplished women across industries" and then the body says "breathe, reflect, and be held… pour back into the woman behind the title… swapping spreadsheets for champagne," the visitor feels the seam — and for the exact corporate names in Batch 1 (Lloyds COO, CFO, PwC), the body is what makes them quietly close the tab. Deploying with the spine unfixed means deploying the same mismatch, just lower down the page.
+So my answer to "deploy as-is or fix first" is: fix the body first, then deploy once. One clean deploy with the whole page aligned beats shipping a half-aligned page and re-leaning it under live traffic.
+The good news from your audit is the thing I was most worried about is fine: the application form posts to /api/event-august/interest directly, not through the broken growth-intelligence platform. So the conversion path works. That removes the blocker — the only thing standing between you and a clean launch is the five body sections you listed.
+Let me give you the re-leaned copy for exactly those five, keeping your structure and keeping wellbeing present but supporting rather than leading:
+Wellbeing Session (schedule, 20:00) — keep the slot, change the framing from restoration to candid peer conversation:
+
+"An expert-led conversation. With Dr Sarah Jenkins and Esther Emenike-Okorie — a candid discussion on leading at this level and what it takes to sustain it. Not a workshop — a real conversation among peers."
+
+Programme item 1 — off the body, onto the business:
+
+"Longevity — sustaining what you've built. You've spent years scaling. What does sustaining it for the next decade actually take — in the company, and in how you lead?"
+
+Why This Evening Exists — replace the restoration thesis with the calibre thesis:
+
+"The most accomplished women rarely get a room of true peers — leaders from other industries who understand the weight of what they carry, without explanation. This evening exists to create that room: honest conversation, at the right altitude, among women who've built something real."
+
+The Experience — drop "designed to restore" and "how a woman feels shapes how she leads," keep the atmosphere:
+
+"…an atmosphere designed for genuine conversation. Champagne poured slowly. Conversations that carry weight. Nothing performative, nothing forced — just the right room, in the right mood, for the right women."
+
+access.tsx corporate section — re-lean for corporate buyers:
+
+"…complements those investments through a premium experience centred on peer connection, cross-industry perspective, and recognition for the women who lead."
+
+A couple of things I'd genuinely leave alone, so you don't over-correct: Programme items 03 (confidence/presence), 04 (financial longevity), and 05 (the room itself) are already fine — 05 especially is on-message. And keep Dr Sarah and Esther in the evening; the experts aren't the problem, the framing of the evening around them was. Your corrected "candid conversation on leading at this level" framing fixes that.
+Want me to hand these to you as exact find-and-replace strings against the specific files (event-august.tsx schedule + programme + experience blocks, access.tsx corporate section) so it's a clean single pass before deploy? Tell me and I'll format them so you can drop them straight in.
+One last call before you ship, and it's yours to make: do you want me to look at the schema eventType too? You set it to ["SocialEvent"] only — for an invitation-led leadership evening you might also legitimately carry BusinessEvent, which can matter for how it's categorised. Minor, non-blocking, but easy to include in the same pass if you want it.

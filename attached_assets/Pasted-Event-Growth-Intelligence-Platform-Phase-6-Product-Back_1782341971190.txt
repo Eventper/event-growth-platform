@@ -1,0 +1,82 @@
+Event Growth Intelligence Platform – Phase 6 Product Backlog
+
+Epic 1 – Market Intelligence
+Priority: Critical
+
+* Add Insights as the first page.
+* Automatically research market demand before strategy.
+* Show competitor events.
+* Show pricing benchmarks.
+* Show sponsor activity.
+* Show audience trends.
+* Produce a Market Opportunity Report.
+
+Epic 2 – Personas & Discovery
+Priority: Critical
+
+* Generate audience personas automatically.
+* Generate sponsor personas.
+* Generate media personas.
+* Build Apollo search filters automatically from approved personas.
+* Add exclusion rules (e.g. coaches, influencers, community builders).
+
+Epic 3 – Messaging Studio
+Priority: High
+
+* Generate:
+    * LinkedIn connection requests
+    * First LinkedIn message
+    * Follow-up sequences
+    * Email outreach
+    * Sponsor outreach
+    * VIP invitations
+    * Speaker invitations
+    * Media outreach
+* Human approval required before sending.
+* Learn from reply rates and improve recommendations.
+
+Epic 4 – Presentation Studio
+Priority: High
+
+* Integrate Gamma API (or equivalent).
+* Generate:
+    * Sponsor decks
+    * Event brochures
+    * Speaker packs
+    * Partnership proposals
+    * VIP invitation packs
+* Allow generated presentations to be attached directly to outreach.
+
+Epic 5 – Relationship Intelligence
+Priority: High
+
+* Explain why each prospect is recommended.
+* Highlight relevant company and role signals.
+* Surface engagement insights where available.
+* Improve prospect prioritisation with AI reasoning.
+
+Epic 6 – Elizabeth
+Priority: High
+
+Transform Elizabeth into a proactive Growth Coach.
+
+Examples:
+
+* Ticket sales are slowing.
+* Sponsor outreach is underperforming.
+* LinkedIn is outperforming Instagram.
+* Suggested next actions.
+* Daily growth recommendations.
+
+Epic 7 – Learning Engine
+Priority: Future
+
+After every campaign, automatically learn:
+
+* Best-performing messages.
+* Highest-converting channels.
+* Best-performing audiences.
+* Best sponsor sectors.
+* Best campaign timings.
+
+Apply these learnings to future events automatically.

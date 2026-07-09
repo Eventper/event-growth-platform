@@ -1,0 +1,199 @@
+Build Phase 2 of the Tender Centre rebuild: document upload + AI ingestion. Goal: Juliet downloads the FCDO tender pack, uploads the PDFs to a tender record in the platform, and the platform reads them, extracts requirements/deadlines/eval criteria, and stores them as structured data ready for Phase 3 drafting.
+
+Phase 1 (discovery) shipped. Existing infrastructure in place: saas_tenders, saas_tender_bid_sections, saas_tender_requirements, saas_tender_bid_vault, saas_learning_vault, saas_company_profile, EP Agent prompt with BGH/CEFAS lessons, requirements extraction route POST /api/saas-tender/requirements/:tenderId/extract (currently text-only).
+
+This phase ONLY ingests documents into structured data. Phase 3 will use that data to draft. Don't touch drafting code in this phase.
+
+============================================================
+DESIGN DECISIONS LOCKED
+============================================================
+
+- Multiple files per tender (FCDO packs are typically 5-15 PDFs)
+- Reuse existing object storage (uploadBuffer / generateViewUrl) — same as ALLI documents
+- AI parses each doc into structured fields, not just free text
+- Keep the original file accessible alongside the extracted data
+- Documents tagged by type (ITT, Spec, Pricing Schedule, T&Cs, Evaluation, Q&A, Cover Letter Template, etc.) — let user override
+- All extraction goes through Anthropic Claude (already wired)
+
+============================================================
+PIECE 2A — DATABASE
+============================================================
+
+Add table saas_tender_documents:
+  - id (pk)
+  - tender_id INT FK to saas_tenders
+  - filename TEXT (original)
+  - storage_url TEXT
+  - storage_key TEXT
+  - mime_type TEXT
+  - file_size_bytes INT
+  - document_type ENUM ('itt', 'specification', 'pricing_schedule', 'terms_conditions', 'evaluation_criteria', 'questions_answers', 'response_template', 'background_doc', 'other')
+  - uploaded_by_user_id INT
+  - uploaded_at TIMESTAMP DEFAULT NOW
+  - extraction_status ENUM ('pending', 'processing', 'extracted', 'failed')
+  - extracted_at TIMESTAMP NULL
+  - extraction_error TEXT NULL
+  - page_count INT NULL
+  - word_count INT NULL
+  - extracted_text TEXT NULL (full text after PDF parse)
+  - extraction_summary JSONB NULL (structured extraction — see Piece 2C)
+
+Add table saas_tender_extracted_facts (one row per fact, links back to source doc):
+  - id (pk)
+  - tender_id INT FK
+  - document_id INT FK to saas_tender_documents (nullable — some facts come from the tender notice itself)
+  - fact_type ENUM ('deadline', 'requirement', 'evaluation_criterion', 'evaluation_weight', 'value', 'duration', 'lot_structure', 'eligibility', 'submission_format', 'contact', 'key_date', 'mandatory_pass_fail', 'social_value_requirement', 'red_flag', 'opportunity_signal')
+  - fact_label TEXT (e.g. "Tender deadline", "Mandatory cybersecurity standard", "Social value 10% weighting")
+  - fact_value TEXT (the actual value or description)
+  - fact_metadata JSONB (extra fields per type — e.g. for evaluation_criterion: weight, scoring method, pass mark)
+  - page_reference INT NULL (page in source doc, helps with citations in Phase 3)
+  - confidence_score INT (0-100, AI's confidence)
+  - verified_by_user BOOL DEFAULT FALSE
+  - verified_at TIMESTAMP NULL
+  - verified_by_user_id INT NULL
+
+Add a column to saas_tenders if not present:
+  - documents_uploaded_count INT DEFAULT 0
+  - last_document_uploaded_at TIMESTAMP NULL
+  - extraction_complete BOOL DEFAULT FALSE
+
+============================================================
+PIECE 2B — UPLOAD ENDPOINT
+============================================================
+
+POST /api/saas-tender/tenders/:tender_id/documents
+
+- Accepts multipart/form-data, multiple files in one upload (FCDO packs are bundled)
+- For each file:
+  - Validate: PDF, DOCX, DOC, ODT, RTF, TXT, XLSX (skip unrecognised types with a warning)
+  - Max 50MB per file
+  - Call uploadBuffer to store, capture storage_key and storage_url
+  - Insert row into saas_tender_documents with extraction_status='pending'
+  - Trigger async extraction (don't block the upload response — fire and forget)
+- Return: { uploaded: [...], failed: [...] }
+- Update saas_tenders.documents_uploaded_count and last_document_uploaded_at
+
+DELETE /api/saas-tender/tenders/:tender_id/documents/:document_id
+- Soft delete only (mark deleted_at) — never hard delete (audit trail)
+- Cascade delete the extracted_facts rows linked to this doc
+
+GET /api/saas-tender/tenders/:tender_id/documents
+- List uploaded docs with extraction status
+- For each, include: filename, document_type, uploaded_at, extraction_status, page_count, word_count, fact_count (count of extracted_facts linked)
+
+============================================================
+PIECE 2C — EXTRACTION PIPELINE
+============================================================
+
+server/tender-document-extractor.ts
+
+For each document with extraction_status='pending':
+
+1. Set status to 'processing', start time
+
+2. PDF parsing — use pdf-parse or pdfjs (whichever is already installed; if neither, install pdf-parse). Extract:
+   - Full text content
+   - Page count
+   - Word count
+
+3. For DOCX use mammoth (already installed for ALLI)
+
+4. Detect document type using a small AI classifier prompt:
+   - Read the first 2000 chars
+   - Ask Claude to classify into one of the document_type enum values
+   - If unclear, default to 'other'
+
+5. Extract structured facts using Claude. The prompt should be:
+   "You are analysing a tender document for Event Perfekt Group, a UK consultancy bidding for government and international development contracts. Extract structured facts from the document below. Return ONLY valid JSON matching this schema:
+   
+   {
+     facts: [
+       {
+         fact_type: 'deadline' | 'requirement' | 'evaluation_criterion' | ...,
+         fact_label: 'human-readable label',
+         fact_value: 'the actual value',
+         fact_metadata: { ...type-specific fields },
+         page_reference: integer or null,
+         confidence: 0-100
+       }
+     ],
+     summary: 'one paragraph plain-English summary',
+     red_flags: ['list of concerning items — e.g. unrealistic timelines, ambiguous scope, exclusionary criteria'],
+     opportunities: ['list of items that play to EP strengths — e.g. Africa delivery, programme management, stakeholder engagement']
+   }
+   
+   Be exhaustive on requirements (mandatory pass/fail, technical, social value, financial). Be precise on evaluation criteria — include weights, scoring methods, pass marks where stated. Flag anything ambiguous as a red_flag rather than guessing."
+
+6. Parse the JSON response, validate, insert each fact into saas_tender_extracted_facts
+
+7. Store the full extraction_summary as JSONB on the document row
+
+8. Update extraction_status to 'extracted', extracted_at to NOW
+
+9. If anything fails: status='failed', extraction_error=message, log and continue. Don't retry automatically — give the user a "Retry extraction" button.
+
+10. After all docs in a tender are extracted, set saas_tenders.extraction_complete = TRUE
+
+============================================================
+PIECE 2D — UI: DOCUMENT MANAGER PER TENDER
+============================================================
+
+New section on the tender detail page in saas-tender-dashboard.tsx (or wherever individual tenders are viewed):
+
+"Tender Pack" panel:
+- File drop zone (drag-and-drop multiple files OR click to upload)
+- Existing uploaded docs in a list:
+  - Filename + icon (PDF/DOCX/etc)
+  - Document type badge (with override dropdown — user can correct AI's classification)
+  - Upload date
+  - Page count, word count
+  - Status pill: "Pending extraction" / "Processing..." / "Extracted ✓" / "Failed ⚠️"
+  - Click to open PDF in new tab (using storage_url)
+  - Three-dot menu: Re-classify type, Retry extraction, Delete
+- Empty state: "No documents uploaded yet. Upload the tender pack to start AI analysis."
+
+"Extracted Facts" panel below:
+- Tabs by fact_type: Deadlines | Requirements | Evaluation | Submission | Red Flags | Opportunities
+- Each fact shown as a card with:
+  - Fact label + value
+  - Source document name (clickable, opens doc)
+  - Page reference if available
+  - Confidence badge (high if 80+, medium 50-79, low <50)
+  - "Verified" tickbox — user can mark as human-verified
+  - "Edit" button — user can correct AI extraction
+  - "Delete" button if AI invented something irrelevant
+
+Top-level summary card on the tender:
+- "X documents · Y facts extracted · Z verified"
+- "Re-extract all" button (if multiple docs need re-running)
+- "Mark extraction complete" button (manual override)
+
+============================================================
+PIECE 2E — DEADLINE BACKFILL
+============================================================
+
+When extraction finds a 'deadline' fact with high confidence, AND the saas_tenders row's deadline field is empty (or earlier than the extracted one), update the tender's deadline field automatically. This way Phase 1's deadline reminder system catches it.
+
+Same for value, duration, lot_structure if those tender fields are empty.
+
+Add a small log: "Updated tender deadline from extraction" — visible in the audit trail panel.
+
+============================================================
+PIECE 2F — TENDER REQUIREMENTS BACKFILL
+============================================================
+
+The existing saas_tender_requirements table has a route POST /api/saas-tender/requirements/:tenderId/extract that takes raw text input.
+
+After document extraction completes, automatically populate saas_tender_requirements from extracted_facts where fact_type='requirement' or 'evaluation_criterion'. This bridges the existing Phase 3 / drafting code (which reads from saas_tender_requirements) to the new document-driven extraction.
+
+============================================================
+RULES
+============================================================
+
+- Don't modify the existing requirements extraction route — leave it for backwards compat with text input
+- Don't modify bid section drafting code — that's Phase 3
+- Don't auto-trigger drafting after extraction. User explicitly clicks Draft (Phase 3) when ready.
+- Use existing object storage (uploadBuffer/generateViewUrl) — don't introduce a new storage path
+- Reuse existing PDF/DOCX parsing libs if installed (check package.json: pdf-parse, mammoth, pdfjs-dist) before installing new ones
+- Limit extraction to 50,000 chars per Claude call — if a doc is longer, chunk by section/page and aggregate
+- Store the full extracted_text on the document row even after structured extraction — Phase 3 will need it for citation/quote retrieval

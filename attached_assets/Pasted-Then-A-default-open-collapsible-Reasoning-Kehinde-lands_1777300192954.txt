@@ -1,0 +1,127 @@
+Then A — default open, collapsible. Reasoning:
+Kehinde lands on the page → sees everything at a glance → if a panel is noisy, he collapses it. He doesn't have to click anything to know what's there. That matches "see what they want on the dashboard."
+B would be the opposite — empty page, click to discover. Worse experience for a project sponsor who's just checking in.
+Here's the message to paste into Replit. Copy everything in the box.
+
+Make the home page panels collapsible. Default state: all OPEN. Clicking the panel header toggles open/closed with a chevron icon. Apply to: RAID Register, Trustee Requests From Your Delivery Team, and the Deliverables Board. Don't touch any other panel. Don't change any styling other than what's described below.
+
+File: client/src/pages/client-portal/home.tsx
+
+============================================================
+STEP 1 — ADD COLLAPSE STATE
+============================================================
+
+Find this line:
+  const [requestSaving, setRequestSaving] = useState<Record<number, boolean>>({});
+
+Immediately AFTER it, add:
+
+  const [panelsOpen, setPanelsOpen] = useState<{ raid: boolean; requests: boolean; deliverables: boolean }>({ raid: true, requests: true, deliverables: true });
+  const togglePanel = (key: "raid" | "requests" | "deliverables") => setPanelsOpen(p => ({ ...p, [key]: !p[key] }));
+
+============================================================
+STEP 2 — MAKE THE RAID PANEL COLLAPSIBLE
+============================================================
+
+Find the RAID Register panel. It starts with this line:
+  {(raid.risk.length + raid.assumption.length + raid.issue.length + raid.dependency.length) > 0 && (
+
+Inside that block, find this header section:
+          <div style={{ marginBottom: 14 }}>
+            <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: G.text, textTransform: "uppercase", letterSpacing: 0.5 }}>RAID Register</h3>
+            <p style={{ margin: "4px 0 0", fontSize: 12, color: G.muted }}>Risks, Assumptions, Issues and Dependencies tracked by your delivery team</p>
+          </div>
+
+Replace it with:
+
+          <div onClick={() => togglePanel("raid")} style={{ marginBottom: panelsOpen.raid ? 14 : 0, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+            <div>
+              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: G.text, textTransform: "uppercase", letterSpacing: 0.5 }}>RAID Register</h3>
+              <p style={{ margin: "4px 0 0", fontSize: 12, color: G.muted }}>Risks, Assumptions, Issues and Dependencies tracked by your delivery team</p>
+            </div>
+            {panelsOpen.raid ? <ChevronDown size={18} color={G.muted} /> : <ChevronRight size={18} color={G.muted} />}
+          </div>
+          {panelsOpen.raid && (<>
+
+Then, just before the closing `</div>` of the RAID panel (the one immediately before the closing `)}`), add:
+          </>)}
+
+So the structure becomes: header div → `{panelsOpen.raid && (<>` → tabs + content → `</>)}` → closing `</div>`.
+
+============================================================
+STEP 3 — MAKE THE TRUSTEE REQUEST PANEL COLLAPSIBLE
+============================================================
+
+Find the requests panel. It starts with:
+  {requests.length > 0 && (
+
+Inside it, find this header block:
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
+            <div>
+              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: G.text, textTransform: "uppercase", letterSpacing: 0.5 }}>📨 Requests From Your Delivery Team</h3>
+              <p style={{ margin: "4px 0 0", fontSize: 12, color: G.muted }}>Specific questions or decisions needing your input as Trustee</p>
+            </div>
+            <span style={{ background: G.gold, color: "#fff", borderRadius: 99, padding: "3px 12px", fontSize: 12, fontWeight: 800 }}>
+              {requests.filter((r: any) => r.status === "open").length} open
+            </span>
+          </div>
+
+Replace it with:
+
+          <div onClick={() => togglePanel("requests")} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: panelsOpen.requests ? 14 : 0, flexWrap: "wrap", gap: 8, cursor: "pointer" }}>
+            <div>
+              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: G.text, textTransform: "uppercase", letterSpacing: 0.5 }}>📨 Requests From Your Delivery Team</h3>
+              <p style={{ margin: "4px 0 0", fontSize: 12, color: G.muted }}>Specific questions or decisions needing your input as Trustee</p>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ background: G.gold, color: "#fff", borderRadius: 99, padding: "3px 12px", fontSize: 12, fontWeight: 800 }}>
+                {requests.filter((r: any) => r.status === "open").length} open
+              </span>
+              {panelsOpen.requests ? <ChevronDown size={18} color={G.muted} /> : <ChevronRight size={18} color={G.muted} />}
+            </div>
+          </div>
+          {panelsOpen.requests && (<>
+
+Then, just before the closing `</div>` of this panel (immediately before its `)}`), add:
+          </>)}
+
+============================================================
+STEP 4 — MAKE THE DELIVERABLES BOARD COLLAPSIBLE
+============================================================
+
+Find the Deliverables Board panel. It starts with:
+  {deliverables.length > 0 && (
+
+Inside it, find this header section:
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, gap: 12, flexWrap: "wrap" }}>
+            <div>
+              <h3 style={{ fontSize: 13, fontWeight: 800, color: G.text, textTransform: "uppercase", letterSpacing: 0.5, margin: 0 }}>🗂 Deliverables Board</h3>
+              <p style={{ margin: "4px 0 0", color: G.muted, fontSize: 12 }}>Click a phase header to expand · <span style={{ color: G.blue, cursor: "pointer", fontWeight: 600 }} onClick={() => setLocation("/client-portal/project")}>Open full board →</span></p>
+            </div>
+          </div>
+
+Replace it with:
+
+          <div onClick={() => togglePanel("deliverables")} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: panelsOpen.deliverables ? 16 : 0, gap: 12, flexWrap: "wrap", cursor: "pointer" }}>
+            <div>
+              <h3 style={{ fontSize: 13, fontWeight: 800, color: G.text, textTransform: "uppercase", letterSpacing: 0.5, margin: 0 }}>🗂 Deliverables Board</h3>
+              <p style={{ margin: "4px 0 0", color: G.muted, fontSize: 12 }}>Click a phase header to expand · <span style={{ color: G.blue, cursor: "pointer", fontWeight: 600 }} onClick={(e) => { e.stopPropagation(); setLocation("/client-portal/project"); }}>Open full board →</span></p>
+            </div>
+            {panelsOpen.deliverables ? <ChevronDown size={18} color={G.muted} /> : <ChevronRight size={18} color={G.muted} />}
+          </div>
+          {panelsOpen.deliverables && (
+
+Then find the closing of the deliverables grid — search for the `</div>` that closes the line containing `gridTemplateColumns: "repeat(4, minmax(180px, 1fr))"`. Immediately AFTER that closing `</div>`, add:
+          )}
+
+============================================================
+DONE
+============================================================
+
+Restart dev server. Verify:
+1. Page loads. All three panels open by default.
+2. Clicking the RAID header collapses it; chevron flips from down to right.
+3. Same for Trustee Requests and Deliverables Board.
+4. The "Open full board" link inside Deliverables header still navigates correctly without also collapsing the panel (the e.stopPropagation handles that).
+
+If anything errors paste it back to me.

@@ -1,0 +1,124 @@
+Please redesign this landing page so it feels like a luxury editorial campaign, not a standard event website.
+
+Overall direction:
+- Make it feel Vogue-level, private, restrained, cinematic, and high-end.
+- Reduce anything that looks like a normal event funnel.
+- The page should feel like an invitation to an exclusive room, not a ticket sales page.
+- Keep the burgundy, black, ivory/gold direction, but make it more refined and less heavy.
+- Use more negative space, slower pacing, sharper typography, and fewer visible buttons.
+
+Key changes required:
+
+1. Hero section
+- Keep the hero image but reduce the heavy burgundy overlay.
+- Use a darker cinematic gradient instead of a flat colour wash.
+- Let the women’s faces and lighting breathe more.
+- Headline should feel editorial and elegant.
+- Keep:
+  “The Woman Who Leads the Room”
+  “An evening for her.”
+  “Thursday 6 August 2026 · Milton Keynes”
+- Add one subtle line:
+  “Invitations are issued, not purchased.”
+
+2. Navigation / top bar
+- Make the header slimmer and more premium.
+- Remove anything that feels busy.
+- Keep only:
+  Event Perfekt
+  6 August 2026
+- No heavy menu styling.
+
+3. CTA treatment
+- Reduce the number of buttons.
+- Use one primary CTA at a time.
+- Replace “Apply for an invitation” with:
+  “Request Access”
+- Replace “Position your brand in the room” with:
+  “Partner With The Room”
+- Remove the stacked button look.
+- Buttons should be thin, elegant, refined, with subtle hover states.
+- Avoid large boxed buttons that feel sales-led.
+
+4. Page structure
+- Make the page feel like a scrolling editorial story.
+- Remove overly obvious section blocks.
+- Use generous spacing between sections.
+- Do not make it look like a brochure or standard event page.
+
+5. Copy refinements
+Replace the experience heading:
+“A considered evening, revealed in layers.”
+with:
+“An evening, revealed slowly.”
+
+Keep the experience content but make it more spaced, elegant, and readable.
+
+Use this line in the page:
+“Attendance is confirmed, not booked.”
+
+Also include:
+“By invitation only · 100 women”
+
+6. Remove anything that feels transactional
+- Do not make the price too visually dominant.
+- Keep £100, but position it quietly in the details section.
+- Avoid making the page feel like Eventbrite.
+
+7. Form section
+- The current form appears too early and breaks the luxury mood.
+- Hide the full form behind the “Request Access” CTA or place it lower on the page after stronger storytelling.
+- Make the form visually minimal and elegant.
+- Reduce friction if possible:
+  First visible fields should be:
+  First name
+  Last name
+  Email
+  Role / Title
+  Company
+  LinkedIn
+- Phone should not feel mandatory.
+- Button should say:
+  “Submit Request”
+  not “Take Your Seat.”
+
+8. Stats section
+- Make the three stats boxes more refined.
+- Less boxy, more editorial.
+- Suggested text:
+  100
+  Women in the room
+
+  6 Aug
+  Thursday 2026
+
+  MK
+  Private venue
+- Use thin borders, more spacing, and less visual weight.
+
+9. Partner / sponsor tabs
+- Remove visible tabs that make the page feel functional or sales-led.
+- Partner and sponsor actions should sit quietly at the bottom or in a separate minimal section.
+- Use language:
+  “For selected brand and partnership enquiries”
+  “Partner With The Room”
+
+10. Overall visual standard
+- More luxury magazine.
+- Less conference website.
+- Less red overlay.
+- More black/burgundy depth.
+- More ivory/gold accents.
+- More breathing room.
+- Fewer buttons.
+- No clutter.
+- No generic event styling.
+
+Important:
+This page must make high-value women feel:
+“I should be in that room.”
+
+It must make brands feel:
+“This audience is worth aligning with.”
+
+The final result should feel exclusive, editorial, and controlled.

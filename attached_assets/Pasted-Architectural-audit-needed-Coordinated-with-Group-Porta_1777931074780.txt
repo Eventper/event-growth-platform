@@ -1,0 +1,66 @@
+Architectural audit needed. Coordinated with Group Portal Replit on tender system drift — they have a parallel tender stack (12 tables, 1,314-line discovery agent, active cron, 5 route files) that shouldn't exist on Group Portal per memory entry #2.
+Per locked architecture: tender system lives on Planning App. Group Portal consumes via API, never replicates.
+Before Group Portal deletes its parallel stack, I need confirmation Planning App's tender system actually works. Otherwise we end up with zero tender capability across the platform.
+
+Audit and brief me on each:
+1. Tender source list (tender_sources table on Planning App's DB):
+a. Does the table exist?
+b. Row count?
+c. Which sources are seeded? List each:
+
+Contracts Finder (UK gov)
+Find a Tender Service / FTS (UK higher-value)
+FCDO contracts
+Crown Commercial Service / CCS frameworks
+Sell2Wales
+Public Contracts Scotland
+eSourcing NI / CPD Northern Ireland
+Local council portals (In-tend / Proactis / Pro-Contract)
+UNGM (UN Global Marketplace)
+World Bank
+AfDB (African Development Bank)
+TED (Tenders Electronic Daily — EU)
+Total Tenders (paid aggregator)
+NIGEPS (Nigeria gov procurement)
+BPP, NUPRC, ICRC, NIRSAL (Nigerian sector-specific)
+Africa feeds (any other African gov procurement portals)
+
+If sources missing or empty, what's needed to seed them?
+2. Tender opportunities table:
+a. Does tender_opportunities exist on Planning App?
+b. Row count? Are these real or test?
+c. Schema — fields covering title, buyer, value, three deadline types (interest / clarification / submission), description, link, source, score, geo tag?
+3. Tender discovery agents:
+a. Are agents actually running on Planning App?
+b. What's the cron schedule?
+c. What's TENDER_DISCOVERY_PAUSED state on Planning App?
+d. Last successful run timestamp?
+e. Last 7 days — how many tenders ingested per source?
+4. API endpoints for Group Portal to consume:
+Group Portal needs to call Planning App for:
+
+List tenders (filterable by deadline, geo, score, sector)
+Fetch tender by ID
+Top N tender highlights for morning briefing (scored ≥3, deadline within X days)
+Tender count for Director home tile
+Tender briefing data for daily / weekly emails
+
+What endpoints exist? What auth? List the API surface and document in replit.md.
+5. Tender Centre UI on Planning App:
+a. What URL?
+b. Renders without errors as Director?
+c. Renders without errors as Prab / Abraham (via bridge)?
+d. Filterable, searchable, scoreable?
+6. Cleanup needed on Planning App side too?
+Confirm Planning App is the canonical tender owner. If there's any drift on Planning App's tender code (e.g. partial implementation, broken parser, dead source), surface now so we plan the full fix in one pass.
+
+Action sequence after audit:
+
+Brief me on Planning App tender system state per the questions above
+If gaps exist (missing sources, broken agents, missing API endpoints), propose a fix plan with effort estimate
+Once Planning App tender system is confirmed working AND Group Portal consumer layer is built, Group Portal proceeds with parallel-stack deletion
+Update replit.md (Planning App) with locked architecture: tender system canonical owner, source list, API surface for Group Portal consumption
+
+
+Standing rule reinforced: Tender Centre lives on Planning App per memory entry #2 / system boundaries lock. Group Portal consumes, doesn't replicate. If Group Portal Replit asks you for help on tender data, route them through Planning App's API — never let them build duplicate infrastructure on Group Portal side.
+Brief me with the audit. Don't change anything yet — diagnosis first, then we sequence the fix across both repos in coordinated commits.

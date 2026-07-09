@@ -1,0 +1,97 @@
+Add These Missing Features:
+
+Advanced User Roles & Permissions
+
+Implement sub-user roles for planner accounts (assistant, vendor manager).
+
+Create custom roles for client teams (primary contact, finance, decision-maker).
+
+Enforce role-based permissions across the dashboard.
+
+Mobile App Foundation
+
+Build a mobile version using React Native or Flutter.
+
+Include features like event overview, messaging, approvals, and day-of timeline.
+
+AI-Powered Recommendation System
+
+Build an AI engine that suggests vendors, venues, and services based on:
+
+Event type, guest count, location, and budget.
+
+Include predictive budgeting logic and suggestion feedback loop.
+
+Conflict Detection & Risk Alerts
+
+Detect scheduling conflicts (e.g., double-booked vendors).
+
+Alert users of overdue tasks or unconfirmed items.
+
+Display event risk levels using a visual dashboard.
+
+In-Platform Help & Walkthrough System
+
+Add an onboarding walkthrough for new users.
+
+Include tooltips, a help sidebar, and embedded FAQ support.
+
+Planner Marketing Toolkit
+
+Build a portfolio page editor for planners.
+
+Allow planners to request and display testimonials.
+
+Add analytics for profile views and client leads.
+
+Client Event History & Reusability
+
+Let clients view past events, vendors used, documents, and photos.
+
+Add a "duplicate event" option to reuse event templates.
+
+Third-party Integrations
+
+Integrate Google Calendar and Outlook sync.
+
+Add Trello or Asana sync for task views.
+
+Prepare API connection points for Salesforce CRM.
+
+White-label Branding Options
+
+Allow planners or corporate clients to:
+
+Upload logos, customize color schemes, and use custom subdomains.
+
+Contracts & Legal Management
+
+Implement a clause template library.
+
+Enable smart contract generation with digital signature tracking.
+
+Support region-specific legal compliance templates.
+
+Custom Notifications System
+
+Let users customize which alerts they receive (email, SMS, in-app).
+
+Add notification settings in profile preferences.
+
+Loyalty & Referral System
+
+Build a referral code system with tracking and reward logic.
+
+Add loyalty tiers or badges for frequent users.
+
+Client & Planner Feedback System
+
+Allow two-way reviews after events (client ↔ planner).
+
+Display planner ratings and testimonials on public profiles.
+
+Sustainability & Accessibility Filters
+
+Tag vendors and venues as eco-friendly or ADA-compliant.
+
+Optionally calculate estimated carbon footprint of large events.

@@ -1,0 +1,263 @@
+Here's the complete website brief — payment flow through the campaign — in one clean document for Replit:
+
+---
+
+**THE WOMAN WHO LEADS THE ROOM — WEBSITE BRIEF**
+
+**Event:** The Woman Who Leads the Room
+**Date:** Friday 28 August 2026
+**Location:** Milton Keynes
+**By:** Event Perfekt Global
+
+---
+
+**OVERALL POSITIONING**
+
+This is not a ticketed event. It is a premium, invitation-led private experience. The site should feel closer to a private members' club or editorial publication than to an Eventbrite listing. Aesthetic reference points: Vogue, Harrods, private members' clubs. Editorial, considered, restrained.
+
+---
+
+**CORE LANGUAGE CHANGE**
+
+Replace all "Buy Tickets" / "Get Tickets" / "Register" language with: **REQUEST ACCESS**
+
+This change runs across every CTA button, link, and reference on the site.
+
+---
+
+**THE ACCESS FLOW**
+
+When a guest clicks REQUEST ACCESS, they are presented with two options:
+
+**Option A — Paid Invitation Access**
+"I would like to secure invitation access — £150 + VAT (£180 total)"
+
+**Option B — Complimentary Invitation Consideration**
+"I would like to be considered for a complimentary invitation"
+
+---
+
+**OPTION A — PAID INVITATION ACCESS FLOW**
+
+When the guest selects Option A, they complete a form with the following fields:
+
+- First Name (required)
+- Surname (required)
+- Email (required)
+- Telephone (required)
+- Work Email (required)
+- Company / Organisation (required)
+- Job Title (required)
+- LinkedIn Profile (optional)
+
+On form submission, the guest is redirected to a payment page offering two payment routes:
+
+- Revolut payment link
+- Bank transfer details
+
+Confirmation message after submission:
+
+"Thank you for requesting access. Your formal invitation and full event details will follow upon confirmation of payment."
+
+---
+
+**OPTION B — COMPLIMENTARY INVITATION REQUEST FLOW**
+
+Important framing: this is positioned as editorial / community consideration, NOT as financial accessibility. The language should reflect curated invitation, not free tickets.
+
+Page intro copy:
+
+"A limited number of complimentary invitations may be extended to selected founders, creatives, community leaders, public-sector professionals, and women whose presence aligns strongly with the intention of the room."
+
+Form fields:
+
+- Name (required)
+- Email (required)
+- Telephone (required)
+- Work Email (required)
+- Company / Organisation (required)
+- Job Title (required)
+- Website / LinkedIn (required)
+- "Why would you like to attend?" — short paragraph (required)
+- "How did you hear about the event?" (required)
+
+Confirmation message after submission:
+
+"Thank you for your request. We review complimentary invitation considerations carefully. Due to high interest, we may not be able to respond individually to every application. Successful applicants will be contacted by 31 July 2026."
+
+---
+
+**PHOTOGRAPHY & MEDIA CONSENT WORDING**
+
+Add to both forms (Option A and Option B) above the submit button:
+
+"The Woman Who Leads the Room is designed as an editorial-style experience. Photography and video content may be captured for editorial, promotional, event, and social media purposes across Event Perfekt Global and selected partner platforms. By submitting this form, you confirm your consent to be photographed and featured."
+
+Include a tick-box:
+
+☐ I consent to photography and video as described above.
+
+---
+
+**I AM HER — THE EDITORIAL CAMPAIGN**
+
+**Where it lives:**
+A dedicated section on the homepage, plus a dedicated "Meet the Room" page that builds out as women are featured.
+
+**Homepage section title:**
+
+**I AM HER**
+*The Campaign*
+
+**Body copy under the title:**
+
+In the weeks before 28 August, the room reveals itself.
+
+Every woman who joins The Woman Who Leads the Room is invited into the I Am Her campaign — an editorial spotlight celebrating who she is, what she leads, and the business she has built.
+
+Her name. Her statement. Her business. Her presence.
+
+Featured across our platforms, her own, and the women in the room with her.
+
+This is not promotion. It is recognition — for the woman behind the title.
+
+**Below the body copy — visual element:**
+
+A horizontal carousel or grid of featured women's editorial cards (built out as the campaign progresses). Each card carries:
+
+- Her editorial-style portrait
+- Her name
+- Her statement: *"I am the founder of..."* / *"I am the woman who leads..."* / *"I am HER."*
+- Her business name (linked to her website or LinkedIn)
+- Subtle gold accent line at the bottom of each card
+
+At the end of the carousel, a CTA card: **"This room is by invitation. Request access →"**
+
+---
+
+**DEDICATED "MEET THE ROOM" PAGE**
+
+**Page title:**
+**Meet the Room**
+
+**Page intro copy (sits at the top of the page):**
+
+The room is 100 women. Each one a leader of her own.
+
+In the weeks before The Woman Who Leads the Room, we are spotlighting the women who will be in the room — their stories, their businesses, and the worlds they lead.
+
+This is the I Am Her campaign. Featured here. Featured across our platforms. Featured across theirs.
+
+**Below the intro:**
+
+A growing editorial gallery of the featured women — same card format as the homepage carousel, but the full collection. Built out chronologically as women are confirmed and featured.
+
+**At the bottom of the gallery:**
+
+**"Want to be in this room?"**
+*Request Access →*
+
+(Links to the access flow.)
+
+---
+
+**CAMPAIGN SUBMISSION FORM — FOR CONFIRMED GUESTS ONLY**
+
+Important: This form is not publicly accessible. It is sent via a private link to each guest after their access is confirmed.
+
+**Page title:**
+**Your I Am Her Feature**
+
+**Page intro copy:**
+
+Welcome. You have your invitation.
+
+Now we invite you into the I Am Her campaign — an editorial moment in the weeks before the evening itself.
+
+Your feature will be published across The Woman Who Leads the Room, Event Perfekt Global, and shared for you to repost across your own platforms — alongside the other women in the room.
+
+Please submit your details below.
+
+**Form fields:**
+
+- Full name (as you wish to be credited)
+- Job title / role
+- Business or organisation
+- Website / LinkedIn / social handle (for tagging)
+- Your I Am Her statement *(short, one or two lines — examples: "I am the founder of...", "I am the woman who leads my boardroom.", "I am the woman who built...", "I am HER.")*
+- Short bio (optional, for longer-form features)
+- Upload your photograph *(editorial style, high-resolution, landscape preferred — guidance link below)*
+- Photography guidance link → opens modal with submission standards
+
+**Consent checkboxes:**
+
+☐ I consent to my name, business, and image being featured across The Woman Who Leads the Room, Event Perfekt Global, and selected partner platforms as part of the I Am Her editorial campaign.
+
+☐ I confirm the photograph I am submitting is mine to share, or that I have rights to use it.
+
+**Submit button:**
+**Submit My Feature**
+
+**Confirmation message after submission:**
+
+Thank you. Your feature will be curated and shared in the weeks leading up to 28 August. You will receive your dedicated post for your own platforms — designed for you to share alongside the other women in the room.
+
+---
+
+**PHOTOGRAPHY GUIDANCE (LINKED MODAL ON THE SUBMISSION FORM)**
+
+**For your I Am Her feature, please submit:**
+
+- A high-resolution editorial portrait (minimum 2000px wide)
+- Landscape orientation preferred
+- Professional quality — natural lighting, considered background
+- One image that represents you as the woman you are now
+
+If you would like support with your portrait for the campaign, please email info@eventperfekt.com and we will assist you directly.
+
+---
+
+**CORE MESSAGING THEMES (for site copy across all pages)**
+
+- Confidence
+- Skin health
+- Wellbeing
+- Hospitality
+- Restoration
+- Meaningful connection
+- The human behind high performance
+
+Use these as the editorial register guiding all written content. Avoid corporate event language ("networking," "delegates," "registration"). Replace with: invitation, room, experience, evening, gathering.
+
+---
+
+**RECURRING SOCIAL CONCEPT**
+
+Keep "swapping suits for dresses" as a recurring concept tied to confidence and restoration. This belongs in social content and editorial features, not necessarily as a main site headline.
+
+---
+
+**AESTHETIC DIRECTION**
+
+- Editorial layout, generous whitespace
+- High-quality photography, minimal stock imagery
+- Typography: refined serif for headlines, clean sans-serif for body
+- Colour palette: deep burgundy, rich gold accents, soft black, warm ivory — premium private members' club register, drawing from the campaign hero image
+- No bright primary colours, no aggressive CTAs, no urgency banners
+- Mobile-first, but mobile experience should feel as considered as desktop
+
+---
+
+**EVENT DETAILS — VISIBLE ON EVERY PAGE**
+
+- **Event:** The Woman Who Leads the Room
+- **Concept name / hashtag:** I Am Her
+- **Date:** Friday 28 August 2026
+- **Location:** Milton Keynes
+- **Access:** By invitation
+
+---
+
+**That's the full brief.**
+
+Copy everything from "THE WOMAN WHO LEADS THE ROOM — WEBSITE BRIEF" at the top down through "Access: By invitation" at the bottom. Paste it into Replit as the spec for the build.

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+
+  <url>
+    <loc>https://eventperfekt.net/</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://eventperfekt.net/assets/3d Logo (1)_1754249114645.jpg</image:loc>
+      <image:title>Event Perfekt — Professional Event Planning &amp; Management</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/iamher</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://eventperfekt.net/assets/iamher-hero-home.png</image:loc>
+      <image:title>The Woman Who Leads the Room — I Am Her Event</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/iamher/media</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <image:image>
+      <image:loc>https://eventperfekt.net/assets/iamher-hero-home.png</image:loc>
+      <image:title>I Am Her — Event Introduction Video Thumbnail</image:title>
+    </image:image>
+    <video:video>
+      <video:thumbnail_loc>https://eventperfekt.net/assets/iamher-hero-home.png</video:thumbnail_loc>
+      <video:title>I Am Her — Event Introduction Video</video:title>
+      <video:description>A luxury leadership wellbeing evening for women who lead. The invitation, the experience, and the room.</video:description>
+      <video:content_loc>https://eventperfekt.net/videos/event-intro.mp4</video:content_loc>
+      <video:player_loc>https://eventperfekt.net/iamher/media</video:player_loc>
+      <video:duration>60</video:duration>
+      <video:publication_date>2026-06-10</video:publication_date>
+      <video:tag>I Am Her</video:tag>
+      <video:tag>women leadership</video:tag>
+      <video:tag>event introduction</video:tag>
+      <video:tag>Milton Keynes</video:tag>
+      <video:tag>luxury women evening</video:tag>
+      <video:tag>wellbeing</video:tag>
+      <video:category>Events</video:category>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:requires_subscription>no</video:requires_subscription>
+      <video:live>no</video:live>
+    </video:video>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/access</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/access/payment</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/meet-the-room</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/iamher/stay</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/iamher/community</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/iamher/card</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/iamher/partnership</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/iamher/submit-story</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/360-booth-hire-milton-keynes</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/about</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/contact</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/terms-of-service</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.30</priority>
+  </url>
+
+  <url>
+    <loc>https://eventperfekt.net/privacy-policy</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.30</priority>
+  </url>
+
+</urlset>

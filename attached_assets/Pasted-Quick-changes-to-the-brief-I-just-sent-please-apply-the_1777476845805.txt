@@ -1,0 +1,72 @@
+Quick changes to the brief I just sent — please apply these BEFORE you finalise:
+
+1. CHANGE THE AUDIENCE DESCRIPTOR EVERYWHERE
+   Replace every instance of "senior professional women" with:
+   "the woman who leads the room"
+   (singular — "the woman" not "women")
+   
+   Where it needs to be plural in context (e.g., audience number), use:
+   "women who lead the room"
+
+2. UPDATE THE HERO HEADLINE
+   Old: "An evening for senior professional women"
+   New: "An evening for the woman who leads the room"
+
+3. ADD A NEW SECTION "WHY THIS EVENING?" 
+   Insert directly AFTER the description and BEFORE the three CTA buttons.
+   
+   Heading: "Why this evening?"
+   
+   Body (use this copy verbatim, generous spacing, serif italic for the closing line):
+   
+   "The woman who leads the room rarely makes space for herself.
+
+   You lead the team. You lead the home. You're the one your parents call, your children depend on, your friends turn to. You attend events for work. You host events for others. You rarely accept invitations that are simply for you.
+
+   This evening is for you.
+
+   Three hours away from the noise. Real conversations with women who lead their own rooms. The expertise of Esther at Shujo Aesthetics — twenty years of clinical specialism, the authority to actually answer the questions you've been meaning to ask. Wine that was chosen with care. Brands that earned their place at the table. A goody bag that thanks you for coming.
+
+   *You earned an evening like this.*"
+
+4. UPDATE THE DESCRIPTION COPY
+   Replace the existing 3-paragraph description with:
+   
+   "A curated evening for directors, founders and women who lead the room — across Milton Keynes, Buckinghamshire, Bedfordshire and Northamptonshire.
+   
+   The evening brings together aesthetic excellence with Esther at Shujo Aesthetics — a CQC-registered specialist clinic with twenty years of clinical experience in aesthetic dermatology, melanin-rich skin, menopause and hormonal skincare — alongside premium brand experiences, wine tasting, and curated networking.
+   
+   By invitation only. Limited to 100 guests."
+
+5. UPDATE THE CTA BUTTON LABELS
+   Old: "Register your interest" / "Partner with us" / "Sponsor with us"
+   New: "Take your seat" / "Partner with us" / "Sponsor with us"
+   
+   (Form 1 heading also changes to "Take your seat" — same form, same fields, same database.
+   Form 1 subline changes to: "Submit your details to receive your formal invitation in May 2026. Limited to 100 women who lead the room.")
+
+6. UPDATE THE FORM 1 CONFIRMATION EMAIL BODY
+   New body:
+   
+   "Dear [First name],
+   
+   Thank you for taking your seat at our evening for the woman who leads the room — Thursday 16 July 2026, hosted by Event Perfekt × Shujo Aesthetics in Milton Keynes.
+   
+   We'll be in touch in May 2026 with your formal invitation, full event details and venue confirmation.
+   
+   Limited to 100 guests — your early registration secures your place when the invitation list opens.
+   
+   Warm regards,
+   
+   Tolu Kumolu-Johnson
+   Director, Event Perfekt Group"
+
+7. UPDATE THE SUCCESS STATE TEXT
+   Old: "You're on the list. We'll be in touch in May with full details."
+   New: "Your seat is reserved. Your formal invitation will arrive in May 2026."
+
+8. AI HERO IMAGE — REVISED PROMPT
+   Update the AI image generation prompt to:
+   "Premium evening event scene, soft warm low lighting, an upscale gathering of professional women in elegant attire, blurred bokeh background suggesting champagne glasses and curated brand stations, editorial magazine quality, deep neutral tones (cream, charcoal, soft gold accents), composed and refined atmosphere, no faces clearly visible (focus on hands, glasses, ambient detail), wide cinematic 16:9 aspect ratio, premium luxury event aesthetic."
+
+Everything else in the original brief stays the same. No need to rebuild from scratch — these are layered edits on what you're already building.

@@ -1,0 +1,45 @@
+Stop. I need to understand why you can't run the checkout before I steer further.
+
+CLARIFY:
+
+(1) Why can't you run "git checkout 075c7b5 -- server/routes.ts"?
+
+You said earlier you couldn't show git status because of an "index.lock issue in this environment". Now you can't run a destructive checkout. Is the block:
+
+(a) git index.lock file present — needs deleting via "rm .git/index.lock" before any git operation works
+(b) No write access to the workspace from your shell — you can read but not modify files
+(c) Some other Replit Agent permission limit I'm not aware of
+(d) You can run it, but want explicit approval before destructive ops
+
+Surface which one and what the actual error is when you try the checkout command.
+
+(2) If it's (a) — index.lock — delete it and proceed
+  rm -f .git/index.lock
+  git status
+
+Then attempt the checkout.
+
+(3) If it's (b) — no write access — that's a Replit Agent limitation I need to know about. Tell me how I work around it. Options I can think of:
+  - Use the Replit workspace file editor UI directly (I open server/routes.ts in the file tree, paste the good version)
+  - Use Replit Shell tab to run the git command outside the Agent context
+  - Some other path you know of
+
+(4) If it's (c) or (d) — explain what's actually blocking and what permission you need.
+
+DON'T DO NOTHING. Identify the block, surface it, propose the workaround. The recovery path is clear (restore 075c7b5 base + re-apply 075c7b5 and 2e3b54e additions). What's missing is the mechanism to run the restore.
+
+Quick clarification on the 075c7b5 / 2e3b54e additions:
+
+075c7b5 added 45 lines to server/routes.ts
+2e3b54e added 5 lines (and deleted 1841 — that's where the truncation came from)
+
+So if I restore to BEFORE 075c7b5, I lose 45 lines + 5 lines = 50 lines of real route additions plus tonight's bridge auth changes. That's recoverable from git show.
+
+Plan:
+  i. Restore server/routes.ts to the commit immediately BEFORE 075c7b5 (give me what that hash is)
+  ii. Show me the 45-line diff from 075c7b5 — I review, agent re-applies
+  iii. Show me the 5-line addition from 2e3b54e — I review, agent re-applies  
+  iv. App boots
+  v. Verify all five features still work
+
+Surface the commit before 075c7b5 and tell me what's actually blocking the checkout. I'm not letting this sit overnight.

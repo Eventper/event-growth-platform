@@ -1,0 +1,20 @@
+Brief: I Am Her — first invitation batch, end to end. Configure existing modules, do not build new automation.
+Do not build batch-send, follow-up automation, or any auto-send. Keep the existing human approval gate exactly as built. Five tasks in order:
+TASK 1 — Fix the page price back to £300 (plus VAT).
+
+Across the entire I Am Her flow (event-august.tsx, access page, payment page, schema, FAQ, meta, all satellite pages), change every "£360" reference back to "£300 guest contribution (plus VAT)". The earlier change to £360 was wrong. The guest contribution is £300, exclusive of VAT. On the checkout/payment page only, show the VAT breakdown clearly (£300 + £60 VAT = £360 total payable) so the guest sees the full total at the point of payment, but the headline figure everywhere is £300 plus VAT. Confirm zero "£360" references remain as a headline price. Run typecheck.
+TASK 2 — Set the master invitation template.
+
+In the Outreach module, create/replace the master email template for the "I Am Her August Outreach" campaign with this exact copy, preserving the merge fields {First Name} and {Personalised Line}:
+[paste the master email from the FINAL file's MASTER EMAIL tab here]
+The template body is fixed. The AI must NOT rewrite any part of the body. The only per-person variation is the {Personalised Line} field, which is pre-written per prospect (see Task 3) — the AI does not need to generate it.
+TASK 3 — Upload the 20 prospects.
+
+Import the 20 Batch-1 prospects into growth_prospects for the I Am Her August event, each with: first name, full name, email, company, role, and the pre-written personalised line. (Data file provided — the IMPORT tab of TWWLTR_Batch1_FINAL.xlsx.) These personalised lines are already approved copy; load them as-is into the per-prospect personalisation field so each generated email = master template with that prospect's {First Name} and {Personalised Line} merged in.
+TASK 4 — Confirm the sending mailbox, then queue for approval.
+
+Confirm which from-address the outreach /send uses via Namecheap SMTP. It MUST send as info@eventperfekt.com (or adminuk@eventperfekt.com), NOT marketing@. Report the current from-address and set it to info@ if it isn't. Then generate the 20 individual emails (template + merge) into the Outreach queue with status "pending approval." Do NOT send anything. Each email waits for a human click.
+TASK 5 — Reply handling (use what exists, no new build).
+
+Confirm the existing reply classification (growth_replies) and pipeline (growth_pipeline_entries) are active for this campaign, so that when replies arrive they're captured and classified (positive / not now / out of office / unsubscribe) and the prospect can be moved through identified → contacted → interested → applied → paid → attending. Do not automate the stage moves — keep them manual. Just confirm the capture and classification work.
+Report back: (1) price fixed, zero £360 headline refs, typecheck clean; (2) master template set; (3) 20 prospects loaded with personalised lines; (4) confirmed from-address (info@) and 20 emails sitting in the approval queue; (5) reply capture confirmed active. I will then review and approve each of the 20 individually before any send.

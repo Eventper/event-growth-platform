@@ -1,0 +1,260 @@
+ALLI Foundation — Funder Directory: build new module, populate with 13 youth-specific funders, and seed calendar sequence. Single operation.
+Pre-action checks (do these first, report back before doing anything else):
+
+Confirm DB target is PROD (Neon via PROD_DB_URL), not dev/helium.
+Confirm whether a Funder Directory module already exists. If yes, report current schema. If no, this build creates it new.
+Confirm the Partner Directory schema upgrade (Owner / Status / dates / Action / Notes / colour coding) completed successfully — the Funder Directory must mirror that schema exactly.
+Confirm calendar capacity for 21 entries between 26 May 2026 and 4 May 2027. Report any conflicts with the existing 24 Partner Engagement entries.
+Report any existing funder records — list and stop if duplicates of the 13 funders below.
+
+
+STEP 1 — Build the Funder Directory module:
+Core fields:
+
+Funder name (text, required)
+Tier (dropdown: Tier 1 / Tier 2 / Tier 3, required, primary filter)
+Grant range (text)
+Eligibility (long text)
+Fit for ALLI (long text)
+Route in (long text)
+Contact (text — role-based email only)
+When to apply (text)
+Application URL (text)
+
+Workflow fields (mirror Partner Directory):
+10. Owner — dropdown: "ALLI Foundation" (default), "Trustees", "DSL", "Project Lead", "Operations". String, NOT linked to user accounts.
+11. Status — dropdown: "Not started" (default, grey), "In preparation" (blue), "Submitted" (blue), "Pending decision" (amber), "Successful" (green), "Declined — revisit" (red-amber), "Closed" (grey). Apply colour coding.
+12. Amount applied for (currency, optional)
+13. Amount awarded (currency, optional, only if Status "Successful")
+14. Date submitted (date picker, auto-populate when Status changes to "Submitted")
+15. Decision date (date picker, manual)
+16. Next action date (date picker, sends portal notification to Owner 24 hours before)
+17. Next action (short text, 200 char)
+18. Notes (long text, auto-stamp every save with date and Owner)
+List view shows: Funder name, Tier, Status (colour-coded), Owner, Next action date, Amount applied for — sortable by any column.
+Filter chips at top: All Funders / Tier 1 / Tier 2 / Tier 3 (mirrors Partner Directory pattern).
+Default sort: Tier ascending, then Next action date ascending.
+
+STEP 2 — Populate with the 13 funders below. Each record on creation: Owner "ALLI Foundation", Status "Not started", dates blank, amounts blank, Notes blank.
+TIER 1 (4 funders)
+1. National Lottery Awards for All — England
+
+Tier: 1
+Grant range: £300 to £20,000
+Eligibility: Charities, community groups, parish or town councils, health bodies, or schools. Registered charity status not required. Bank account with two-signature requirement. Smaller incomes prioritised.
+Fit for ALLI: The single most accessible community grant in England. Funds youth-focused projects regularly. The Foundation's facilitation model is the project.
+Route in: Apply directly online. 16-week assessment-to-payment cycle. Only one Awards for All grant at a time.
+Contact: general@tnlcommunityfund.org.uk; 0345 4 10 20 30
+Application URL: tnlcommunityfund.org.uk/funding/programmes/national-lottery-awards-for-all-england
+When to apply: Apply in the first 30 days. Keystone Tier 1 application.
+
+2. MOPAC London Crime Prevention Fund — Lambeth
+
+Tier: 1
+Grant range: £1,000 to £5,000
+Eligibility: Community and voluntary sector organisations operating in Lambeth.
+Fit for ALLI: Direct fit. LCPF priorities are knife crime, youth diversion, victim support, community safety.
+Route in: Apply via Lambeth Council website when LCPF window opens.
+Contact: communitysafety@lambeth.gov.uk
+Application URL: lambeth.gov.uk
+When to apply: Apply when Lambeth's LCPF window opens — coordinate with Partner Engagement borough sequence.
+
+3. MOPAC London Crime Prevention Fund — Lewisham
+
+Tier: 1
+Grant range: £1,000 to £5,000
+Eligibility: Community and voluntary sector organisations operating in Lewisham.
+Fit for ALLI: Direct fit. LCPF priorities are knife crime, youth diversion, victim support, community safety.
+Route in: Apply via Lewisham Council website when LCPF window opens.
+Contact: communitysafety@lewisham.gov.uk
+Application URL: lewisham.gov.uk
+When to apply: Apply when Lewisham's LCPF window opens.
+
+4. MOPAC London Crime Prevention Fund — Southwark
+
+Tier: 1
+Grant range: £1,000 to £5,000
+Eligibility: Community and voluntary sector organisations operating in Southwark.
+Fit for ALLI: Direct fit. LCPF priorities are knife crime, youth diversion, victim support, community safety.
+Route in: Apply via Southwark Council website when LCPF window opens.
+Contact: safersouthwarkpartnership@southwark.gov.uk
+Application URL: southwark.gov.uk
+When to apply: Apply when Southwark's LCPF window opens.
+
+5. 7stars Foundation — Social Impact Grants
+
+Tier: 1
+Grant range: £5,000 per year for two years (total £10,000)
+Eligibility: UK registered charities with turnover under £1.5 million. Themes: abuse, addiction, child carers, homelessness (under-18s).
+Fit for ALLI: Foundation positioning intersects child carers, abuse, and addiction themes. Apply with the facilitation frame.
+Route in: Bi-annual application deadlines.
+Contact: info@the7starsfoundation.co.uk
+Application URL: the7starsfoundation.co.uk/apply-for-funding/social-impact
+When to apply: Apply at next deadline window.
+
+6. King Charles III Charitable Fund — Small Grants
+
+Tier: 1
+Grant range: Up to £3,000 per year for up to three years (max £9,000)
+Eligibility: UK registered nonprofit organisations. Social inclusion and health & wellbeing themes.
+Fit for ALLI: Strongest fit under social inclusion and health & wellbeing.
+Route in: Open application periods for specific themes.
+Contact: Via website contact form
+Application URL: kccf.org.uk/small-grants
+When to apply: Apply when next social inclusion or health & wellbeing window opens.
+
+TIER 2 (5 funders)
+7. National Lottery Reaching Communities — England
+
+Tier: 2
+Grant range: £20,001 to £500,000+. Multi-year. Average £319,000 over 3 years in 2025.
+Eligibility: Registered charities, CIOs, CICs with not-for-profit asset lock, statutory bodies.
+Fit for ALLI: Strong fit on supporting communities and people facing disadvantage. Multi-year suits the facilitation model.
+Route in: Online application. Initial conversation with Lottery officer recommended. 6-month assessment cycle.
+Contact: 0345 4 10 20 30
+Application URL: tnlcommunityfund.org.uk/funding/funding-programmes/reaching-communities-england
+When to apply: Apply after first Tier 1 grant has delivered measurable output — typically Month 4 or 5.
+
+8. London Community Foundation — Stronger Futures 4.0
+
+Tier: 2
+Grant range: £80,000 to £200,000. Up to two years.
+Eligibility: Community-led organisations in London with experience working with at-risk youth aged 8 to 18.
+Fit for ALLI: The strongest single Tier 2 fit. Mayor's VRU programme — direct match to facilitation positioning.
+Route in: Register for funding alerts via VRU partner network. 4.0 expected to open late 2026.
+Contact: VRUProcurement@london.gov.uk
+Application URL: londoncf.org.uk
+When to apply: Apply when 4.0 opens. Highest probability-weighted value of any in the playbook.
+
+9. UK Youth Fund (Pears Foundation partnership)
+
+Tier: 2
+Grant range: Multi-year unrestricted up to 10% of annual turnover. £10m envelope.
+Eligibility: Small youth and outdoor learning organisations. Eligibility based on communities served, not headquarters.
+Fit for ALLI: Designed for organisations at the Foundation's stage. Multi-year unrestricted + capacity-building.
+Route in: Two-stage application. Expression of Interest opens annually. Next round expected 2027.
+Contact: Via UK Youth website
+Application URL: ukyouth.org/uk-youth-fund
+When to apply: Register interest now. Apply in next round (likely Spring 2027).
+
+10. Charitable Grants Programme for Offenders and Young People
+
+Tier: 2
+Grant range: Up to £5,000 small grants; main programme uncapped, historically up to £15,000.
+Eligibility: UK registered charities and CIOs with income up to £5 million. Local under £100k; UK-wide under £250k.
+Fit for ALLI: Direct fit. Themes exactly Foundation's positioning: at-risk youth, employability, reduced reoffending. Matched funding requirement.
+Route in: Online application. Spring 2026 priorities include women and girls aged 11–18 at risk of offending.
+Contact: Via Bath & North East Somerset Council Funding Finder route
+Application URL: Search "Charitable Grants Programme for Offenders and Young People UK"
+When to apply: Apply when next round opens matching audience segmentation.
+
+11. John Lyon's Charity
+
+Tier: 2
+Grant range: Up to £35,000 (refurbishment); programme grants larger.
+Eligibility: Charities operating in 9 specific London boroughs (Brent, Camden, Ealing, Hammersmith and Fulham, Harrow, Kensington and Chelsea, Westminster, Barnet, Hounslow). Under £500k turnover prioritised. Under-25s.
+Fit for ALLI: Lambeth, Lewisham, Southwark NOT in John Lyon's boroughs. Lower priority unless Foundation extends footprint.
+Route in: Online form. Pre-application conversation recommended.
+Contact: info@jlc.london
+Application URL: jlc.london
+When to apply: Apply only if Foundation extends to a John Lyon's borough in Year 2. Otherwise deprioritise.
+
+TIER 3 (4 funders)
+12. BBC Children in Need
+
+Tier: 3
+Grant range: £30,000 to £120,000 typical, multi-year.
+Eligibility: UK charities, statutory bodies, and not-for-profit organisations supporting children and young people under 18 facing disadvantage.
+Fit for ALLI: Strong fit for youth violence prevention and facilitation. Increasingly funds early intervention rather than crisis services.
+Route in: Two-stage application. Annual cycle.
+Contact: Via website contact form
+Application URL: bbcchildreninneed.co.uk
+When to apply: Apply in Month 6–9. Activated after at least one Tier 2 grant in delivery.
+
+13. Comic Relief
+
+Tier: 3
+Grant range: £100,000+ typical for partner organisations. Multi-year strategic.
+Eligibility: UK charities and not-for-profit organisations. Themed funding rounds.
+Fit for ALLI: Positioning fits Youth and Justice & Equality themes.
+Route in: Themed application rounds.
+Contact: grants@comicrelief.com
+Application URL: comicrelief.com
+When to apply: Apply in Month 9–12.
+
+14. Youth Endowment Fund (YEF)
+
+Tier: 3
+Grant range: Variable by programme — historically £30,000 to £10 million. Open Call active.
+Eligibility: Organisations in England or Wales working directly with young people aged 10–18 to prevent violence. Must be ready for rigorous evaluation.
+Fit for ALLI: The most mission-aligned funder in the UK ecosystem. £200m endowment, ten-year Home Office mandate, exclusively for preventing youth violence.
+Route in: Open Call funding round. YEF funds delivery to evaluate — not delivery alone.
+Contact: grants@youthendowmentfund.org.uk
+Application URL: youthendowmentfund.org.uk/grants/open-call
+When to apply: Apply in Year 2 once delivery data is captured. Case management evidence (D27) required before this application is credible.
+
+15. City Bridge Foundation — Bridging Divides
+
+Tier: 3
+Grant range: Up to £100,000+. Multi-year.
+Eligibility: London-registered charities working to reduce inequality. Operating in one or more London boroughs.
+Fit for ALLI: South London geographic positioning is a fit. City Bridge funds youth violence prevention in London.
+Route in: Online application. Themed strands.
+Contact: grants@citybridgefoundation.org.uk
+Application URL: citybridgefoundation.org.uk
+When to apply: Apply when Foundation can show active place-based partnerships with at least two priority boroughs — typically Month 9–12.
+
+
+STEP 3 — Seed 21 calendar entries.
+Entry template: Title "Funder Action: [Funder] — [action]"; Owner "ALLI Foundation"; Duration 60 minutes; Default time 10:00; Description "Action per Funder Mini-Playbook section 5. Update Funder Directory status on action."; Reminders 48 hours before, 1 hour before.
+Sequence:
+
+Tue 26 May 2026 — D6 governance discrepancy resolution checkpoint (Trustee gate before any application fires)
+Thu 28 May 2026 — Submit National Lottery Awards for All — England application
+Tue 2 Jun 2026 — Submit MOPAC LCPF Lambeth application
+Thu 4 Jun 2026 — Register interest with London Community Foundation Stronger Futures 4.0
+Tue 9 Jun 2026 — Submit 7stars Foundation Social Impact Grants application
+Thu 11 Jun 2026 — Submit MOPAC LCPF Lewisham application
+Tue 16 Jun 2026 — Submit King Charles III Small Grants application
+Thu 18 Jun 2026 — Submit MOPAC LCPF Southwark application
+Tue 7 Jul 2026 — Submit Charitable Grants Programme for Offenders and Young People application
+Thu 9 Jul 2026 — Initial conversation with National Lottery Reaching Communities team
+Tue 4 Aug 2026 — Submit National Lottery Reaching Communities application
+Thu 6 Aug 2026 — Register interest with UK Youth Fund for next round
+Tue 1 Sep 2026 — Submit London Community Foundation Stronger Futures 4.0 application (when round opens)
+Thu 3 Sep 2026 — Initial conversation with BBC Children in Need grants team
+Tue 6 Oct 2026 — Initial conversation with Youth Endowment Fund grants team — sound out evaluation readiness
+Tue 3 Nov 2026 — Submit BBC Children in Need Expression of Interest
+Tue 1 Dec 2026 — Begin City Bridge Foundation Bridging Divides conversations
+Tue 12 Jan 2027 — Submit Comic Relief themed application (subject to round timing)
+Tue 2 Mar 2027 — Submit City Bridge Foundation application
+Tue 6 Apr 2027 — Submit Youth Endowment Fund Open Call application (subject to evaluation readiness)
+Tue 4 May 2027 — Pipeline review — assess Tier 1 and Tier 2 conversion rates, plan Year 2 strategy
+
+
+STEP 4 — Pre-populate Next Action Date and Next Action on each funder record matching the calendar entries above. Foundation populates further as outreach proceeds.
+
+CRITICAL — D6 gate:
+The first calendar entry (Tue 26 May — D6 resolution checkpoint) is a Trustee prerequisite. NO funder application is submitted until D6 governance discrepancy between the public website income claims and the Charity Commission filed return is resolved. Every funder checks the Charity Commission record before reading the application.
+Add a gating rule: applications can only move from "Not started" to "In preparation" if a Trustee has marked D6 resolution as Complete. Until that flag is set, all funder records show a warning banner: "D6 governance discrepancy unresolved — applications blocked."
+
+After completion, confirm:
+
+Funder Directory module created with full 18-field schema; dropdowns populated; colour coding applied
+All 15 funder records added (13 unique funders — MOPAC counted as 3 borough records, John Lyon's deprioritised but included for completeness)
+Tier filter chips functional (All / Tier 1 / Tier 2 / Tier 3)
+Default sort applied (Tier ascending, then Next action date ascending)
+All 21 calendar entries created with correct dates, Owner "ALLI Foundation", reminders set
+Next Action Date and Next Action populated on all funder records matching the calendar sequence
+D6 gating rule active — warning banner visible on every funder record until Trustee flag is set
+Notes field accepting multi-line input and auto-stamping with date and Owner on save
+List view shows: Funder name, Tier, Status (colour-coded), Owner, Next action date, Amount applied for — sortable
+Discussion thread note posted: "Funder Directory built and populated with 13 youth-specific funders (15 records including MOPAC across 3 boroughs) plus 21 calendar entries seeded for 12-month application sequence. D6 governance gate active — applications blocked until Trustee resolution flag set. Foundation operates funder pipeline from a single tracked source."
+
+Report back with all ten confirmations.
+
+That's the final Replit paste. Send it after the Trustees have reviewed the two documents and authorised the strategy.
+Three things to keep in mind:
+The MOPAC LCPF is now three separate records (Lambeth, Lewisham, Southwark) — not one record. Each borough application is independent with its own contact, its own window, its own decision. The Replit Agent will create 15 records total: 6 Tier 1 (Lottery + 3 MOPAC + 7stars + King Charles III) + 5 Tier 2 + 4 Tier 3.
+The D6 gate is hard-coded into the directory now. Until a Trustee marks the governance discrepancy resolved, the system literally blocks the Status field from moving past "Not started." That's the right protection — but make sure the Trustees actually know how to mark D6 resolved on the portal once they fix it. If the resolution mechanism isn't obvious to them, the applications will stall waiting for a flag nobody knows how to set.
+YEF requires evaluation readiness — not just delivery. ALLI needs case management data flowing through the D27 framework before a YEF application is credible. Don't fire YEF in Month 1 — the Foundation will get politely declined and lose credibility for Year 2. The calendar sequence correctly puts YEF at Month 11 (April 2027), which gives the Foundation time to build the evidence base. Worth flagging this to Mr. Kehinde Alli specifically so he doesn't get impatient and push for YEF early.

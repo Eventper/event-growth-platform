@@ -1,0 +1,30 @@
+Context: eventperfekt.net, the /iamher page (React SPA + Express; leave the existing seo-meta-injector.ts, sitemap and robots working). Five jobs, in priority order. Report what changed after each. Don't refactor outside these jobs, and don't resurrect the old brochure-modal dead code.
+Job 1 — Make /iamher server-render its actual content (highest priority).
+
+When the page is fetched by anything that doesn't run JavaScript (Google's first-pass crawler, link-preview bots, external fetchers), only the <head> meta tags come back — the body is empty until React hydrates. Confirmed repeatedly: external fetches return the meta tags plus an "Event Perfekt" shell and none of the real content. This is very likely why the page isn't appearing in search.
+
+Goal: the initial HTML for /iamher must contain the real content — headings, invitation copy, the evening timeline, the inclusions, speaker bios (Dr Sarah Jenkins, Esther), and the FAQ — present before JavaScript runs. Assess the current setup and recommend the lightest reliable approach (full SSR, build-time pre-rendering/static snapshots of the public routes, or server-injecting the core content the same way meta tags are already injected). Tell me the trade-offs before implementing anything large — I want the simplest fix that makes the content crawlable, not an architecture rewrite unless that's truly the only option. Don't break the meta injector; extend it if that's cleanest.
+Job 2 — Remove any "5-star" venue claim everywhere.
+
+The page must NOT describe the venue as "5-star" (the venue isn't confirmed, and the claim can't be substantiated). Find every instance of "5-star" / "5 star" / "five-star" across the /iamher page, its components, AND the SEO layer (check seo-meta-injector.ts, the ROUTE_SEO entries, the page meta hooks, the schema.org JSON-LD, sitemap descriptions, and llms.txt — it may be duplicated in several). Do NOT name a specific hotel. Replace with truthful, venue-neutral wording such as "a beautifully curated evening at a premium Milton Keynes venue" or "an intimate evening in a luxury setting." Do not substitute any other rating or named property. Report back every file and field you changed so I can confirm nothing still says 5-star.
+Job 3 — Add a "Your place includes" block near the top, above the price.
+
+Pull the tangible value out of the footnote and up where buyers see it before deciding. Itemised, styled to match the luxury look, venue-neutral:
+
+Champagne welcome on arrival
+Three-course dinner in a premium Milton Keynes setting
+A designer fragrance, curated for the evening
+An intimate wellbeing conversation led by Dr Sarah Jenkins (Harley Street women's health & menopause doctor) and Esther Emenike-Okorie
+Your own professional editorial portrait
+A feature in the I Am Her editorial campaign — recognition for you and your business
+Exclusive weekend staycation rates to explore Milton Keynes
+
+Keep arrival/venue details as the "shared with confirmed guests" reveal. Also move Dr Sarah's credentials higher up the page — she's the strongest proof point and currently sits several scrolls down.
+
+Job 4 — Fix the email-capture copy.
+
+The capture line is duplicated and broken ("Leave your email for a free chance to get a free invitation or a professional photoshoot," shown twice). Replace with one clean line: "Not ready to request your place? Leave your email and you'll be entered to win a complimentary invitation or a professional editorial portrait."
+Job 5 — Wire the email capture as the PRIMARY CTA on /iamher.
+
+Most visitors won't commit £360 on first visit, so give them a low-commitment path. Make a single-field email capture (email only) the primary hero action — button like "Get the Details" or "Stay in the Room." Store it using the site's EXISTING email-capture storage (reuse whatever feeds the "Emails Captured" dashboard metric — don't build a parallel system). Fire trackFunnelEvent('interest_capture', '/iamher', {...}) so UTM data attaches. Keep "Request Your Invitation" / the £360 purchase path as a clearly-labelled secondary button for those ready to buy now.
+Reminder: price displays as £360 (£300 + VAT), stated plainly — no "Investment:" euphemism, no VAT maths for the user.

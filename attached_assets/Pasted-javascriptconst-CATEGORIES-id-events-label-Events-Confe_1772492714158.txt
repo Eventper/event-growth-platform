@@ -1,0 +1,90 @@
+javascriptconst CATEGORIES = [
+  {
+    id: "events",
+    label: "Events & Conferences",
+    icon: "🎪",
+    keywords: [
+      "event management tender open 2026",
+      "conference management contract UK",
+      "corporate events procurement government"
+    ]
+  },
+  {
+    id: "africa_events",
+    label: "Africa Regional Events",
+    icon: "🌍",
+    keywords: [
+      "events Africa tender 2026 open",
+      "conference management Africa World Bank",
+      "regional events FCDO Nigeria Kenya procurement"
+    ]
+  },
+  {
+    id: "gdpr",
+    label: "GDPR & Data Privacy",
+    icon: "🔒",
+    keywords: [
+      "GDPR data privacy tender open 2026",
+      "data protection compliance contract UK",
+      "information governance procurement 2026"
+    ]
+  },
+  {
+    id: "pmo",
+    label: "PMO & Project Management",
+    icon: "📊",
+    keywords: [
+      "PMO project management tender 2026",
+      "programme management consultancy open",
+      "project governance procurement contract"
+    ]
+  },
+  {
+    id: "africa_prog",
+    label: "Africa Programmes",
+    icon: "🤝",
+    keywords: [
+      "africa development programme tender 2026",
+      "remittance financial inclusion contract open",
+      "diaspora programme FCDO USAID 2026"
+    ]
+  }
+];
+
+const TODAY = new Date().toISOString().slice(0, 10);
+const REJECTED = ["awarded","closed","cancelled","void","suspended","withdrawn","expired","complete"];
+
+function isTenderValid(t) {
+  if (!t.deadline || t.deadline < TODAY) return false;
+  if (!t.deadline.match(/^202[6-9]|^203/)) return false;
+  if (REJECTED.some(s => t.status?.toLowerCase().includes(s))) return false;
+  return true;
+}
+
+async function fetchTenders(categoryId, keywords) {
+  const response = await fetch("/api/search-tenders", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ category: categoryId, keywords })
+  });
+
+  if (!response.ok) throw new Error("Search failed");
+  const data = await response.json();
+
+  // Frontend safety filter — second pass
+  return data.filter(isTenderValid);
+}
+
+export { CATEGORIES, fetchTenders, isTenderValid };
+```
+
+---
+
+**FILE 4 — .env (Replit Secrets)**
+```
+ANTHROPIC_API_KEY=your_key_here
+Add this in Replit under Secrets — not in a file.
+
+Tell Replit Agent:
+
+Create server.js and package.json exactly as above. Install dependencies with npm install. Add ANTHROPIC_API_KEY to Secrets. The frontend calls POST /api/search-tenders with a category and keywords array. Backend uses Claude with web_search tool to find real live open 2026 tenders only and filters out anything awarded, closed, cancelled or expired before returning results.

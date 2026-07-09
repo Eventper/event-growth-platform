@@ -1,0 +1,76 @@
+The Request Access page is largely correct.
+
+Please do NOT redesign it or introduce ticketing language.
+
+Instead, make the following improvements:
+
+1. ADD A SHORT SECTION ABOVE THE OPTIONS
+
+Title:
+Why Request Access?
+
+Copy:
+
+The Woman Who Leads the Room is intentionally curated.
+
+Attendance is limited to preserve the quality of the room, the conversations, and the experience.
+
+Every guest is reviewed individually to ensure the evening remains aligned with its purpose.
+
+2. IMPROVE OPTION A WORDING
+
+Current:
+"I would like to secure invitation access."
+
+Change to:
+
+"I would like to request invitation access to the evening."
+
+This feels less transactional and more invitation-led.
+
+3. STRENGTHEN THE CORPORATE ANGLE
+
+Add a new section before the FAQ:
+
+For Organisations
+
+Many organisations invest in leadership development, coaching, inclusion, and wellbeing.
+
+The Woman Who Leads the Room complements those investments through a premium experience centred around confidence, wellbeing, connection, and the human behind high performance.
+
+Corporate invitation opportunities are available for organisations wishing to recognise, reward, and invest in the women leading within their business.
+
+Add CTA:
+
+Enquire About Corporate Invitations
+
+4. STRENGTHEN THE I AM HER CAMPAIGN
+
+Replace:
+
+"This is not promotion. It is recognition."
+
+With:
+
+"Every woman in the room has a story.
+
+The I Am Her campaign celebrates the founders, executives, professionals, creators, and changemakers behind the titles — giving visibility to the women and businesses shaping our communities."
+
+5. ADD FAQ
+
+Why is attendance curated?
+
+Answer:
+
+Because the experience is intentionally designed around the quality of the room rather than the size of the audience. Every guest is reviewed to ensure the evening remains aligned with its purpose and atmosphere.
+
+6. ADD FAQ
+
+Can organisations nominate women from their teams?
+
+Answer:
+
+Yes. Organisations may nominate employees, executives, founders, and leaders for invitation consideration. Corporate invitation opportunities are available for aligned organisations.
+
+No other major changes are required.
+The overall positioning is already strong.

@@ -1,0 +1,963 @@
+import { useState, useEffect } from "react";
+
+const COLORS = {
+  bg: "#1A0A0E",
+  panel: "#2A1018",
+  panelBorder: "#4A2030",
+  gold: "#C9A84C",
+  goldLight: "#E2C87A",
+  green: "#22C55E",
+  red: "#EF4444",
+  amber: "#F59E0B",
+  text: "#FAF0F2",
+  muted: "#9A7A82",
+  accent: "#3A1525",
+};
+
+const INITIAL_TENDERS = [
+  {
+    id: 1,
+    title: "GM Business Growth Hub Enterprise Festival",
+    buyer: "Greater Manchester Combined Authority",
+    value: "£50,000",
+    deadline: "2026-03-15",
+    status: "Lost",
+    category: "Events",
+    portal: "Find a Tender",
+    notes: "Scored 95/100. Lost on price/minor criteria. Near-perfect bid — reuse for future tenders.",
+    bids: [],
+  },
+  {
+    id: 2,
+    title: "Africa Regional Support Requirements CEFAS25-35",
+    buyer: "CEFAS / UK Government",
+    value: "Confidential",
+    deadline: "2026-04-01",
+    status: "Active",
+    category: "Government",
+    portal: "Crown Commercial",
+    notes: "Existing contract. Renewal preparation needed.",
+    bids: [],
+  },
+];
+
+const STATUS_COLORS = {
+  "Active": COLORS.green,
+  "In Progress": COLORS.amber,
+  "Submitted": "#3B82F6",
+  "Won": COLORS.gold,
+  "Lost": COLORS.red,
+  "Researching": COLORS.muted,
+};
+
+const PORTALS = [
+  "Find a Tender (FTS)", "Contracts Finder", "Crown Commercial Service",
+  "NHS Supply Chain", "YPO", "OJEU", "Proactis", "In-Tend",
+  "Delta eSourcing", "Other"
+];
+
+const CATEGORIES = [
+  "Events & Festivals", "Government Services", "Consulting & PMO",
+  "Training & Development", "IT & Digital", "Facilities Management",
+  "Marketing & Communications", "Construction & Fit-Out", "Other"
+];
+
+function Badge({ status }) {
+  const color = STATUS_COLORS[status] || COLORS.muted;
+  return (
+    <span style={{
+      background: color + "22", border: `1px solid ${color}55`,
+      color: color, padding: "3px 10px", borderRadius: "2px",
+      fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.12em",
+      textTransform: "uppercase", whiteSpace: "nowrap"
+    }}>{status}</span>
+  );
+}
+
+function Btn({ children, onClick, variant = "primary", small, disabled, style = {} }) {
+  const base = {
+    fontFamily: "'Barlow Condensed', sans-serif",
+    fontSize: small ? "0.72rem" : "0.8rem",
+    fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase",
+    border: "none", cursor: disabled ? "not-allowed" : "pointer",
+    padding: small ? "7px 16px" : "11px 26px",
+    borderRadius: "2px", transition: "all 0.2s",
+    opacity: disabled ? 0.5 : 1,
+  };
+  const variants = {
+    primary: { background: COLORS.gold, color: "#0A0F1A" },
+    secondary: { background: "transparent", color: COLORS.muted, border: `1px solid ${COLORS.panelBorder}` },
+    danger: { background: "#EF444422", color: COLORS.red, border: `1px solid #EF444433` },
+    green: { background: "#22C55E22", color: COLORS.green, border: `1px solid #22C55E33` },
+  };
+  return (
+    <button onClick={disabled ? undefined : onClick} style={{ ...base, ...variants[variant], ...style }}>
+      {children}
+    </button>
+  );
+}
+
+function Input({ label, value, onChange, type = "text", placeholder, textarea, select, options, style = {} }) {
+  const inputStyle = {
+    width: "100%", background: "#0A0F1A", border: `1px solid ${COLORS.panelBorder}`,
+    color: COLORS.text, padding: "10px 14px", borderRadius: "2px",
+    fontFamily: "'DM Sans', sans-serif", fontSize: "0.88rem",
+    marginTop: "6px", boxSizing: "border-box", ...style
+  };
+  return (
+    <div style={{ marginBottom: "14px" }}>
+      {label && <label style={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: COLORS.muted, fontFamily: "'Barlow Condensed', sans-serif" }}>{label}</label>}
+      {textarea ? (
+        <textarea value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} rows={4} style={{ ...inputStyle, resize: "vertical" }} />
+      ) : select ? (
+        <select value={value} onChange={e => onChange(e.target.value)} style={{ ...inputStyle }}>
+          <option value="">Select...</option>
+          {options.map(o => <option key={o} value={o}>{o}</option>)}
+        </select>
+      ) : (
+        <input type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder} style={inputStyle} />
+      )}
+    </div>
+  );
+}
+
+function Panel({ children, style = {} }) {
+  return (
+    <div style={{
+      background: COLORS.panel, border: `1px solid ${COLORS.panelBorder}`,
+      borderRadius: "4px", padding: "24px", ...style
+    }}>{children}</div>
+  );
+}
+
+function SectionHeading({ children }) {
+  return (
+    <div style={{
+      fontFamily: "'Barlow Condensed', sans-serif", fontSize: "0.65rem",
+      fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase",
+      color: COLORS.gold, marginBottom: "16px",
+      display: "flex", alignItems: "center", gap: "12px"
+    }}>
+      {children}
+      <div style={{ flex: 1, height: "1px", background: COLORS.panelBorder }} />
+    </div>
+  );
+}
+
+// ── AI BID WRITER ──────────────────────────────────────────────
+function AIBidWriter({ tender, onClose }) {
+  const [section, setSection] = useState("executive_summary");
+  const [context, setContext] = useState("");
+  const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const sections = [
+    { id: "executive_summary", label: "Executive Summary" },
+    { id: "methodology", label: "Methodology & Approach" },
+    { id: "social_value", label: "Social Value" },
+    { id: "experience", label: "Relevant Experience" },
+    { id: "team", label: "Team & Expertise" },
+    { id: "pricing", label: "Pricing Rationale" },
+    { id: "mobilisation", label: "Mobilisation Plan" },
+    { id: "risk", label: "Risk Management" },
+    { id: "cover_letter", label: "Cover Letter" },
+  ];
+
+  const systemPrompt = `You are an expert bid writer for Event Perfekt Global Ltd, a UK-registered strategic events consultancy with 25+ years heritage. 
+Company background: Event Perfekt Global Ltd specialises in government contracts, strategic events, cross-border programmes, and diaspora business initiatives. 
+Director: Tolz (Tolulope) — PMO Manager with 15+ years experience across government, financial services, and insurance. Holds PRINCE2, PMP, Certified Scrum Master certifications. Previous roles at DEFRA, Lloyd's Banking Group, Motor Insurance Bureau.
+Key strengths: Government contract experience, programme governance, event delivery, UK-Africa corridors, compliance frameworks.
+Write in a professional, confident, UK public sector bid writing style. Be specific, evidence-based, and use STAR format where appropriate. Avoid generic statements. Always reference the specific tender and buyer context provided.`;
+
+  async function generateSection() {
+    setLoading(true);
+    setResult("");
+    try {
+      const prompt = `Write a ${sections.find(s => s.id === section).label} section for the following tender bid:
+
+TENDER: ${tender.title}
+BUYER: ${tender.buyer}
+CONTRACT VALUE: ${tender.value}
+CATEGORY: ${tender.category}
+
+ADDITIONAL CONTEXT FROM USER:
+${context || "None provided"}
+
+Write a compelling, specific, and professional ${sections.find(s => s.id === section).label} section of approximately 400-600 words. Use UK public sector bid writing conventions. Be specific about how Event Perfekt Global meets this buyer's requirements.`;
+
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+      const data = await response.json();
+      const text = data.content?.map(c => c.text || "").join("") || "Error generating content.";
+      setResult(text);
+    } catch (e) {
+      setResult("Error connecting to AI. Please try again.");
+    }
+    setLoading(false);
+  }
+
+  async function improveSection() {
+    if (!result) return;
+    setLoading(true);
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages: [{ role: "user", content: `Improve and strengthen this bid section. Make it more compelling, specific, and evidence-based. Add stronger proof points and remove any generic statements:\n\n${result}` }]
+        })
+      });
+      const data = await response.json();
+      setResult(data.content?.map(c => c.text || "").join("") || result);
+    } catch (e) {}
+    setLoading(false);
+  }
+
+  function copy() {
+    navigator.clipboard.writeText(result);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  return (
+    <div style={{
+      position: "fixed", inset: 0, background: "rgba(0,0,0,0.85)", zIndex: 1000,
+      display: "flex", alignItems: "center", justifyContent: "center", padding: "20px"
+    }}>
+      <div style={{
+        background: COLORS.panel, border: `1px solid ${COLORS.panelBorder}`,
+        borderRadius: "4px", width: "100%", maxWidth: "900px", maxHeight: "90vh",
+        display: "flex", flexDirection: "column", overflow: "hidden"
+      }}>
+        {/* Header */}
+        <div style={{ padding: "20px 24px", borderBottom: `1px solid ${COLORS.panelBorder}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>
+            <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.2em", color: COLORS.gold, textTransform: "uppercase" }}>AI Bid Writer</div>
+            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", color: COLORS.text, marginTop: "4px" }}>{tender.title}</div>
+          </div>
+          <Btn onClick={onClose} variant="secondary" small>✕ Close</Btn>
+        </div>
+
+        <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+          {/* Left panel */}
+          <div style={{ width: "220px", borderRight: `1px solid ${COLORS.panelBorder}`, padding: "16px", overflowY: "auto" }}>
+            <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: COLORS.muted, marginBottom: "12px", fontFamily: "'Barlow Condensed', sans-serif" }}>Sections</div>
+            {sections.map(s => (
+              <div key={s.id} onClick={() => setSection(s.id)} style={{
+                padding: "9px 12px", borderRadius: "2px", cursor: "pointer", marginBottom: "4px",
+                background: section === s.id ? COLORS.gold + "22" : "transparent",
+                border: section === s.id ? `1px solid ${COLORS.gold}44` : "1px solid transparent",
+                color: section === s.id ? COLORS.gold : COLORS.muted,
+                fontFamily: "'Barlow Condensed', sans-serif", fontSize: "0.78rem",
+                fontWeight: section === s.id ? 700 : 400, letterSpacing: "0.06em",
+                transition: "all 0.15s"
+              }}>{s.label}</div>
+            ))}
+          </div>
+
+          {/* Main */}
+          <div style={{ flex: 1, padding: "20px 24px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "16px" }}>
+            <Input
+              label="Additional context (optional — add specific requirements, word count, scoring criteria)"
+              value={context}
+              onChange={setContext}
+              textarea
+              placeholder="e.g. Max 500 words. Scored on 40% quality, 30% social value, 30% price. Buyer priority is community engagement..."
+              style={{ minHeight: "80px" }}
+            />
+
+            <div style={{ display: "flex", gap: "10px" }}>
+              <Btn onClick={generateSection} disabled={loading}>
+                {loading ? "⟳ Generating..." : "✦ Generate Section"}
+              </Btn>
+              {result && <Btn onClick={improveSection} variant="secondary" disabled={loading}>↑ Improve</Btn>}
+              {result && <Btn onClick={copy} variant="green" small>{copied ? "✓ Copied" : "Copy"}</Btn>}
+            </div>
+
+            {result && (
+              <div style={{
+                background: "#0A0F1A", border: `1px solid ${COLORS.panelBorder}`,
+                borderRadius: "2px", padding: "20px",
+                fontFamily: "'DM Sans', sans-serif", fontSize: "0.88rem",
+                color: COLORS.text, lineHeight: 1.8, whiteSpace: "pre-wrap",
+                flex: 1, minHeight: "200px"
+              }}>{result}</div>
+            )}
+
+            {!result && !loading && (
+              <div style={{ textAlign: "center", color: COLORS.muted, padding: "60px 20px", fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "1.1rem" }}>
+                Select a section and click Generate to start writing your bid
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── ADD / EDIT TENDER MODAL ───────────────────────────────────
+function TenderModal({ tender, onSave, onClose }) {
+  const [form, setForm] = useState(tender || {
+    title: "", buyer: "", value: "", deadline: "",
+    status: "Researching", category: "", portal: "", notes: ""
+  });
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.85)", zIndex: 999, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+      <div style={{ background: COLORS.panel, border: `1px solid ${COLORS.panelBorder}`, borderRadius: "4px", width: "100%", maxWidth: "560px", maxHeight: "90vh", overflowY: "auto", padding: "28px" }}>
+        <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.2em", color: COLORS.gold, textTransform: "uppercase", marginBottom: "6px" }}>
+          {tender ? "Edit Tender" : "Add New Tender"}
+        </div>
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.3rem", color: COLORS.text, marginBottom: "22px" }}>
+          {tender ? tender.title : "New Opportunity"}
+        </div>
+
+        <Input label="Tender / Contract Title" value={form.title} onChange={v => set("title", v)} placeholder="e.g. Enterprise Events Festival 2026" />
+        <Input label="Buying Organisation" value={form.buyer} onChange={v => set("buyer", v)} placeholder="e.g. Greater Manchester Combined Authority" />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+          <Input label="Contract Value" value={form.value} onChange={v => set("value", v)} placeholder="e.g. £50,000" />
+          <Input label="Submission Deadline" value={form.deadline} onChange={v => set("deadline", v)} type="date" />
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+          <Input label="Status" value={form.status} onChange={v => set("status", v)} select options={Object.keys(STATUS_COLORS)} />
+          <Input label="Category" value={form.category} onChange={v => set("category", v)} select options={CATEGORIES} />
+        </div>
+        <Input label="Procurement Portal" value={form.portal} onChange={v => set("portal", v)} select options={PORTALS} />
+        <Input label="Notes & Requirements" value={form.notes} onChange={v => set("notes", v)} textarea placeholder="Key requirements, scoring criteria, word limits, special conditions..." />
+
+        <div style={{ display: "flex", gap: "12px", marginTop: "8px" }}>
+          <Btn onClick={() => onSave(form)}>Save Tender</Btn>
+          <Btn onClick={onClose} variant="secondary">Cancel</Btn>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── AI SEARCH HELPER ──────────────────────────────────────────
+function AISearchHelper() {
+  const [query, setQuery] = useState("");
+  const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function search() {
+    if (!query.trim()) return;
+    setLoading(true);
+    setResult("");
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          system: `You are a UK public sector procurement expert helping Event Perfekt Global Ltd — a UK events and government services consultancy — find relevant tender opportunities. 
+Provide specific, actionable advice on where to find tenders, which portals to use, which CPV codes are relevant, and what keywords to search. 
+Be specific and practical. Include direct links to portals where possible.`,
+          messages: [{ role: "user", content: query }]
+        })
+      });
+      const data = await response.json();
+      setResult(data.content?.map(c => c.text || "").join("") || "Error.");
+    } catch (e) {
+      setResult("Error connecting to AI.");
+    }
+    setLoading(false);
+  }
+
+  return (
+    <Panel>
+      <SectionHeading>AI Tender Search Advisor</SectionHeading>
+      <p style={{ fontSize: "0.85rem", color: COLORS.muted, marginBottom: "16px", fontFamily: "'DM Sans', sans-serif" }}>
+        Ask the AI where to find tenders, which portals to search, CPV codes, or how to qualify an opportunity.
+      </p>
+      <div style={{ display: "flex", gap: "10px", marginBottom: "16px" }}>
+        <input
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && search()}
+          placeholder='e.g. "Find events management tenders over £20K in the North West" or "What CPV codes for event management?"'
+          style={{
+            flex: 1, background: "#0A0F1A", border: `1px solid ${COLORS.panelBorder}`,
+            color: COLORS.text, padding: "10px 14px", borderRadius: "2px",
+            fontFamily: "'DM Sans', sans-serif", fontSize: "0.88rem"
+          }}
+        />
+        <Btn onClick={search} disabled={loading || !query.trim()}>
+          {loading ? "⟳" : "Ask AI"}
+        </Btn>
+      </div>
+      {result && (
+        <div style={{
+          background: "#0A0F1A", border: `1px solid ${COLORS.panelBorder}`,
+          borderRadius: "2px", padding: "16px",
+          fontFamily: "'DM Sans', sans-serif", fontSize: "0.87rem",
+          color: COLORS.text, lineHeight: 1.8, whiteSpace: "pre-wrap"
+        }}>{result}</div>
+      )}
+
+      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginTop: "14px" }}>
+        {["Events tenders UK government", "Find PMO consulting tenders", "UK-Africa programme tenders", "Tender portals for SMEs", "CPV codes for events management"].map(q => (
+          <span key={q} onClick={() => setQuery(q)} style={{
+            padding: "5px 12px", background: COLORS.accent + "55", border: `1px solid ${COLORS.panelBorder}`,
+            borderRadius: "2px", fontSize: "0.7rem", color: COLORS.muted, cursor: "pointer",
+            fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "0.06em",
+            transition: "color 0.15s"
+          }}>{q}</span>
+        ))}
+      </div>
+    </Panel>
+  );
+}
+
+// ── DEADLINE TRACKER ──────────────────────────────────────────
+function daysUntil(dateStr) {
+  if (!dateStr) return null;
+  const diff = new Date(dateStr) - new Date();
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
+function DeadlineBar({ tenders }) {
+  const upcoming = tenders
+    .filter(t => t.deadline && daysUntil(t.deadline) > 0 && daysUntil(t.deadline) <= 60)
+    .sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+
+  if (!upcoming.length) return null;
+
+  return (
+    <Panel style={{ marginBottom: "20px" }}>
+      <SectionHeading>Upcoming Deadlines</SectionHeading>
+      <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+        {upcoming.map(t => {
+          const days = daysUntil(t.deadline);
+          const color = days <= 7 ? COLORS.red : days <= 21 ? COLORS.amber : COLORS.green;
+          return (
+            <div key={t.id} style={{
+              background: color + "11", border: `1px solid ${color}33`,
+              borderRadius: "2px", padding: "12px 16px", minWidth: "180px"
+            }}>
+              <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color, fontFamily: "'Barlow Condensed', sans-serif", marginBottom: "4px" }}>
+                {days === 1 ? "TOMORROW" : `${days} DAYS`}
+              </div>
+              <div style={{ fontSize: "0.85rem", color: COLORS.text, fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}>{t.title.length > 40 ? t.title.slice(0, 40) + "…" : t.title}</div>
+              <div style={{ fontSize: "0.75rem", color: COLORS.muted, marginTop: "2px" }}>{t.buyer}</div>
+            </div>
+          );
+        })}
+      </div>
+    </Panel>
+  );
+}
+
+
+const SEARCH_CATEGORIES = [
+  {
+    id: "events",
+    label: "Events & Conferences",
+    icon: "🎪",
+    keywords: ["event management conference tender", "corporate events contract UK", "conference management procurement", "events planning government contract"],
+    color: "#C9A84C",
+    portals: "UK Contracts Finder, Find a Tender, Devex"
+  },
+  {
+    id: "africa_events",
+    label: "Africa Regional Events",
+    icon: "🌍",
+    keywords: ["events management Africa tender", "conference Africa World Bank", "regional events FCDO Nigeria Kenya", "diaspora events procurement Africa"],
+    color: "#E2A84C",
+    portals: "AfDB, World Bank, FCDO, Devex, UNDP"
+  },
+  {
+    id: "gdpr",
+    label: "GDPR & Data Privacy",
+    icon: "🔒",
+    keywords: ["GDPR data privacy contract tender", "data protection compliance procurement UK", "information governance tender", "data privacy consultancy contract"],
+    color: "#3B82F6",
+    portals: "UK Contracts Finder, Find a Tender, Crown Commercial"
+  },
+  {
+    id: "pmo",
+    label: "PMO & Project Management",
+    icon: "📊",
+    keywords: ["PMO project management tender", "programme management consultancy contract", "project governance procurement", "portfolio management office tender"],
+    color: "#22C55E",
+    portals: "UK, World Bank, AfDB, UNDP, USAID"
+  },
+  {
+    id: "africa_prog",
+    label: "Africa Programmes & Remittances",
+    icon: "🤝",
+    keywords: ["africa development programme tender", "remittance financial inclusion Africa", "diaspora investment programme", "international development Africa FCDO USAID"],
+    color: "#A855F7",
+    portals: "World Bank, AfDB, FCDO, USAID, UNDP, UN"
+  },
+];
+
+async function searchTendersViaAI(category, keywords) {
+  try {
+    const searchQuery = keywords.join(" OR ") + " tender contract opportunity 2025 2026";
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 2000,
+        tools: [{ type: "web_search_20250305", name: "web_search" }],
+        system: `You are a global procurement research expert helping Event Perfekt Global Ltd find real live tender and contract opportunities worldwide.
+
+Search the internet for REAL, CURRENT tender opportunities matching the given category and keywords. Search across:
+- UK: contractsfinder.service.gov.uk, find-tender.service.gov.uk, crowncommercial.gov.uk
+- Africa: devex.com, africatenders.com, tenders.go.ke, nigerianbureauofpublicprocurement.gov.ng, adb.org, afdb.org
+- International: worldbank.org/projects, undp.org/procurement, devex.com, ungm.org, fcdo.gov.uk, usaid.gov
+- Other: tendersinfo.com, dgmarket.com, sam.gov (US)
+
+After searching, return ONLY a valid JSON array of up to 8 real opportunities found. Each object must have:
+- title: exact tender title found online
+- buyer: exact organisation name
+- value: contract value if shown, or "Not stated"
+- deadline: submission deadline in YYYY-MM-DD format if found, else ""
+- description: 1-2 sentence summary of what is required
+- url: the direct URL to the actual tender notice
+- source: the website/portal name where found
+- country: country or region (e.g. "UK", "Nigeria", "Kenya", "World Bank", "UN")
+
+Return ONLY the JSON array. No markdown, no explanation, no backticks.`,
+        messages: [{
+          role: "user",
+          content: `Search the internet right now for real live tender and contract opportunities in the category: "${category}". 
+Search keywords: ${keywords.join(", ")}
+Today's date: ${new Date().toISOString().slice(0,10)}
+Find opportunities from UK government portals, African development banks, World Bank, UN, FCDO, USAID, and any other relevant procurement portals. Return real URLs to real current notices.`
+        }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content
+      ?.filter(c => c.type === "text")
+      .map(c => c.text || "")
+      .join("") || "[]";
+    const clean = text.replace(/```json|```/g, "").trim();
+    const jsonMatch = clean.match(/\[.*\]/s);
+    const parsed = JSON.parse(jsonMatch ? jsonMatch[0] : clean);
+    return parsed.map((t, i) => ({ ...t, id: Date.now() + i }));
+  } catch(e) {
+    console.error("Search error:", e);
+    return [];
+  }
+}
+
+async function searchContractsFinder(keyword) { return []; }
+async function searchFindATender(keyword) { return []; }
+
+function AutoFeedTab({ onAddToTracker }) {
+  const [results, setResults] = useState({});
+  const [loading, setLoading] = useState({});
+  const [activeCategory, setActiveCategory] = useState("events");
+  const [searched, setSearched] = useState({});
+
+  async function searchCategory(cat) {
+    setLoading(l => ({ ...l, [cat.id]: true }));
+    const results = await searchTendersViaAI(cat.label, cat.keywords);
+    setResults(r => ({ ...r, [cat.id]: results }));
+    setSearched(s => ({ ...s, [cat.id]: true }));
+    setLoading(l => ({ ...l, [cat.id]: false }));
+  }
+
+  async function searchAll() {
+    for (const cat of SEARCH_CATEGORIES) {
+      await searchCategory(cat);
+      await new Promise(r => setTimeout(r, 500));
+    }
+  }
+
+  const cat = SEARCH_CATEGORIES.find(c => c.id === activeCategory);
+  const catResults = results[activeCategory] || [];
+
+  return (
+    <div>
+      <div style={{ marginBottom: "24px", display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+        <div>
+          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.22em", color: COLORS.gold, textTransform: "uppercase", marginBottom: "6px" }}>Live Feed</div>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.8rem", fontWeight: 700, margin: 0 }}>Auto <em style={{ color: COLORS.gold }}>Tender Search</em></h2>
+          <p style={{ color: COLORS.muted, marginTop: "6px", fontSize: "0.85rem" }}>Live results from UK, Africa, World Bank, UN, FCDO, USAID & global procurement portals</p>
+        </div>
+        <Btn onClick={searchAll} style={{ background: COLORS.gold, color: "#1A0A0E" }}>
+          ⟳ Search All Categories
+        </Btn>
+      </div>
+
+      {/* Category tabs */}
+      <div style={{ display: "flex", gap: "8px", marginBottom: "20px", flexWrap: "wrap" }}>
+        {SEARCH_CATEGORIES.map(c => (
+          <button key={c.id} onClick={() => setActiveCategory(c.id)} style={{
+            padding: "9px 18px",
+            background: activeCategory === c.id ? c.color + "22" : "transparent",
+            border: `1px solid ${activeCategory === c.id ? c.color + "66" : COLORS.panelBorder}`,
+            color: activeCategory === c.id ? c.color : COLORS.muted,
+            fontFamily: "'Barlow Condensed', sans-serif", fontSize: "0.72rem",
+            fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase",
+            cursor: "pointer", borderRadius: "2px", transition: "all 0.15s",
+            display: "flex", alignItems: "center", gap: "6px"
+          }}>
+            <span>{c.icon}</span> {c.label}
+            {results[c.id]?.length > 0 && (
+              <span style={{ background: c.color, color: "#1A0A0E", borderRadius: "2px", padding: "1px 6px", fontSize: "0.62rem", fontWeight: 800 }}>
+                {results[c.id].length}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Search button for active category */}
+      {!searched[activeCategory] && (
+        <Panel style={{ textAlign: "center", padding: "48px" }}>
+          <div style={{ fontSize: "2.5rem", marginBottom: "16px" }}>{cat.icon}</div>
+          <div style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.2rem", color: COLORS.text, marginBottom: "8px" }}>{cat.label}</div>
+          <p style={{ color: COLORS.muted, fontSize: "0.85rem", marginBottom: "24px", maxWidth: "500px", margin: "0 auto 24px" }}>
+            Live web search across: <span style={{color: COLORS.gold}}>{cat.portals}</span>
+          </p>
+          <Btn onClick={() => searchCategory(cat)} disabled={loading[activeCategory]}>
+            {loading[activeCategory] ? "⟳ Searching live tenders..." : `Search ${cat.label} Tenders`}
+          </Btn>
+        </Panel>
+      )}
+
+      {/* Loading */}
+      {loading[activeCategory] && (
+        <Panel style={{ textAlign: "center", padding: "48px" }}>
+          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "0.75rem", letterSpacing: "0.2em", color: COLORS.gold, textTransform: "uppercase" }}>
+            Searching live databases...
+          </div>
+          <div style={{ color: COLORS.muted, marginTop: "8px", fontSize: "0.85rem" }}>Searching UK portals, AfDB, World Bank, FCDO, UNDP, Devex & more...</div>
+        </Panel>
+      )}
+
+      {/* Results */}
+      {searched[activeCategory] && !loading[activeCategory] && (
+        <Panel>
+          <SectionHeading>{cat.icon} {cat.label} — {catResults.length} Results Found</SectionHeading>
+          {catResults.length === 0 && (
+            <div style={{ textAlign: "center", color: COLORS.muted, padding: "40px", fontStyle: "italic" }}>
+              No live results found right now. Try again later or adjust keywords.
+            </div>
+          )}
+          {catResults.map((t, i) => (
+            <div key={i} style={{
+              padding: "18px 0", borderBottom: `1px solid ${COLORS.panelBorder}`,
+              display: "grid", gridTemplateColumns: "1fr auto", gap: "16px", alignItems: "start"
+            }}>
+              <div>
+                <a href={t.url} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 500, fontSize: "0.95rem", color: COLORS.gold, marginBottom: "6px", cursor: "pointer" }}>
+                    {t.title} ↗
+                  </div>
+                </a>
+                <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "6px" }}>
+                  <span style={{ fontSize: "0.78rem", color: COLORS.muted }}>🏢 {t.buyer}</span>
+                  {t.country && <span style={{ fontSize: "0.68rem", color: COLORS.gold, border: `1px solid ${COLORS.gold}44`, padding: "2px 8px", borderRadius: "2px", fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "0.1em", textTransform: "uppercase" }}>🌐 {t.country}</span>}
+                  {t.value && t.value !== "Not stated" && <span style={{ fontSize: "0.78rem", color: COLORS.green, fontWeight: 600 }}>💰 {t.value}</span>}
+                  {t.deadline && <span style={{ fontSize: "0.78rem", color: daysUntil(t.deadline) <= 14 ? COLORS.red : COLORS.amber }}>📅 {t.deadline}</span>}
+                  <span style={{ fontSize: "0.68rem", color: COLORS.muted, border: `1px solid ${COLORS.panelBorder}`, padding: "2px 8px", borderRadius: "2px", fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "0.1em", textTransform: "uppercase" }}>{t.source}</span>
+                </div>
+                {t.description && <div style={{ fontSize: "0.78rem", color: COLORS.muted, fontStyle: "italic", lineHeight: 1.6 }}>{t.description}...</div>}
+              </div>
+              <Btn onClick={() => onAddToTracker(t)} variant="green" small>+ Track</Btn>
+            </div>
+          ))}
+          <div style={{ marginTop: "16px", display: "flex", justifyContent: "flex-end" }}>
+            <Btn onClick={() => searchCategory(cat)} variant="secondary" small disabled={loading[activeCategory]}>
+              ⟳ Refresh
+            </Btn>
+          </div>
+        </Panel>
+      )}
+    </div>
+  );
+}
+
+// ── MAIN APP ──────────────────────────────────────────────────
+export default function TenderManager() {
+  const [tenders, setTenders] = useState(INITIAL_TENDERS);
+  const [view, setView] = useState("dashboard");
+  const [showAdd, setShowAdd] = useState(false);
+  const [editTender, setEditTender] = useState(null);
+  const [aiTender, setAiTender] = useState(null);
+  const [filter, setFilter] = useState("All");
+  const [search, setSearch] = useState("");
+
+  // Load from storage
+  useEffect(() => {
+    (async () => {
+      try {
+        const r = await window.storage.get("tenders");
+        if (r?.value) setTenders(JSON.parse(r.value));
+      } catch {}
+    })();
+  }, []);
+
+  // Save to storage
+  useEffect(() => {
+    (async () => {
+      try { await window.storage.set("tenders", JSON.stringify(tenders)); } catch {}
+    })();
+  }, [tenders]);
+
+  function saveTender(form) {
+    if (form.id) {
+      setTenders(t => t.map(x => x.id === form.id ? form : x));
+    } else {
+      setTenders(t => [...t, { ...form, id: Date.now(), bids: [] }]);
+    }
+    setShowAdd(false);
+    setEditTender(null);
+  }
+
+  function deleteTender(id) {
+    if (confirm("Delete this tender?")) setTenders(t => t.filter(x => x.id !== id));
+  }
+
+  const statuses = ["All", ...Object.keys(STATUS_COLORS)];
+  const filtered = tenders.filter(t => {
+    const matchStatus = filter === "All" || t.status === filter;
+    const matchSearch = !search || t.title.toLowerCase().includes(search.toLowerCase()) || t.buyer.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+
+  const stats = {
+    total: tenders.length,
+    active: tenders.filter(t => ["Active", "In Progress"].includes(t.status)).length,
+    submitted: tenders.filter(t => t.status === "Submitted").length,
+    won: tenders.filter(t => t.status === "Won").length,
+  };
+
+  const navItems = [
+    { id: "dashboard", label: "Dashboard" },
+    { id: "tenders", label: "All Tenders" },
+    { id: "autofeed", label: "🔴 Live Feed" },
+    { id: "search", label: "Find Tenders" },
+  ];
+
+  return (
+    <div style={{ minHeight: "100vh", background: COLORS.bg, color: COLORS.text, fontFamily: "'DM Sans', sans-serif" }}>
+      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+      {/* NAV */}
+      <nav style={{
+        background: COLORS.panel, borderBottom: `1px solid ${COLORS.panelBorder}`,
+        padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between",
+        height: "58px", position: "sticky", top: 0, zIndex: 100
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
+          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, fontSize: "1.1rem", letterSpacing: "0.08em" }}>
+            EVENT <span style={{ color: COLORS.gold }}>PERFEKT</span> GLOBAL
+            <span style={{ fontSize: "0.62rem", fontWeight: 400, color: COLORS.muted, marginLeft: "8px", letterSpacing: "0.15em" }}>TENDER MANAGER</span>
+          </div>
+          <div style={{ display: "flex", gap: "4px" }}>
+            {navItems.map(n => (
+              <button key={n.id} onClick={() => setView(n.id)} style={{
+                background: view === n.id ? COLORS.gold + "22" : "transparent",
+                border: "none", color: view === n.id ? COLORS.gold : COLORS.muted,
+                fontFamily: "'Barlow Condensed', sans-serif", fontSize: "0.75rem",
+                fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase",
+                padding: "6px 16px", cursor: "pointer", borderRadius: "2px",
+                transition: "all 0.15s"
+              }}>{n.label}</button>
+            ))}
+          </div>
+        </div>
+        <Btn onClick={() => setShowAdd(true)} small>+ Add Tender</Btn>
+      </nav>
+
+      <div style={{ padding: "28px 32px", maxWidth: "1200px", margin: "0 auto" }}>
+
+        {/* DASHBOARD */}
+        {view === "dashboard" && (
+          <>
+            <div style={{ marginBottom: "28px" }}>
+              <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.22em", color: COLORS.gold, textTransform: "uppercase", marginBottom: "6px" }}>Event Perfekt Global Ltd</div>
+              <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "2rem", fontWeight: 700, margin: 0 }}>Tender <em style={{ color: COLORS.gold }}>Command Centre</em></h1>
+            </div>
+
+            {/* Stats */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "14px", marginBottom: "24px" }}>
+              {[
+                { label: "Total Tracked", value: stats.total, color: COLORS.text },
+                { label: "Active / In Progress", value: stats.active, color: COLORS.amber },
+                { label: "Submitted", value: stats.submitted, color: "#3B82F6" },
+                { label: "Won", value: stats.won, color: COLORS.gold },
+              ].map(s => (
+                <Panel key={s.label} style={{ textAlign: "center", padding: "20px 16px" }}>
+                  <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "2.4rem", fontWeight: 800, color: s.color, lineHeight: 1 }}>{s.value}</div>
+                  <div style={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: COLORS.muted, marginTop: "6px", fontFamily: "'Barlow Condensed', sans-serif" }}>{s.label}</div>
+                </Panel>
+              ))}
+            </div>
+
+            <DeadlineBar tenders={tenders} />
+
+            {/* Recent tenders */}
+            <Panel>
+              <SectionHeading>Active Opportunities</SectionHeading>
+              {tenders.filter(t => ["Active", "In Progress", "Submitted"].includes(t.status)).length === 0 && (
+                <div style={{ color: COLORS.muted, textAlign: "center", padding: "40px", fontStyle: "italic" }}>No active tenders. Add one to get started.</div>
+              )}
+              {tenders.filter(t => ["Active", "In Progress", "Submitted"].includes(t.status)).map(t => (
+                <TenderRow key={t.id} tender={t} onEdit={() => setEditTender(t)} onDelete={() => deleteTender(t.id)} onAI={() => setAiTender(t)} />
+              ))}
+            </Panel>
+          </>
+        )}
+
+        {/* ALL TENDERS */}
+        {view === "tenders" && (
+          <>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+              <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.8rem", fontWeight: 700 }}>All <em style={{ color: COLORS.gold }}>Tenders</em></h1>
+              <Btn onClick={() => setShowAdd(true)}>+ Add Tender</Btn>
+            </div>
+
+            <div style={{ display: "flex", gap: "10px", marginBottom: "18px", flexWrap: "wrap" }}>
+              <input
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search tenders..."
+                style={{
+                  background: COLORS.panel, border: `1px solid ${COLORS.panelBorder}`,
+                  color: COLORS.text, padding: "8px 14px", borderRadius: "2px",
+                  fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem", width: "240px"
+                }}
+              />
+              {statuses.map(s => (
+                <button key={s} onClick={() => setFilter(s)} style={{
+                  background: filter === s ? COLORS.gold : "transparent",
+                  border: `1px solid ${filter === s ? COLORS.gold : COLORS.panelBorder}`,
+                  color: filter === s ? "#0A0F1A" : COLORS.muted,
+                  fontFamily: "'Barlow Condensed', sans-serif", fontSize: "0.68rem",
+                  fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase",
+                  padding: "6px 14px", borderRadius: "2px", cursor: "pointer"
+                }}>{s}</button>
+              ))}
+            </div>
+
+            <Panel>
+              {filtered.length === 0 && (
+                <div style={{ color: COLORS.muted, textAlign: "center", padding: "40px", fontStyle: "italic" }}>No tenders found.</div>
+              )}
+              {filtered.map(t => (
+                <TenderRow key={t.id} tender={t} onEdit={() => setEditTender(t)} onDelete={() => deleteTender(t.id)} onAI={() => setAiTender(t)} />
+              ))}
+            </Panel>
+          </>
+        )}
+
+        {/* AUTO FEED */}
+        {view === "autofeed" && (
+          <AutoFeedTab onAddToTracker={(t) => {
+            setTenders(prev => [...prev, {
+              id: Date.now(),
+              title: t.title,
+              buyer: t.buyer,
+              value: t.value,
+              deadline: t.deadline,
+              status: "Researching",
+              category: "",
+              portal: t.source,
+              notes: t.url,
+              bids: []
+            }]);
+            setView("tenders");
+          }} />
+        )}
+
+        {/* FIND TENDERS */}
+        {view === "search" && (
+          <>
+            <div style={{ marginBottom: "24px" }}>
+              <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.8rem", fontWeight: 700 }}>Find <em style={{ color: COLORS.gold }}>Tenders</em></h1>
+              <p style={{ color: COLORS.muted, marginTop: "6px" }}>AI-powered search advisor plus direct links to UK procurement portals</p>
+            </div>
+
+            <AISearchHelper />
+
+            <Panel style={{ marginTop: "20px" }}>
+              <SectionHeading>Key UK Procurement Portals</SectionHeading>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px" }}>
+                {[
+                  { name: "Find a Tender (FTS)", url: "https://www.find-tender.service.gov.uk", desc: "Official UK government above-threshold tenders" },
+                  { name: "Contracts Finder", url: "https://www.contractsfinder.service.gov.uk", desc: "Below-threshold UK government opportunities" },
+                  { name: "Crown Commercial Service", url: "https://www.crowncommercial.gov.uk", desc: "Framework agreements and call-offs" },
+                  { name: "YPO", url: "https://www.ypo.co.uk", desc: "Purchasing organisation for public sector" },
+                  { name: "Delta eSourcing", url: "https://www.delta-esourcing.com", desc: "Local authority and NHS tenders" },
+                  { name: "Proactis", url: "https://www.proactis.com", desc: "Healthcare and government procurement" },
+                ].map(p => (
+                  <a key={p.name} href={p.url} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
+                    <div style={{
+                      background: COLORS.accent + "33", border: `1px solid ${COLORS.panelBorder}`,
+                      borderRadius: "2px", padding: "16px", transition: "border-color 0.2s",
+                      cursor: "pointer"
+                    }}>
+                      <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "0.82rem", fontWeight: 700, color: COLORS.gold, marginBottom: "4px" }}>{p.name} ↗</div>
+                      <div style={{ fontSize: "0.8rem", color: COLORS.muted }}>{p.desc}</div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </Panel>
+          </>
+        )}
+      </div>
+
+      {/* MODALS */}
+      {showAdd && <TenderModal onSave={saveTender} onClose={() => setShowAdd(false)} />}
+      {editTender && <TenderModal tender={editTender} onSave={saveTender} onClose={() => setEditTender(null)} />}
+      {aiTender && <AIBidWriter tender={aiTender} onClose={() => setAiTender(null)} />}
+    </div>
+  );
+}
+
+function TenderRow({ tender, onEdit, onDelete, onAI }) {
+  const days = daysUntil(tender.deadline);
+  const urgencyColor = days !== null && days <= 7 ? COLORS.red : days !== null && days <= 21 ? COLORS.amber : COLORS.muted;
+
+  return (
+    <div style={{
+      padding: "16px 0", borderBottom: `1px solid ${COLORS.panelBorder}`,
+      display: "grid", gridTemplateColumns: "1fr auto", gap: "16px", alignItems: "start"
+    }}>
+      <div>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px", flexWrap: "wrap" }}>
+          <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 500, fontSize: "0.95rem", color: COLORS.text }}>{tender.title}</span>
+          <Badge status={tender.status} />
+        </div>
+        <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+          <span style={{ fontSize: "0.78rem", color: COLORS.muted }}>🏢 {tender.buyer}</span>
+          {tender.value && <span style={{ fontSize: "0.78rem", color: COLORS.gold, fontWeight: 600 }}>💰 {tender.value}</span>}
+          {tender.deadline && <span style={{ fontSize: "0.78rem", color: urgencyColor }}>📅 {days !== null ? (days > 0 ? `${days} days left` : "OVERDUE") : tender.deadline}</span>}
+          {tender.portal && <span style={{ fontSize: "0.78rem", color: COLORS.muted }}>🔗 {tender.portal}</span>}
+        </div>
+        {tender.notes && <div style={{ fontSize: "0.78rem", color: COLORS.muted, marginTop: "6px", fontStyle: "italic" }}>{tender.notes.slice(0, 120)}{tender.notes.length > 120 ? "…" : ""}</div>}
+      </div>
+      <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
+        <Btn onClick={onAI} variant="green" small>✦ AI Write</Btn>
+        <Btn onClick={onEdit} variant="secondary" small>Edit</Btn>
+        <Btn onClick={onDelete} variant="danger" small>✕</Btn>
+      </div>
+    </div>
+  );
+}
+

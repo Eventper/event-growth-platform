@@ -1,0 +1,102 @@
+Update the Event Perfekt homepage positioning.
+
+Current issue:
+The page still reads too much like an event management company. It needs to position Event Perfekt as an Africa Programme Delivery & Financial Operations Partner.
+
+New headline:
+Delivering Complex Programmes Across Africa — From Planning to Financial Reconciliation
+
+New subheading:
+We help governments, development organisations, universities and international businesses deliver workshops, conferences, stakeholder engagements and capacity-building programmes across Africa — with local execution, cross-border payments, financial governance and audit-ready reporting.
+
+Replace “What We Do” with a client journey structure:
+
+1. Programme Planning
+- Budget planning
+- Venue sourcing
+- Supplier mapping
+- Risk assessment
+- Delivery planning
+
+2. Programme Delivery
+- Workshops
+- Conferences
+- Training programmes
+- Stakeholder engagement
+- Delegate management
+- In-country coordination
+
+3. Financial Operations
+- Supplier payments
+- Beneficiary/delegate payments
+- Cross-border payments
+- FX coordination
+- Payment approvals
+- Financial reconciliation
+
+4. Governance & Compliance
+- Supplier due diligence
+- Vendor verification
+- Procurement records
+- Document control
+- Audit trail
+- Compliance reporting
+
+5. Programme Close-Out
+- Final reconciliation
+- Delivery reporting
+- Payment evidence
+- Lessons learned
+- Audit support
+
+Add section:
+
+Why Organisations Choose Event Perfekt
+
+Use these points:
+- One trusted partner across multiple African countries
+- UK oversight with in-country execution
+- Local supplier coordination
+- Cross-border payment support
+- Financial reconciliation built into delivery
+- Audit-ready documentation
+- Governance and compliance from start to finish
+
+Add section:
+
+Powered by the Twin Trade Platform
+
+Copy:
+Every programme we deliver is supported by our Twin Trade operating platform, giving clients greater visibility across suppliers, payments, documents, due diligence, reconciliation and audit trails.
+
+Feature bullets:
+- Supplier due diligence
+- Cross-border payments
+- Beneficiary management
+- Financial reconciliation
+- Document storage
+- Audit trail
+- Project dashboards
+
+Add section:
+
+How We Deliver
+
+Use a simple process timeline:
+1. Programme planning
+2. Country readiness
+3. Supplier due diligence
+4. Programme delivery
+5. Payment coordination
+6. Financial reconciliation
+7. Audit and close-out
+
+Update CEFAS section:
+Add line:
+Trusted by the UK Government to support programme delivery across multiple African countries.
+
+Tone:
+Professional, institutional, government-ready.
+Not “events agency”.
+Not party/event planning.
+Position Event Perfekt as a programme delivery, governance and financial operations partner for Africa-focused projects.

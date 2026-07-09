@@ -1,0 +1,270 @@
+lease implement ALL of the following fixes in one go. Do not skip any. Confirm each one is done when complete.
+
+---
+
+# FIX 1 — 4 MINOR AUDIT FIXES
+
+1a. planner-dashboard.tsx line 169 — add date validation/fallback for malformed startDate on EventCalendar so invalid dates don't break rendering. Wrap date parsing in try/catch and fall back to null/skip if invalid.
+
+1b. planner-dashboard.tsx line 446 — add error toast when /api/briefing returns null or fails. Currently shows blank panel with no feedback. Add: if fetch fails, show toast "Unable to load briefing — please refresh" and show an empty state message in the panel.
+
+1c. decor-studio.tsx line 1173 — add a loading spinner/indicator while the 3D canvas renders. Show it when element count exceeds 10. Hide it once Three.js canvas has mounted.
+
+1d. guest-management.tsx line 104 — add CSV validation error messages. If CSV is malformed or missing required columns (firstName, lastName minimum), show a clear error telling the user exactly which columns are missing or malformed instead of silently failing.
+
+---
+
+# FIX 2 — CONTRACTS TAB: FULL AUTO-GENERATION SYSTEM
+
+Rebuild the Contracts tab in event-dashboard.tsx to be a fully auto-generating contract system.
+
+**CONTRACT TYPE SELECTOR**
+Three contract types:
+- Client Contract (Event Perfekt → Client)
+- Vendor Contract (Event Perfekt → Supplier)
+- Venue Contract (Event Perfekt → Venue)
+
+**DROPDOWNS — user selects only these:**
+
+Client Contract:
+- Select client → dropdown from lead pipeline / enquiries table (name, company, email, address)
+- Service scope → Full Planning / Day Coordination / Venue Search / Decor Only / Combined
+- Payment terms → 50% deposit + 50% balance / 30% deposit + 70% balance / 100% upfront / Custom
+- Currency → GBP / NGN / USD
+- Governing law → England & Wales / Federal Republic of Nigeria / Both
+
+Vendor Contract:
+- Select vendor → dropdown from vendors table for this event
+- Service type → auto-filled from vendor category
+- Same payment terms, currency, governing law dropdowns
+
+Venue Contract:
+- Select venue → from event venue field + saved venues
+- Same payment terms, currency, governing law
+
+**AUTO-PULL FROM EXISTING DATA — no manual typing needed:**
+- From event record: event name, date, time, venue, type, guest count
+- From client/lead record: full name, company, address, email, phone
+- From vendor record: vendor name, company, service description, contact
+- From event budget: total value, deposit amount (calculated from % selected), balance, deposit due date (today +7 days), balance due date (30 days before event)
+- From admin settings: Event Perfekt company name, address, company number, VAT number, signatory name (Tolulope Kumolu-Johnson, Director)
+
+**12 AUTO-GENERATED CONTRACT SECTIONS:**
+1. PARTIES — EP details + counterparty (all auto-filled)
+2. EVENT DETAILS — name, date, time, venue, type, guest count
+3. SCOPE OF SERVICES — pre-written professional clause blocks per service type (Full Planning / Day Coordination / Venue Search / Decor Only)
+4. FEES & PAYMENT SCHEDULE — total value + deposit + deposit due date + balance + balance due date (all calculated)
+5. PAYMENT METHOD — bank transfer details from admin settings + Flutterwave payment link
+6. CANCELLATION POLICY — tiered: >90 days = deposit forfeited; 30-90 days = 50% total fee; <30 days = 100% total fee
+7. FORCE MAJEURE — standard clause
+8. LIABILITY — EP liability capped at contract value, standard professional indemnity clause
+9. DELIVERABLES & RESPONSIBILITIES — bullet list based on service scope
+10. AMENDMENTS — changes must be in writing signed by both parties
+11. GOVERNING LAW — based on jurisdiction dropdown
+12. SIGNATURES — EP signatory block + counterparty block + date fields
+
+**CONTRACT LIFECYCLE:**
+Draft → Sent → Awaiting Signature → Signed → Completed
+
+Actions per stage:
+- Draft: edit any field, preview as PDF, send via SendGrid
+- Sent: resend, mark Awaiting Signature
+- Awaiting Signature: digital signature capture (drawn or typed)
+- Signed: download PDF, mark Completed
+- Completed: view only, download PDF
+
+**WHEN CONTRACT IS SIGNED — auto-trigger:**
+1. Generate deposit invoice in Invoicing tab
+2. Log contract signing in Planning Log
+3. Send confirmation email to both parties via SendGrid
+
+**UI:**
+- Side-by-side layout: left = dropdowns/form, right = live contract preview updating in real time
+- All editable fields clearly marked
+- Auto-save draft on every field change
+- Professional document styling (white bg, black text, EP logo at top)
+- Mobile responsive
+
+---
+
+# FIX 3 — PROSPECT FINDER: MISSING CONVERT ENDPOINT
+
+The frontend calls POST /api/company-prospects/:id/convert but the endpoint does not exist. Build it now:
+
+```typescript
+app.post("/api/company-prospects/:id/convert", authenticateToken, async (req: any, res) => {
+  try {
+    const prospectId = parseInt(req.params.id);
+    const userId = req.user.id;
+
+    const prospect = await db.query.companyProspects.findFirst({
+      where: eq(companyProspects.id, prospectId)
+    });
+
+    if (!prospect) {
+      return res.status(404).json({ message: "Prospect not found" });
+    }
+
+    const [newEvent] = await db.insert(events).values({
+      name: prospect.companyName + " Event",
+      clientName: prospect.contactName || prospect.companyName,
+      clientEmail: prospect.email || "",
+      clientPhone: prospect.phone || "",
+      clientCompany: prospect.companyName,
+      eventType: prospect.milestoneType || "corporate",
+      guestCount: prospect.guestCount || 0,
+      budget: prospect.budgetRange || "0",
+      currency: "GBP",
+      workflowStatus: "new_intake",
+      assignedTo: userId,
+      notes: `Converted from Prospect Finder. Source: ${prospect.source || "prospect-finder"}. Notes: ${prospect.notes || ""}`,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }).returning();
+
+    await db.update(companyProspects)
+      .set({ status: "won", updatedAt: new Date() })
+      .where(eq(companyProspects.id, prospectId));
+
+    await db.insert(enquiries).values({
+      name: prospect.contactName || prospect.companyName,
+      email: prospect.email || "",
+      phone: prospect.phone || "",
+      company: prospect.companyName,
+      eventType: prospect.milestoneType || "corporate",
+      guestCount: prospect.guestCount || 0,
+      budgetRange: prospect.budgetRange || "",
+      status: "new_intake",
+      eventId: newEvent.id,
+      source: "prospect-finder",
+      notes: prospect.notes || "",
+      createdAt: new Date()
+    }).catch(() => {});
+
+    await db.insert(auditLogs).values({
+      userId,
+      action: "prospect_converted",
+      entityType: "event",
+      entityId: newEvent.id.toString(),
+      details: `Prospect "${prospect.companyName}" converted to event`,
+      createdAt: new Date()
+    }).catch(() => {});
+
+    return res.json({
+      eventId: newEvent.id,
+      eventName: newEvent.name,
+      message: "Prospect successfully converted to event"
+    });
+
+  } catch (error) {
+    console.error("Convert prospect error:", error);
+    return res.status(500).json({ message: "Failed to convert prospect to event" });
+  }
+});
+```
+
+Also fix the redirect in prospect-finder.tsx line 485:
+Change: window.location.href = `/events/${data.eventId}`;
+To: window.location.href = `/event-dashboard/${data.eventId}`;
+
+---
+
+# FIX 4 — PROSPECT FINDER: GLOBAL COUNTRY SEARCH + REPLACE AI WITH AGENT
+
+**COUNTRY SELECTOR**
+- Replace UK/Nigeria/Both toggle with a searchable dropdown of all 195 countries
+- Multi-select enabled
+- Quick-select buttons: UK, Nigeria, USA, Canada, Ghana, Kenya, South Africa, UAE, Germany, France
+- "Global" option to search all
+
+**DATA SOURCES — tiered by country:**
+
+Tier 1 — open registries (real API data):
+- UK: Companies House API (https://api.company-information.service.gov.uk) — env: COMPANIES_HOUSE_API_KEY
+- USA: SEC EDGAR (https://efts.sec.gov/LATEST/search-index?q=) — free, no key
+- Canada: Corporations Canada API — free
+- Australia: ASIC Connect — free
+- New Zealand: Companies Office API — free
+- Nordics (Denmark/Norway/Sweden/Finland): Brønnøysund open registries — free
+- For UK: use SIC codes to flag high-value event clients: 82110, 82300, 70100, 74909, 64110. Auto-calculate company age from incorporation date and flag milestones ("Turning 10 this year")
+
+Tier 2 — Agent research (all other countries including Nigeria, Ghana, Kenya, South Africa, UAE, India, Singapore, Germany, France, etc.):
+- Call OpenAI gpt-4o-mini with prompt: "Research real companies in [country] in the [industry] sector likely to need professional event planning. Focus on upcoming milestones. Only return companies with verifiable public web presence. Return: name, city, industry, website, founding year, reason they need an event, confidence (High/Medium/Low), source URL. Return max 10 results."
+- Always show disclaimer: "Agent-researched results. Verify before outreach."
+
+Tier 3 — Global fallback:
+- Flag low confidence results as "Unverified — research recommended"
+
+**SEARCH FILTERS (all countries):**
+- Country: searchable multi-select, 195 countries + Global
+- Search type: All / Anniversary / Product Launch / End of Year / Conference / Award Ceremony / General Events
+- Industry: Financial Services / Tech / Healthcare / FMCG / Government / NGO / Professional Services / Energy / Legal / Real Estate / Hospitality / All
+- Company size: Startup / SME / Mid-Market / Corporate / Enterprise
+- Guest count: <50 / 50-200 / 200-500 / 500+
+- Budget range: auto-adjusts currency symbol by country
+
+**RESULTS CARD shows:**
+- Company name, country flag, city, industry, website (clickable)
+- Company age + milestone flag if applicable
+- Source + Confidence (High=green / Medium=amber / Low=red)
+- Save to Pipeline button
+- Quick outreach button
+
+**COUNTRY-AWARE EMAIL TONE:**
+- UK/Australia/Canada/NZ: formal, concise, direct
+- USA: confident, value-led, ROI-focused
+- Nigeria/Ghana/Kenya/South Africa: warm, relationship-first, local context
+- UAE/Saudi: formal, prestige and exclusivity
+- Germany/Netherlands: precise, structured, fact-based
+- France/Italy/Spain: relationship-aware, quality-led
+- India/Singapore: professional, detail-oriented, scale-focused
+
+**CURRENCY AUTO-SELECT by country:**
+- UK: GBP | USA: USD | Nigeria/Ghana: NGN/USD | Kenya: KES/USD | UAE: AED/USD | Europe: EUR | Rest of Africa: USD
+
+**PIPELINE COUNTRY FILTER:**
+- Dynamic — shows all countries actually present in pipeline (not hardcoded)
+- Country badge on every prospect card
+- Filter + sort by country
+
+**REPLACE ALL INSTANCES OF "AI" WITH "AGENT" EVERYWHERE:**
+Replace in prospect-finder.tsx and all related backend route files:
+- "AI" → "Agent"
+- "AI-Powered" → "Agent-Powered"
+- "AI generates" → "Agent generates"
+- "AI research" → "Agent research"
+- "AI-generated" → "Agent-generated"
+- "AI email" → "Agent email"
+- "AI recommends" → "Agent recommends"
+- "AI analyzes" → "Agent analyzes"
+- "AI finds" → "Agent finds"
+- "AI creates" → "Agent creates"
+- "AI queries" → "Agent queries"
+
+Apply to: all UI text, tab labels, button text, card headings, descriptions, badges, tooltips, toasts, placeholders, comments.
+Do NOT change: actual OpenAI API calls, model names (gpt-4o-mini), environment variable names, package imports.
+
+---
+
+# VERIFICATION CHECKLIST — confirm all of these after implementing:
+
+[ ] planner-dashboard date validation working — no crash on malformed dates
+[ ] Briefing panel shows error toast on failed fetch
+[ ] Decor studio shows loading indicator for 10+ elements
+[ ] CSV import shows specific validation errors
+[ ] Contract tab shows type selector (Client/Vendor/Venue)
+[ ] Contract dropdowns pull live data from existing records
+[ ] Contract auto-fills all 12 sections without manual typing
+[ ] Contract side-by-side preview updates live
+[ ] Signed contract triggers invoice + planning log + confirmation email
+[ ] POST /api/company-prospects/:id/convert endpoint exists and works
+[ ] Convert redirects to /event-dashboard/:id not /events/:id
+[ ] Converted prospect appears in Manager Intake with status new_intake
+[ ] Country dropdown shows all 195 countries with multi-select
+[ ] UK search returns real Companies House data
+[ ] USA search returns real SEC EDGAR data
+[ ] All other countries return Agent-researched results with confidence + source URL
+[ ] Email tone adjusts per country
+[ ] Currency adjusts per country
+[ ] Pipeline country filter is dynamic
+[ ] Zero instances of "AI" in any UI text — always "Agent"

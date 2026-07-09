@@ -1,0 +1,95 @@
+The email generation architecture is fundamentally incorrect.
+
+The platform is currently producing generic emails with a different title.
+
+For example:
+
+"I Am Her — PR Pitch: Women in Leadership"
+
+This is wrong.
+
+There should never be a generic email template called "PR Pitch."
+
+Instead, every email should be generated from the communication objective.
+
+The system should first determine:
+
+* Who is receiving this?
+* What publication or organisation is it?
+* What do they normally publish?
+* What type of story are they asking for?
+* What outcome do we want?
+
+Only then should it generate the email.
+
+Examples:
+
+Journalist asking for a human-interest story:
+Subject should be something like:
+
+* Why I Left London After Building My Career There
+* The Hidden Cost of Success for Women
+* The Women Everyone Thinks Are Fine
+* Why More Professional Women Are Quietly Rethinking Success
+
+NOT:
+"I Am Her PR Pitch"
+
+Beauty journalist:
+Subject:
+
+* Why Skin of Colour Needs Different Summer Skincare Advice
+* The Beauty Devices Esther Actually Recommends
+* The Home Treatments That Are Worth Your Money
+
+NOT:
+"I Am Her Beauty Pitch"
+
+Corporate sponsor:
+Subject:
+
+* Exploring a Strategic Partnership
+* Supporting Women Who Lead
+* Partnership Opportunity
+
+NOT:
+"I Am Her Sponsor Pitch"
+
+Podcast:
+Subject:
+
+* Story Idea for Your Audience
+* A Conversation About the Hidden Cost of Success
+
+The campaign name should almost never appear in the subject line unless it is already a recognised brand.
+
+The campaign should appear naturally within the body where relevant.
+
+Also remove generic labels such as:
+
+* PR Pitch
+* Outreach Email
+* Sponsor Email
+* Guest Email
+
+These are internal categories, not user-facing content.
+
+The AI should produce emails that look as though they were written manually by an experienced communications professional.
+
+Every message should be unique.
+
+The platform must never generate two emails that only differ by replacing a few words.
+
+Finally, add a "reasoning layer" that determines the best communication strategy before writing:
+
+1. Communication objective
+2. Recipient type
+3. Story angle
+4. Subject line
+5. Opening hook
+6. Supporting narrative
+7. CTA
+
+Only after those steps should the AI generate the final email.
+
+The user should receive communications, not templates.

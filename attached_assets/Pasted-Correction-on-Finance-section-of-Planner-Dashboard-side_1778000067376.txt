@@ -1,0 +1,51 @@
+Correction on Finance section of Planner Dashboard sidebar restructure.
+
+Finance / Create Invoice — Nigeria two-stage approval chain
+Planning App users who can CREATE INVOICE (intake only, doesn't fire):
+All planners with portal_role IN:
+
+DIRECTOR
+LAGOS_CLIENT_MANAGER (Juliet)
+COUNTRY_MANAGER_NIGERIA (Faye)
+EVENTS_MANAGER_NIGERIA (Ololade Abimbola)
+OPERATIONS_MANAGER_NIGERIA (Erikan)
+EVENT_COORDINATOR_NIGERIA (Bidemi / Oluwafisayomi / Oluwatofunmi)
+GUEST_MANAGER_NIGERIA (Mercy / Omotolani / Mariam)
+DECORATOR_NIGERIA (Frank / Paul) — optional, default NO unless specifically enabled per person
+WAREHOUSE_NIGERIA (Idris) — same, default NO
+
+Hidden for: COMPLIANCE roles, MARKETING-only roles, FINANCE (Prab — she sees the queue separately on Group Portal Finance), LIGHTBULB roles, ALLI_OPERATIONS (Abraham — he routes via Prab).
+Show "Create Invoice" button on Planning App for visible roles. Reading existing invoices on Planning App is NOT allowed — visible roles see only the create form.
+
+Two-stage approval chain (Nigeria invoices ONLY):
+When invoice created on Planning App by a Nigeria role, payload posted to Group Portal at /api/group-portal/inbox/invoice-request with:
+json{
+  "from_user": { id, email, name, portal_role },
+  "country": "Nigeria",
+  "approval_chain": ["EVENTS_MANAGER_NIGERIA", "COUNTRY_MANAGER_NIGERIA"],
+  "current_stage": 1,
+  "project_id": ...,
+  "event_id": ...,
+  "line_items": [...],
+  "amount": ...,
+  "currency": "GBP" | "NGN",
+  "client": ...,
+  "notes": ...,
+  "source": "planning_app"
+}
+Confirmation banner on Planning App after Save: "Invoice queued for Ololade approval — visible in Group Portal Outbound Queue. You'll be notified when each stage approves or declines."
+Group Portal handles the two-stage chain (see Group Portal paste).
+
+UK invoices — different chain, unchanged:
+If invoice originates from UK-side roles (DIRECTOR creating UK-context invoice, EP UK staff), single-stage Director approval applies. Use existing pattern.
+Distinguish by:
+
+Originating user's country tag
+Project's company tag
+Default to two-stage if Nigeria; single-stage Director if UK
+
+
+Visibility on Planning App after invoice queued:
+Creator sees status: "Stage 1 of 2 — pending Ololade approval" → updates to "Stage 2 of 2 — pending Faye approval" → "Approved and sent" or "Declined at Stage X by [name]" with reason.
+Status pulled from Group Portal via /api/group-portal/inbox/invoice-status?id=...
+Standing rules apply. Brief me when finance section is restructured. Other sidebar changes (Calendar sync, Notifications sync, Project Management removal, Reports split, reverse bridge) per previous paste — that scope unchanged.

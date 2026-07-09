@@ -1,0 +1,33 @@
+I need you to add two official UK Government tender APIs to my existing app without changing any existing code or routes.
+Add these as new files only:
+File 1: contractsfinder.js
+— Connects to the official Contracts Finder API: https://www.contractsfinder.service.gov.uk/Published/Notices/PublicSearch/Search
+— POST request, no API key needed, free
+— Accepts: keyword, page, pageSize, status
+— Returns normalised tender objects with: id (prefixed "cf-"), source, title, description, buyer, country, status, deadline, daysLeft, budget, location, source_url (direct link to the notice), published date
+File 2: findatender.js
+— Connects to Find a Tender API: https://www.find-tender.service.gov.uk/api/1.0/ocds/notices/search
+— GET request, no API key needed, free
+— Same input/output shape as above, id prefixed "fat-"
+File 3: uk-tenders-routes.js
+— Express router exposing GET /api/uk-tenders?q=FCDO&status=open
+— Calls both APIs in parallel using Promise.allSettled (so if one fails the other still returns)
+— Merges and deduplicates results by title similarity
+— Sorts by: open first, then soonest deadline
+— Returns: { query, total, sources: { contractsFinder, findATender, errors[] }, results[] }
+Also add a GET /api/uk-tenders/categories endpoint that runs predefined keyword searches and returns grouped results for these categories:
+const PRESET_CATEGORIES = [
+  { id: 'fcdo',        label: 'FCDO & Foreign Office',      keywords: ['FCDO', 'Foreign Commonwealth Development', 'overseas development', 'international aid'] },
+  { id: 'africa',      label: 'Africa Programmes',          keywords: ['Africa', 'Sub-Saharan', 'Nigeria', 'East Africa', 'West Africa', 'African Development'] },
+  { id: 'events',      label: 'Events & Conferencing',      keywords: ['event management', 'conference', 'ceremony', 'hospitality', 'venue management'] },
+  { id: 'logistics',   label: 'Logistics & Travel',         keywords: ['travel management', 'logistics', 'delegate travel', 'accommodation'] },
+  { id: 'diaspora',    label: 'Diaspora & Remittance',      keywords: ['remittance', 'diaspora', 'cross-border payment', 'money transfer', 'financial inclusion'] },
+  { id: 'training',    label: 'Training & Capacity Building', keywords: ['training', 'capacity building', 'skills development', 'workshop delivery'] },
+  { id: 'government',  label: 'UK Government Departments',  keywords: ['Cabinet Office', 'HMRC', 'British Council', 'Home Office', 'UKRI'] },
+]
+— Each category searches all its keywords, merges, deduplicates, returns top 10 most relevant per category
+— Response shape: { categories: [{ id, label, count, results[] }] }
+Then add exactly two lines to my existing server.js — nothing else:
+const ukTendersRouter = require('./uk-tenders-routes');
+app.use('/api', ukTendersRouter);
+Do not modify any existing files beyond those two lines. Do not change any existing routes or logic.

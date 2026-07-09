@@ -1,0 +1,246 @@
+🎥 SECTION 1 — HERO (VIDEO BACKGROUND)
+Design Requirements:
+
+Full‑width hero
+
+Background video (autoplay, loop, muted)
+
+Dark overlay (rgba(0,0,0,0.45))
+
+White text
+
+Poppins 700 heading
+
+Poppins 400 subheading
+
+Button: burgundy background (#4A0E1F), white text
+
+Hover: invert (white background, burgundy text)
+
+Content:
+
+Code
+H1: Projects & Programmes
+Paragraph: Governance‑aligned delivery across the UK, Africa & international markets.
+Button: View Our Work
+🧩 SECTION 2 — INTRO (MATCH YOUR PROJECT MANAGEMENT PAGE)
+Layout:
+
+Two columns
+
+Left = text
+
+Right = image
+
+Image must have rounded corners + soft shadow
+
+Section width must match Wix container width
+
+Content (Left):
+
+Code
+H2: Delivering Programmes With Governance, Compliance & Leadership
+
+Event Perfekt Global Ltd delivers high‑assurance programmes for UK Government agencies,
+public‑sector bodies, corporate organisations, and international partners. Our work spans
+governance, compliance, PMO leadership, operational delivery, and cross‑border programme
+support — ensuring every project is delivered with clarity, accountability, and measurable impact.
+Image Requirements:
+
+High‑quality governance/operations image
+
+Rounded corners
+
+Alt text included
+
+🗂️ SECTION 3 — PROJECT GRID (MATCH YOUR 3‑CARD LAYOUT)
+Design Requirements:
+
+3 cards per row
+
+Rounded corners
+
+Soft shadow
+
+Image on top
+
+Title (Poppins 600)
+
+Description (Poppins 400)
+
+Button: burgundy background, white text
+
+Hover: invert (white background, burgundy text)
+
+Cards:
+
+Card 1 — DEFRA / CEFAS – Africa Regional Support Programme
+Code
+Governance‑aligned delivery, regional operations, compliance, PMO support.
+Button: View Programme
+Card 2 — Remittance & Financial Coordination
+Code
+Cross‑border payments, compliance, financial governance, operational support.
+Button: View Programme
+Card 3 — Programme Funding & Development Projects
+Code
+Multi‑agency governance, risk management, stakeholder leadership.
+Button: View Programme
+Card 4 — TwinPay Platform
+Code
+Compliance‑driven cross‑border payments infrastructure.
+Button: Explore Platform
+Card 5 — Twin Trade Network
+Code
+Cross‑border partnership ecosystem with governance oversight.
+Button: Explore Platform
+Card 6 — University of Oxford – St Anne’s College Ball 2023
+Code
+700‑guest themed event (Neverland), full styling, logistics, and delivery under formal contract.
+Button: View Case Study
+Image Requirements:
+
+High‑quality images
+
+Consistent aspect ratio
+
+Alt text for SEO
+
+🛠️ SECTION 4 — CAPABILITY STRIP (MATCH YOUR ICON STRIP)
+Design Requirements:
+
+5 icons in a row
+
+Icon above text
+
+Title (Poppins 600)
+
+Description (Poppins 400)
+
+Icons must be black line icons
+
+No colour
+
+Items:
+
+Code
+Governance Frameworks
+Compliance & Risk Management
+PMO Leadership
+Executive Programme Leadership
+Cross‑Border Operational Delivery
+🌍 SECTION 5 — REGIONAL DELIVERY (MATCH YOUR 4‑COLUMN STRIP)
+Design Requirements:
+
+4 equal columns
+
+White background
+
+Black text
+
+No grey
+
+No colour blocks
+
+Clean spacing
+
+Columns:
+
+Code
+United Kingdom
+Africa & West Africa
+Europe
+Middle East
+🧱 SECTION 6 — WHY ORGANISATIONS TRUST US (MATCH YOUR STYLE)
+Design Requirements:
+
+Full‑width
+
+White background
+
+Black text
+
+Centered heading
+
+Two‑column bullet list
+
+Poppins 600 heading
+
+Poppins 400 bullets
+
+Content:
+
+Code
+• Proven UK Government delivery (DEFRA/CEFAS)
+• Governance‑aligned programme management
+• Compliance & risk capability
+• Cross‑regional operational delivery
+• Scalable PMO and leadership support
+• Transparent, audit‑ready reporting
+📞 SECTION 7 — CTA STRIP (BURGUNDY)
+Design Requirements:
+
+Full‑width
+
+Burgundy background (#4A0E1F)
+
+White text
+
+Centered
+
+Buttons: white background, black text
+
+Hover: invert
+
+Content:
+
+Code
+H2: Ready to Deliver Your Next Programme?
+
+Buttons:
+• Request a Case Study
+• Book a Consultation
+• Contact Us
+🧱 SECTION 8 — FOOTER
+Use the same footer as the main Event Perfekt website.
+
+⭐ TYPOGRAPHY (MUST MATCH EXACTLY)
+Font:
+
+Code
+font-family: 'Poppins', sans-serif;
+Weights:  
+300, 400, 500, 600, 700
+
+Import:
+
+html
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+⭐ SEO STRUCTURE
+Meta Title:
+Code
+Projects & Programmes | Event Perfekt Global Ltd
+Meta Description:
+Code
+Explore Event Perfekt’s governance‑aligned programmes across the UK, Africa, and Europe. 
+Trusted by DEFRA, CEFAS, and the University of Oxford for PMO leadership, compliance, 
+and cross‑border delivery.
+SEO Rules:
+One H1 only
+
+H2 for each section
+
+Alt text for every image
+
+Semantic HTML
+
+Buttons must use action verbs
+
+⭐ CONFIRMED BRAND PALETTE
+Black (#000000)
+
+White (#FFFFFF)
+
+Burgundy (#4A0E1F)
+
+Nothing else.

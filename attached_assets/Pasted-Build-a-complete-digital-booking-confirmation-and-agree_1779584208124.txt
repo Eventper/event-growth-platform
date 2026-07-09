@@ -1,0 +1,284 @@
+Build a complete digital booking confirmation and agreement system for Event Perfekt Global Ltd 360 Booth Hire website.
+
+This must be part of the booking flow.
+
+CLIENT BOOKING FLOW
+
+STEP 1 – Client submits enquiry form:
+- Full Name
+- Email
+- Phone
+- Event Date
+- Venue
+- Event Type
+- Guest Count
+- Package Interested In
+- Message
+
+STEP 2 – Admin sends quote
+
+STEP 3 – Client receives BOOKING CONFIRMATION PAGE
+
+BOOKING CONFIRMATION PAGE MUST INCLUDE:
+
+SECTION 1 – BOOKING SUMMARY
+Display:
+
+- Client Name
+- Event Date
+- Venue
+- Package Selected
+- Hire Fee
+- VAT
+- £150 Refundable Security Deposit
+- Total Due
+- Deposit Due Now
+- Balance Due Date
+
+SECTION 2 – BOOKING AGREEMENT & TERMS OF HIRE
+
+Create heading:
+
+BOOKING AGREEMENT & TERMS OF HIRE
+
+Display the FULL agreement in a scrollable contract box or modal popup.
+
+Client MUST read before proceeding.
+
+Under agreement:
+
+Mandatory checkbox:
+
+“I confirm that I have read and agree to the Booking Agreement & Terms of Hire.”
+
+Typed signature field:
+
+Full legal name
+
+Optional digital signature pad
+
+Auto date stamp
+
+Optional IP logging
+
+Legal wording:
+
+“By ticking this box, typing my name and proceeding with payment, I confirm my electronic acceptance of Event Perfekt Global Ltd’s Booking Agreement & Terms of Hire.”
+
+Client CANNOT proceed without accepting.
+
+BUTTON:
+
+Accept Agreement & Pay Deposit
+
+Payment options:
+- Card payment
+- Bank transfer
+- Cash booking option
+
+IMPORTANT CASH RULE:
+Cash clients must still accept agreement digitally.
+Booth will not be delivered or set up until full payment is received.
+
+Store agreement acceptance in admin dashboard.
+
+Automatically email signed booking confirmation to client.
+
+---------------------------------------------------
+FULL BOOKING AGREEMENT & TERMS OF HIRE
+---------------------------------------------------
+
+EVENT PERFEKT GLOBAL LTD
+20 Wenlock Road
+London
+England, N1 7GU
+Email: admin@eventperfekt.com
+Telephone: 07984 331651
+
+BOOKING AGREEMENT & TERMS OF HIRE
+
+Thank you for choosing Event Perfekt Global Ltd for your 360 Booth Hire experience.
+
+These Terms & Conditions form part of your booking agreement and apply to all bookings confirmed with Event Perfekt Global Ltd.
+
+1. BOOKING CONFIRMATION
+
+A booking is only confirmed once the required booking deposit has been received and written confirmation has been issued by Event Perfekt Global Ltd.
+
+2. BOOKING DEPOSIT
+
+A 50% non-refundable booking deposit is required to secure the booking date.
+
+This deposit is non-refundable in the event of client cancellation.
+
+3. FINAL BALANCE PAYMENT
+
+The remaining balance must be paid no later than 7 days before the event date unless otherwise agreed in writing.
+
+Failure to pay may result in cancellation of booking and loss of booking deposit.
+
+4. CASH PAYMENT BOOKINGS
+
+Where cash payment has been agreed, FULL payment must be made BEFORE setup begins.
+
+The 360 booth will not be delivered, installed or operated unless full payment has been received where cash payment has been agreed.
+
+No exceptions.
+
+5. REFUNDABLE SECURITY DEPOSIT
+
+A £150 refundable security deposit is required before the event.
+
+This deposit covers:
+
+- Damage to equipment
+- Missing accessories
+- Theft
+- Guest misuse
+- Spillages/liquid damage
+- Excessive cleaning
+
+Deposit will be refunded within 48 hours after event if no issues arise.
+
+Where damage exceeds deposit, client remains liable for full repair or replacement costs.
+
+6. NO PAYMENT NO SETUP
+
+Event Perfekt Global Ltd reserves the right to refuse setup, suspend service, withdraw equipment or cancel delivery where payment terms have not been met in full.
+
+No payment means no setup.
+
+7. ADDITIONAL HIRE TIME
+
+Additional booth hire is charged at £100 per additional hour and is subject to staff and equipment availability on the day.
+
+Payment must be made before additional time begins.
+
+8. EQUIPMENT USE & GUEST CONDUCT
+
+Guests must follow booth attendant instructions at all times.
+
+The following are prohibited:
+
+- Jumping on booth platform
+- Unsafe or rough use
+- Overloading platform
+- Food/drinks on equipment
+- Unsupervised children
+- Intoxicated misuse
+- Tampering with equipment
+
+Event Perfekt Global Ltd may stop operation immediately where safety or equipment is at risk.
+
+No refund shall be issued in such circumstances.
+
+9. CLIENT RESPONSIBILITY FOR DAMAGE
+
+The client is responsible for damage, loss or theft caused by:
+
+- Guests
+- Children
+- Venue attendees
+- Third parties associated with the booking
+
+This includes:
+
+- Ring lights
+- Tablets
+- Cameras
+- Booth platform
+- Props
+- Accessories
+- Mounts
+- Cables
+
+Repair/replacement costs may be charged.
+
+10. SETUP REQUIREMENTS
+
+Client must provide:
+
+- Safe level setup area
+- Nearby power supply
+- Adequate operating space
+- Safe guest access
+- Weather protection for outdoor events
+
+Event Perfekt reserves the right not to set up where venue conditions are unsafe.
+
+11. DELAYS
+
+Where event start is delayed due to venue/client issues, the originally agreed finish time may still apply.
+
+No refunds shall be issued for lost time caused by delays outside Event Perfekt’s control.
+
+12. TRAVEL
+
+Travel within Milton Keynes is included in standard quoted pricing.
+
+Travel outside Milton Keynes may incur an additional charge confirmed in advance.
+
+13. WEATHER / OUTDOOR EVENTS
+
+For outdoor events, suitable shelter must be provided.
+
+Event Perfekt may suspend or refuse operation in unsafe weather conditions including:
+
+- Rain
+- Wind
+- Excessive heat
+- Unsafe surfaces
+
+14. CANCELLATION POLICY
+
+Booking deposit is non-refundable.
+
+Cancellations:
+
+- More than 14 days before event – booking deposit retained
+- Within 7 days of event – up to full hire balance may become payable
+
+All cancellations must be made in writing.
+
+15. LIMITATION OF LIABILITY
+
+Event Perfekt Global Ltd is not liable for:
+
+- Venue issues
+- Guest behaviour
+- Network/internet sharing failures
+- Client delays
+- Power failures
+- Force majeure events
+
+Liability is limited to booking value paid.
+
+16. MEDIA & CONTENT USE
+
+Event footage/photos may be used for marketing purposes unless client requests opt-out in writing before the event.
+
+17. AGREEMENT
+
+By ticking the agreement checkbox, typing your name and proceeding with payment, you confirm your electronic acceptance of this Booking Agreement & Terms of Hire.
+
+DIGITAL SIGNATURE SECTION
+
+Client Name: [typed field]
+
+Signature: [typed name / optional signature pad]
+
+Date: [auto date stamp]
+
+Checkbox:
+
+“I confirm that I have read and agree to the Booking Agreement & Terms of Hire.”
+
+BUTTON:
+
+Accept Agreement & Pay Deposit
+
+IMPORTANT:
+
+Client cannot proceed without agreement acceptance.
+Store signed acceptance in admin dashboard.
+Email signed booking copy automatically to client.

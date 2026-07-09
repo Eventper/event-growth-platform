@@ -1,0 +1,68 @@
+# Replit Brief — Fixture Tests + Coverage Additions
+*Prove the six discovery fixes on a fixture set today (the live pool is empty), and add university-events / alumni / event-décor coverage with guards. Follow-up to the consolidated patch brief.*
+
+---
+
+## Why fixtures
+
+The six fixes are reported as implemented and the build is healthy — but a healthy server proves the code *runs*, not that the gates *behave*. With `passedGate=0`, none of the new logic was exercised on real data. So: load a small set of **saved fixture tenders** that deliberately hit every tricky case, run the sweep over them, and prove the behaviour. This closes the fixes for real instead of on a build signal.
+
+---
+
+## Part A — Coverage additions (config)
+
+Add these to the discovery config **before** running the fixtures, so the fixtures test them too.
+
+**1. University & alumni EVENTS** → add to the Events lane keywords:
+`graduation, congregation, degree ceremony, open day, alumni event, alumni reunion, alumni engagement, university conference, freshers fair, awards ceremony, gala dinner, fundraising gala, donor event, commemoration event`
+
+> **Guard — "university" is NOT a qualifier on its own.** Universities buy huge amounts of non-event work (the Northumbria T25-0047 business-consultancy lots proved this). These terms qualify because they are *event* terms — keep the lane-discipline rule: a university tender qualifies only when an **event/ceremony** term is present, never on "university"/"college" alone.
+
+**2. Event decoration & theming** → add to the Experiential/Creative lane keywords, **GATED**:
+`event decoration, event theming, event styling, venue dressing, venue styling, set dressing, stage décor, draping, backdrop design, marquee dressing, prop hire, themed event, event décor, floral styling (events)`
+
+> **Guard — décor is a false-friend with the construction trade.** "Painting and decorating", "decorator", "interior decoration", "redecoration" are **building works** and must stay **EXCLUDED**. So décor/theming terms qualify **only when an event/venue/ceremony/gala term co-occurs** (reuse the F4 DELIVERY_KEYWORDS co-occurrence check). Décor word alone → do not qualify; if it matches a construction-exclude term → drop.
+
+---
+
+## Part B — Fixture test pack
+
+Load these as saved tender records (give each a synthetic deadline ~40 days out so lead-time doesn't drop them, except where noted). Run the full sweep + gates over them.
+
+| FX | Title | Buyer | Country | Expected | What it proves |
+|----|-------|-------|---------|----------|----------------|
+| 1 | Event management services for annual stakeholder conference | Greater London Authority | GB | **QUALIFY** — appears **identically** in digest + dashboard | F1 single source of truth |
+| 2a | Citywide Events Delivery Framework — Lot 1 Conferences & Summits | London Borough X | GB | qualifies, **collapses** | F2 multi-lot collapse |
+| 2b | Citywide Events Delivery Framework — Lot 2 Exhibitions | London Borough X | GB | collapses with 2a/2c | F2 |
+| 2c | Citywide Events Delivery Framework — Lot 3 Experiential & Activations | London Borough X | GB | → **one line "(3 lots)"**, earliest deadline | F2 |
+| 2d | Event Services Framework — Lot 2 Catering | Buyer A | GB | stays **separate** from 2e | F2 collision guard |
+| 2e | Event Services Framework — Lot 2 Catering | Buyer B | GB | stays **separate** from 2d | dedup must key on buyer/OCID, **not title alone** |
+| 3 | Institutional Capacity Enhancement for ISSB Adoption in Thailand | Palladium International | TH | **DROP** | F4 advisory + F5 geography (the known false positive — regression test) |
+| 4 | Capacity-building programme — delivery of training **workshops/events** for regulators | African dev body | NG | **QUALIFY** | F4 guard: advisory term + delivery term co-occur → passes; F5 footprint |
+| 5 | Staff training services | Finnish buyer | FI | **DROP** | F5 geography reject |
+| 6 | Event logistics & delegate management for stakeholder summit | Ghana buyer | GH | **QUALIFY** | F5 footprint pass |
+| 7 | Graduation ceremony & congregation event management | UK University | GB | **QUALIFY** | new university-events coverage |
+| 8 | Alumni reunion & donor engagement event delivery | UK University | GB | **QUALIFY** | new alumni coverage |
+| 9 | Event theming, venue dressing & decoration for awards gala | UK buyer | GB | **QUALIFY** | new décor coverage + event co-occurrence |
+| 10 | Painting and decorating / redecoration of council offices | Council | GB | **DROP (excluded)** | décor false-friend guard — must NOT leak in |
+| 11 | Start Up Support Services — business coaching & finance advisory | UK University | GB | **DROP** | "university" alone is not a qualifier; lane discipline |
+
+---
+
+## Part C — Run it and paste back the proof
+
+A typecheck/healthy-server does **not** close this. Run the sweep over the fixtures and paste back a results table: **FX | expected | actual | pass/fail**, plus:
+1. The digest output and dashboard output side by side for FX1 — **identical** single item.
+2. FX2a–c rendered as **one** collapsed line; FX2d and FX2e shown as **two** separate items.
+3. FX3 and FX5 in the dropped list with their reason (`advisory-no-delivery`, `out-of-geography`).
+4. FX10 in the excluded list with `matchedTerm = "painting and decorating"` (or similar).
+
+## Acceptance criteria
+- [ ] All 11 fixtures produce the expected outcome.
+- [ ] Digest and dashboard return identical results for the qualifying set.
+- [ ] Multi-lot collapses to one line; same-title-different-buyer stays separate (no silent drop).
+- [ ] Advisory-only drops; advisory+delivery passes.
+- [ ] Out-of-geography drops; UK + footprint countries pass.
+- [ ] University/alumni event terms qualify; "university" alone does not.
+- [ ] Event décor qualifies with an event term; painting-and-decorating stays excluded.
+- [ ] Results table + the four proof outputs pasted back from a real run.

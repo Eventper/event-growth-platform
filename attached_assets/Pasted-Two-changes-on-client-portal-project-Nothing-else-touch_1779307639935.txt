@@ -1,0 +1,61 @@
+Two changes on /client-portal/project. Nothing else touched.
+
+CHANGE 1 — STRATEGIC OVERVIEW CARDS BECOME NARRATIVE PER PHASE
+
+The Strategic Overview is NARRATIVE content, not navigation. Each card holds plain prose to give the Trustee the context they need to sign off with confidence.
+
+Per phase, three cards (real content, no placeholders, no buttons, no cross-links):
+
+  Card 1 — WHAT
+  Brief overview of what this phase covers and what was produced in it.
+  
+  Card 2 — WHY
+  Why we produced it. What problem it solves, what the deliverables are for.
+  
+  Card 3 — WHAT NEXT
+  How ALLI can operationalise this work. How the outputs are intended to be used.
+
+Strip from each card:
+- "Jump to documents" button
+- "Jump to sign-offs" button
+- Any cross-link or navigation element
+- Placeholder text ("Published project documents, packs, and signed records appear here")
+
+Cards are read-only narrative. Just heading + paragraph(s).
+
+Page structure (top to bottom):
+
+  Page heading + subheading
+  
+  [Phase 1 Strategic Overview — 3 narrative cards]
+  [Phase 1 Milestone Sign-Off — Pack PDF + bulleted titles + Approve & Sign Off / Request Changes]
+  
+  [Phase 2 Strategic Overview — 3 narrative cards]
+  [Phase 2 Milestone Sign-Off]
+  
+  [Phase 3 Strategic Overview — 3 narrative cards]
+  [Phase 3 Milestone Sign-Off]
+
+Content source: portal_project_strategic_overview_mirror (or equivalent local mirror), populated by pull-sync from Group Portal. Per phase, fields: what (string), why (string), what_next (string).
+
+Before changing the component:
+(a) Confirm the mirror table exists on Planning App and report its schema.
+(b) Show what's currently in it for Phase 1, Phase 2, Phase 3 — row by row.
+(c) Confirm the pull-sync from Group Portal is running.
+
+If the mirror is empty or content is missing for any phase: STOP and report back to Tolu. Don't invent content — Strategic Overview narrative must come from Tolu / Director, authored on Group Portal first, then pulled through. Render only what's actually in the mirror.
+
+CHANGE 2 — REMOVE THE "COMING SOON" DELIVERABLES TABLE
+
+Delete the "DELIVERABLES" table block under "Documents in this Pack" — the one listing each deliverable as a row with Status: Pending and Action: Coming Soon. That entire table comes out.
+
+The bulleted list of deliverable titles inside "Documents in this Pack" already covers this. No separate deliverables table needed.
+
+Keep everything else exactly as it is:
+- Milestone Sign-Offs section header
+- Phase header with "Ready for your sign-off" badge
+- "Documents in this Pack" panel (Pack PDF + bulleted titles)
+- Yellow review notice
+- Approve & Sign Off button + Request Changes button
+
+After both changes: log in as kehindeballi@gmail.com, screenshot the full page. Expected — three Strategic Overview narrative groups (one per phase), three Milestone Sign-Off sections, no per-deliverable Coming Soon table anywhere.

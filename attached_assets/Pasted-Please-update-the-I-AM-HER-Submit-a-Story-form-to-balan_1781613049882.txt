@@ -1,0 +1,83 @@
+Please update the I AM HER Submit a Story form to balance storytelling, insight gathering and partner testimonials.
+
+Keep the existing story submission process exactly as it is.
+
+Add a new OPTIONAL section before the consent section.
+
+Section Title:
+Your Journey
+
+Intro Text:
+Every woman's story is different. These optional questions help us better understand the experiences, challenges and support systems that shape the women behind the stories.
+
+Question 1:
+What has affected your confidence, wellbeing or leadership journey?
+(Multiple choice)
+
+* Menopause or perimenopause
+* Hormonal changes
+* Skin health or appearance concerns
+* Stress or burnout
+* Anxiety or low confidence
+* Sleep challenges
+* Weight or body changes
+* Motherhood or caregiving responsibilities
+* Financial pressure
+* Workplace challenges
+* Relationship or family challenges
+* Death, grief or loss
+* Other
+
+Question 2:
+Did you seek support?
+Options:
+
+* Yes
+* No
+* Prefer not to say
+
+Only display Questions 3–5 if "Yes" is selected.
+
+Question 3:
+Who supported you?
+(Multiple choice)
+
+* Esther Emenike-Okorie
+* Dr Sarah Jenkins
+* Laser Clinics
+* GP / NHS Services
+* Counsellor or Therapist
+* Women's Health Specialist
+* Beauty / Skin Clinic
+* Workplace Support Programme
+* Financial Adviser or Business Coach
+* Friend or Family Member
+* Other (please specify)
+
+Question 4:
+Would you be willing to share a few words about the support you received?
+(Optional free text)
+
+Helper text:
+What difference did the support make to your confidence, wellbeing, leadership journey or life?
+
+Question 5:
+May we contact you regarding your story or experience?
+
+* Yes
+* No
+
+Add the following incentive text near the top of the form:
+
+Share your story and help another woman feel less alone.
+
+Selected stories may be featured as part of the I AM HER campaign and community story wall. Contributors may also be considered for complimentary invitations, wellbeing experiences, founder recognition features, partner gifts and special guest opportunities.
+
+Admin Requirements:
+
+* Store all new responses in the database.
+* Display all responses within the admin review panel.
+* Allow filtering by issue type (burnout, menopause, confidence, financial pressure, skin health, etc.).
+* Allow filtering by support provider.
+* Create aggregated reporting dashboards showing common themes and support pathways.
+* Allow approved testimonials to be exported separately for future campaigns, case studies, partner reporting and media features.

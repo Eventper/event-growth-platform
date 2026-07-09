@@ -1,0 +1,105 @@
+EQUIRED FIXES (THREE PARTS — BUILD ALL TONIGHT):
+FIX 1 — TIGHTEN EP DOMAIN-FIT SCORING
+EP's actual core domains:
+
+Event management (corporate events, conferences, gala, awards, AGMs, retreats, product launches, summits)
+Programme delivery (multi-workstream, multi-year programmes including UK Gov, public sector, corporate)
+PMO consultancy (project management office, portfolio management, governance, gateway reviews)
+Training delivery (events management training, programme management training, stakeholder engagement training)
+Stakeholder engagement (consultations, public engagement, member events)
+Brand activation (product launches, brand identity rollouts where event delivery is the core)
+
+EP does NOT do:
+
+Construction (any kind — building, civils, M&E, fire works, roof, lifts, chillers)
+Cleaning services
+Vehicle / fleet supply
+Marine vessels / insurance
+Defence specialist equipment
+Pharmacy / clinical software
+Tree works / forestry / parks maintenance
+Catering supply (Free Breakfast Club Programme food etc.)
+Generic IT hardware (analysers, simulators, propulsion systems)
+Insurance products
+
+Action: Add hard-block list at scoring stage. Tenders matching these categories → fit_score forced to ≤ 3, never appears in top recommendations regardless of corridor or value triggers.
+Add the categories below to the existing NEGATIVE_KEYWORDS list:
+
+"cleaning services", "cleaning materials", "supply of cleaning"
+"tree works", "pollarding", "felling", "forestry"
+"fire works and remedials", "fire alarm", "fire suppression"
+"roof replacement", "roof works", "roofing"
+"lift upgrades", "lifts replacement", "lift maintenance"
+"chillers replacement", "heating and cooling", "heat pumps", "HVAC"
+"marine vessels", "marine insurance", "vessel insurance"
+"defence specialist equipment", "VRU", "propulsion system"
+"pharmacy outpatient dispensing", "pharmacy software"
+"multichannel analysers", "DSPEC", "MAESTRO software"
+"shredder", "diesel shredder"
+"hire vehicles", "vehicle hire", "fleet hire"
+"evaluation partner" (when context is property/community evaluation, not programme evaluation — needs context check)
+"structural tee beam", "structural repairs"
+"external canopy", "canopy works"
+
+FIX 2 — TWO-LIST PRESENTATION
+Restructure the email briefing into two clearly separated sections:
+Section 1: 🎯 EP STRONG FIT — RECOMMENDED ACTIONS
+
+Only tenders with fit_score ≥ 8 AND matching EP core domains
+Maximum 5 listed
+Each shows: title, buyer, deadline, value, why-fit summary, deep-link to Tender Command Centre on Planning App
+These are the ones Director (Tolu Johnson) should actually action
+
+Section 2: 👀 WATCHING — LOWER FIT / AWARENESS ONLY
+
+Tenders with fit_score 4-7 — possibly relevant but not priority
+Compact list (one line each)
+For corridor awareness, not priority action
+
+Hard-blocked tenders (fit_score ≤ 3) should not appear in the briefing at all.
+FIX 3 — "MARK NOT RELEVANT" BUTTON
+Each tender row in the platform's Tender Command Centre gets a "Mark Not Relevant" button. When Director clicks:
+
+Tender hidden from future briefings
+Reason captured (free text optional)
+Tender's keywords + buyer + sector logged to a "negative_signal" table
+Agent learns over time — repeat negative signals from a buyer or category get auto-filtered
+
+Track in audit log:
+
+Which tenders Director marks not relevant
+Patterns over time (sectors, buyers, value bands)
+Agent's fit_score accuracy improving over time
+
+FIX 4 — DEEP-LINK TO PLATFORM
+Each tender in the briefing email has a "Review on Tender Command Centre" CTA button linking directly to that tender on Planning App at /saas-tender/[tender-id].
+When clicked:
+
+Opens tender detail view
+Shows full scope, deadline, contact, document attachments
+"Mark Not Relevant" button visible
+"Add to Bid Pipeline" button to start work on it
+"Assign to Bid Manager" dropdown
+
+
+EXAMPLE OUTPUT — TOMORROW'S BRIEFING WITH FIXES APPLIED:
+Today's briefing (Thursday 7 May) had 31 tenders this week. With fixes applied, expected output:
+🎯 EP STRONG FIT (3-5 max):
+
+CA17568 — Events Management Training Programme for Newry and Crotlieve (Newry Council) — Direct EP fit
+CA17608 / CA17598 — Proposition Design Consultancy Services for Digital & AI Skills (King's Trust) — Programme delivery + training
+CA17621 — Northampton College Design Services — Possible programme/brand fit
+GB-Liverpool — Evaluation Partner for Torus Foundation — Programme evaluation fit (needs verification)
+Embedding Innovation and Commercialisation (UK Atomic Energy Authority) — Innovation programme delivery fit
+
+👀 WATCHING (compact one-line):
+
+Northampton College Brand Identity Rollout
+King's Trust Proposition Design (variant)
+Free Breakfast Club Programme (DfE) — partnership model, not direct fit
+Cambourne Playpark works — community engagement angle
+Project Tullie Phase 3: Artist Curator Brief — cultural programme fit
+
+🚫 BLOCKED (not shown — for audit only):
+Cleaning, tree works, fire works, marine, vehicles, defence equipment, multichannel analysers, structural repairs, lifts, chillers, roof, etc.
+That's a usable briefing.

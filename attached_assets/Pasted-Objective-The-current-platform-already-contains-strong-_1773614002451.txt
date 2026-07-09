@@ -1,0 +1,572 @@
+Objective
+
+The current platform already contains strong tools such as event creation, budgeting, vendor management, guest management, contracts, invoices, communication tools, and event-day features.
+
+These tools should remain.
+
+However, the system needs a clearer operational workflow and ownership structure so that events move through the platform in a structured and logical way.
+
+The goal of this update is to organize the existing tools around a clear event lifecycle and role-based workflow without removing the current functionality.
+
+1. USER TYPES
+
+The system should support multiple user roles. Each role should have a different dashboard and level of access.
+
+Client
+
+Clients can:
+
+create events
+
+answer event questionnaires
+
+view event updates
+
+attend scheduled meetings
+
+approve designs or decisions
+
+view invoices and make payments
+
+receive event communication
+
+Clients should not see internal planning tools or internal team discussions.
+
+Manager
+
+The Manager oversees incoming events and team workload.
+
+Manager responsibilities:
+
+review new events
+
+assign Event Managers
+
+monitor event progress
+
+manage team capacity
+
+approve key decisions if necessary
+
+The Manager acts as the control point between event intake and event planning.
+
+Event Manager / Planner
+
+The Event Manager is the primary owner of the event after assignment.
+
+Responsibilities include:
+
+planning the event
+
+communicating with the client
+
+building the timeline and budget
+
+onboarding internal team members
+
+selecting vendors
+
+coordinating the event
+
+overseeing event-day operations
+
+managing post-event wrap-up
+
+Specialist Team Members
+
+These are support roles assigned by the Event Manager.
+
+Possible roles include:
+
+Guest Manager
+Day Coordinator
+Decorator / Stylist
+Graphic Designer
+Vendor Coordinator
+Venue Coordinator
+Finance Support
+Operations Support
+
+Each specialist should only see the sections of the system relevant to their role.
+
+2. EVENT CREATION
+
+Events can be created by:
+
+a client
+
+a planner
+
+a manager on behalf of a client
+
+The existing event creation form built by Replit should remain.
+
+This form already includes:
+
+event name
+
+event type
+
+date
+
+location
+
+budget range
+
+estimated guest count
+
+services required
+
+This should stay the same.
+
+3. EVENT TYPE QUESTIONS
+
+The system should continue using event-type-specific questionnaires.
+
+For example:
+
+Weddings
+
+Questions about:
+
+ceremony
+
+reception
+
+traditions
+
+bridal party
+
+guest structure
+
+Corporate Events
+
+Questions about:
+
+business objectives
+
+audience type
+
+speakers
+
+compliance
+
+AV requirements
+
+Parties / Celebrations
+
+Questions about:
+
+person being celebrated
+
+theme
+
+guest profile
+
+entertainment
+
+Conferences
+
+Questions about:
+
+sessions
+
+speakers
+
+registration
+
+sponsors
+
+exhibition space
+
+This logic already exists and should remain.
+
+4. EVENT INTAKE PROCESS
+
+After an event is created, the system should automatically perform the following actions.
+
+Automatic system actions
+
+When an event is submitted:
+
+Save the event
+
+Generate an event ID
+
+Send confirmation email to the creator
+
+Notify the Manager
+
+Place the event in Manager Review Queue
+
+Set event status to New Intake
+
+The event should not immediately appear in an Event Manager's planning workspace.
+
+It should first go through manager review.
+
+5. MANAGER REVIEW & ASSIGNMENT
+
+The Manager should have a dedicated dashboard called:
+
+Event Intake / Assignment Queue
+
+Here the Manager can review:
+
+event type
+
+event date
+
+budget
+
+services requested
+
+location
+
+complexity
+
+client information
+
+The Manager then assigns:
+
+a primary Event Manager
+
+optional priority level
+
+optional internal notes
+
+After assignment:
+
+the Event Manager receives notification
+
+the event appears in their dashboard
+
+status changes to Assigned
+
+This step introduces clear ownership of the event.
+
+6. EVENT MANAGER TAKES OWNERSHIP
+
+Once assigned, the Event Manager becomes responsible for planning and delivery.
+
+The Event Manager first reviews:
+
+the client brief
+
+the questionnaire responses
+
+the event requirements
+
+Then the Event Manager builds the event team.
+
+7. TEAM ONBOARDING
+
+The Event Manager should be able to onboard team members based on the needs of the event.
+
+Example team roles:
+
+Guest Manager
+Day Coordinator
+Decorator
+Graphic Designer
+Vendor Coordinator
+Finance Support
+
+When a team member is added:
+
+The system should automatically:
+
+notify the team member
+
+assign them to the event
+
+share the event brief
+
+provide role-based access to tools
+
+generate their task list if needed
+
+This prevents manual briefing and ensures everyone starts with the same information.
+
+8. EXISTING TOOLS SHOULD REMAIN
+
+The following modules already built by Replit should remain and be integrated into the workflow.
+
+Planning Tools
+
+Timeline / Gantt
+Project Management
+Reminders
+
+Budget Tools
+
+Budget planner
+Expense tracking
+Financial dashboard
+
+Vendor Tools
+
+Vendor database
+Vendor comparison
+Vendor contracts
+
+Guest Tools
+
+Guest lists
+RSVP tracking
+Seating plans
+QR code guest check-in
+
+Design Tools
+
+Design Studio
+AI decor suggestions
+3D venue design
+Floor planning
+
+Communication Tools
+
+Team chat
+Email campaigns
+WhatsApp integration
+SMS messaging
+Invitation creation
+
+Event Day Tools
+
+Run sheet
+QR guest check-in
+Badge generator
+Staff coordination
+Live event tracking
+
+Post-Event Tools
+
+Survey builder
+Vendor ratings
+Analytics
+Photo/video gallery
+
+Financial Tools
+
+Invoice generation
+Payment tracking
+Payment plans
+Profit & loss reports
+
+These tools should not be removed. They should simply be activated as part of the event lifecycle after assignment.
+
+9. EVENT PLANNING PHASE
+
+Once the Event Manager has the team in place, planning begins.
+
+This phase includes:
+
+timeline creation
+
+budget setup
+
+vendor sourcing
+
+guest management setup
+
+venue coordination
+
+internal task management
+
+client meetings
+
+The Event Manager works closely with the client during this stage.
+
+10. ROLE-BASED WORKSTREAMS
+
+Each specialist role should have a dedicated area.
+
+Guest Manager
+
+Handles:
+
+guest list
+
+RSVP
+
+dietary requirements
+
+plus-ones
+
+seating
+
+QR code check-in
+
+attendance reports
+
+Decorator
+
+Handles:
+
+design concepts
+
+styling plans
+
+decor inventory
+
+installation planning
+
+Graphic Designer
+
+Handles:
+
+invitations
+
+signage
+
+branding
+
+digital assets
+
+Vendor Coordinator
+
+Handles:
+
+vendor sourcing
+
+vendor comparison
+
+contracts
+
+vendor communication
+
+Day Coordinator
+
+Handles:
+
+event-day schedule
+
+staff assignments
+
+vendor arrivals
+
+onsite logistics
+
+Each role should only see their relevant workspace.
+
+11. MEETING MANAGEMENT
+
+The system should allow Event Managers to schedule meetings such as:
+
+kickoff meeting
+
+planning meetings
+
+vendor meetings
+
+design approvals
+
+logistics meetings
+
+final readiness meeting
+
+post-event review
+
+Each meeting should store:
+
+attendees
+
+agenda
+
+notes
+
+decisions
+
+action items
+
+12. EVENT DAY
+
+During the event, the system activates event-day tools.
+
+These include:
+
+Run sheet
+QR guest check-in
+Badge printing
+Staff coordination
+Vendor tracking
+Issue logging
+Catering flow monitoring
+
+These tools allow the team to manage the live event from a central system.
+
+13. POST-EVENT PHASE
+
+After the event ends, the platform supports closure activities.
+
+These include:
+
+guest surveys
+
+vendor ratings
+
+photo/video gallery upload
+
+analytics and reporting
+
+internal debrief
+
+document archiving
+
+14. FINANCIAL CLOSURE
+
+The existing finance system should remain.
+
+This includes:
+
+Invoice generation
+Payment tracking
+Installment plans
+Profit & loss reporting
+Country-based company entities
+Multi-currency support
+
+Financial closure should mark the event as Completed.
+
+15. MASTER EVENT WORKFLOW
+
+The full system workflow should be:
+
+Client or planner creates event
+
+Event questionnaire is completed
+
+Event enters Manager Review Queue
+
+Manager reviews and assigns Event Manager
+
+Event Manager reviews brief
+
+Event Manager onboards internal team members
+
+Team members receive automatic brief and role access
+
+Planning and workstreams begin
+
+Event is executed using event-day tools
+
+Post-event reporting and feedback are collected
+
+Financial closure is completed
+
+Event is archived
+
+16. CORE PRINCIPLE OF THE PLATFORM
+
+The system must always make it clear:
+
+who owns the event
+
+what phase the event is in
+
+which team members are responsible
+
+what the next step is
+
+The goal is to transform the existing platform into a structured event operations hub, while keeping the powerful tools already built.

@@ -1,0 +1,33 @@
+Group Portal has issued the render contract for Strategic Overview cards. Add to step 2 (render filter update + Markdown rendering):
+
+VERIFICATION CHECKLIST (do before declaring step 2 done):
+
+1. react-markdown install confirmed (or already present). Note the version installed.
+
+2. With Group Portal Phase 1 published as single-paragraph prose, card renders with no asterisks, dashes, or stray markup characters visible.
+
+3. Author a quick test in Group Portal staging Phase 2 draft with ## sub-heads, - bullets, and a [link](https://example.com). Confirm: sub-heads render in ALLI dark blue #0A2540, bullets render with chevron and proper spacing, links open in a new tab.
+
+4. The page rendering Strategic Overview cards must not embed external Markdown content from anywhere except the Group Portal /api/alli-sync/strategic-overview/:projectId endpoint. No other Markdown sources allowed in this component.
+
+5. Visual: stack at least two phase cards and confirm clear vertical separation (≥ 24px gap), card padding generous (32px), bullets don't run flush against sub-heads.
+
+DO NOT:
+
+- Do NOT enable rehype-raw or pass dangerouslySetInnerHTML — bypasses the XSS safety the default react-markdown config gives you. Default config only. If a markup feature is missing, raise it back; don't paper over with raw HTML.
+
+- Do NOT render the sources array (source attribution metadata) to Trustees. That's an audit trail, not user-facing content. Trustees see narrative only. Sources are visible to Director / EP staff in a separate admin view if at all.
+
+- Do NOT wipe the last good mirror on 404 from Group Portal. The contract is explicit: if Group Portal endpoint returns 404 or 5xx, the mirror retains its last successful state. Sync logs the failure to sync_runs but does not zero out content. Last good state continues to render until the next successful sync overwrites it.
+
+ENDPOINT URL CORRECTION:
+
+The Group Portal endpoint is /api/alli-sync/strategic-overview/:projectId (projectId in URL path, not query param). Update the sync fetcher accordingly.
+
+For ALLI: GET https://tradenow.thetwintrade.co.uk/api/alli-sync/strategic-overview/alli-foundation-2024
+
+FINAL-PHASE CONDITIONAL RENDER (per Group Portal §9.4):
+
+connect_narrative is null on the highest phase_number (Phase 3 as the final phase). Render conditionally — do NOT show an empty "What next" sub-heading on the final-phase card. If the section_body for what_next is null/empty on the highest phase_number, omit the sub-heading entirely. WHAT and WHY render normally on that card.
+
+Make this rule generic in the component: any section_body that's null/empty for any phase, omit that sub-heading. Don't render empty headers.

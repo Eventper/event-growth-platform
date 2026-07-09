@@ -1,0 +1,25 @@
+Continue the Weekly Reports build. The patch context mismatch was caused by the file shifting during earlier edits — re-read the current state of client/src/pages/client-portal/home.tsx fresh, find the actual current insertion points, and apply the changes against the live file rather than the older version.
+
+Scope of what you're building:
+
+1. SERVER ROUTES in server/client-portal-routes.ts (add after the existing client-action-requests routes):
+   - GET /api/client-portal/alli/weekly-reports — proxies to Twin Trade /api/alli-sync/weekly-reports (list of published reports only)
+   - GET /api/client-portal/alli/weekly-reports/:id — proxies to /api/alli-sync/weekly-reports/:id (full report detail)
+   - POST /api/client-portal/alli/weekly-reports/:id/client-actions/:idx/mark-done — proxies to the upstream mark-done route
+   All three protected by authenticateClientPortal, all three call fetchTwinTradeSync.
+
+2. HOME PAGE PANEL in client/src/pages/client-portal/home.tsx:
+   - Add a "📊 Latest Weekly Report" collapsible panel after the Trustee Requests panel.
+   - Default open. Same collapse pattern as RAID/Requests/Deliverables (use the existing panelsOpen state — extend it with a `weeklyReports` key).
+   - Show the most recent report's summary + RAG status + count of open client actions in the report.
+   - "View all reports →" link goes to /client-portal/weekly-reports.
+   - If no published reports exist, hide the panel entirely (same pattern as the other empty-state panels).
+
+3. NEW PAGE at client/src/pages/client-portal/weekly-reports.tsx:
+   - Lists all published reports with date, summary, RAG.
+   - Click a report → detail view showing did_this_week, next_week, client_actions, risks_changed.
+   - Each client_action has a "Mark done" button that calls the mark-done endpoint. Idempotent.
+
+4. Wire the new page route in whatever router file holds the client-portal routes (likely App.tsx or a portal router).
+
+After it's all in: run typecheck, restart dev server, confirm zero errors. Then stop and report back.

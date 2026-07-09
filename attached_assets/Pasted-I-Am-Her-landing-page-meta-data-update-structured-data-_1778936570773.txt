@@ -1,0 +1,110 @@
+I Am Her landing page — meta data update + structured data addition. No body changes in this commit.
+
+Page: /iamher route on eventperfektplanningapp.com
+
+Step 1 — Read-only first. Show me:
+(a) Current full meta block (every tag and current value)
+(b) Whether any JSON-LD structured data exists on the page currently — if yes, show me the current schema
+(c) The current image file at og:image — confirm the filename and what the image shows
+
+Step 2 — Propose updated meta block + new structured data block as a clean diff side-by-side with current. Per-tag approval before applying.
+
+AUDIENCE FRAMING — CRITICAL:
+
+The audience is "women who lead" — at any age, any stage. NOT "senior women" (reads as older women, creates wrong filter and self-disqualifies younger leaders). Open to teenagers, 20s, 30s, 40s, 50s and beyond. What unites them is the role they carry — founder, director, executive, builder, leader, anchor — not their age or corporate seniority. Use "women who lead" throughout. Do not use "senior women" anywhere.
+
+PROPOSED META VALUES:
+
+<title>
+"The Woman Who Leads the Room | A Private Event for Women Who Lead | Milton Keynes August 2026"
+
+<meta name="description">
+"For the women who lead — at work, at home, in business, in life. A private invitation-only evening for 100 women in Milton Keynes and Buckinghamshire, curated around health, wellbeing, confidence and identity. August 2026."
+
+<meta name="keywords">
+"women in business event Milton Keynes, women's event UK, private women's event Milton Keynes, women founders UK, women in leadership UK, women's wellbeing event UK, women's identity event UK, women's confidence event UK, women entrepreneurs Milton Keynes, women leaders network UK, women's empowerment event UK, women's wellness event UK, female founders UK, female executives UK, women in business Buckinghamshire, women's network Milton Keynes, Event Perfekt, Shujo Aesthetics, The Woman Who Leads the Room, I Am Her event"
+
+<meta property="og:title">
+"The Woman Who Leads the Room | A Private Evening for Women Who Lead | Milton Keynes August 2026"
+
+<meta property="og:description">
+"For the women who lead — at work, at home, in business, in life. A private invitation-only evening for 100 women in Milton Keynes and Buckinghamshire. Curated around health, wellbeing, confidence and identity. August 2026. Hosted by Event Perfekt × Shujo Aesthetics."
+
+<meta property="og:image:alt">
+"A private evening for women who lead — in business, in life — in Milton Keynes"
+
+<meta name="twitter:title">
+match og:title
+
+<meta name="twitter:description">
+"A private evening for 100 women who lead. Milton Keynes, August 2026. For the women who carry it all and rarely have a space curated for them."
+
+<meta property="og:type"> — keep as "event"
+<meta property="og:locale"> — keep as "en_GB"
+<meta property="og:site_name"> — keep as "Event Perfekt"
+<meta property="og:url"> — keep as https://eventperfektplanningapp.com/iamher
+<meta name="twitter:card"> — keep as "summary_large_image"
+<meta name="author"> — keep as "Event Perfekt"
+<meta name="theme-color"> — keep as #330311
+
+OG image filename:
+Rename current og:image from event-16july-hero-v4.png to a date-agnostic SEO-friendly name. Propose: iamher-private-event-women-who-lead-mk.png (same image, new filename). Update og:image and twitter:image references. If the image content itself needs replacing (currently shows champagne-toasting which doesn't match new positioning), flag separately for Tolu — do NOT change image content in this commit.
+
+PROPOSED STRUCTURED DATA (NEW — JSON-LD block in page head):
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "The Woman Who Leads the Room — I Am Her",
+  "description": "A private invitation-only evening for 100 women who lead — in business, in life, at home, at work. Curated around health, wellbeing, confidence and identity. For the women who carry it all and rarely have a space curated for them.",
+  "startDate": "2026-08",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "location": {
+    "@type": "Place",
+    "name": "Milton Keynes",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Milton Keynes",
+      "addressRegion": "Buckinghamshire",
+      "addressCountry": "GB"
+    }
+  },
+  "organizer": [
+    {
+      "@type": "Organization",
+      "name": "Event Perfekt",
+      "url": "https://www.eventperfekt.com"
+    },
+    {
+      "@type": "Organization", 
+      "name": "Shujo Aesthetics"
+    }
+  ],
+  "image": "https://eventperfektplanningapp.com/assets/iamher-private-event-women-who-lead-mk.png",
+  "url": "https://eventperfektplanningapp.com/iamher",
+  "isAccessibleForFree": false,
+  "audience": {
+    "@type": "Audience",
+    "audienceType": "Women who lead — at every age and every stage"
+  }
+}
+</script>
+
+Notes on structured data:
+- startDate "2026-08" (month only, per Tolu's decision to use generic August dating)
+- Both Event Perfekt and Shujo Aesthetics named as co-organisers — Shujo is a confirmed co-creator per Tolu
+- Address uses Milton Keynes / Buckinghamshire generically (no specific venue address)
+- "isAccessibleForFree": false signals private/invite-only
+- Audience descriptor frames the role (women who lead), not the age or seniority
+
+Step 3 — Show me proposed meta diff AND proposed structured data block separately, side by side with current. Per-tag and structured-data approval. Then apply.
+
+Step 4 — Commit as its own commit. Drop Co-Authored-By. Message:
+"Update I Am Her meta and add Event structured data — reposition for women who lead, optimise for adjacent-search discoverability, generic August date"
+
+Step 5 — After commit, flag separately for Tolu:
+(a) Whether the body of the page currently uses "senior women" language or beauty-industry/champagne positioning — body update is the next separate task if so
+(b) Whether the og:image content (champagne toasting) needs replacing to match the new positioning — Tolu's call
+(c) Confirm Meta Pixel is installed and firing — blocker for any paid ads

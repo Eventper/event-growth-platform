@@ -1,0 +1,104 @@
+1. Use Poppins as the only font
+Everything on the dashboard — headings, labels, buttons, body text — should use Poppins.
+Use different weights to create hierarchy:
+
+Headings: SemiBold
+
+Sub‑headings: Medium
+
+Body text: Regular
+
+Buttons: Medium
+
+This alone will make the dashboard look modern and premium.
+
+2. Apply a clean, modern colour palette
+Use a consistent set of colours across the dashboard:
+
+Deep navy for titles and the top bar
+
+Royal blue for buttons and active states
+
+Soft grey for backgrounds
+
+Light grey for borders
+
+Green / Amber / Red for status indicators
+
+This gives the dashboard a professional, intentional feel.
+
+3. Change the layout to a 3‑column structure
+Instead of lots of separate boxes, organise the dashboard into three clear columns:
+
+Left column:
+Urgent events, overdue tasks, today’s priorities.
+
+Middle column:
+Active events, progress bars, upcoming milestones.
+
+Right column:
+Quick notes, team chat, vendor messages.
+
+This creates flow and reduces clutter.
+
+4. Redesign all boxes into clean “cards”
+Every section should sit inside a white card with:
+
+rounded corners
+
+soft shadows
+
+consistent padding
+
+clear spacing
+
+This makes the dashboard feel premium and unified.
+
+5. Add a hero section at the top
+Replace the “Welcome back” area with something more intentional:
+
+“Your Event Command Centre”  
+and show:
+
+next event countdown
+
+one urgent alert
+
+one quick action
+
+This sets the tone for the whole workspace.
+
+6. Add a sense of progress
+Introduce a simple progress indicator for each event:
+
+a progress bar
+
+or an “event health score” (green, amber, red)
+
+This makes the dashboard feel intelligent, not static.
+
+7. Improve spacing and hierarchy
+Tell Replit to:
+
+increase spacing between sections
+
+use larger headings
+
+use consistent margins
+
+reduce visual noise
+
+This makes the dashboard feel clean and intentional.
+
+8. Make buttons consistent
+All buttons should:
+
+use your brand blue
+
+have rounded corners
+
+use Poppins Medium
+
+be the same size and style everywhere
+
+Consistency = professionalism.

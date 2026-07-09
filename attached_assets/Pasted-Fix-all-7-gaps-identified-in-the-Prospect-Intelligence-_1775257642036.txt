@@ -1,0 +1,205 @@
+Fix all 7 gaps identified in the Prospect Intelligence audit. Do all of them in one go.
+
+---
+
+# FIX 1 — SAVE TO PROSPECT button in Contact Intel tab
+
+After "Find Decision-Maker" returns a result, a "Save to prospect" button must appear.
+
+- Show a dropdown of all prospects in the database (searchable, shows company name)
+- User selects which prospect to save the contact to
+- On save: update that prospect record with contactName, contactTitle, contactEmail, contactLinkedIn, contactConfidence
+- Show success toast: "Contact saved to [Company Name]"
+- The prospect card in Pipeline then shows the contact name instead of just an icon
+- Also add a "Create new prospect" option in the dropdown — pre-fills a new prospect with the company name and contact details found
+
+---
+
+# FIX 2 — PIPELINE STAGE NAMES + DRAG AND DROP
+
+**Fix stage names to match spec exactly:**
+Current stages → correct stages:
+- "New" → "New Enquiry"
+- "Researching" → REMOVE this stage entirely — merge all Researching prospects into "New Enquiry"
+- "Contacted" → "Contacted" (keep)
+- "Meeting" → "Meeting Booked"
+- "Proposal" → "Proposal Sent"
+- "Negotiation" → add this stage (was missing)
+- "Won" → "Won" (keep)
+- "Lost" → "Lost" (keep)
+
+Final 6 stages in order: New Enquiry → Contacted → Meeting Booked → Proposal Sent → Negotiation → Won / Lost
+
+**Add drag and drop:**
+- Use @dnd-kit/core and @dnd-kit/sortable (install if not present)
+- Each prospect card is draggable
+- Drag a card from one column to another → updates prospect stage in database immediately
+- Visual feedback while dragging: card shows at 80% opacity, target column highlights
+- On drop: optimistic update (card moves instantly), then API call to save
+- If API fails: revert card to original position + show error toast
+- Keep the dropdown stage change as a fallback (for mobile where drag is harder)
+
+---
+
+# FIX 3 — PROSPECT CARDS — ADD MISSING FIELDS
+
+Add three missing fields to the prospect data model and cards:
+
+**A) Estimated value:**
+- Add `estimated_value` (integer) and `currency` (GBP/NGN/USD) fields to company_prospects table
+- Add to prospect creation form and edit form
+- Show on card: formatted currency amount (e.g. £45,000)
+- Use for High Priority auto-logic (see Fix 7)
+- In Pipeline column header, show total pipeline value per stage
+
+**B) Assigned planner:**
+- Add `assigned_to` (user_id foreign key) field to company_prospects table
+- Add planner assignment in prospect detail view: dropdown of all users with role planner or manager
+- Show on card: planner avatar + initials (same style as event cards)
+- Filter pipeline by assigned planner (add to filter bar)
+
+**C) Last contact date:**
+- Add `last_contacted_at` (timestamp) field to company_prospects table
+- Auto-update whenever: an email is sent, WhatsApp is sent, a call is logged, a stage change happens
+- Show on card: "Last contact: 3 days ago" (relative time)
+- Highlight red if last contact > 14 days ago with no activity
+- Sort pipeline by last contact date option
+
+---
+
+# FIX 4 — DYNAMIC COUNTRY FILTER
+
+Replace the hardcoded UK / Nigeria / International filter with a dynamic one.
+
+- Query the database: SELECT DISTINCT country FROM company_prospects WHERE country IS NOT NULL
+- Build the filter options from actual data — only show countries that have prospects
+- Show count badge per country: "Nigeria (8)", "United Kingdom (5)", "USA (3)"
+- Add an "All" option at the top showing total count
+- Filter updates in real time as prospects are added or their country changes
+- On the Find New Prospects tab, also update the country selector to show all 195 countries (searchable dropdown, not just GB and NG toggles)
+
+---
+
+# FIX 5 — SEARCH RESULTS SHOW CONFIDENCE LEVEL + SOURCE URL
+
+The Find New Prospects tab returns results but doesn't show confidence level or source URLs.
+
+**Update the search Agent prompt to always return JSON in this exact format:**
+```json
+[
+  {
+    "companyName": "",
+    "country": "",
+    "city": "",
+    "industry": "",
+    "website": "",
+    "foundingYear": null,
+    "companyAge": null,
+    "milestoneFlag": "",
+    "source": "",
+    "sourceUrl": "",
+    "confidence": "High" | "Medium" | "Low",
+    "reasonForRecommendation": ""
+  }
+]
+```
+
+**Update results card to show:**
+- Confidence badge: High = green, Medium = amber, Low = red
+- Source label (e.g. "Companies House", "Agent Research", "News")
+- Source URL as clickable link: "View source →"
+- Milestone flag if applicable: "Turning 10 this year"
+- Reason for recommendation (short, 1 line)
+
+Also add the Companies House API for UK searches:
+- If country = UK or United Kingdom: call https://api.company-information.service.gov.uk/search/companies?q=[keyword] with COMPANIES_HOUSE_API_KEY
+- Map SIC codes to industry labels
+- Calculate company age from date_of_creation
+- Set confidence = High and source = Companies House for all CH results
+- Set sourceUrl = https://find-and-update.company-information.service.gov.uk/company/[company_number]
+
+---
+
+# FIX 6 — CURRENCY ADJUSTS PER COUNTRY IN MARKETING TAB
+
+When generating marketing campaign content, the currency must match the prospect's country.
+
+- Build a country → currency map:
+  - United Kingdom, UK, GB → GBP (£)
+  - Nigeria, NG → NGN (₦) with USD as secondary
+  - USA, United States → USD ($)
+  - Kenya → KES with USD secondary
+  - UAE, Dubai → AED with USD secondary
+  - Ghana → GHS with USD secondary
+  - South Africa → ZAR with USD secondary
+  - Europe (Germany, France, Spain, Italy, Netherlands etc) → EUR (€)
+  - Rest of Africa → USD ($)
+  - Default → USD ($)
+
+- Pass currency to the Agent prompt when generating campaign content
+- Campaign email content must reference the correct currency symbol and typical budget ranges for that market
+- In the Marketing tab region selector: show currency symbol next to each region (e.g. "Nigeria ₦/USD", "UK £")
+- When batch-generating campaigns for multiple regions: each email uses its own correct currency
+
+---
+
+# FIX 7 — HIGH PRIORITY AUTO-LOGIC + SEQUENCES ON OUTREACH TAB
+
+**A) High Priority auto-logic:**
+Currently High Priority is manual flag only. Add automatic flagging:
+
+Auto-set High Priority = true when ANY of these conditions are met:
+- estimated_value > 50000 (any currency)
+- Event date is within 8 weeks
+- Prospect has been in same stage for > 14 days without contact
+- Prospect replied to an outreach email or WhatsApp
+- Milestone is "this month" or "next month"
+
+Keep manual flag too — user can still force High Priority regardless
+High Priority badge on card: gold star, visible in all views
+
+**B) 4-touch sequences on Agent Outreach tab:**
+Currently sequences are only accessible inside the prospect detail view. Bring them to the main Outreach tab.
+
+Update the Outreach tab:
+- "Load Agent Outreach" → ranks prospects by urgency as before
+- Select prospects (checkbox)
+- Button changes from "Generate Batch Emails" to "Generate Sequences"
+- Clicking opens a full-screen sequence review panel:
+  - Shows all selected prospects as rows
+  - Each row expands to show all 4 touches (Day 0 email, Day 4 WhatsApp, Day 9 email, Day 14 email)
+  - Edit any touch inline
+  - Approve per prospect OR "Approve All" button at top
+  - Status column: Pending / Approved / Active / Paused / Complete
+- Approved sequences activate and send on schedule via SendGrid
+- Active sequences show progress on the Outreach tab: "[Company] — Touch 2 of 4 — next in 3 days"
+
+---
+
+# VERIFICATION CHECKLIST:
+[ ] Save to Prospect button appears after Find Decision-Maker returns result
+[ ] Dropdown shows all prospects, searchable
+[ ] Contact details save to selected prospect record
+[ ] Prospect card shows contact name after saving
+[ ] Pipeline has exactly 6 stages in correct order: New Enquiry / Contacted / Meeting Booked / Proposal Sent / Negotiation / Won+Lost
+[ ] Researching stage removed, existing prospects migrated to New Enquiry
+[ ] Drag and drop works — card moves between columns
+[ ] Drag visual feedback works (opacity + column highlight)
+[ ] Stage updates in database on drop
+[ ] estimated_value field added to database and shows on cards
+[ ] assigned_to field added, planner shows on cards
+[ ] last_contacted_at field added, shows relative time on cards
+[ ] Red highlight on cards with no contact > 14 days
+[ ] Country filter is dynamic — built from actual database values
+[ ] Country filter shows count badges
+[ ] Find New Prospects country selector shows all 195 countries
+[ ] Search results show confidence badge (green/amber/red)
+[ ] Search results show source label and clickable source URL
+[ ] UK search calls Companies House API
+[ ] Marketing tab shows currency symbol per region
+[ ] Campaign content uses correct currency per prospect country
+[ ] High Priority auto-flags on budget / timeline / inactivity / reply / milestone
+[ ] Sequences accessible on main Outreach tab (not just detail view)
+[ ] Sequence review panel shows all 4 touches per prospect
+[ ] Approve All activates all sequences
+[ ] Active sequence progress visible on Outreach tab

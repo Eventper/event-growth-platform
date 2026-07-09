@@ -1,0 +1,41 @@
+Action Items view — three fixes needed before ALLI closeout Monday 25 May.
+Fix 1: Owner filtering
+The current /portal/client-actions view (or wherever it lives — confirm path) shows all actions to all logged-in users. This is incorrect. Required behaviour:
+
+Trustee session viewing the action log: shows ONLY items where owner = current_user. Items owned by the other Trustee are not visible in the personal action log at all.
+Director session: shows ALL actions across all owners, with owner column and owner filter (dropdown or chip selector). Default view is "all owners."
+Status display per item must reflect actual state, not just "Awaiting response."
+
+Fix 2: Replace the card UI with a RAID-log-style table
+Current cards (acknowledge/mark done/reply) are a notification pattern, not a managed log. Replace with a table that mirrors the existing RAID Log component (re-use the same columns, sort, and styling so the visual is consistent across the portal). Columns required:
+
+Priority (High / Medium / Low — coloured pill, same RAG vocabulary as the rest of the portal)
+Status (Awaiting response / In Progress / Resolved / Closed / Overdue — editable dropdown, audit-logged on change)
+Title (clickable, opens detail pane)
+Owner (Mr. Kehinde Alli / Mr. Agboola Ogundeyin / EP — links to user)
+Due date (red if overdue)
+Sent date
+Linked deliverable (if action derived from a deliverable, show the deliverable code D1–D29 with link)
+Linked document (if a Pack or doc is referenced, show download icon — e.g. "Read Phase 3 Pack" should expose the Phase 3 Pack download directly from the row)
+Notes (expandable — supports treatment notes, dated and attributed, same pattern as RAID treatment notes)
+
+Row actions:
+
+Edit (Director and Owner only) — edit title, due date, priority, status, add notes
+Treat (same as RAID treat) — adds dated, attributed treatment note without changing status
+Mark Resolved — owner self-marks; sets status=Resolved, requests Director confirmation
+Mark Closed — Director only — final close
+
+Audit log every status change, every edit, every note. Same audit pattern as RAID.
+Fix 3: Post-engagement label
+Three current actions have due dates after the EP-ALLI-2026-001 contract end (25 May 2026): Authorise umbrella body DBS, Provide initial corporate network mapping, and any others with due dates > 25 May. Add a column or badge "Post-engagement — ALLI responsibility" so these are visually distinguishable from EP-period actions. They remain on the log (Trustees still need to action them), but they do NOT block engagement closeout and do NOT appear as outstanding EP items on the final closeout report.
+Read-only against the existing data
+Do not migrate or duplicate the underlying action_items table. The fixes above are presentation and filtering — the data model already supports owner, due_date, sent_date, priority, status, notes if those columns exist. Confirm column inventory before building; if columns are missing, add them as additive migrations (per the additive-only rule on RAID #47).
+Pre-build report I want back before any code changes:
+
+Current table name and column list for action items
+Current view/route path that renders the action log
+Which columns from the required list already exist vs need adding
+Whether the RAID Log component is reusable as a generic table or needs forking
+
+Do not start build

@@ -1,0 +1,75 @@
+HERO SECTION
+Projects & Programmes  
+Governance‑aligned delivery across the UK, Africa & international markets.
+
+Button: Explore Case Studies
+
+SECTION 1 — Our Delivery Approach
+A short, premium editorial introduction.
+
+We deliver mission‑critical programmes for government, corporate and institutional partners across multi‑region environments. Our approach is built on governance, compliance and operational excellence.
+
+SECTION 2 — Key Strengths (3 blocks)
+Full‑colour editorial images.
+No gradients.
+Premium corporate style.
+
+Governance Excellence
+Audit‑ready frameworks aligned with UK government standards.
+
+Compliance & Risk
+Comprehensive compliance architecture & risk management.
+
+Operational Efficiency
+Streamlined operations across UK, Africa, Europe & international markets.
+
+SECTION 3 — Our Programmes
+This section lists your programme categories, NOT the case studies.
+
+DEFRA / CEFAS – Regional Support Programme
+Governance‑aligned delivery across Africa, supporting diagnostics, operations and programme design.
+Button: View Programme
+
+Remittance & Financial Coordination
+Cross‑border payments compliance, financial governance and operational support.
+Button: View Programme
+
+Programme Funding & Development
+Multi‑agency governance, risk management and stakeholder leadership.
+Button: View Programme
+
+⭐ SECTION 4 — Case Studies (NEW + CORRECT)
+This is the section you were missing.
+This is where the page becomes premium.
+
+Case studies MUST be separate — not mixed into the programme list.
+
+Case Studies
+Real‑world delivery across government, corporate and institutional partners.
+
+Case Study Cards:
+
+DEFRA / CEFAS – Africa Regional Support Programme
+Governance‑aligned delivery across multi‑region operations.
+Button: Read Case Study
+
+University of Oxford – St Anne’s Ball
+End‑to‑end event delivery for a major institutional partner.
+Button: Read Case Study
+
+Cross‑Border Payments Pilot (TwinPay)
+Compliance‑driven financial coordination across multiple markets.
+Button: Read Case Study
+
+Each button links to a dedicated case‑study page.
+
+SECTION 5 — Platforms
+These are NOT case studies — they are products.
+
+TwinPay Platform
+Compliance‑driven cross‑border payments infrastructure.
+Button: Explore Platform
+
+Twin Trade Network
+Cross‑border partnership ecosystem with governance oversight.
+Button: Explore Network

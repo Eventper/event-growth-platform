@@ -1,0 +1,73 @@
+Connect the ALLI Foundation client portal to the Twin Trade staff portal sync API.
+
+Store this configuration:
+TWIN_TRADE_SYNC_URL = [to be confirmed — placeholder for now]
+ALLI_SYNC_KEY = EP-ALLI-SYNC-2026
+
+Create a sync service at server/alli-sync-service.ts:
+
+async function fetchAlliDeliverables() {
+  const response = await fetch(`${process.env.TWIN_TRADE_SYNC_URL}/api/alli-sync/deliverables`, {
+    headers: { 'x-alli-sync-key': 'EP-ALLI-SYNC-2026' }
+  });
+  if (!response.ok) throw new Error('Sync failed');
+  return response.json();
+}
+
+async function fetchAlliMilestones() {
+  const response = await fetch(`${process.env.TWIN_TRADE_SYNC_URL}/api/alli-sync/milestones`, {
+    headers: { 'x-alli-sync-key': 'EP-ALLI-SYNC-2026' }
+  });
+  return response.json();
+}
+
+async function fetchAlliActivity() {
+  const response = await fetch(`${process.env.TWIN_TRADE_SYNC_URL}/api/alli-sync/activity`, {
+    headers: { 'x-alli-sync-key': 'EP-ALLI-SYNC-2026' }
+  });
+  return response.json();
+}
+
+async function postClientAction(action_type, deliverable_id, client_name, notes) {
+  const response = await fetch(`${process.env.TWIN_TRADE_SYNC_URL}/api/alli-sync/client-action`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-alli-sync-key': 'EP-ALLI-SYNC-2026'
+    },
+    body: JSON.stringify({ action_type, deliverable_id, client_name, notes })
+  });
+  return response.json();
+}
+
+Add these API routes to the planning app server:
+
+GET /api/client-portal/alli/deliverables
+- Calls fetchAlliDeliverables()
+- Returns deliverables to the client portal frontend
+- Caches result for 5 minutes to avoid hammering the sync API
+
+GET /api/client-portal/alli/milestones
+- Calls fetchAlliMilestones()
+
+GET /api/client-portal/alli/activity
+- Calls fetchAlliActivity()
+
+POST /api/client-portal/alli/action
+- Accepts: action_type, deliverable_id, notes
+- Gets client_name from the authenticated client portal session
+- Calls postClientAction()
+- Returns result
+
+Update the ALLI Foundation client portal Project Progress tab to:
+- Fetch deliverables from /api/client-portal/alli/deliverables on load
+- Show loading spinner while fetching
+- Show last synced time
+- Show green sync dot when connected, red when failed
+- Auto refresh every 5 minutes
+- When Kehinde approves a deliverable call POST /api/client-portal/alli/action with action_type approved
+- When Kehinde requests changes call POST /api/client-portal/alli/action with action_type changes_requested
+
+Add TWIN_TRADE_SYNC_URL to the Replit Secrets — set it to the Twin Trade portal URL once confirmed.
+
+Apply now and confirm the sync service is ready. It will show sync failed until TWIN_TRADE_SYNC_URL is set in secrets.

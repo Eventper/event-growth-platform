@@ -1,0 +1,477 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "verify-api-build",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run build"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "verify-api-build-2",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run build"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "install-workspace",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\" && pnpm install"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "verify-api-build-3",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run build"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "verify-api-start",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run start"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "verify-api-start-2",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run start"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "verify-api-start-3",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run start"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "verify-api-start-4",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run start"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "verify-api-dev",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run dev"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "verify-api-build-final",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run build"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "verify-api-dev-final",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run dev"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "scan-dev-log",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"findstr /n /c:\"Event Perfekt platform running\" /c:\"Requested port unavailable\" /c:\"Port already in use\" /c:\"ELIFECYCLE\" \"c:\\Users\\Tolu\\AppData\\Roaming\\Code\\User\\workspaceStorage\\596d2bcf5968601fe397cc93fb7fe846\\GitHub.copilot-chat\\chat-session-resources\\28a86e49-dac7-4b7c-9ce5-4faff3465e34\\call_bwwYmLt8T8pIhW6CjCPdGUmS__vscode-1783462418963\\content.txt\""
+			],
+			"isBackground": false
+		},
+		{
+			"label": "verify-api-start-final",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run start"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "scan-start-log",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"findstr /n /c:\"Event Perfekt platform running\" /c:\"Requested port unavailable\" /c:\"Port already in use\" /c:\"ELIFECYCLE\" \"c:\\Users\\Tolu\\AppData\\Roaming\\Code\\User\\workspaceStorage\\596d2bcf5968601fe397cc93fb7fe846\\GitHub.copilot-chat\\chat-session-resources\\28a86e49-dac7-4b7c-9ce5-4faff3465e34\\call_QmsikCwNmkNBxvStMiDfpKg9__vscode-1783462418968\\content.txt\""
+			],
+			"isBackground": false
+		},
+		{
+			"label": "smoke-api-health",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$ports = 5000,5001,5002; foreach ($p in $ports) { try { $r = Invoke-RestMethod -Uri (\"http://127.0.0.1:{0}/api/healthz\" -f $p) -TimeoutSec 3; Write-Output (\"port={0} status={1} service={2}\" -f $p,$r.status,$r.service) } catch { Write-Output (\"port={0} down\" -f $p) } }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "smoke-api-health-node",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"node -e \"const ports=[5000,5001,5002];(async()=>{for(const p of ports){try{const r=await fetch('http://127.0.0.1:'+p+'/api/healthz');const j=await r.json();console.log('port='+p+' status='+j.status+' service='+j.service);}catch{console.log('port='+p+' down')}}})();\""
+			],
+			"isBackground": false
+		},
+		{
+			"label": "verify-growth-build",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\growth-platform\" && pnpm run build"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "verify-api-build-after-auth-fallback",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run build"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "smoke-growth-auth-demo",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"curl -s -H \"Content-Type: application/json\" -X POST http://127.0.0.1:5000/api/growth/auth/demo -d \"{}\""
+			],
+			"isBackground": false
+		},
+		{
+			"label": "start-api-updated",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run start"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "scan-updated-start-port",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"findstr /n /c:\"Event Perfekt platform running\" /c:\"Requested port unavailable\" \"c:\\Users\\Tolu\\AppData\\Roaming\\Code\\User\\workspaceStorage\\596d2bcf5968601fe397cc93fb7fe846\\GitHub.copilot-chat\\chat-session-resources\\28a86e49-dac7-4b7c-9ce5-4faff3465e34\\call_dKqr2rk5NJvXvDK0om9kaiOU__vscode-1783462418986\\content.txt\""
+			],
+			"isBackground": false
+		},
+		{
+			"label": "smoke-growth-auth-demo-5003",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"curl -s -H \"Content-Type: application/json\" -X POST http://127.0.0.1:5003/api/growth/auth/demo -d \"{}\""
+			],
+			"isBackground": false
+		},
+		{
+			"label": "smoke-growth-auth-me-5003",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"curl -s -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJsb2NhbC1kZXYtdXNlciIsInVzZXJuYW1lIjoiZGVtb0Bncm93dGgtcGxhdGZvcm0ubG9jYWwiLCJlbWFpbCI6ImRlbW9AZ3Jvd3RoLXBsYXRmb3JtLmxvY2FsIiwicm9sZSI6ImNsaWVudCIsImlhdCI6MTc4MzU1NjE5NywiZXhwIjoxNzg0MTYwOTk3fQ.1NA21R-G6xl4vp6jumGyWqRRPb_HLKxoq9MyXHS_brI\" http://127.0.0.1:5003/api/growth/auth/me"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "git-status-short",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\" && git status --short"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "verify-api-build-db-guard",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run build"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "verify-api-start-db-guard",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run start"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "verify-api-build-degraded-minimal",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run build"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "verify-api-start-degraded-minimal",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run start"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "smoke-degraded-endpoints",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$base='http://127.0.0.1:5005'; $h=Invoke-RestMethod -Uri \"$base/api/healthz\" -TimeoutSec 5; Write-Output (\"health status=\" + $h.status + \" dbAvailable=\" + $h.db.available + \" degraded=\" + $h.db.degraded); $demo=Invoke-RestMethod -Method Post -Uri \"$base/api/growth/auth/demo\" -ContentType 'application/json' -Body '{}' -TimeoutSec 5; Write-Output (\"demo ok=\" + $demo.ok + \" degraded=\" + $demo.degraded); $token=$demo.token; $hdr=@{ Authorization = \"Bearer $token\" }; $me=Invoke-RestMethod -Uri \"$base/api/growth/auth/me\" -Headers $hdr -TimeoutSec 5; Write-Output (\"me ok=\" + $me.ok + \" degraded=\" + $me.degraded); try { Invoke-RestMethod -Uri \"$base/api/saas-tender/finder/search?keywords=test&page=1\" -TimeoutSec 5 | Out-Null; Write-Output 'db-route unexpected-success' } catch { $status=$_.Exception.Response.StatusCode.value__; Write-Output (\"db-route status=\" + $status) }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "smoke-health-5005",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"curl -s http://127.0.0.1:5005/api/healthz"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "smoke-auth-demo-5005",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"curl -s -H \"Content-Type: application/json\" -X POST http://127.0.0.1:5005/api/growth/auth/demo -d \"{}\""
+			],
+			"isBackground": false
+		},
+		{
+			"label": "smoke-db-route-503",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"curl -s -o NUL -w \"%{http_code}\" \"http://127.0.0.1:5005/api/saas-tender/finder/search?keywords=test&page=1\""
+			],
+			"isBackground": false
+		},
+		{
+			"label": "smoke-db-route-503-clean",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"curl -s -o NUL -w \"%{http_code}\" \"http://127.0.0.1:5005/api/saas-tender/finder/search?keywords=test^&page=1\""
+			],
+			"isBackground": false
+		},
+		{
+			"label": "verify-api-dev-after-db-guard",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run dev"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "rebuild-api-auth-parser",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run build"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "restart-api-auth-parser",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run start"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "verify-demo-me-flow-safe",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"-e",
+				"(async()=>{const base='http://127.0.0.1:5007';const d=await fetch(base+'/api/growth/auth/demo',{method:'POST',headers:{'content-type':'application/json'},body:'{}'});const demo=await d.json();console.log('demo_ok='+demo.ok+' degraded='+demo.degraded+' token='+(demo.token? 'yes':'no'));const m=await fetch(base+'/api/growth/auth/me',{headers:{authorization:'Bearer '+demo.token}});const me=await m.json();console.log('me_status='+m.status+' me_ok='+me.ok+' degraded='+(me.degraded===true));console.log('me_user='+(me.user?.email||'none'));const c=await fetch(base+'/api/growth/auth/me',{headers:{authorization:'bearer    '+demo.token+'   '}});console.log('me_case_space_status='+c.status);})();"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "run-growth-auth-flow-check",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"node \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\scripts\\verify-growth-auth-flow.mjs\" \"http://127.0.0.1:5007\""
+			],
+			"isBackground": false
+		},
+		{
+			"label": "frontend-build-smoke",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\growth-platform\" && pnpm run build"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "run-growth-auth-flow-check-2",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\" && node scripts\\verify-growth-auth-flow.mjs http://127.0.0.1:5007"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "build-api-iamher-fallback",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run build"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "start-api-iamher-fallback",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\api-server\" && pnpm run start"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "smoke-iamher-summary-5008",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"curl -s http://127.0.0.1:5008/api/iam-her/summary"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "smoke-iamher-applications-5008",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"curl -s \"http://127.0.0.1:5008/api/event-applications?eventKey=iamher-2026-08-28\""
+			],
+			"isBackground": false
+		},
+		{
+			"label": "smoke-iamher-contact-5008",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"curl -s -H \"Content-Type: application/json\" -X POST http://127.0.0.1:5008/api/event-august/contact -d \"{\\\"name\\\":\\\"Local Tester\\\",\\\"email\\\":\\\"local@test.com\\\",\\\"message\\\":\\\"Hello I AM HER\\\",\\\"event\\\":\\\"iam-her\\\"}\""
+			],
+			"isBackground": false
+		},
+		{
+			"label": "verify-iamher-degraded-script",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\" && node scripts\\verify-iamher-degraded.mjs http://127.0.0.1:5008"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "build-event-perfekt-after-iamher",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"cd /d \"c:\\Users\\Tolu\\Downloads\\project-source (2)\\artifacts\\event-perfekt\" && pnpm run build"
+			],
+			"isBackground": false
+		}
+	]
+}

@@ -1,0 +1,228 @@
+# I AM HER: The Stories Behind the Room — Build Spec
+
+**Property:** Attaches to the existing I Am Her landing page (eventperfekt.net/iamher)
+**Event:** The Woman Who Leads The Room — "I Am Her", Friday 28 August 2026, Milton Keynes
+**Purpose:** User-generated story collection + public Story Wall. Builds social proof, organic SEO content, and a soft conversion path to the event.
+**Status:** Spec ready for build. Compliance sign-off required before launch (see §8).
+**Imagery:** Every section carries at least one relevant image. Imagery is not decoration here — it gives the page light, emotion and life, and signals who this room is for. Specs per section below; global art direction in §0.
+
+---
+
+## 0. Imagery & visual direction (applies to every section)
+
+Photography is the emotional engine of this page. Get it right and the copy lands harder.
+
+**Tone:** Editorial, premium, cinematic — closer to a leadership magazine than a stock library. Warm but serious. Real women, not posed corporate clichés (no fake handshakes, no headset call-centre shots, no laughing-alone-with-salad).
+
+**Subjects:** Professional women — founders, executives, entrepreneurs. **Diverse and inclusive, with Black and diaspora women prominent**, reflecting the actual audience and the TWWLTR/I Am Her brand. Range of ages. Real expressions: composure, reflection, quiet strength, the weight behind the title.
+
+**Mood per emotional beat:** the page moves from *pressure → honesty → connection → invitation*. Imagery should track that arc — heavier and more introspective up top, warmer and more collective toward the CTA.
+
+**Consistency:** One coherent grade across all images — match whatever look already governs eventperfekt.net/iamher (colour palette, warmth, contrast). Don't mix bright stock with moody editorial.
+
+**Rights & safety:** Licensed stock (or commissioned shoots) only — no scraped or unlicensed images. **No identifiable real person's photo attached to a story** unless that person submitted it and consented; story imagery should be evocative/abstract, never implying a stock model *is* the storyteller.
+
+**Performance:** All images optimised (WebP, responsive `srcset`, lazy-load below the fold), with descriptive alt text for accessibility and SEO.
+
+---
+
+## 1. New website section
+
+### Section title
+**I AM HER: The Stories Behind the Room**
+
+### Introduction copy (use verbatim)
+
+> Every woman in the room has a story.
+>
+> A moment when she kept going long after her body whispered "stop."
+> A season where she carried the weight of work, family, expectations and identity until something inside her broke.
+> A time when she led everyone else — and quietly fell apart in the process.
+>
+> Burnout doesn't always look like collapse.
+> Sometimes it looks like competence.
+> Sometimes it looks like achievement.
+> Sometimes it looks like the woman who "has it all together."
+>
+> This space is for those stories.
+> A place for founders, executives, entrepreneurs and professional women to speak honestly about the pressure, the pace, the perfectionism, the exhaustion — and the moment they realised something had to change.
+>
+> Your story may be the one another woman needs to read.
+> Your truth may be the permission someone else has been waiting for.
+> Your experience may remind another woman that she is not alone.
+>
+> Tell your story.
+> Name your moment.
+> Say the thing you've never said out loud.
+>
+> **I AM HER. And this is my story.**
+
+**Image — section hero (required):** One full-width, cinematic hero image anchoring the intro. A poised professional woman in a moment of quiet reflection — strength carrying weight, not a smile-to-camera. Sets the introspective tone for the whole page. Subtle dark overlay so the white headline and intro copy stay legible on top.
+
+---
+
+## 2. Story submission form
+
+| Field | Type | Rules |
+|---|---|---|
+| Full Name | Text input | Required |
+| Share Anonymously | Toggle | When ON, triggers anonymity logic (§2.1) |
+| Job Title | Text input | Optional |
+| Company / Organisation | Text input | Optional — **suppressed on display if Anonymous is ON** (§2.1) |
+| Email Address | Text input | Required. **Never displayed publicly.** Used for moderation contact + optional notify-on-publish |
+| Story Category | Dropdown | Required. See category list below |
+| Your Story | Large text area | Required. Placeholder below |
+| Support notice | Static text | Always visible above Submit (§2.2) |
+| Consent | Checkbox | Required — story sharing permission (§2.3) |
+| Privacy notice | Link/text | Required — links to privacy terms (§2.3) |
+| Submit Story | Button | Disabled until required fields + consent complete |
+
+**Story categories:** Burnout · Identity · Leadership · Reinvention · Pressure · Motherhood & Career · Toxic Organisation · Financial Strain · Spouse / Relationship · Death or Loss · The Woman Behind the Title
+
+**Story placeholder:**
+> Tell us about a moment, season or experience that shaped you — burnout, pressure, reinvention, identity, leadership or the woman behind the title.
+
+**Image — form supporting visual (required):** A single warm, encouraging image beside or above the form — a woman writing/journalling, or a calm, intimate "permission to speak" moment. Lighter and more inviting than the hero, signalling safety. Keep it from competing with the form fields for attention.
+
+### 2.1 Anonymity logic (corrected)
+If **Share Anonymously** is ON:
+- Display name renders as **"Anonymous"**.
+- **Company / Organisation is suppressed entirely** on all public surfaces (wall card, full story page, share previews, SEO meta).
+- Job Title is generalised on display — store the exact title, but render only a broad descriptor (e.g. "Senior Executive", "Founder", "Finance Leader"). The moderator selects/confirms the generalised descriptor at approval.
+- SEO slug must not contain name or company (§6).
+
+> Rationale: "Anonymous CFO at [named mid-size firm]" identifies the person instantly. Anonymity must hold across *all* fields, not just the name.
+
+### 2.2 Support / safeguarding notice (always visible above Submit)
+> Sharing can bring up difficult feelings. If you're struggling right now, please reach out to someone you trust or a support service. In the UK you can contact the Samaritans free on 116 123, any time.
+
+### 2.3 Consent + privacy
+- **Consent checkbox (required):**
+  ☐ I give permission for my story to be shared on The Woman Who Leads The Room website and social channels. I understand I can ask for my story to be removed at any time.
+- **Privacy notice link (required):** must state lawful basis (consent), what is collected, that story content may include sensitive personal information shared voluntarily, retention period, and the right to withdraw a published story. Stories and email addresses are processed by Event Perfekt Global Ltd as data controller.
+
+---
+
+## 3. Success message
+> Thank you for sharing your story.
+> Your voice is part of the movement.
+>
+> Your story will be reviewed before it appears on the Story Wall. We'll be in touch if we need anything.
+
+*(Final line added so submitters understand stories are not instantly live.)*
+
+**Image — success state (required):** A warm, affirming visual to close the moment — collective/connected energy (women together, or an uplifting solo portrait). Rewards the vulnerability of submitting and reinforces "you're part of the movement."
+
+---
+
+## 4. New page — I AM HER: The Story Wall
+
+Displays all **approved** stories as elegant cards. Featured stories (§5.1) pinned to the top.
+
+**Each card shows:**
+- Name *(or "Anonymous")*
+- Job Title / generalised descriptor *(if provided)*
+- Story Category *(as a tag)*
+- Story preview — first 200 characters
+- **Read Story →** link
+
+**Soft CTA on the wall (conversion path):**
+> These are the women in the room. Join them on Friday 28 August → *[link to ticket page]*
+
+**Images — Story Wall (required):**
+- **Wall header banner:** a collective, room-full-of-women image conveying community and momentum.
+- **Per-card thumbnail:** each card carries an evocative image. Map a curated image to each **category** (e.g. Burnout, Leadership, Motherhood & Career) so cards feel rich without needing a photo of the actual author — this protects anonymity and avoids implying a model is the storyteller. Featured cards get a larger image treatment.
+- Maintain one consistent grade across all category images so the wall reads as a unified set, not mixed stock.
+
+---
+
+## 5. Full story page
+
+**Displays:**
+- Name *(or "Anonymous")*
+- Job Title / generalised descriptor *(if provided)*
+- Category
+- Date published
+- Full story
+- Share buttons (§5.3)
+- **Soft CTA footer:** "Every story here belongs to a woman who decided something had to change. Be in the room on 28 August → *[ticket link]*"
+
+**Images — full story page (required):**
+- **Story banner:** the category image (from the wall mapping) as a header band. Evocative, never a stock model presented as the author.
+- **CTA footer image:** a warm, aspirational closing visual behind/beside the ticket CTA to carry the reader from the story into the invitation.
+- This banner image is also the social share/OG image (§7.4) — set it as the page's `og:image` so LinkedIn/Facebook previews look intentional.
+
+---
+
+## 6. SEO URLs
+Pattern: `/stories/i-am-her-{category}-{descriptor}-{unique}`
+- Example: `/stories/i-am-her-burnout-founder-amaka` or `/stories/i-am-her-burnout-founder-7f3k`
+- **Must append a unique element** (first name where non-anonymous, else short ID) to prevent collisions between two stories in the same category.
+- Anonymous stories: never use name or company in the slug — use category + descriptor + short ID only.
+
+---
+
+## 7. Admin / moderation
+
+### 7.1 Approval queue (required)
+Stories **never auto-publish**. All submissions enter a review queue.
+**Status values:** Pending · Approved · Rejected
+
+### 7.2 Featured stories
+Admin can mark a story **Featured**. Featured stories pin to the top of the Story Wall.
+
+### 7.3 Search & filter (public)
+Users filter the wall by category: Burnout · Leadership · Motherhood & Career · Financial Strain · Identity · etc. (all categories from §2).
+
+### 7.4 Share buttons
+Share on LinkedIn · Share on Facebook · Copy Link.
+
+### 7.5 Moderator review rubric (required before any approval)
+The reviewer checks each story against these before changing status to Approved:
+1. **No named or identifiable organisations** in "Toxic Organisation", "Spouse / Relationship" or any story — defamation/libel risk. Generalise or redact; if it can't be made safe, reject with a note.
+2. **No identifiable third parties** (named individuals, employers, partners) presented in a damaging light.
+3. **Anonymity integrity** — if Anonymous, confirm company is suppressed and job title generalised (§2.1).
+4. **Safeguarding escalation** — if a story contains indications of immediate risk (self-harm intent, ongoing abuse, a child at risk), do **not** simply reject. Hold as Pending, do not publish, and escalate per the internal safeguarding step below. A reply with support signposting should be sent to the submitter's email.
+5. **Consent present** — story is not published unless the consent checkbox was ticked at submission.
+
+> **Internal safeguarding step:** a designated reviewer flags any concerning submission to the event lead and the Group Risk & Compliance function. Document the decision. This mirrors the duty-of-care standard the event already sets with a wellbeing authority on stage.
+
+---
+
+## 8. Compliance & legal (sign-off gate before launch)
+This feature collects names, email addresses and voluntarily-shared sensitive personal information (mental health, bereavement, relationships). It must be signed off by the Group Risk & Compliance / MLRO function before going live.
+
+Checklist:
+- [ ] Privacy notice published and linked from the form
+- [ ] Lawful basis (consent) documented; consent wording matches §2.3
+- [ ] Retention and withdrawal process defined (how a submitter requests removal, and who actions it)
+- [ ] Email addresses stored securely, never surfaced publicly, never exported to marketing without separate opt-in
+- [ ] Moderator rubric (§7.5) issued to whoever holds the review function
+- [ ] Defamation rule (no identifiable organisations) enforced in rubric and tested
+
+---
+
+## 9. Social proof counter (homepage)
+> "37 women have already shared their story."
+
+**Build rules:**
+- The number must be **dynamic and real** — count of genuine submissions (approved, or approved + pending — decide one and stick to it). **Never hardcoded.**
+- Update on submission so the count moves as participation grows.
+- If counts are low at launch, consider hiding the counter until it passes a credible threshold rather than displaying a small or static number.
+
+**Image — counter band (required):** A collective image of women (rows of faces, a full room, or a montage) behind or beside the counter to make the social proof visual as well as numeric — "look how many of us there are."
+
+---
+
+## 10. Acceptance criteria (build is "done" when)
+1. Submission form validates required fields + consent before enabling Submit.
+2. Anonymity toggle correctly suppresses company and generalises job title across card, full page, share preview and slug.
+3. Submissions land in the queue as Pending; nothing publishes without an Approved status set by a moderator.
+4. Story Wall renders approved stories, featured pinned to top, category filter working.
+5. Full story pages live at unique, collision-proof SEO slugs.
+6. Share buttons (LinkedIn, Facebook, Copy Link) functional on full story pages.
+7. Support notice (§2.2) visible on the form; privacy notice linked.
+8. Homepage counter pulls a live count.
+9. CTA to the ticket page present on the wall and on every full story page.
+10. Compliance checklist (§8) signed off.
+11. Every section carries its required image(s) per §0–§9, all licensed, optimised (WebP/responsive/lazy-load), with descriptive alt text, and graded to one consistent look across the page.

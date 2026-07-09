@@ -1,0 +1,639 @@
+import type { Express } from "express";
+import { db } from "./db";
+import { sql } from "drizzle-orm";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { format } from "date-fns";
+import rateLimit from "express-rate-limit"; // FIX 4: import rate limiter
+
+// FIX 3: Remove hardcoded fallback — crash on startup if secret is missing
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) throw new Error("JWT_SECRET environment variable is not set. Server cannot start.");
+
+// FIX 4: Rate limiter — max 10 attempts per IP per 15 minutes on auth routes
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { message: "Too many attempts, please try again in 15 minutes" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const authenticateSaasUser = (req: any, res: any, next: any) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (!token) return res.sendStatus(401);
+  jwt.verify(token, JWT_SECRET as string, (err: any, decoded: any) => {
+    if (err) return res.sendStatus(403);
+    if (decoded.system !== "saas_tender") return res.status(403).json({ message: "Invalid token" });
+    req.saasUser = decoded;
+    next();
+  });
+};
+
+function isRelevantTender(title: string, description: string, keywords: string[]): boolean {
+  const text = `${title} ${description}`.toLowerCase();
+  if (keywords.length === 0) return true;
+  return keywords.some(kw => text.includes(kw.toLowerCase()));
+}
+
+export async function registerSaasTenderRoutes(app: Express) {
+  const OpenAIModule = await import("openai");
+  const saasOpenAI = new OpenAIModule.default({
+    apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
+    baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // AUTHENTICATION ENDPOINTS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // FIX 4: authLimiter applied to both auth routes
+  app.post("/api/saas-tender/auth/register", authLimiter, async (req, res) => {
+    try {
+      const { name, email, password, companyName } = req.body;
+      if (!name || !email || !password || !companyName) return res.status(400).json({ message: "Name, email, password, and company name are required" });
+      const existing = await db.execute(sql`SELECT id FROM saas_users WHERE email = ${email.toLowerCase()}`);
+      if (existing.rows.length > 0) return res.status(400).json({ message: "Email already registered" });
+      const slug = companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const orgResult = await db.execute(sql`
+        INSERT INTO saas_organizations (name, slug) VALUES (${companyName}, ${slug}) RETURNING *
+      `);
+      const org = orgResult.rows[0] as any;
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const userResult = await db.execute(sql`
+        INSERT INTO saas_users (org_id, name, email, password, role, access_level)
+        VALUES (${org.id}, ${name}, ${email.toLowerCase()}, ${hashedPassword}, 'admin', 'full')
+        RETURNING id, org_id, name, email, role, access_level, created_at
+      `);
+      const user = userResult.rows[0] as any;
+      await db.execute(sql`INSERT INTO saas_company_profile (org_id, company_name) VALUES (${org.id}, ${companyName})`);
+      await db.execute(sql`INSERT INTO saas_search_config (org_id, keywords, categories, countries, digest_email) VALUES (${org.id}, '{"event management","conference management","training services"}', '{"Events & Conferences","Training","Programme Management"}', '{"UK"}', ${email.toLowerCase()})`);
+      const defaultFolders = ["Policies", "Insurance Certificates", "CVs & Team Profiles", "Case Studies", "Company Documents", "Accreditations", "Lessons Learnt"];
+      for (const folder of defaultFolders) {
+        await db.execute(sql`INSERT INTO saas_bid_vault_folders (org_id, name) VALUES (${org.id}, ${folder})`);
+      }
+      const token = jwt.sign({ userId: user.id, orgId: org.id, email: user.email, role: user.role, accessLevel: user.access_level, system: "saas_tender" }, JWT_SECRET as string, { expiresIn: "24h" });
+      res.json({ token, user: { ...user, org_name: org.name } });
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.post("/api/saas-tender/auth/login", authLimiter, async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      if (!email || !password) return res.status(400).json({ message: "Email and password are required" });
+      const result = await db.execute(sql`
+        SELECT u.*, o.name as org_name FROM saas_users u
+        JOIN saas_organizations o ON u.org_id = o.id
+        WHERE u.email = ${email.toLowerCase()}
+      `);
+      if (result.rows.length === 0) return res.status(401).json({ message: "Invalid credentials" });
+      const user = result.rows[0] as any;
+      if (user.status !== "active") return res.status(403).json({ message: "Account suspended" });
+      const valid = await bcrypt.compare(password, user.password);
+      if (!valid) return res.status(401).json({ message: "Invalid credentials" });
+      const token = jwt.sign({ userId: user.id, orgId: user.org_id, email: user.email, role: user.role, accessLevel: user.access_level, system: "saas_tender" }, JWT_SECRET as string, { expiresIn: "24h" });
+      const { password: _, ...safeUser } = user;
+      res.json({ token, user: safeUser });
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.get("/api/saas-tender/auth/me", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const result = await db.execute(sql`
+        SELECT u.id, u.org_id, u.name, u.email, u.role, u.access_level, u.created_at, o.name as org_name
+        FROM saas_users u JOIN saas_organizations o ON u.org_id = o.id
+        WHERE u.id = ${req.saasUser.userId}
+      `);
+      if (result.rows.length === 0) return res.status(404).json({ message: "User not found" });
+      res.json(result.rows[0]);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // USER MANAGEMENT
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  app.get("/api/saas-tender/users", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const result = await db.execute(sql`SELECT id, name, email, role, access_level, created_at FROM saas_users WHERE org_id = ${req.saasUser.orgId} ORDER BY created_at`);
+      res.json(result.rows);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.post("/api/saas-tender/users", authenticateSaasUser, async (req: any, res) => {
+    try {
+      if (req.saasUser.role !== "admin") return res.status(403).json({ message: "Admin only" });
+      const { name, email, password, role, access_level } = req.body;
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const result = await db.execute(sql`
+        INSERT INTO saas_users (org_id, name, email, password, role, access_level)
+        VALUES (${req.saasUser.orgId}, ${name}, ${email.toLowerCase()}, ${hashedPassword}, ${role || 'user'}, ${access_level || 'standard'})
+        RETURNING id, name, email, role, access_level, created_at
+      `);
+      res.json(result.rows[0]);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.patch("/api/saas-tender/users/:id/access", authenticateSaasUser, async (req: any, res) => {
+    try {
+      if (req.saasUser.role !== "admin") return res.status(403).json({ message: "Admin only" });
+      const result = await db.execute(sql`UPDATE saas_users SET access_level = ${req.body.access_level} WHERE id = ${req.params.id} AND org_id = ${req.saasUser.orgId} RETURNING id, name, email, role, access_level`);
+      if (result.rows.length === 0) return res.status(404).json({ message: "User not found" });
+      res.json(result.rows[0]);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TENDER MANAGEMENT
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  app.get("/api/saas-tender/tenders", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const result = await db.execute(sql`SELECT * FROM saas_tenders WHERE org_id = ${req.saasUser.orgId} ORDER BY updated_at DESC`);
+      res.json(result.rows);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.post("/api/saas-tender/tenders", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const d = req.body;
+      const result = await db.execute(sql`
+        INSERT INTO saas_tenders (org_id, title, buyer, value_text, value_amount, deadline, status, category, portal, notes, source_url, cpv_codes, scoring_criteria, word_limits, tender_questions, contract_end_date, created_by)
+        VALUES (${req.saasUser.orgId}, ${d.title}, ${d.buyer || null}, ${d.value_text || null}, ${d.value_amount || 0}, ${d.deadline || null}, ${d.status || 'Researching'}, ${d.category || null}, ${d.portal || null}, ${d.notes || null}, ${d.source_url || null}, ${d.cpv_codes || null}, ${d.scoring_criteria || null}, ${d.word_limits || null}, ${d.tender_questions || null}, ${d.contract_end_date || null}, ${req.saasUser.userId})
+        RETURNING *
+      `);
+      res.json(result.rows[0]);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  // FIX 1: Rewrote PATCH /tenders/:id using parameterised COALESCE queries
+  // Old code used string concatenation + sql.raw() which is vulnerable to SQL injection
+  app.patch("/api/saas-tender/tenders/:id", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const d = req.body;
+      const result = await db.execute(sql`
+        UPDATE saas_tenders SET
+          title             = COALESCE(${d.title            ?? null}, title),
+          buyer             = COALESCE(${d.buyer            ?? null}, buyer),
+          value_text        = COALESCE(${d.value_text       ?? null}, value_text),
+          value_amount      = COALESCE(${d.value_amount     ?? null}, value_amount),
+          deadline          = COALESCE(${d.deadline         ?? null}, deadline),
+          status            = COALESCE(${d.status           ?? null}, status),
+          category          = COALESCE(${d.category         ?? null}, category),
+          portal            = COALESCE(${d.portal           ?? null}, portal),
+          notes             = COALESCE(${d.notes            ?? null}, notes),
+          source_url        = COALESCE(${d.source_url       ?? null}, source_url),
+          cpv_codes         = COALESCE(${d.cpv_codes        ?? null}, cpv_codes),
+          scoring_criteria  = COALESCE(${d.scoring_criteria ?? null}, scoring_criteria),
+          word_limits       = COALESCE(${d.word_limits      ?? null}, word_limits),
+          tender_questions  = COALESCE(${d.tender_questions ?? null}, tender_questions),
+          contract_end_date = COALESCE(${d.contract_end_date ?? null}, contract_end_date),
+          updated_at        = NOW()
+        WHERE id = ${req.params.id} AND org_id = ${req.saasUser.orgId}
+        RETURNING *
+      `);
+      if (result.rows.length === 0) return res.status(404).json({ message: "Tender not found" });
+      res.json(result.rows[0]);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.delete("/api/saas-tender/tenders/:id", authenticateSaasUser, async (req: any, res) => {
+    try {
+      await db.execute(sql`DELETE FROM saas_tenders WHERE id = ${req.params.id} AND org_id = ${req.saasUser.orgId}`);
+      res.json({ message: "Deleted" });
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TENDER DOCUMENTS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  app.get("/api/saas-tender/documents/:tenderId", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const result = await db.execute(sql`SELECT * FROM saas_tender_documents WHERE tender_id = ${req.params.tenderId} AND org_id = ${req.saasUser.orgId} ORDER BY sort_order`);
+      res.json(result.rows);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.post("/api/saas-tender/documents", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const d = req.body;
+      const result = await db.execute(sql`
+        INSERT INTO saas_tender_documents (org_id, tender_id, name, doc_type, section_label, content, status, notes, sort_order)
+        VALUES (${req.saasUser.orgId}, ${d.tender_id}, ${d.name}, ${d.doc_type || 'response'}, ${d.section_label || null}, ${d.content || null}, ${d.status || 'draft'}, ${d.notes || null}, ${d.sort_order || 0})
+        RETURNING *
+      `);
+      res.json(result.rows[0]);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.patch("/api/saas-tender/documents/:id", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const d = req.body;
+      const result = await db.execute(sql`
+        UPDATE saas_tender_documents SET content = COALESCE(${d.content}, content), status = COALESCE(${d.status}, status), name = COALESCE(${d.name}, name), section_label = COALESCE(${d.section_label}, section_label), notes = COALESCE(${d.notes}, notes), updated_at = NOW()
+        WHERE id = ${req.params.id} AND org_id = ${req.saasUser.orgId} RETURNING *
+      `);
+      res.json(result.rows[0]);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.delete("/api/saas-tender/documents/:id", authenticateSaasUser, async (req: any, res) => {
+    try {
+      await db.execute(sql`DELETE FROM saas_tender_documents WHERE id = ${req.params.id} AND org_id = ${req.saasUser.orgId}`);
+      res.json({ message: "Deleted" });
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // AI BID SECTION GENERATION
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  app.get("/api/saas-tender/bid-sections/:tenderId", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const result = await db.execute(sql`SELECT * FROM saas_tender_bid_sections WHERE tender_id = ${req.params.tenderId} AND org_id = ${req.saasUser.orgId} ORDER BY sort_order`);
+      res.json(result.rows);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.post("/api/saas-tender/bid-sections/generate", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const { tender_id, section_key, section_label } = req.body;
+      const tender = await db.execute(sql`SELECT * FROM saas_tenders WHERE id = ${tender_id} AND org_id = ${req.saasUser.orgId}`);
+      if (tender.rows.length === 0) return res.status(404).json({ message: "Tender not found" });
+      const t = tender.rows[0] as any;
+      const profile = await db.execute(sql`SELECT * FROM saas_company_profile WHERE org_id = ${req.saasUser.orgId}`);
+      const p = (profile.rows[0] || {}) as any;
+      const vaultDocs = await db.execute(sql`
+        SELECT bvf.file_name, bvf.notes, bvfl.name as folder_name
+        FROM saas_bid_vault_files bvf LEFT JOIN saas_bid_vault_folders bvfl ON bvf.folder_id = bvfl.id
+        WHERE bvf.org_id = ${req.saasUser.orgId} ORDER BY bvfl.name LIMIT 30
+      `);
+      const vaultContext = (vaultDocs.rows as any[]).map((d: any) => `- [${d.folder_name || "Unfiled"}] ${d.file_name}${d.notes ? `: ${d.notes}` : ""}`).join("\n");
+      const bidWritingGuide: Record<string, string[]> = {
+        "Executive Summary": ["Align with buyer's strategic plan and objectives", "Highlight unique value proposition and differentiators", "Reference partnerships, proprietary processes, or technology", "Ensure your value proposition gives a good chance of winning"],
+        "Company Overview": ["Present company history, structure, and capabilities", "Highlight relevant sector experience and track record", "Reference certifications, accreditations, and awards", "Demonstrate financial stability and organisational capacity"],
+        "Methodology & Approach": ["Detail project management and implementation approach", "Set out steps for smooth transition from current solution", "Provide realistic timeline and milestones", "Show commitment to continuous improvement with past examples", "Propose SMART KPIs aligned with buyer's goals"],
+        "Social Value": ["Detail approach to social value including policies and initiatives", "Highlight community involvement and positive impact", "Show awards, local job hires, case studies", "Align with Social Value Model (PPN 06/20)", "Describe sustainability approach and carbon footprint reduction", "Outline accessibility and inclusion commitments"],
+        "Relevant Experience": ["Demonstrate success in similar projects using STAR format", "Include quantifiable outcomes and testimonials", "Cite innovative solutions from past work", "Highlight relevant awards"],
+        "Team & Key Personnel": ["Provide evidence of team expertise in similar contracts", "Reassure adequate resources to deliver", "Outline management of resource conflicts", "Include training commitments and professional development"],
+        "Pricing Schedule": ["Provide clear and transparent pricing structure", "Align pricing with budget allowed for tender", "Explain any pricing assumptions or exclusions", "Show breakdown of costs relative to fair market value", "Demonstrate value for money compared to competitors"],
+        "Risk Management": ["Describe overall risk management strategy", "Show how you identify, evaluate, prioritise, and mitigate risk", "Clarify personnel with risk management responsibilities", "Include disaster recovery and business continuity plans", "Reference ISO 45001 for health and safety"],
+        "Mobilisation Plan": ["Detail steps for smooth transition", "Provide realistic timeline and milestones", "Address TUPE responsibilities if applicable", "Include knowledge transfer programme"],
+        "Cover Letter": ["Align with buyer's strategic plan and objectives", "Highlight unique value proposition", "Be concise and compelling", "Reference relevant experience and certifications"],
+        "Quality Assurance": ["Show commitment to continuous improvement", "Propose performance metrics and KPIs", "Demonstrate SLA compliance track record", "Reference ISO 9001 quality management"],
+        "Health & Safety": ["Describe health and safety management system", "Reference ISO 45001 or equivalent certifications", "Detail risk assessment procedures", "Outline incident reporting and investigation processes"],
+        "GDPR & Data Protection": ["Outline controls to protect buyer's data", "Evidence cybersecurity certifications (Cyber Essentials, ISO 27001)", "Show GDPR compliance and DPO arrangements", "Detail disaster recovery and data breach procedures"],
+        "Equality, Diversity & Inclusion": ["Detail EDI policies and commitments", "Show diverse workforce statistics and recruitment practices", "Highlight community engagement and accessibility measures", "Reference relevant legislation compliance"],
+        "Environmental Policy": ["Describe sustainability and environmental responsibility", "Include Net Zero strategy or carbon reduction plan", "Reference ISO 14001 certification", "Highlight eco-friendly initiatives and waste reduction"],
+        "Safeguarding": ["Outline safeguarding policies and procedures", "Detail DBS checking and vetting processes", "Describe training and awareness programmes", "Show compliance with relevant legislation"],
+      };
+      const guidePrompts = bidWritingGuide[section_label] || [];
+      const guideContext = guidePrompts.length > 0 ? `\n\nBid Writing Best Practices for "${section_label}":\n${guidePrompts.map(p => `- ${p}`).join("\n")}` : "";
+      const response = await saasOpenAI.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: `You are an expert bid writer for ${p.company_name || "our company"}. Write a professional, compelling bid section. Use the company profile and vault documents for accurate details. Do NOT include bank details or personal addresses. Write in third person. Be specific and evidence-based. Follow the bid writing best practices provided to ensure comprehensive, winning responses that address all key criteria including social value, sustainability, risk management, and compliance.` },
+          { role: "user", content: `Write the "${section_label}" section for this tender:\n\nTender: ${t.title}\nBuyer: ${t.buyer}\nCategory: ${t.category}\nValue: ${t.value_text}\nDeadline: ${t.deadline}\nScoring: ${t.scoring_criteria || "Not specified"}\nWord Limits: ${t.word_limits || "Not specified"}\n\nCompany Profile:\n- Name: ${p.company_name}\n- Bio: ${p.bio_summary || ""}\n- Experience: ${p.sector_experience || ""}\n- Insurance PII: ${p.insurance_pii || ""}\n- Insurance PL: ${p.insurance_public_liability || ""}\n- Certifications: ${p.certifications || ""}\n- Policies: ${p.policies || ""}\n\nBid Vault:\n${vaultContext || "No documents yet"}${guideContext}` }
+        ],
+        temperature: 0.7, max_tokens: 2000,
+      });
+      const content = response.choices[0]?.message?.content || "";
+      const existing = await db.execute(sql`SELECT id FROM saas_tender_bid_sections WHERE tender_id = ${tender_id} AND section_key = ${section_key} AND org_id = ${req.saasUser.orgId}`);
+      if (existing.rows.length > 0) {
+        const result = await db.execute(sql`UPDATE saas_tender_bid_sections SET content = ${content}, word_count = ${content.split(/\s+/).length}, updated_at = NOW() WHERE id = ${(existing.rows[0] as any).id} RETURNING *`);
+        res.json(result.rows[0]);
+      } else {
+        const maxOrder = await db.execute(sql`SELECT COALESCE(MAX(sort_order),0)::int as mx FROM saas_tender_bid_sections WHERE tender_id = ${tender_id} AND org_id = ${req.saasUser.orgId}`);
+        const result = await db.execute(sql`
+          INSERT INTO saas_tender_bid_sections (org_id, tender_id, section_key, section_label, content, word_count, sort_order)
+          VALUES (${req.saasUser.orgId}, ${tender_id}, ${section_key}, ${section_label}, ${content}, ${content.split(/\s+/).length}, ${((maxOrder.rows[0] as any).mx || 0) + 1})
+          RETURNING *
+        `);
+        res.json(result.rows[0]);
+      }
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.patch("/api/saas-tender/bid-sections/:id", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const d = req.body;
+      const result = await db.execute(sql`
+        UPDATE saas_tender_bid_sections SET content = COALESCE(${d.content}, content), status = COALESCE(${d.status}, status), updated_at = NOW()
+        WHERE id = ${req.params.id} AND org_id = ${req.saasUser.orgId} RETURNING *
+      `);
+      res.json(result.rows[0]);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.delete("/api/saas-tender/bid-sections/:id", authenticateSaasUser, async (req: any, res) => {
+    try {
+      await db.execute(sql`DELETE FROM saas_tender_bid_sections WHERE id = ${req.params.id} AND org_id = ${req.saasUser.orgId}`);
+      res.json({ message: "Deleted" });
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COMPANY PROFILE
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  app.get("/api/saas-tender/company-profile", authenticateSaasUser, async (req: any, res) => {
+    try {
+      let result = await db.execute(sql`SELECT * FROM saas_company_profile WHERE org_id = ${req.saasUser.orgId}`);
+      if (result.rows.length === 0) {
+        await db.execute(sql`INSERT INTO saas_company_profile (org_id) VALUES (${req.saasUser.orgId})`);
+        result = await db.execute(sql`SELECT * FROM saas_company_profile WHERE org_id = ${req.saasUser.orgId}`);
+      }
+      res.json(result.rows[0]);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  // FIX 1: Rewrote PATCH /company-profile using parameterised queries
+  // Old code used Object.entries string concatenation + sql.raw() — SQL injection risk
+  app.patch("/api/saas-tender/company-profile", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const d = req.body;
+      await db.execute(sql`
+        UPDATE saas_company_profile SET
+          company_name            = COALESCE(${d.company_name            ?? null}, company_name),
+          bio_summary             = COALESCE(${d.bio_summary             ?? null}, bio_summary),
+          sector_experience       = COALESCE(${d.sector_experience       ?? null}, sector_experience),
+          insurance_pii           = COALESCE(${d.insurance_pii           ?? null}, insurance_pii),
+          insurance_public_liability = COALESCE(${d.insurance_public_liability ?? null}, insurance_public_liability),
+          certifications          = COALESCE(${d.certifications          ?? null}, certifications),
+          policies                = COALESCE(${d.policies                ?? null}, policies),
+          website                 = COALESCE(${d.website                 ?? null}, website),
+          address                 = COALESCE(${d.address                 ?? null}, address),
+          registration_number     = COALESCE(${d.registration_number     ?? null}, registration_number),
+          vat_number              = COALESCE(${d.vat_number              ?? null}, vat_number),
+          duns_number             = COALESCE(${d.duns_number             ?? null}, duns_number),
+          utr_number              = COALESCE(${d.utr_number              ?? null}, utr_number),
+          bank_name               = COALESCE(${d.bank_name               ?? null}, bank_name),
+          sic_codes               = COALESCE(${d.sic_codes               ?? null}, sic_codes),
+          employee_count          = COALESCE(${d.employee_count          ?? null}, employee_count),
+          annual_turnover         = COALESCE(${d.annual_turnover         ?? null}, annual_turnover),
+          years_trading           = COALESCE(${d.years_trading           ?? null}, years_trading),
+          updated_at              = NOW()
+        WHERE org_id = ${req.saasUser.orgId}
+      `);
+      const result = await db.execute(sql`SELECT * FROM saas_company_profile WHERE org_id = ${req.saasUser.orgId}`);
+      res.json(result.rows[0]);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TENDER REQUIREMENTS / COMPLIANCE
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  app.get("/api/saas-tender/requirements/:tenderId", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const result = await db.execute(sql`SELECT * FROM saas_tender_requirements WHERE tender_id = ${req.params.tenderId} AND org_id = ${req.saasUser.orgId} ORDER BY sort_order`);
+      res.json(result.rows);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.post("/api/saas-tender/requirements/:tenderId/extract", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const tenderId = parseInt(req.params.tenderId);
+      const tender = await db.execute(sql`SELECT * FROM saas_tenders WHERE id = ${tenderId} AND org_id = ${req.saasUser.orgId}`);
+      if (tender.rows.length === 0) return res.status(404).json({ message: "Tender not found" });
+      const t = tender.rows[0] as any;
+      const docs = await db.execute(sql`SELECT name, content, section_label FROM saas_tender_documents WHERE tender_id = ${tenderId} AND org_id = ${req.saasUser.orgId} AND content IS NOT NULL LIMIT 10`);
+      const docContext = (docs.rows as any[]).map((d: any) => `[${d.section_label || d.name}]: ${(d.content || "").slice(0, 1000)}`).join("\n\n");
+      const profile = await db.execute(sql`SELECT * FROM saas_company_profile WHERE org_id = ${req.saasUser.orgId}`);
+      const p = (profile.rows[0] || {}) as any;
+      const response = await saasOpenAI.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: `You are a procurement compliance advisor for ${p.company_name || "a company"}. Extract and list ALL requirements from tender documents, including mandatory, desired, and compliance criteria. Return ONLY valid JSON array with objects: { description (string), requirement_type ('mandatory'|'desired'|'compliance'), is_met (false by default), category (string) }` },
+          { role: "user", content: `Extract requirements from this tender:\n\nTitle: ${t.title}\nDocuments:\n${docContext || "No documents provided"}` }
+        ],
+        temperature: 0.7, max_tokens: 2000,
+      });
+      const content = response.choices[0]?.message?.content || "[]";
+      const jsonMatch = content.match(/\[[\s\S]*\]/);
+      if (!jsonMatch) return res.json({ requirements: [] });
+      const requirements = JSON.parse(jsonMatch[0]);
+      const orgId = req.saasUser.orgId; // FIX 2: capture orgId before loop so 'req' isn't shadowed
+      for (const requirement of requirements) { // FIX 2: renamed 'req' to 'requirement' to avoid collision with Express req
+        try {
+          await db.execute(sql`
+            INSERT INTO saas_tender_requirements (org_id, tender_id, description, requirement_type, category)
+            VALUES (${orgId}, ${tenderId}, ${requirement.description}, ${requirement.requirement_type || 'mandatory'}, ${requirement.category || 'general'})
+          `);
+        } catch {}
+      }
+      res.json({ requirements });
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.patch("/api/saas-tender/requirements/:id/toggle", authenticateSaasUser, async (req: any, res) => {
+    try {
+      await db.execute(sql`
+        UPDATE saas_tender_requirements SET is_met = NOT is_met WHERE id = ${req.params.id} AND org_id = ${req.saasUser.orgId}
+      `);
+      res.json({ message: "Updated" });
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TENDER FEED / SEARCH
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  app.get("/api/saas-tender/feed/search", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const configResult = await db.execute(sql`SELECT keywords, categories, countries FROM saas_search_config WHERE org_id = ${req.saasUser.orgId}`);
+      const config = configResult.rows[0] as any;
+      const keywords = (config?.keywords || []) as string[];
+      const categories = (config?.categories || []) as string[];
+      const countries = (config?.countries || []) as string[];
+      const allTenders: any[] = [];
+      const seen = new Set<string>();
+      const minDeadline = new Date();
+      minDeadline.setDate(minDeadline.getDate() + 7);
+      const closedStatuses = ["closed", "unsuccessful", "archived"];
+      // Search Contracts Finder
+      for (const term of keywords.slice(0, 5)) {
+        try {
+          const apiUrl = `https://www.contractsfinder.service.gov.uk/api/1.0/notices?&Keywords=${encodeURIComponent(term)}&scope=All&count=50`;
+          const response = await fetch(apiUrl, { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(10000) });
+          if (!response.ok) continue;
+          const data = await response.json() as any;
+          const notices = data?.notices || [];
+          for (const notice of notices) {
+            if (!isRelevantTender(notice.title || "", notice.description || "", keywords)) continue;
+            const deadlineStr = notice.closeDate || "";
+            if (!deadlineStr || new Date(deadlineStr) < minDeadline) continue;
+            const title = notice.title || "";
+            if (seen.has(title)) continue;
+            seen.add(title);
+            allTenders.push({
+              title, description: (notice.description || "").slice(0, 300),
+              buyer: notice.organisation || "Not specified",
+              value_amount: notice.value || null, value_currency: notice.currency || "GBP",
+              deadline: deadlineStr.split("T")[0],
+              published: notice.publishedDate ? notice.publishedDate.split("T")[0] : "",
+              source_url: `https://www.contractsfinder.service.gov.uk/Notice/${notice.id}`,
+              source: "Contracts Finder", status: "Open",
+            });
+          }
+        } catch {}
+      }
+      // Search Find a Tender
+      for (const term of keywords.slice(0, 10)) {
+        try {
+          const apiUrl = `https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?queryString=${encodeURIComponent(term)}&stage=tender&size=30`;
+          const response = await fetch(apiUrl, { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(12000) });
+          if (!response.ok) continue;
+          const data = await response.json() as any;
+          const packages = data?.results || data?.releasePackages || data || [];
+          for (const pkg of (Array.isArray(packages) ? packages : [])) {
+            for (const r of (pkg.releases || [pkg])) {
+              const tender = r.tender || {};
+              const status = (tender.status || "").toLowerCase();
+              if (closedStatuses.includes(status)) continue;
+              const deadlineStr = tender.tenderPeriod?.endDate || "";
+              if (!deadlineStr) continue;
+              if (new Date(deadlineStr) < minDeadline) continue;
+              const title = tender.title || "";
+              if (seen.has(title)) continue;
+              seen.add(title);
+              const buyer = r.buyer || {};
+              const value = tender.value || {};
+              allTenders.push({
+                title, description: (tender.description || "").slice(0, 300),
+                buyer: buyer.name || "Not specified",
+                value_amount: value.amount || null, value_currency: value.currency || "GBP",
+                deadline: deadlineStr.split("T")[0],
+                published: r.date ? r.date.split("T")[0] : "",
+                source_url: r.id ? `https://www.find-tender.service.gov.uk/Notice/${(r.id || "").split("-").slice(0,5).join("-")}` : "",
+                source: "Find a Tender", status: "Open",
+              });
+            }
+          }
+        } catch {}
+      }
+      allTenders.sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime());
+      res.json({ tenders: allTenders, total: allTenders.length, keywords });
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PROCUREMENT INTELLIGENCE
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  app.get("/api/saas-tender/intelligence", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const result = await db.execute(sql`SELECT * FROM saas_procurement_intelligence WHERE org_id = ${req.saasUser.orgId} ORDER BY created_at DESC LIMIT 50`);
+      res.json(result.rows);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.post("/api/saas-tender/intelligence/scan", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const existing = await db.execute(sql`SELECT COUNT(*)::int as cnt FROM saas_procurement_intelligence WHERE org_id = ${req.saasUser.orgId} AND created_at > NOW() - INTERVAL '12 hours'`);
+      if ((existing.rows[0] as any).cnt > 0) return res.json({ message: "Feed is up to date", scanned: false });
+      const configResult = await db.execute(sql`SELECT * FROM saas_search_config WHERE org_id = ${req.saasUser.orgId}`);
+      const config = configResult.rows[0] as any;
+      const keywords = (config?.keywords || []).join(", ") || "procurement";
+      const countries = (config?.countries || []).join(", ") || "UK";
+      const profile = await db.execute(sql`SELECT company_name, sector_experience FROM saas_company_profile WHERE org_id = ${req.saasUser.orgId}`);
+      const p = (profile.rows[0] || {}) as any;
+      const response = await saasOpenAI.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: `You are a procurement intelligence analyst for ${p.company_name || "a company"} (sectors: ${p.sector_experience || keywords}). Generate 10-12 current procurement intelligence items. Return ONLY valid JSON array with: title, summary (2-3 sentences), source, source_url, country, category, item_type (news/framework/funding/tender_alert/compliance/opportunity), published_date (YYYY-MM-DD). Countries focus: ${countries}.` },
+          { role: "user", content: `Generate procurement intelligence for ${new Date().toLocaleDateString("en-GB")}. Focus on: ${keywords}.` }
+        ],
+        temperature: 0.8, max_tokens: 4000,
+      });
+      const content = response.choices[0]?.message?.content || "[]";
+      const jsonMatch = content.match(/\[[\s\S]*\]/);
+      if (!jsonMatch) return res.status(500).json({ message: "Parse error" });
+      const items = JSON.parse(jsonMatch[0]);
+      let inserted = 0;
+      for (const item of items) {
+        try {
+          const exists = await db.execute(sql`SELECT id FROM saas_procurement_intelligence WHERE title = ${item.title} AND org_id = ${req.saasUser.orgId}`);
+          if (exists.rows.length === 0) {
+            await db.execute(sql`INSERT INTO saas_procurement_intelligence (org_id, title, summary, source, source_url, country, category, item_type, published_date, is_new, ai_generated) VALUES (${req.saasUser.orgId}, ${item.title}, ${item.summary}, ${item.source}, ${item.source_url || ""}, ${item.country || "UK"}, ${item.category || "News"}, ${item.item_type || "news"}, ${item.published_date || new Date().toISOString().split("T")[0]}, true, true)`);
+            inserted++;
+          }
+        } catch {}
+      }
+      res.json({ message: `${inserted} new items`, inserted, total: items.length });
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PORTAL REGISTRATION TRACKING
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  app.get("/api/saas-tender/portal-registrations", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const result = await db.execute(sql`SELECT * FROM saas_portal_registrations WHERE org_id = ${req.saasUser.orgId} ORDER BY portal_name`);
+      res.json(result.rows);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.post("/api/saas-tender/portal-registrations", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const d = req.body;
+      const result = await db.execute(sql`INSERT INTO saas_portal_registrations (org_id, portal_name, portal_url, login_url, region, category) VALUES (${req.saasUser.orgId}, ${d.portal_name}, ${d.portal_url || null}, ${d.login_url || null}, ${d.region || 'UK'}, ${d.category || null}) ON CONFLICT (org_id, portal_name) DO NOTHING RETURNING *`);
+      res.json(result.rows[0] || { message: "Already registered" });
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.delete("/api/saas-tender/portal-registrations/:name", authenticateSaasUser, async (req: any, res) => {
+    try {
+      await db.execute(sql`DELETE FROM saas_portal_registrations WHERE portal_name = ${req.params.name} AND org_id = ${req.saasUser.orgId}`);
+      res.json({ message: "Removed" });
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WATCHLIST
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  app.get("/api/saas-tender/watchlist", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const result = await db.execute(sql`SELECT * FROM saas_tender_watchlist WHERE org_id = ${req.saasUser.orgId} AND user_id = ${req.saasUser.userId} ORDER BY added_at DESC`);
+      res.json(result.rows);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.post("/api/saas-tender/watchlist", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const result = await db.execute(sql`INSERT INTO saas_tender_watchlist (org_id, user_id, tender_ext_id, notes) VALUES (${req.saasUser.orgId}, ${req.saasUser.userId}, ${req.body.tender_ext_id}, ${req.body.notes || null}) ON CONFLICT DO NOTHING RETURNING *`);
+      res.json(result.rows[0] || { message: "Already watchlisted" });
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  app.delete("/api/saas-tender/watchlist/:extId", authenticateSaasUser, async (req: any, res) => {
+    try {
+      await db.execute(sql`DELETE FROM saas_tender_watchlist WHERE tender_ext_id = ${req.params.extId} AND user_id = ${req.saasUser.userId} AND org_id = ${req.saasUser.orgId}`);
+      res.json({ message: "Removed" });
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // STATS & ANALYTICS
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  app.get("/api/saas-tender/stats", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const tenders = await db.execute(sql`
+        SELECT
+          COUNT(*)::int as total,
+          COUNT(*) FILTER (WHERE status = 'Submitted')::int as submitted,
+          COUNT(*) FILTER (WHERE status = 'Won')::int as won,
+          COUNT(*) FILTER (WHERE status = 'Lost')::int as lost,
+          COUNT(*) FILTER (WHERE deadline >= NOW() AND status NOT IN ('Won','Lost','Archived'))::int as active,
+          COALESCE(SUM(value_amount) FILTER (WHERE status = 'Won'), 0)::numeric as total_won_value
+        FROM saas_tenders WHERE org_id = ${req.saasUser.orgId}
+      `);
+      res.json(tenders.rows[0]);
+    } catch (error: any) { res.status(500).json({ message: error.message }); }
+  });
+}

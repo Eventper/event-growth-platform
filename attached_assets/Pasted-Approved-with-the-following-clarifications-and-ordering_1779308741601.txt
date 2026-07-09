@@ -1,0 +1,55 @@
+Approved with the following clarifications and ordering changes. Build in this revised sequence.
+
+ORDERING — DO RENDER FILTER FIRST, NOT LAST
+
+You have render filter as step 4. Move it to step 1. Reason: right now the page renders placeholder content from the two legacy rows (DOCUMENTS, HOW PHASE N CONNECTS) because the render component reads everything. As soon as you add is_published and migrate those two rows to is_published=false, the placeholders vanish and the page is clean — without needing the sync to be live. That gets Mr. Alli a presentable view tonight while the rest builds behind it.
+
+Revised order:
+  1. Migration (phase_number, is_published, unique constraint, sync_runs table)
+  2. As part of the migration, set is_published=false on the two legacy rows (DOCUMENTS, HOW PHASE N CONNECTS)
+  3. Update render component to filter is_published=true AND project_id (cards disappear cleanly because no surviving rows)
+  4. Sync fetcher + upsert + soft-unpublish logic
+  5. sync_runs writes
+  6. /admin/sync-runs route
+
+After step 3 the user-visible page is in the correct empty state. Steps 4-6 then fill the pipe behind it.
+
+CLARIFICATIONS
+
+(a) On the existing "published" column vs the new "is_published" column — confirm whether these are duplicates. If the table already has a "published" boolean, do not add a second is_published. Rename or reuse the existing one. Two near-identical booleans is a footgun.
+
+If "published" already exists and means the same thing: reuse it. Render component filters WHERE published=true. Sync sets published=false on missing/unpublished rows. No new column.
+
+If "published" means something else (e.g. published-on-Group-Portal vs published-on-Planning-App-mirror): keep both, document the distinction in a code comment, and confirm which one the render filter uses.
+
+(b) On the unique constraint: yes, add UNIQUE (project_id, phase_number, section_key). Required for the upsert ON CONFLICT clause to work.
+
+(c) On phase_number for the two legacy rows: they don't have a phase. Set phase_number = 0 (or NULL if the constraint allows) and is_published=false in the same migration so they're inert.
+
+(d) On the cron: confirm node-cron is already a dependency, or you'll need to add it. If something else (e.g. Replit's scheduled deployments, or an existing internal scheduler) is already running other background jobs, use that — don't introduce a second mechanism just for this.
+
+(e) On the Group Portal endpoint precondition: confirmed flagged. I'm briefing the Group Portal agent in parallel. Don't deploy the sync job until I confirm back that the Group Portal endpoint is live and returning the agreed contract. Until then, the sync code can exist behind a feature flag or just not be invoked by the cron — your call which is cleaner.
+
+(f) On sync_runs admin route auth: confirm /admin/sync-runs requires authenticateEPStaff (Director-only or staff-only). Don't expose sync diagnostics to the client portal session.
+
+(g) On the upsert: when Group Portal returns a row with an updated_at newer than the mirror's, update; otherwise leave alone. Don't blindly overwrite on every sync — it'll churn updated_at unnecessarily and obscure when content actually changed.
+
+ACCEPTANCE TESTS
+
+Before declaring done:
+
+(1) Migration applied — confirm phase_number, is_published (or reused "published"), unique constraint, sync_runs table all exist in DB. Show \d output.
+
+(2) Two legacy rows are is_published=false. Confirm with SELECT.
+
+(3) Render component filter updated. Confirm in code with a diff.
+
+(4) Load /client-portal/project as kehindeballi@gmail.com (after fixing his role to trustee). Expected: Strategic Overview section hidden entirely on all three phases. Milestone Sign-Off section for Phase 1 and Phase 2 still fully rendered with Pack PDF + bulleted titles + Approve & Sign Off + Request Changes buttons. Screenshot.
+
+(5) Sync job code present but not yet invoked by cron (or feature-flagged off). Confirm.
+
+(6) /admin/sync-runs route returns 200 with empty list (no runs yet) when accessed by EP staff session, 401 otherwise.
+
+(7) Separate task — confirm the "DELIVERABLES" Coming Soon table is also removed in this same deploy. Not part of Strategic Overview but a cleanup that needs to ride along since the page is being touched.
+
+Proceed in the revised order. After each step report back before moving to the next. Don't bundle steps.

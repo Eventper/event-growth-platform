@@ -1,0 +1,89 @@
+Five fixes needed on Planning App side. Run in order, stop and report after each. Don't bundle.
+
+(1) FIX EVENT DATE ACROSS ALL I AM HER SURFACES — PRIORITY ONE
+
+Date is wrong everywhere. Event was moved to 28 August 2026 in Group Portal commit 8e8fcc0d. Planning App hasn't caught up.
+
+Search and replace across the entire repo (frontend + backend + DB seed scripts + email copy):
+  "7 August 2026" → "28 August 2026"
+  "Thursday 7 August" → "Friday 28 August"  
+  "6 August 2026" → "28 August 2026"  (old email copy you flagged)
+  "7 Aug" / "6 Aug" → "28 Aug"
+  
+Files to confirm updated:
+  - /iam-her dashboard component (header, countdown maths)
+  - /iam-her/esther portal copy
+  - Any email templates in /server (registration confirmation, reminders)
+  - Any DB seed for events table
+  - FAQ section if it references the date
+
+After update: load /iam-her, confirm header reads "Friday 28 August 2026", confirm countdown maths is from today to 28 Aug not 7 Aug. Same on Esther portal.
+
+(2) RENAME BACKEND ROUTES — /api/event-16july/* → /api/event-iam-her/*
+
+The backend route prefix /api/event-16july/* is legacy naming from when the event was scheduled for 16 July. Now misleading and a maintenance trap — anyone joining the codebase will think there's a separate July event.
+
+Rename across server routes and any client-side fetch calls. New prefix: /api/event-iam-her/* or /api/iam-her/* — pick whichever is consistent with the rest of the Planning App module naming, confirm before renaming.
+
+Don't break the old route immediately — add the new route, point all client fetches at the new route, leave the old route as a deprecated alias returning the same data for 30 days. Log every hit on the old route so we can spot anything still pointing at it.
+
+(3) BUILD THE BRIDGE ENDPOINT — GET /api/summary/iam-her
+
+Not built. Group Portal Event Perfekt company tile needs this to display live I Am Her summary.
+
+Endpoint: GET https://eventperfektplanningapp.com/api/summary/iam-her
+Auth: x-alli-sync-key (same pattern as other bridge endpoints)
+Caching: 5-minute cache to avoid hammering on every Group Portal load
+
+Response shape:
+{
+  "active_event": true,
+  "event_name": "I Am Her — The Woman Who Leads the Room",
+  "event_date": "2026-08-28",
+  "event_location": "Milton Keynes",
+  "days_to_event": <calculated from today>,
+  "co_creators_confirmed": <count from co_creators table where status='confirmed'>,
+  "corporate_partners_count": <count from corporate_partners table where status IN ('confirmed', 'in_discussion')>,
+  "guest_applications_count": <count from guest_applications table>,
+  "guest_applications_approved": <count where status='approved'>,
+  "tasks_total": <count from tasks>,
+  "tasks_overdue": <count where due_date < today AND status != 'complete'>,
+  "next_milestone": { "title": <string>, "date": <ISO> } | null
+}
+
+Confirm endpoint live with curl:
+  curl -sS -H "x-alli-sync-key: $ALLI_SYNC_KEY" https://eventperfektplanningapp.com/api/summary/iam-her | jq .
+
+(4) BUILD / CONFIRM PUBLIC GUEST REGISTRATION URL
+
+Guest list section on dashboard is a placeholder saying "pulls from a registration form" — but no registration URL was found in code.
+
+Either:
+  (a) Public registration form already exists somewhere — find it, confirm URL, surface to me
+  (b) It doesn't exist — build a simple public registration form at /iam-her/register
+
+Specification for (b) if needed:
+  - Fields: first name, last name, email, phone, organisation, role/title, why they want to attend (free text), how they heard about the event (dropdown)
+  - GDPR consent checkbox
+  - Submit → row written to guest_applications table with status='pending'
+  - Auto-confirmation email to applicant (templated, dated 28 August 2026, from info@eventperfekt.com)
+  - Notification email to info@eventperfekt.com when each new application comes in
+  - Public URL: eventperfektplanningapp.com/iam-her/register
+  - Open access, no auth, captcha if abuse risk
+
+Don't build (b) without confirming (a) doesn't already exist.
+
+(5) GUEST LIST SECTION ON DASHBOARD — WIRE TO REAL DATA
+
+Once (4) is settled, replace the placeholder text on the dashboard Guest List section with the actual guest_applications table view. Columns: name, email, organisation, applied date, status (pending/approved/declined), action buttons (approve / decline).
+
+Filterable by status. Default view: pending applications first.
+
+CONFIRMATION
+
+After each step, report:
+  Step 1 — count of files updated, screenshot of dashboard header showing correct date
+  Step 2 — list of routes renamed, deprecation log location
+  Step 3 — curl output proving endpoint live and returning correct counts
+  Step 4 — registration URL (existing or newly built)
+  Step 5 — screenshot of guest list section rendering real data

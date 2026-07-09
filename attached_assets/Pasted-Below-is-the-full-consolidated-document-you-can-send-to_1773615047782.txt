@@ -1,0 +1,516 @@
+Below is the **full consolidated document** you can send to Replit.
+It includes everything we discussed:
+
+* event creation (not only client)
+* intake queue
+* manager assignment
+* event manager ownership
+* team onboarding
+* role-based workstreams
+* readiness/health tracking
+* vendor qualification & budget control
+* profit protection
+* keeping all existing tools
+
+This version is written so **developers can understand it clearly** and **nothing they already built needs to be removed**.
+
+---
+
+# Event Perfekt Platform – Workflow Structure Update
+
+## Objective
+
+The current platform already contains many strong tools including event creation, planning tools, budgeting, vendor management, guest management, contracts, invoices, communication tools, event-day tools, and post-event reporting.
+
+These tools are good and should remain.
+
+The main improvement required is the **operational workflow structure** around those tools.
+
+At the moment, events can exist in the system without clear routing, ownership, or assignment. To improve organization and accountability, the platform should introduce a structured event workflow that defines how events move through the system.
+
+The goal is **not to rebuild existing modules**, but to organize them into a clear lifecycle so every event moves through a defined process.
+
+---
+
+# User Roles
+
+The system should support multiple user types with different access levels.
+
+## Client
+
+Clients can:
+
+* create events
+* answer event questionnaires
+* view event updates
+* attend meetings
+* approve designs or decisions
+* view invoices and make payments
+* receive communication
+
+Clients should not see internal planning tools or internal team discussions.
+
+---
+
+## Manager
+
+Managers oversee intake and team allocation.
+
+Responsibilities include:
+
+* reviewing new events
+* assigning an Event Manager
+* monitoring event progress
+* managing team workload
+* approving certain vendor or financial decisions
+
+Managers act as the **control point between event creation and event planning**.
+
+---
+
+## Event Manager / Planner
+
+The Event Manager becomes the primary owner of the event after assignment.
+
+Responsibilities include:
+
+* reviewing the event brief
+* planning the event
+* managing the timeline and budget
+* communicating with the client
+* onboarding team members
+* managing vendors
+* overseeing event-day execution
+* handling post-event closure
+
+---
+
+## Specialist Team Members
+
+Specialists are added to the event by the Event Manager.
+
+Examples include:
+
+Guest Manager
+Day Coordinator
+Decorator / Stylist
+Graphic Designer
+Vendor Coordinator
+Finance Support
+Venue Coordinator
+
+Each specialist should see **only the parts of the system relevant to their role**.
+
+---
+
+# Event Creation
+
+Events can be created by multiple roles:
+
+* Client (through the client portal)
+* Planner / Event Manager
+* Manager or Admin (internal entry)
+
+The existing event creation form should remain unchanged. It already includes:
+
+* event name
+* event type
+* event date
+* location
+* guest estimate
+* budget range
+* requested services
+
+---
+
+# Event Type Questionnaires
+
+The platform should continue to display **event-type-specific questions**.
+
+### Wedding
+
+Questions related to:
+
+* ceremony
+* reception
+* traditions
+* bridal party
+* guest dynamics
+
+### Corporate Events
+
+Questions related to:
+
+* business objectives
+* audience type
+* speakers
+* AV requirements
+* compliance needs
+
+### Parties / Celebrations
+
+Questions related to:
+
+* guest of honor
+* theme
+* entertainment
+* catering style
+
+### Conferences
+
+Questions related to:
+
+* sessions
+* speakers
+* registrations
+* sponsors
+* exhibition space
+
+---
+
+# Event Intake Workflow
+
+After an event is created, the system should automatically perform the following actions:
+
+1. Save the event
+2. Generate a unique event ID
+3. Send confirmation email to the creator
+4. Notify the Manager
+5. Place the event in the **Manager Review Queue**
+6. Set event status to **New Intake**
+
+The event should **not immediately appear in a planner's active workspace**.
+
+---
+
+# Manager Review and Assignment
+
+Managers should have an **Event Intake / Assignment Dashboard**.
+
+The Manager reviews:
+
+* event type
+* event date
+* budget
+* requested services
+* complexity
+* client details
+
+The Manager then assigns:
+
+* a primary Event Manager
+* optional priority level
+* internal notes if needed
+
+After assignment:
+
+* the Event Manager receives notification
+* the event appears in their dashboard
+* event status becomes **Assigned**
+
+---
+
+# Event Manager Ownership
+
+Once assigned, the Event Manager becomes responsible for planning and delivery.
+
+The Event Manager first reviews the event brief and determines what internal support is needed.
+
+---
+
+# Team Onboarding
+
+The Event Manager should be able to add team members depending on the event needs.
+
+Example roles:
+
+Guest Manager
+Day Coordinator
+Decorator
+Graphic Designer
+Vendor Coordinator
+Finance Support
+
+When a team member is added, the system should automatically:
+
+* notify the user
+* assign them to the event
+* share the event brief
+* provide role-based system access
+* create relevant tasks or workspaces
+
+---
+
+# Role-Based Workstreams
+
+Each specialist should work in their own dedicated workstream.
+
+### Guest Manager
+
+Handles:
+
+* guest list
+* RSVP
+* dietary requirements
+* plus-ones
+* seating plans
+* QR code check-in
+* attendance reports
+
+### Decorator
+
+Handles:
+
+* design concepts
+* styling plans
+* decor inventory
+* installation schedules
+
+### Graphic Designer
+
+Handles:
+
+* invitations
+* signage
+* branding materials
+* event graphics
+
+### Vendor Coordinator
+
+Handles:
+
+* vendor sourcing
+* vendor comparison
+* vendor communication
+* contracts
+
+### Day Coordinator
+
+Handles:
+
+* run sheet execution
+* staff coordination
+* vendor arrival tracking
+* onsite logistics
+
+---
+
+# Event Readiness / Health Monitoring
+
+Each event should have a **readiness indicator** showing whether the event is properly prepared.
+
+Example status:
+
+Green – Ready
+Yellow – Needs Attention
+Red – At Risk
+
+Readiness should consider:
+
+Planning readiness
+Vendor confirmations
+Guest list status
+Team assignments
+Budget setup
+Payment status
+
+Example readiness display:
+
+Event Readiness: 72%
+
+Planning: Complete
+Vendors: Partially Confirmed
+Guests: RSVP Not Started
+Team: Assigned
+Payments: Deposit Received
+
+Managers should be able to see event readiness across all events.
+
+---
+
+# Vendor Qualification and Budget Protection
+
+Vendor selection should support both **quality control and budget protection**.
+
+---
+
+## Vendor Budget Tiers
+
+Each vendor should be categorized as:
+
+Budget
+Mid-Range
+Premium
+
+This helps planners filter vendors appropriate for the event budget.
+
+---
+
+## Vendor Qualification Status
+
+Each vendor should have a qualification level.
+
+Verified Vendor – trusted and previously used
+Approved Vendor – reviewed and acceptable
+Unverified Vendor – newly added or not tested
+
+---
+
+## Vendor Performance Ratings
+
+After each event vendors should be rated based on:
+
+reliability
+quality
+punctuality
+communication
+value for money
+
+This creates a performance history for future planning.
+
+---
+
+## Vendor Budget Alerts
+
+When a planner selects a vendor that exceeds the allocated category budget, the system should warn them.
+
+Example:
+
+Decor Budget: £4,000
+Vendor Quote: £6,500
+
+System Warning: Vendor exceeds decor budget by £2,500.
+
+---
+
+## Vendor Shortlisting
+
+Vendor selection should follow a structured process:
+
+1. search vendor database
+2. filter by category and budget tier
+3. shortlist vendors
+4. request quotes
+5. compare vendors
+6. select final vendor
+
+---
+
+## Vendor Comparison Tool
+
+Planners should be able to compare vendors side-by-side.
+
+Example:
+
+Vendor A
+Price: £7,500
+Rating: 4.6
+
+Vendor B
+Price: £6,800
+Rating: 4.2
+
+Vendor C
+Price: £8,900
+Rating: 4.8
+
+---
+
+## Vendor Approval Rules
+
+Certain vendor selections may require manager approval.
+
+Example:
+
+If vendor cost exceeds a defined amount, the system should request **manager approval before confirmation**.
+
+---
+
+# Profit and Margin Visibility
+
+The system should track financial impact of vendor decisions.
+
+For each event the system should show:
+
+Client Budget
+Total Vendor Costs
+Planner Fee
+Company Margin
+
+Example:
+
+Client Budget: £50,000
+Vendor Costs: £40,000
+Planner Fee: £5,000
+
+Company Margin: £5,000 (10%)
+
+If margin drops below a threshold, the system should warn the user.
+
+---
+
+# Existing Modules to Keep
+
+The following tools already built in the platform should remain unchanged.
+
+Planning timeline and project management
+Budget management
+Vendor management
+Guest management
+Design studio and floor planning
+Communication tools
+Contracts and document generation
+Invoice and payment system
+Event-day tools (run sheet, QR check-in, badges)
+Post-event analytics and reporting
+
+These tools should simply operate **within the structured workflow**.
+
+---
+
+# Complete Event Workflow
+
+Event Created (Client / Planner / Manager)
+↓
+Event enters **New Intake Queue**
+↓
+Manager Reviews Event
+↓
+Manager Assigns Event Manager
+↓
+Event Manager Accepts Ownership
+↓
+Event Manager Builds Internal Team
+↓
+Team Members Receive Event Brief + Role Access
+↓
+Planning Tools Become Active
+↓
+Pre-Event Planning
+↓
+Role-Based Workstreams
+↓
+Event Day Execution
+↓
+Post-Event Closure
+↓
+Financial Closure and Reporting
+↓
+Event Archive
+
+---
+
+# Core Principle
+
+The platform should always make the following clear:
+
+Who owns the event
+What phase the event is in
+Which team members are assigned
+How ready the event is
+
+This structure will transform the system from a collection of tools into a **fully organized event operations platform**, while keeping the powerful features already built.
+
+---
+
+If you want, I can also give you **a one-page visual diagram of this workflow** that makes it much easier for developers to understand quickly.

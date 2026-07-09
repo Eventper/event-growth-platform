@@ -1,0 +1,332 @@
+Yes — give Replit a **clear product brief**, not a vague prompt.
+
+Use this:
+
+```text
+Build a secure internal staff operations portal called TwinOps for Event Perfekt and future TwinPaay operations.
+
+Purpose:
+TwinOps will be the single front-door system staff log into every day. It will not replace QuickBooks or Project.co. Instead, it will act as the operational source of truth for tasks, deadlines, accountability, reporting, and workflow visibility.
+
+External tools:
+- QuickBooks remains the accounting system of record
+- Project.co remains the project/activity and filing system of record
+
+TwinOps must sit above both tools and help staff know what to do, when to do it, and where the related records live.
+
+Users and roles:
+- Admin
+- Finance
+- Operations
+- Accountant (view-focused)
+
+Initial users:
+- Admin: owner
+- Finance: Subhana
+- Operations: Grace
+
+Core requirement:
+When users log in, they must immediately see their personalised dashboard with:
+- today’s tasks
+- overdue tasks
+- upcoming deadlines
+- meetings and calendar items
+- alerts
+- linked QuickBooks items
+- linked Project.co items
+
+The app should be clean, modern, professional, and easy for non-technical staff to use.
+
+MAIN MODULES
+
+1. Authentication and Roles
+- Secure login
+- Role-based access
+- Admin can see all data
+- Finance sees finance-related tasks and records
+- Operations sees operations/project-related tasks and records
+- Accountant can view reports, compliance items, and records but should have limited edit access
+
+2. Dashboard
+Create separate dashboard experiences by role.
+
+Admin dashboard should show:
+- total open tasks
+- overdue tasks
+- high-priority items
+- upcoming deadlines
+- finance alerts
+- compliance alerts
+- quick summary of invoices, payments, activities, and reports due
+
+Finance dashboard should show:
+- invoices requiring follow-up
+- payments awaiting action
+- missing proof of payment
+- upcoming finance deadlines
+- monthly reporting tasks
+- QuickBooks-linked items
+
+Operations dashboard should show:
+- active activities
+- upcoming project deadlines
+- outstanding operational tasks
+- files/documents pending
+- Project.co-linked items
+- meetings and operational reminders
+
+Accountant dashboard should show:
+- finance reports
+- compliance deadlines
+- downloadable records
+- invoice and payment summaries
+- audit/compliance items
+
+3. Tasks Module
+Create a full task management system with:
+- task title
+- description
+- owner
+- role/category
+- due date
+- priority
+- status
+- related record type
+- related record ID
+- QuickBooks link
+- Project.co link
+- attachment/document link
+- notes/history
+
+Task statuses:
+- Not started
+- In progress
+- Waiting
+- Complete
+- Overdue
+
+Priorities:
+- Low
+- Medium
+- High
+- Critical
+
+Task categories:
+- Finance
+- Operations
+- Compliance
+- Reporting
+- Admin
+
+Users should be able to:
+- create tasks
+- assign tasks
+- update status
+- add notes
+- attach links/documents
+- filter by owner, role, project, due date, and status
+
+4. Calendar Module
+Create a calendar view that includes:
+- meetings
+- task deadlines
+- finance deadlines
+- reporting deadlines
+- compliance deadlines
+- recurring monthly/weekly reviews
+
+Users should be able to view:
+- daily
+- weekly
+- monthly calendar
+
+Calendar items should link back to the relevant task or record.
+
+5. Records / Control Cards
+Create structured record pages for the following record types:
+
+A. Invoices
+Fields:
+- invoice number
+- client
+- project/programme
+- country
+- amount
+- due date
+- status
+- owner
+- QuickBooks URL/link
+- Project.co URL/link
+- document link
+- notes
+
+B. Payments
+Fields:
+- payment reference
+- recipient/vendor
+- country
+- amount
+- currency
+- payment method
+- status
+- proof of payment link
+- QuickBooks URL/link
+- Project.co URL/link
+- owner
+- notes
+
+C. Activities
+Fields:
+- activity name
+- project/programme
+- country
+- deadline
+- owner
+- status
+- Project.co URL/link
+- finance status
+- linked tasks
+- linked files
+- notes
+
+D. Partners/Vendors
+Fields:
+- name
+- type
+- country
+- contact details
+- status
+- related invoices
+- related payments
+- Project.co link
+- notes
+
+E. Compliance Items
+Fields:
+- compliance item name
+- category
+- deadline
+- owner
+- status
+- document link
+- notes
+
+These records should act as control cards, giving a complete overview and links to the real source systems.
+
+6. Reports Module
+Build downloadable and filterable reports for:
+- open tasks
+- overdue tasks
+- finance tasks
+- operations tasks
+- invoices due
+- unpaid invoices
+- payments awaiting proof
+- activities by status
+- compliance deadlines
+- monthly summary
+
+Allow export to CSV.
+
+7. Alerts / Nudge System
+Create an alerts panel and logic for:
+- overdue tasks
+- tasks due within 24 hours
+- invoices due soon
+- missing proof of payment
+- compliance deadlines approaching
+- reports due soon
+
+Admin should see all alerts.
+Users should see their own alerts.
+
+8. Document Links
+Do not build a heavy file storage system in version 1.
+Instead, allow users to save document links and references from:
+- Project.co
+- Google Drive
+- QuickBooks attachments
+- uploaded basic files if simple to support
+
+Every key record should allow a document link.
+
+9. Search and Filters
+Add global search and filters so users can quickly find:
+- task
+- invoice
+- payment
+- activity
+- vendor
+- compliance item
+
+10. UI / Navigation
+Main navigation:
+- Dashboard
+- Tasks
+- Calendar
+- Invoices
+- Payments
+- Activities
+- Partners/Vendors
+- Compliance
+- Reports
+
+Use a professional admin-style layout with:
+- left sidebar
+- top summary cards
+- tables with filters
+- detail pages for records
+- clean modern interface
+
+IMPORTANT PRODUCT RULES
+
+- TwinOps is the daily control centre
+- QuickBooks remains the accounting source of truth
+- Project.co remains the project and filing source of truth
+- TwinOps should store workflow ownership, deadlines, visibility, and linked references
+- Do not build accounting logic
+- Do not build payment processing
+- Do not build customer-facing features
+- This is an internal staff portal only
+
+VERSION 1 PRIORITIES
+Build these first:
+- authentication
+- role-based dashboards
+- task management
+- calendar
+- invoices control cards
+- payments control cards
+- activities control cards
+- compliance tracker
+- reports
+- alerts
+
+TECHNICAL PREFERENCE
+- Use a robust database structure
+- Keep code modular and scalable
+- Make it easy to add API integrations later for QuickBooks and Project.co
+- Seed sample demo data for Admin, Finance, and Operations users so the interface is immediately testable
+
+DESIGN STYLE
+- clean
+- professional
+- operational
+- fintech/admin dashboard feel
+- easy for finance and operations staff to use daily
+
+APP NAME
+TwinOps
+Subtitle: Internal Operations & Finance Control Hub
+```
+
+Then add this short note underneath for Replit:
+
+```text
+Important:
+This is not a replacement for QuickBooks or Project.co.
+It is the single staff workspace that brings together tasks, deadlines, accountability, reporting, and links to those systems.
+Build version 1 as a working internal portal ready for daily staff use.
+```
+
+Best next move after pasting this in: ask Replit to build **Version 1 only**, then review the dashboard, tasks, calendar, and records before adding integrations.

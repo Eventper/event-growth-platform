@@ -1,0 +1,70 @@
+"The previous upgrade was only partially applied. Complete the following specific fixes now — do not skip any:
+CHECK 1 — CONFIRM CLAUDE IS BEING USED
+Search the entire codebase for any remaining references to:
+
+openai
+gpt-4
+gpt-3.5-turbo
+gpt-4o
+openai.chat.completions
+
+List every file and line where these still exist. Replace every single one with the Anthropic Claude API call using model claude-sonnet-4-20250514 and ANTHROPIC_API_KEY. Show me the files that were changed.
+CHECK 2 — CONFIRM EP AGENT SYSTEM PROMPT IS UPDATED
+Find the file containing the EP Agent system prompt for bid generation. Show me the first 200 characters of the current system prompt. If it does not start with You are EP Agent — the most advanced bid writing specialist in the UK replace it now with the full system prompt from the previous instruction.
+CHECK 3 — BUILD BID GOVERNANCE TAB
+Confirm whether a Bid Governance tab now exists in the dashboard. If it does not exist build it now with:
+
+Table showing all bid sections with columns: Tender Name, Section Name, Word Count, Status, Date Generated, Actions
+Three action buttons per row: APPROVE (gold), REQUEST CHANGES (amber), REJECT (red)
+Status badges: Draft, Awaiting Review, Approved, Changes Requested, Rejected
+Submit Package button appears only when all sections for a tender are Approved
+All actions logged to bid_governance_log table with user and timestamp
+
+CHECK 4 — BUILD LEARNING VAULT
+Confirm whether the Learning Vault exists in the Knowledge Base tab. If it does not exist build it now with:
+
+Section titled Learning Vault at the bottom of Knowledge Base tab
+Pre-loaded GM BGH lesson card showing:
+
+Tender: GM BGH Event Management Enterprise Festival — T25003
+Outcome: Lost 86 percent vs winner 88 percent
+Critical gaps: Social Value lost 6 points, Price lost 1 point
+Five lessons listed as bullet points
+
+
+Add Outcome button on every Submitted tender in the pipeline
+When LOST clicked and feedback uploaded Claude extracts lessons and adds to vault
+
+CHECK 5 — CONFIRM 16 SECTION GENERATION
+In the Bid Writer tab confirm there is a Generate All 16 Sections button. If not add it now. When clicked it generates all 16 sections sequentially using the EP Agent system prompt and displays each in its own editable card with word count, edit button, regenerate button, and Send to Governance button.
+The 16 sections must be:
+
+Executive Summary
+Company Overview
+Methodology
+Team and Experience
+Social Value including Environmental Impact
+Risk Management
+Timeline and Implementation
+Quality Assurance
+Innovation
+Sustainability
+Cost Analysis
+References
+Compliance Statement
+Appendices
+Cover Letter
+Scoring Criteria Response
+
+CHECK 6 — CONFIRM STYLING
+Check if the dashboard background is #1A0A0E. If it is still showing light colours or white backgrounds apply the dark luxury theme now:
+Background: #1A0A0E
+Panel: #2A1018
+Border: #4A2030
+Text: #FAF0F2
+Gold: #E2C87A
+Font headings: Barlow Condensed
+Font body: DM Sans
+CHECK 7 — CONFIRM AUTOMATION IS RUNNING
+Check if the 6-hour discovery cycle is scheduled. If not set it up now using setInterval or a cron job. Confirm the morning briefing is scheduled for 7:00 AM daily. Send a test morning briefing email to adminuk@eventperfekt.com now to confirm email delivery is working.
+Report back on the status of each check — confirmed working or fixed now."

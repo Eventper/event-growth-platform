@@ -1,0 +1,81 @@
+I actually agree with you.
+
+I would **not mention CEFAS by name on the public website** unless you have explicit permission. Even though it's public procurement information, using a client's name prominently in your marketing can be sensitive—particularly for government bodies.
+
+Instead, position yourself like professional consulting firms do.
+
+Tell Replit:
+
+```text id="cwq5od"
+Remove specific client names from the public homepage and public case studies.
+
+Do not publicly display client names such as CEFAS unless explicit permission has been obtained.
+
+Instead, use anonymised case studies and sector-based examples.
+
+For example:
+
+Public Sector Programme
+UK Government Agency
+Delivered a multi-country programme across nine African countries involving stakeholder engagement, in-country coordination, financial reconciliation and governance oversight.
+
+Education Sector
+International university programme delivered across multiple African countries.
+
+Corporate Energy Programme
+Cross-border stakeholder engagement and programme management.
+
+Financial Services
+Regional conference delivery and executive engagement.
+
+Charity & Development
+Multi-country workshop and capacity-building programme.
+
+Each public case study should focus on:
+
+- The client's challenge
+- Our approach
+- Countries covered
+- Services delivered
+- Outcomes achieved
+
+Do not disclose:
+- Client name
+- Contract reference
+- Contract value
+- Sensitive operational information
+- Financial information
+- Internal governance information
+
+Instead use phrases such as:
+
+"UK Government Agency"
+
+"International Development Organisation"
+
+"Global Research Institution"
+
+"International NGO"
+
+"FTSE-listed Corporate"
+
+"Multinational Energy Company"
+
+Create a gated "Request Full Case Study" process.
+
+Users must submit:
+- Name
+- Organisation
+- Job Title
+- Business Email
+- Country
+- Reason for request
+
+Once approved, they can access more detailed case studies where appropriate.
+
+The homepage should focus on credibility and capability rather than naming clients.
+
+Our value proposition is our ability to deliver complex programmes across Africa—not our client list.
+```
+
+I think that's the more professional approach. It demonstrates experience without risking client relationships or creating the impression that you're using government clients as marketing assets.

@@ -1,0 +1,57 @@
+The AI Bid Writer module already exists with these endpoints: /api/tender-ai/generate-section, /api/tender-ai/answer-questions, /api/tender-ai/improve-section, /api/tender-ai/assistant, /api/tender-ai/auto-generate
+I need you to upgrade it with the following improvements. Do not rebuild what exists — only enhance it.
+Improvement 1: Auto-Generate Full Bid on One Click
+Add endpoint POST /api/tender-ai/generate-full-bid
+— Takes: tender_id, tender title, buyer, description, questions array, word limits
+— Automatically runs in sequence:
+
+Loads company profile from DB
+Loads all Bid Vault documents for context
+Generates all question answers (STAR format)
+Generates all 16 standard sections
+Assembles into one complete bid object
+Saves everything to the tender record in DB
+— Returns: { status, tender_id, sections_generated, questions_answered, bid_ready: true }
+— Frontend should show a progress indicator as each section completes (use SSE or polling)
+
+Improvement 2: PDF / Document Parser
+Add endpoint POST /api/tender-ai/parse-tender-doc
+— Accepts uploaded PDF or Word doc (the actual ITT/RFP document)
+— Extracts automatically: tender title, buyer name, deadline, budget, all questions, word limits per question, evaluation criteria and weightings, compliance requirements checklist
+— Returns structured JSON so user doesn't have to manually copy/paste anything
+— Use pdf-parse npm package for PDFs, mammoth for Word docs
+Improvement 3: Smarter AI Prompting
+Update all existing AI generation endpoints to use this system prompt structure:
+You are an expert UK public sector bid writer for Event Perfekt Global Ltd.
+
+COMPANY CONTEXT:
+{company_profile}
+
+BID VAULT REFERENCE:
+{relevant_vault_docs}
+
+TENDER DETAILS:
+Buyer: {buyer}
+Title: {title}
+Value: {budget}
+Deadline: {deadline}
+
+WRITING RULES:
+- Use STAR format for experience questions
+- Reference specific Event Perfekt contracts and case studies
+- Use UK public sector language (Value for Money, Social Value, TUPE awareness)
+- Never use generic filler — every sentence must be specific and evidence-based
+- Respect word limits strictly — if limit given, stay within 10% of it
+- Write in first person plural ("We have delivered...")
+- Reference the buyer's stated evaluation criteria in every answer
+Improvement 4: Compliance Checker
+Add endpoint POST /api/tender-ai/compliance-check
+— Takes: full bid text + tender requirements
+— Returns: { passed: [], failed: [], warnings: [], score: 0-100 }
+— Checks for: word limits respected, all questions answered, required policies mentioned (GDPR, H&S, safeguarding, EDI, insurance), social value addressed, pricing/commercial terms included
+Improvement 5: Bid Strength Scorer
+Add endpoint POST /api/tender-ai/score-bid
+— Reads completed bid against tender evaluation criteria
+— Returns score per section (0-10) with specific improvement suggestions
+— Flags weak sections that need more evidence or specificity
+Do not change any existing routes or frontend code. Add new endpoints only. Use the existing DB connection and OpenAI setup already in the project.

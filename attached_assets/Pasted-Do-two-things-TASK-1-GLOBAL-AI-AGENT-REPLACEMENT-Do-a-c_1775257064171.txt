@@ -1,0 +1,104 @@
+Do two things:
+
+---
+
+# TASK 1 — GLOBAL AI → AGENT REPLACEMENT
+
+Do a complete find and replace across every single file in the project. Replace every user-facing instance of "AI" with "Agent".
+
+Files to sweep: every .tsx, .ts, .jsx, .js, .html, .md file in client/src/, server/, and any email templates.
+
+Replacements to make:
+- "AI" → "Agent"
+- "AI-Powered" → "Agent-Powered"
+- "AI-powered" → "Agent-powered"
+- "AI generates" → "Agent generates"
+- "AI finds" → "Agent finds"
+- "AI creates" → "Agent creates"
+- "AI analyzes" → "Agent analyzes"
+- "AI recommends" → "Agent recommends"
+- "AI research" → "Agent research"
+- "AI-generated" → "Agent-generated"
+- "AI email" → "Agent email"
+- "AI reply" → "Agent reply"
+- "AI draft" → "Agent draft"
+- "AI suggestions" → "Agent suggestions"
+- "AI detection" → "Agent detection"
+- "AI assistant" → "Agent"
+- "powered by AI" → "Agent-powered"
+- "EP-Powered Contact Intelligence\nAI finds" → "EP Agent Contact Intelligence\nOur Agent finds"
+- "AI-po..." any truncated instances → fix to "Agent"
+
+Do NOT change:
+- OpenAI API calls or model names (gpt-4o-mini stays)
+- Environment variable names (OPENAI_API_KEY stays)
+- Package import names
+- Code comments that are purely technical (not user-facing)
+- The word "email" (contains "ail" not "AI")
+- The word "said", "paid", "raid" etc
+
+After replacing, do a final grep across all files for any remaining standalone " AI " or "\"AI\"" in user-facing strings and list them so we can confirm zero remain.
+
+---
+
+# TASK 2 — PROSPECT INTELLIGENCE PAGE AUDIT
+
+Audit the Prospect Intelligence page (prospect-finder.tsx or equivalent) against this specification. Tell me for each item: WORKING / MISSING / BROKEN / PARTIAL.
+
+**Stats bar:**
+- Total Prospects count → does it pull from database?
+- New Leads count → accurate?
+- Contacted count → updates when prospect stage changes to Contacted?
+- Meetings count → updates when stage = Meeting Booked?
+- Proposals count → updates when stage = Proposal Sent?
+- Won count → updates when stage = Won?
+- High Priority count → what logic sets a prospect as High Priority? Is it just manual flagging or based on budget/urgency?
+
+**Pipeline tab:**
+- Does the Kanban board show all 6 stages: New Enquiry / Consultation / Proposal Sent / Negotiation / Won / Lost?
+- Does drag-and-drop or stage change work?
+- Does each prospect card show: company name, contact, event type, estimated value, country, assigned planner, last contact date?
+- Does the country badge show on each card?
+- Is there a filter by country (dynamic, not hardcoded)?
+- Is there a filter by stage?
+- Does clicking a prospect card open the full detail view?
+- Does the detail view show the Activity timeline tab?
+
+**Contact Intel tab:**
+- Does "Find Decision-Maker" actually call OpenAI and return results?
+- Does it return: name, title, email, LinkedIn, confidence level?
+- Does the confidence level show as High/Medium/Low with colour coding?
+- Does "Save to prospect" work after finding a contact?
+- Is the button label "Find Decision-Maker" (not mentioning AI)?
+
+**Agent Outreach tab (was Smart Outreach):**
+- Does "Load Agent Outreach" rank prospects by urgency?
+- Does it generate 4-touch sequences (not just single emails)?
+- Does the sequence approval panel show all 4 touches?
+- Can each touch be edited before approving?
+- Does "Approve All" activate the sequence?
+- Does approved email send via SendGrid on schedule?
+
+**Marketing tab:**
+- Does region selector filter by country?
+- Does Agent generate country-appropriate campaign content?
+- Does currency adjust per country?
+
+**Find New Prospects tab (was Search):**
+- Is the search enabled or still showing stub/disabled message?
+- Does UK search call Companies House API?
+- Does selecting other countries use Agent research?
+- Does the country selector show all 195 countries?
+- Do results show confidence level and source URL?
+- Does "Save to Pipeline" work?
+
+**Won → Convert flow:**
+- Does the Convert to Event button exist on Won prospects?
+- Does it call POST /api/company-prospects/:id/convert?
+- Does it redirect to /event-dashboard/:id?
+- Does the converted prospect appear in Manager Intake?
+
+After the audit, give me:
+1. A list of everything WORKING correctly
+2. A list of everything MISSING or BROKEN with exact fix needed
+3. Overall status: PRODUCTION READY / NEEDS FIXES / MAJOR WORK NEEDED

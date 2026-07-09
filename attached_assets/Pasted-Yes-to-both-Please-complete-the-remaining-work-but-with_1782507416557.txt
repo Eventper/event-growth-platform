@@ -1,0 +1,125 @@
+Yes to both.
+
+Please complete the remaining work, but with the following enhancements.
+
+## 1. Add "The Businesses Behind The City" to Stay & Enjoy
+
+This should become a permanent section within the Stay & Enjoy experience.
+
+Section title:
+
+**The Businesses Behind The City**
+
+Narrative:
+
+Every city has remarkable businesses, passionate founders and hidden gems that deserve to be discovered.
+
+As visitors travel to Milton Keynes for The Woman Who Leads The Room and future Event Perfekt experiences, we want to introduce them to the businesses, venues and people that make this city special.
+
+This is a curated collection of businesses helping visitors stay longer, explore more and experience the very best of Milton Keynes.
+
+---
+
+## 2. Business Categories
+
+Display approved businesses under four sections:
+
+🏨 Stay
+
+Hotels, serviced apartments and accommodation.
+
+🍽 Eat & Drink
+
+Restaurants, cafés, bars and dining experiences.
+
+✨ Enjoy
+
+Shopping, beauty, wellness, attractions and local experiences.
+
+🏢 Invest & Relocate
+
+Commercial property, residential property, relocation specialists, professional services, accountants, solicitors, financial advisers and businesses helping people invest, relocate or grow within Milton Keynes.
+
+---
+
+## 3. Featured Business Cards
+
+Each approved business should display:
+
+* Image/logo
+* Business name
+* Short description
+* Category
+* Website button
+* "Read Story" button (if a story has been provided)
+
+Cards should follow the luxury editorial style already used throughout I AM HER.
+
+---
+
+## 4. Feature Your Business CTA
+
+Keep the existing button.
+
+It should continue linking to:
+
+/iamher/feature-your-business
+
+---
+
+## 5. Admin Approval
+
+Only approved businesses should appear publicly.
+
+Submission → Review → Approve → Publish
+
+No automatic publishing.
+
+---
+
+## 6. Future-proof the architecture
+
+Do not hardcode this around Milton Keynes.
+
+The underlying structure should support future cities.
+
+Example:
+
+Milton Keynes
+
+Manchester
+
+Birmingham
+
+Leeds
+
+Liverpool
+
+London
+
+Each city should eventually have its own:
+
+* Stay
+* Eat & Drink
+* Enjoy
+* Invest & Relocate
+
+The architecture should allow us to expand city by city without redesigning the feature.
+
+---
+
+## 7. SEO
+
+Each approved business should have its own SEO-friendly profile page.
+
+This gives long-term value for both Event Perfekt and the featured business.
+
+---
+
+## 8. Health Endpoint
+
+Please also fix the public health endpoint so it bypasses authentication correctly.
+
+---
+
+This feature is intended to become a long-term destination marketing and local business discovery platform that grows alongside Event Perfekt's events and future city launches.

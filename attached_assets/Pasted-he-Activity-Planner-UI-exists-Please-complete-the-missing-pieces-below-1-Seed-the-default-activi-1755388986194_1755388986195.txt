@@ -1,0 +1,193 @@
+he Activity Planner UI exists. Please complete the missing pieces below.
+
+1) Seed the default activities (by phase)
+
+Preload these activities so every new event gets them automatically. Keep them event-agnostic (usable for weddings, corporate, milestones, etc.).
+
+Phase: Discovery (0–3 months)
+
+Initial client enquiry captured
+
+Event type confirmed & objectives defined
+
+Budget range discussed & recorded
+
+Venue shortlist prepared
+
+Theme/style vision documented
+
+Key vendors mapped (catering, décor, AV, entertainment)
+
+Draft high-level timeline created
+
+Client concept approval (initial)
+
+Phase: Planning (2–3 months)
+
+Venue visit & booking confirmation
+
+Décor moodboard created & approved
+
+Vendor proposals reviewed & negotiated
+
+Catering tasting(s) scheduled/confirmed
+
+Entertainment short-list & booking
+
+AV/technical requirements documented
+
+Guest management plan set up (invites/RSVP/ticketing)
+
+Draft floor plan produced (2D/3D where available)
+
+Budget refined & baselined
+
+Contracts prepared & signed
+
+Phase: Final Preparations (1–4 weeks)
+
+Vendor confirmations & deposits verified
+
+Detailed run sheet created
+
+Staffing/crew schedule finalised
+
+Transport & logistics scheduled (load-in/out)
+
+Décor inventory & install sequence checked
+
+Guest list finalised & seating plan locked
+
+AV/technical rehearsal booked
+
+Contingency plan (weather/risk/medical) updated
+
+Final client sign-off meeting
+
+Phase: Event Day
+
+Vendor arrivals & load-in tracking
+
+Venue walkthrough & compliance check
+
+Décor install verified (tabletop, florals, candles, linens, signage)
+
+Catering setup & food safety check
+
+Technical setup & sound/light check
+
+Guest registration/welcome desk live
+
+Run-of-show live tracking & comms
+
+Issue/incident logging & resolution
+
+Vendor strike/tear-down coordination
+
+Phase: Post-Event (1–2 weeks)
+
+Vendor payments & reconciliation
+
+Client debrief meeting
+
+Guest/attendee feedback collected
+
+ROI/KPI report generated
+
+Lessons learned documented
+
+Media delivery (photos/videos)
+
+Final report & archive
+
+2) Wire core columns & behaviors (already present visually)
+
+For each activity row, ensure these fields are fully working (CRUD):
+
+Task Name (string)
+
+Phase (locked to the group)
+
+Owner (People dropdown: Planner/Vendor/Client/Custom)
+
+Deadline (Date)
+
+Status (Dropdown: Not Started / In Progress / Completed / On Hold / Cancelled)
+
+Notes & Files (rich text + file uploads)
+
+Behaviors
+
+Inline edit everywhere (name, owner, date, status, notes).
+
+Drag & drop between phases (updates Phase).
+
+Kanban view updates Status via drag.
+
+Timeline/Gantt view reads/writes dates.
+
+3) Progress & phase sign-off
+
+Phase header shows progress % = Completed / Total in that phase.
+
+Mark Phase Complete button becomes enabled only when all items in the phase are Completed.
+
+On sign-off: lock items read-only; store signedOffBy, signedOffAt.
+
+4) Templates & instancing
+
+On Create Event, auto-instantiate the five phases with the seeded activities.
+
+Allow planners to add custom activities anywhere (CRUD).
+
+Store planner-added items alongside seeded ones.
+
+5) Filtering, search, saved views
+
+Filters: Phase, Status, Owner, Due (Overdue/This Week/Next 30d).
+
+Global search by Task Name/Notes.
+
+Allow saving named views (e.g., “This Week”, “Overdue Only”).
+
+6) Attachments & audit
+
+File uploads on any activity (persist + preview).
+
+Audit log per activity: who changed what & when (status, owner, date, notes).
+
+7) API & persistence
+
+Ensure all activities are stored per eventId.
+
+Endpoints (or server calls) for:
+
+GET /api/events/:eventId/activities
+
+POST /api/events/:eventId/activities (create)
+
+PATCH /api/events/:eventId/activities/:id (update)
+
+DELETE /api/events/:eventId/activities/:id
+
+POST /api/events/:eventId/phases/:phase/signoff (records sign-off metadata)
+
+8) Acceptance criteria
+
+Creating a new event auto-populates phases with the seeded activities.
+
+Planner can add/edit/delete tasks; assign owners; set dates; upload files; change status.
+
+Phase progress % updates live; Mark Phase Complete locks items and records sign-off.
+
+Filters/search/saved views work across the board, Kanban, and Timeline.
+
+All data persists to the existing backend tied to eventId.
+
+No color or theme changes.
+
+Optional: seed payload (if you need a quick JSON bootstrap)
+
+If useful, create a one-time bootstrap task to insert the activities above into the template store, then clone them per event on creation.
+
+This is already visually built — just seed the lists, wire the fields, enable sign-off, and persist.

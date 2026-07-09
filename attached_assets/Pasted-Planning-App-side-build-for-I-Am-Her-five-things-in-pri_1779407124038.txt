@@ -1,0 +1,22 @@
+Planning App side build for I Am Her — five things in priority order. This week's work, not blocking tomorrow but needed by end of week.
+
+(1) GUEST REGISTRATION FORM — /iam-her/register
+Public form. Fields: first name, last name, email, phone, organisation, role, why attending (100 char min), how heard (dropdown), GDPR consent, captcha. On submit: row to real DB table (event_applications or equivalent), auto-confirmation email from info@eventperfekt.com dated Friday 28 August 2026 Milton Keynes, notification email to info@eventperfekt.com. Mobile-responsive. Public, no auth.
+
+(2) /iam-her DASHBOARD — REAL DATA, NOT HARDCODED ARRAYS
+Currently client/src/pages/iam-her.tsx has hardcoded arrays. Replace with real table reads — co-creators, corporate partners, tasks, documents. Countdown stays as is. Guest count reads from registration table. Remove the demo-token call entirely.
+
+(3) ESTHER PORTAL — REAL DATA
+/iam-her/esther — her 10 tasks in a real table, document uploads save with metadata, messages save to a real messages table accessible to EP staff. Authenticated login, not public URL.
+
+(4) BRIDGE ENDPOINT — GET /api/summary/iam-her
+Auth: x-cross-system-key or equivalent matching what Group Portal calls. 5-minute cache. Returns: active_event, event_name, event_date (2026-08-28), event_location (Milton Keynes), days_to_event, co_creators_confirmed, corporate_partners_count, guest_applications_count, guest_applications_approved, tasks_total, tasks_overdue, next_milestone. Group Portal Project record Dashboard pulls and shows live numbers.
+
+(5) DATE CLEANUP — 28 AUGUST 2026 EVERYWHERE
+Search the entire repo for any remaining "7 August" / "Thursday 7 August" / "6 August" / "16 July" references. Replace with "28 August 2026" and "Friday 28 August". Don't rename /api/event-16july/* routes tonight (separate cleanup) — just fix any date strings that render to a user or send in an email.
+
+ORDER: (5) first, (3) and (1) parallel, then (4), then (2).
+
+Don't build /event_projects canonical table — that's Lagos Summit scope. Don't migrate iam_her_* tables to canonical. Just make this event functional on Planning App for clients (guests, Esther, sponsors) and surface live status to Group Portal.
+
+Report after each step. Stop if anything blocks.

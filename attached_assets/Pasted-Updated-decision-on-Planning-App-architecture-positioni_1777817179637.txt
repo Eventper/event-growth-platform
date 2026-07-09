@@ -1,0 +1,29 @@
+Updated decision on Planning App architecture — positioning is long-term SaaS, paused for now, current focus is Event Perfekt ops only.
+Revised plan:
+What stays killed (Step 2 already done):
+
+DEBT-002 — Training mode auto-login. Security hole, stays dead.
+DEBT-003 — Orphaned page files. Dead code, stays deleted.
+DEBT-005 — Disabled Group Portal route block. Stays gone.
+
+What stays as is — do not touch:
+
+EPGlobal portal — leave it functional as Event Perfekt's tenant view. Do NOT migrate routes into event records. Do NOT kill duplicated routes. When SaaS reactivates later, EPGlobal becomes the template tenant view.
+
+What still needs action — Step 3 (revised):
+
+DEBT-001 — Quarantine /staff, /staff-login for now. Add a 302 redirect: "/staff-login → Group Portal at [URL]". Keep the underlying code in place (don't delete) so SaaS reactivation can re-enable it later. Tag in code as // SAAS-PAUSED: re-enable with multi-tenant auth when SaaS resumes
+DEBT-006 — Restrict /create-event to bridge-only access (require EP_CROSS_SYSTEM_KEY Bearer + valid parent_project_id). Same SAAS-PAUSED tag — direct staff access path stays in code, gated off until SaaS reactivation.
+
+Why this approach:
+Planning App's long-term positioning is multi-tenant SaaS for event/wedding planners. Right now the product is paused — Event Perfekt is the only user. The killed routes (training mode, orphans) needed to die regardless. The staff-login and direct /create-event access need to be paused, not deleted, so future SaaS reactivation can re-enable them with proper multi-tenant auth.
+Add to replit.md under "SaaS reactivation backlog":
+
+Re-enable staff-login with multi-tenant authentication
+Re-enable direct /create-event with tenant-scoped permissions
+Build proper tenant isolation across data models
+Build subscription billing
+Build tenant-specific branding
+Convert cross-system bridge from private key to public API with per-tenant auth
+
+Action Step 3 with this revised approach. Brief me when complete. Standing rules apply.

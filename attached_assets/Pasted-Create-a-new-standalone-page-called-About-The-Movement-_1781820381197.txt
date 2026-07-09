@@ -1,0 +1,259 @@
+Create a new standalone page called “About The Movement”.
+
+Add it to the navigation as “About”.
+
+Remove the current “About Event Perfekt Global” section from the landing page and move that content into this new About page.
+
+The page must follow the same premium editorial structure as the rest of the website:
+
+* Hero Section
+* Content Section
+* Full Width Image / Hero Section
+* Content Section
+* Pillars Section
+* Future Vision Section
+* Waiting List Section
+* Final CTA Section
+
+PAGE TITLE
+
+About The Movement
+
+HERO SECTION
+
+Main Heading:
+The Human Behind The Title
+
+Subheading:
+A confidence-led leadership, wellbeing and business sustainability initiative by Event Perfekt Global Ltd.
+
+Hero Copy:
+
+The Human Behind The Title was created to explore what sits beneath success — the pressure, confidence, health, identity, finances, appearance, wellbeing and personal realities carried by founders, executives, professionals and leaders.
+
+This is not another empowerment campaign.
+
+It is a long-term platform designed to help leaders sustain success, not simply achieve it.
+
+CTA:
+Explore The First Experience
+
+Link:
+The Woman Who Leads The Room
+
+SECTION 1
+
+Heading:
+An Initiative By Event Perfekt Global Ltd
+
+Copy:
+
+Event Perfekt Global Ltd is a UK-based event management and project delivery company creating intentional experiences for organisations, brands, communities and private clients.
+
+Our work combines event strategy, project management, stakeholder engagement, brand experience, operational delivery and premium guest experience design.
+
+Through The Human Behind The Title, Event Perfekt is expanding its work into confidence-led leadership experiences, corporate wellbeing programmes, founder communities, executive engagement and brand partnership platforms.
+
+SECTION 2
+
+Heading:
+What We Are Building
+
+Copy:
+
+The Human Behind The Title is a growing platform focused on the real issues leaders face once they are already carrying responsibility.
+
+It brings together curated events, story-led campaigns, expert conversations, brand partnerships, corporate programmes and community experiences.
+
+The platform is designed for people who are leading businesses, teams, households, organisations and communities — and who need more than generic inspiration to continue thriving.
+
+FULL WIDTH IMAGE SECTION
+
+Use a premium leadership image showing diverse founders, executives and professionals.
+
+Overlay text:
+
+Leadership is not just about performance.
+
+It’s about sustaining success.
+
+SECTION 3
+
+Heading:
+Our Core Pillars
+
+Create premium cards for:
+
+Confidence & Presence
+
+How leaders show up, own their space and continue to lead with clarity.
+
+Women’s Health
+
+Menopause, hormones, energy, intimate health and the physical realities that shape leadership.
+
+Skin Health & Appearance
+
+Confidence-led conversations around skin, ageing, aesthetics, visibility and how women feel in their own bodies.
+
+Emotional Wellbeing
+
+The private pressure, responsibility and emotional weight carried by high-performing women.
+
+Financial Wellbeing
+
+The business, money, property, growth and sustainability decisions that affect leadership longevity.
+
+Business Sustainability
+
+Helping founders and leaders build businesses that last, not simply businesses that look successful.
+
+SECTION 4
+
+Heading:
+The First Flagship Experience
+
+Subheading:
+The Woman Who Leads The Room
+
+Copy:
+
+The Woman Who Leads The Room is the first flagship experience within The Human Behind The Title platform.
+
+Launching in Milton Keynes, it brings together carefully selected female founders, executives, directors, professionals and business owners for a premium confidence-led evening focused on wellbeing, leadership, connection and the woman behind the title.
+
+The first experience focuses on women because many senior women are navigating complex life stages, leadership pressure, health changes, business growth, identity shifts and financial decisions simultaneously.
+
+This is the beginning of a wider platform that will grow city-to-city, organisation-to-organisation and internationally.
+
+SECTION 5
+
+Heading:
+For Organisations
+
+Copy:
+
+The Human Behind The Title gives organisations a more human way to engage with leadership, wellbeing, retention, confidence, inclusion and performance.
+
+It supports conversations around:
+
+* Women in leadership
+* Menopause and workplace wellbeing
+* Executive confidence
+* Founder sustainability
+* Financial wellbeing
+* Burnout prevention
+* Talent retention
+* Inclusive leadership
+* Human-centred workplace culture
+
+This is where corporate wellbeing meets leadership reality.
+
+SECTION 6
+
+Heading:
+For Brand Partners
+
+Copy:
+
+We work with carefully selected brands whose products, services and values support the people behind leadership roles.
+
+Our partners are not simply sponsors.
+
+They become part of the experience, the conversation and the community.
+
+We are creating opportunities for aligned brands across:
+
+* Women’s health
+* Skin health
+* Luxury fragrance
+* Beauty and aesthetics
+* Financial wellbeing
+* Business banking
+* Hospitality
+* Lifestyle
+* Personal development
+* Corporate wellbeing
+
+SECTION 7
+
+Heading:
+The Vision
+
+Copy:
+
+Whilst The Woman Who Leads The Room launches in Milton Keynes, the ambition reaches far beyond a single city.
+
+We are already receiving interest from women, organisations and communities who want to be part of the movement.
+
+As the platform grows, future editions will expand across the UK and selected international markets, creating opportunities for leaders to connect, share experiences and access support across borders.
+
+Through Event Perfekt Global’s existing delivery footprint and partnerships, the long-term vision includes expansion across:
+
+* The United Kingdom
+* Europe
+* West Africa
+* The Middle East
+* EMEA
+
+Our aim is simple:
+
+To help people not only reach the room, but stay in it.
+
+SECTION 8
+
+Heading:
+Join The Waiting List
+
+Copy:
+
+Interested in bringing The Human Behind The Title or The Woman Who Leads The Room to your organisation, city or region?
+
+Register your interest and be the first to hear about future launches, partnerships and community opportunities.
+
+Form Fields:
+
+* Name
+* Email
+* Organisation
+* Country
+* Region / City
+* Interest Type
+    * Guest
+    * Sponsor
+    * Corporate Partner
+    * Community Partner
+    * Media Partner
+    * Speaker
+* Why are you interested?
+
+CTA Button:
+
+Join The Waiting List
+
+Store submissions in the same database/CRM as invitation requests.
+
+FINAL CTA SECTION
+
+Heading:
+Be Part Of The Movement
+
+Copy:
+
+Whether you are a guest, corporate organisation, brand partner, speaker, community leader or sponsor, The Human Behind The Title offers an opportunity to be part of a platform built around leadership, wellbeing, confidence and longevity.
+
+CTA Buttons:
+
+Request Your Invitation
+
+Explore Partnerships
+
+Design Notes:
+
+* Premium editorial style throughout.
+* Luxury photography.
+* Burgundy, black, gold and soft neutral palette.
+* Should feel premium, strategic and aspirational.
+* Avoid looking like a corporate brochure.
+* Consistent with The Woman Who Leads The Room branding.
+* Focus on longevity, movement, community and leadership sustainability rather than a one-off event.

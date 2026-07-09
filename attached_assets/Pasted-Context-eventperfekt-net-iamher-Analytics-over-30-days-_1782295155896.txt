@@ -1,0 +1,14 @@
+Context: eventperfekt.net /iamher. Analytics over 30 days: 1,211 views, 727 sessions, only 5 email captures (0.4%) — healthy is 2–3%. Traffic is fine-ish; conversion to capture is the problem. Two jobs, conversion-focused. Don't touch the SEO shell, sitemap, robots, or the server-render work (all confirmed working). Report what changed.
+Job 1 — Make the email capture the prominent, primary, low-friction action with a compelling reason to give an email.
+
+Currently the soft capture is weak/buried and the popup converts at 0.4%. Fix:
+
+The hero's PRIMARY call-to-action should be a one-field email capture (email only — no name required to reduce friction; name optional). Button copy: "Get the Invitation Details" or "Request the Guest Details." The £360 "Request Your Invitation" / purchase path stays as a clearly-labelled SECONDARY button for those ready now.
+Give a concrete reason to leave an email — not "join our list." Use: "Be the first to receive the full evening details, the speaker line-up, and early access before invitations open." (This is true and compelling without fake scarcity.)
+The capture must fire trackFunnelEvent('interest_capture', '/iamher', {...}) so UTM data attaches, and store via the EXISTING email-capture storage that feeds the "Emails Captured" metric — do not build a parallel store.
+Keep it on-brand: near-black background, candlelit gold accents, Cormorant Garamond serif, gold script accent — consistent with the existing house style. No pulsing buttons, no countdown timers, no "only X tickets left" — those cheapen the premium positioning and the scarcity would be false (zero sold).
+
+Job 2 — Add a "How did you hear about us?" field to the capture and the access form.
+
+54% of traffic is "direct" so attribution is blind. Add an optional dropdown: Instagram, LinkedIn, Friend/Word of mouth, Dr Sarah / Esther, MKFM, Email, Other. Store the value against the session/lead and surface it in the funnel dashboard so we can see real attribution. Keep it optional so it doesn't add friction to the capture.
+Do NOT: add fake scarcity ("12 Platinum tickets left"), countdown timers, pulsing/animated buttons, or "Venue TBC" anywhere public-facing. These conflict with the premium brand and, in the scarcity case, would be untrue.
