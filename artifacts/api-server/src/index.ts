@@ -308,6 +308,7 @@ async function startServer() {
     const { startInvitationReminderScheduler } = await import("./invitation-reminder-scheduler");
     const { bootstrapVisitorTracking, registerVisitorTrackingRoutes } = await import("./visitor-tracking-routes");
     const analyticsRoutes = (await import("./analytics-routes")).default;
+    const boothInquiryRoutes = (await import("./booth-inquiries-routes")).default;
     const { registerMarketingAgentRoutes } = await import("./marketing-agent-routes");
     const { startVisitorNotificationScheduler } = await import("./visitor-notification-scheduler");
     const { pingIndexNow, startupIndexNowPing, INDEXNOW_DEFAULT_URLS } = await import("./indexnow");
@@ -356,6 +357,7 @@ async function startServer() {
       await runInit("visitor-tracking:bootstrap", () => bootstrapVisitorTracking());
       registerVisitorTrackingRoutes(app);
       analyticsRoutes(app);
+      boothInquiryRoutes(app);
       registerMarketingAgentRoutes(app);
       startVisitorNotificationScheduler();
     } else {

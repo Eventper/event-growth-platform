@@ -23084,6 +23084,22 @@ Return ONLY valid JSON with this structure:
         message: "Contact form submitted successfully",
         routed_to: routingEmail
       });
+
+      // ─── Save booth inquiries to database ───
+      if (inquiryCategory === "booth-inquiry") {
+        try {
+          await db.execute(
+            sql`
+              INSERT INTO booth_inquiries (name, email, phone, company, serviceType, message, status)
+              VALUES (${name}, ${email}, ${phone || null}, ${company || null}, ${serviceType}, ${message || null}, 'new')
+            `
+          );
+          logger.info(`📸 Booth inquiry saved to DB: ${name} (${email})`);
+        } catch (dbError) {
+          logger.error("Failed to save booth inquiry to DB:", dbError);
+          // Don't fail the response, just log it
+        }
+      }
     } catch (error: any) {
       console.error("Contact form error:", error);
       res.status(500).json({ message: "Failed to submit contact form" });
