@@ -51,7 +51,7 @@ async function fetchNewTenders(): Promise<NewTender[]> {
            ) AS score
     FROM saas_tenders
     WHERE updated_at >= NOW() - INTERVAL '24 hours'
-      AND LOWER(status) IN ('qualifying', 'auto-discovered')
+      AND LOWER(status) NOT IN ('won','lost','closed','no_bid','declined','awarded_to_other','awarded','cancelled','withdrawn','unsuccessful','expired','submitted')
       AND (deadline IS NULL OR deadline >= CURRENT_DATE::text)
     ORDER BY COALESCE(NULLIF(ocid, ''), title), score DESC
   `).catch(() => ({ rows: [] as any[] }));
@@ -69,10 +69,9 @@ async function fetchNewTenders(): Promise<NewTender[]> {
 }
 
 // Active tenders whose deadline falls within the next 7 days (7/3/1 horizon).
-// Fix 3: Scoped to EP's LIVE BIDS ONLY — committed / drafting / submitting. Raw
-// discovery statuses (auto-discovered, qualifying, researching, reviewing) are
-// deliberately excluded: the deadlines panel is a "what am I on the hook to submit"
-// list, not the market. Empty is the correct state when nothing is committed.
+// Fix 3: Includes ALL active tenders being evaluated (auto-discovered through drafting).
+// This shows the user what they're tracking, not just what they've committed to.
+// Empty is correct only when nothing is being tracked.
 async function fetchDeadlinesThisWeek(): Promise<DeadlineTender[]> {
   const r = await db.execute(sql`
     SELECT DISTINCT ON (COALESCE(NULLIF(ocid, ''), title)) title, buyer, deadline, source_url, value_text,
@@ -81,7 +80,7 @@ async function fetchDeadlinesThisWeek(): Promise<DeadlineTender[]> {
     WHERE deadline IS NOT NULL AND deadline != ''
       AND deadline::date >= CURRENT_DATE
       AND deadline::date <= CURRENT_DATE + INTERVAL '7 days'
-      AND LOWER(status) IN ('committed','drafting','submitting')
+      AND LOWER(status) NOT IN ('won','lost','closed','no_bid','declined','awarded_to_other','awarded','cancelled','withdrawn','unsuccessful','expired','submitted')
     ORDER BY COALESCE(NULLIF(ocid, ''), title), deadline::date ASC
   `).catch(() => ({ rows: [] as any[] }));
   return (r.rows as any[]).map(row => ({

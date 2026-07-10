@@ -21,6 +21,13 @@ import LearningEngine from "@/pages/learning-engine";
 import SiteBuilder from "@/pages/site-builder";
 import Commercial from "@/pages/commercial";
 import Sponsors from "@/pages/sponsors";
+import PartnershipPipeline from "@/pages/partnership-pipeline";
+import GuestIntelligence from "@/pages/guest-intelligence";
+import OrganisationDatabase from "@/pages/organisation-database";
+import PartnerDatabase from "@/pages/partner-database";
+import IntelligenceDashboard from "@/pages/intelligence-dashboard";
+import OperationsTimeline from "@/pages/operations-timeline";
+import GrowthCampaigns from "@/pages/growth-campaigns";
 import PrPipeline from "@/pages/pr-pipeline";
 import Referrals from "@/pages/referrals";
 import CorporateTargets from "@/pages/corporate-targets";
@@ -89,6 +96,13 @@ function Router() {
       <Route path="/site-builder" component={SiteBuilder} />
       <Route path="/commercial" component={Commercial} />
       <Route path="/sponsors" component={Sponsors} />
+      <Route path="/partnership-pipeline" component={PartnershipPipeline} />
+      <Route path="/guest-intelligence" component={GuestIntelligence} />
+      <Route path="/organisation-database" component={OrganisationDatabase} />
+      <Route path="/partner-database" component={PartnerDatabase} />
+      <Route path="/intelligence-dashboard" component={IntelligenceDashboard} />
+      <Route path="/operations-timeline" component={OperationsTimeline} />
+      <Route path="/growth-campaigns" component={GrowthCampaigns} />
       <Route path="/pr-pipeline" component={PrPipeline} />
       <Route path="/referrals" component={Referrals} />
       <Route path="/corporate-targets" component={CorporateTargets} />

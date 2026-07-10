@@ -21,12 +21,21 @@ async function bootstrapCampaignTables() {
         email_tone VARCHAR(50) DEFAULT 'professional',
         approval_rule VARCHAR(50) DEFAULT 'manual',
         status VARCHAR(30) DEFAULT 'active',
+        campaign_type VARCHAR(50),
+        partner_type VARCHAR(50),
+        source_database VARCHAR(50),
+        source_filter JSONB,
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP DEFAULT NOW()
       )
     `);
     await db.execute(sql`ALTER TABLE company_prospects ADD COLUMN IF NOT EXISTS campaign_id INTEGER REFERENCES ep_prospect_campaigns(id) ON DELETE SET NULL`);
     await db.execute(sql`ALTER TABLE pending_outreach_emails ADD COLUMN IF NOT EXISTS campaign_id INTEGER REFERENCES ep_prospect_campaigns(id) ON DELETE SET NULL`);
+    // Add new columns if they don't exist
+    await db.execute(sql`ALTER TABLE ep_prospect_campaigns ADD COLUMN IF NOT EXISTS campaign_type VARCHAR(50)`);
+    await db.execute(sql`ALTER TABLE ep_prospect_campaigns ADD COLUMN IF NOT EXISTS partner_type VARCHAR(50)`);
+    await db.execute(sql`ALTER TABLE ep_prospect_campaigns ADD COLUMN IF NOT EXISTS source_database VARCHAR(50)`);
+    await db.execute(sql`ALTER TABLE ep_prospect_campaigns ADD COLUMN IF NOT EXISTS source_filter JSONB`);
     console.log("[CampaignRoutes] Tables bootstrapped ✓");
   } catch (err: any) {
     console.error("[CampaignRoutes] Bootstrap error:", err.message);

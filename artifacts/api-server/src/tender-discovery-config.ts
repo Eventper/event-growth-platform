@@ -124,16 +124,59 @@ export const GB_NATURAL_FIT_LOCALITIES: string[] = [
 // strategic theme. This is what separates "FCDO UK-Africa programme" from "tents
 // for the council Events Department": both may mention "event(s)", but only the
 // former is EP's market. Matched case-insensitively against buyer + title + desc.
+// 
+// Fix 7 (2026-07-10): Expanded STRATEGIC_BUYERS to include universities, NHS,
+// councils, and other sectors where EP delivers event/programme services legitimately.
+// This reduces false negatives (good tenders being filtered out). Combined with the
+// new high-confidence override (score >= 60 needs no anchor), this lets EP see more
+// opportunities without significantly increasing false positives (tenders with good scores
+// are generally worth a look).
 export const STRATEGIC_BUYERS: string[] = [
+  // International development & multilateral
   "fcdo", "foreign commonwealth", "foreign, commonwealth", "british council",
   "commonwealth secretariat", "united nations", "un capital", "uncdf", "undp",
   "unicef", "unhcr", "iom", "international organisation for migration",
   "international organization for migration", "world bank", "african development",
   "afdb", "giz", "ecowas", "palladium", "chemonics", "dai global", "mott macdonald",
-  "crown agents", "adam smith international", "dcms", "department for culture",
-  "cabinet office", "defra", "cefas", "ukhsa", "uk health security",
-  "greater london authority", "mayor of london", "gla ",
-  "ghana ministry", "nigeria ministry",
+  "crown agents", "adam smith international",
+  
+  // UK government
+  "dcms", "department for culture", "cabinet office", "defra", "cefas", 
+  "ukhsa", "uk health security", "home office", "ministry of justice",
+  "dept for education", "dfe", "department for education", "civil service",
+  
+  // London-specific
+  "greater london authority", "mayor of london", "gla", "london council",
+  
+  // Other countries (Event Perfekt's active footprint)
+  "ghana ministry", "nigeria ministry", "kenyan", "uganda", "mozambique",
+  
+  // Universities & education (Fix 7: EP does international recruitment, graduation events)
+  "university", "universities", "college", "university of london",
+  "london school", "oxford", "cambridge", "university trust",
+  "higher education",
+  
+  // NHS & health (Fix 7: EP has health stakeholder engagement capability)
+  "nhs", "national health service", "health service", "hospital", "trust board",
+  "health delivery", "public health",
+  
+  // Local & regional (Fix 7: Legitimate events/engagement market)
+  "local authority", "council", "local council", "municipal", "authority",
+  "combined authority", "regional development",
+  
+  // Emergency & security (Fix 7: EP has safeguarding/training event capability)
+  "police", "police service", "fire service", "ambulance service", "emergency",
+  
+  // Third sector (Fix 7: EP works with charities on events & programmes)
+  "charity", "not-for-profit", "nfp", "foundation", "charitable",
+  "voluntary sector", "vcse", "social enterprise",
+  
+  // Cultural & heritage (Fix 7: EP does venue styling & event curation)
+  "cultural", "heritage", "arts council", "museums", "gallery", "archive",
+  "english heritage", "national trust",
+  
+  // Sport (Fix 7: EP event delivery relevant to sports bodies)
+  "sport england", "uk sport", "sports council",
 ];
 export const STRATEGIC_THEMES: string[] = [
   "africa", "nigeria", "ghana", "kenya", "senegal", "mozambique", "zambia",

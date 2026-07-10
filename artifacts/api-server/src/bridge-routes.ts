@@ -249,7 +249,13 @@ async function sendBridgeWeeklyDigest() {
   </div>
 </div>`;
 
-    await emailService.sendEmail("adminuk@eventperfekt.com", `Bridge Weekly Digest — ${now.toLocaleDateString("en-GB")}`, html);
+    const BRIDGE_DIGEST_ENABLED = process.env.BRIDGE_DIGEST_ENABLED !== "false";  // Default ON
+    const BRIDGE_DIGEST_EMAIL = process.env.BRIDGE_DIGEST_EMAIL || "adminuk@eventperfekt.com";
+    
+    if (BRIDGE_DIGEST_ENABLED) {
+      await emailService.sendEmail(BRIDGE_DIGEST_EMAIL, `Bridge Weekly Digest — ${now.toLocaleDateString("en-GB")}`, html);
+      console.log(`[Bridge] Weekly digest sent to ${BRIDGE_DIGEST_EMAIL}`);
+    }
     console.log("[Bridge] Weekly digest sent");
   } catch (err: any) {
     console.error("[Bridge] Weekly digest error:", err.message);

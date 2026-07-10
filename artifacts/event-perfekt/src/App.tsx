@@ -24,6 +24,7 @@ const EventChecklist = lazy(() => import("@/pages/event-checklist"));
 const VendorManagement = lazy(() => import("@/pages/vendor-management"));
 const VendorMeetingManagement = lazy(() => import("@/pages/vendor-meeting-management"));
 const AboutPage = lazy(() => import("@/pages/about"));
+const PlatformPage = lazy(() => import("@/pages/platform"));
 const SubmissionSuccess = lazy(() => import("@/pages/submission-success"));
 const ContractManagement = lazy(() => import("@/pages/contract-management"));
 const ClientContractSigning = lazy(() => import("@/pages/client-contract-signing"));
@@ -258,6 +259,7 @@ function Router() {
         </Route>
         <Route path="/home" component={HeroPage} />
         <Route path="/about" component={AboutPage} />
+        <Route path="/platform" component={PlatformPage} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="/privacy" component={PrivacyPolicy} />
         <Route path="/terms-of-service" component={TermsOfService} />

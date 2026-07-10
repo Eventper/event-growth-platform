@@ -4,6 +4,10 @@
  * 07:00 UK time — runs all active campaigns: discover → verify → dedup → draft → queue
  * 09:00 UK time — auto-sends emails for campaigns with approval_rule = 'auto'
  * 18:00 UK time — sends daily summary to info@eventperfekt.com
+ *
+ * Email Configuration (2026-07-10 FIX):
+ * Now configurable via environment variables to prevent flooding.
+ * Set in .env to route different email types to different recipients.
  */
 
 import { db } from "./db";
@@ -13,7 +17,18 @@ import { draftOutreachEmail } from "./outreach-routes";
 import { addSuppression, isSuppressed } from "./suppression";
 import { emailService } from "./emailService";
 
-const NOTIFY_EMAIL = "info@eventperfekt.com";
+// ── Email Recipients (configurable per type to prevent flooding) ──────────────
+// Set these in .env to route different notifications to different team members
+const CAMPAIGN_APPROVAL_EMAIL = process.env.CAMPAIGN_APPROVAL_EMAIL || "info@eventperfekt.com";  // Campaign approvals
+const DAILY_SUMMARY_EMAIL = process.env.DAILY_SUMMARY_EMAIL || "info@eventperfekt.com";        // Daily intelligence summary
+const MORNING_BRIEF_EMAIL = process.env.MORNING_BRIEF_EMAIL || "info@eventperfekt.com";        // Good morning prospects
+const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || "info@eventperfekt.com";                     // Legacy fallback
+
+// ── Feature Flags (enable/disable specific email types) ──────────────────────
+const DAILY_SUMMARY_ENABLED = process.env.DAILY_SUMMARY_ENABLED !== "false";     // Default ON
+const MORNING_BRIEF_ENABLED = process.env.MORNING_BRIEF_ENABLED !== "false";     // Default ON
+const CAMPAIGN_AUTO_SEND = process.env.CAMPAIGN_AUTO_SEND === "true";            // Default OFF (manual approval)
+const CAMPAIGN_APPROVAL_NOTIFY = process.env.CAMPAIGN_APPROVAL_NOTIFY !== "false"; // Default ON
 
 function ukNow(): Date {
   return new Date(new Date().toLocaleString("en-GB", { timeZone: "Europe/London" }));
@@ -263,8 +278,17 @@ Make it specific to their sector and role. Do not mention you are AI.`,
 }
 
 // ─── Step 5+6: Auto-send for campaigns with approval_rule = 'auto' ────────
+// Note: Only executes if CAMPAIGN_AUTO_SEND env var is true. By default, campaigns
+// require manual approval (CAMPAIGN_AUTO_SEND=false) to prevent email flooding.
+// Set CAMPAIGN_AUTO_SEND=true only after you've configured email recipients.
 export async function autoSendPendingEmails(): Promise<{ sent: number; failed: number }> {
   let sent = 0, failed = 0;
+  
+  if (!CAMPAIGN_AUTO_SEND) {
+    console.log("[CampaignScheduler] Auto-send disabled (CAMPAIGN_AUTO_SEND=false). Campaigns require manual approval.");
+    return { sent: 0, failed: 0 };
+  }
+  
   try {
     const pending = await db.execute(sql`
       SELECT poe.*, epc.approval_rule
@@ -323,8 +347,10 @@ export async function sendPositiveReplyNotification(reply: any, prospectName: st
           </a>
         </div>
       </div>`;
-    await emailService.sendEmail(NOTIFY_EMAIL, subject, html);
-    console.log(`[CampaignScheduler] Positive reply notification sent for ${companyName}`);
+    if (CAMPAIGN_APPROVAL_NOTIFY) {
+      await emailService.sendEmail(CAMPAIGN_APPROVAL_EMAIL, subject, html);
+      console.log(`[CampaignScheduler] Positive reply notification sent to ${CAMPAIGN_APPROVAL_EMAIL}`);
+    }
   } catch (err: any) {
     console.error("[CampaignScheduler] Positive reply notification error:", err.message);
   }
@@ -416,8 +442,10 @@ async function sendDailySummary(): Promise<void> {
         </div>
       </div>`;
 
-    await emailService.sendEmail(NOTIFY_EMAIL, `EP Prospect Intelligence — Daily Summary ${new Date().toLocaleDateString("en-GB")}`, html);
-    console.log("[CampaignScheduler] Daily summary sent");
+    if (DAILY_SUMMARY_ENABLED) {
+      await emailService.sendEmail(DAILY_SUMMARY_EMAIL, `EP Prospect Intelligence — Daily Summary ${new Date().toLocaleDateString("en-GB")}`, html);
+      console.log(`[CampaignScheduler] Daily summary sent to ${DAILY_SUMMARY_EMAIL}`);
+    }
   } catch (err: any) {
     console.error("[CampaignScheduler] Daily summary error:", err.message);
   }
@@ -514,7 +542,10 @@ async function sendMorningBriefingEmail(totalProspects: number, totalDrafted: nu
           </div>
         </div>
       </div>`;
-    await emailService.sendEmail(NOTIFY_EMAIL, `Good morning — ${totalProspects} new prospects found today`, html);
+    if (MORNING_BRIEF_ENABLED) {
+      await emailService.sendEmail(MORNING_BRIEF_EMAIL, `Good morning — ${totalProspects} new prospects found today`, html);
+      console.log(`[CampaignScheduler] Morning brief sent to ${MORNING_BRIEF_EMAIL}`);
+    }
   } catch (err: any) {
     console.error("[CampaignScheduler] Morning briefing error:", err.message);
   }

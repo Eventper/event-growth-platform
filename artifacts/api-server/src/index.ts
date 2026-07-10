@@ -293,6 +293,7 @@ async function startServer() {
     const { startGrowthReplyPoller } = await import("./growth-reply-poller");
     const { startCampaignScheduler } = await import("./campaign-scheduler");
     const { registerCampaignRoutes } = await import("./campaign-routes");
+    const { registerGrowthCampaignRoutes } = await import("./growth-campaign-routes");
     const { registerOutreachRoutes } = await import("./outreach-routes");
     const { startTenderSweeper } = await import("./tender-sweeper");
     const { startDeadlineMailer } = await import("./tender-deadline-mailer");
@@ -334,6 +335,7 @@ async function startServer() {
       startGrowthSequenceExecutor();
       startGrowthReplyPoller();
       registerCampaignRoutes(app, authenticateToken);
+      registerGrowthCampaignRoutes(app, authenticateToken);
       registerOutreachRoutes(app, authenticateToken);
       startCampaignScheduler();
       startTenderSweeper();
@@ -506,6 +508,8 @@ async function startServer() {
       const { registerAiCommunicationsRoutes } = await import("./ai-communications-engine");
       registerAiCommunicationsRoutes(app);
       registerGrowthPlatformRoutes(app);
+      const intelligenceRouter = (await import("./growth-intelligence-db")).default;
+      app.use("/api", intelligenceRouter);
       app.use("/api", elizabethWorkflowRouter);
       app.use("/api", outreachAnalyticsRouter);
       app.use("/api", ukTendersRouter);

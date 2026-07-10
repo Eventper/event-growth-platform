@@ -470,10 +470,25 @@ export function evaluateRelevance(t: TenderText & { country?: string | null; reg
   // GB place-based locality flag (Fix 5b): a soft warning, never auto-excludes.
   const loc = checkLocality(t);
 
-  // "High-value only" gate: must clear the lane threshold AND carry a strategic
-  // anchor (recognised buyer or strategic theme). Drops generic local-council /
-  // operational notices that score on a bare "event(s)" hit but aren't EP's market.
-  const passes = !excluded && best.score >= RELEVANCE_THRESHOLD && hasStrategicAnchor(t);
+  // "High-value only" gate (Fix 7: improved to allow high-confidence matches).
+  // Tenders must either (A) carry a strategic anchor AND clear the score threshold,
+  // or (B) score VERY HIGH (60+) even without an anchor. This prevents losing good
+  // opportunities that don't mention "Africa" or "FCDO" but are clearly relevant
+  // (e.g., "University Conference Services" that scores 65 on "conference management").
+  // Threshold raised from 30 to 60 for anchor-free path ensures high precision.
+  const hasAnchor = hasStrategicAnchor(t);
+  const normalPath = hasAnchor && best.score >= RELEVANCE_THRESHOLD;     // Has anchor + score >= 30
+  const highConfidencePath = best.score >= 60;                           // Very confident, no anchor needed
+  const passes = !excluded && (normalPath || highConfidencePath);
+  
+  // Debug logging: Show gating decisions for high-scoring tenders
+  if (!excluded && best.score >= 40 && !passes) {
+    console.debug(
+      `[TenderGate] FILTERED: "${(t.title || "").slice(0, 60)}" | ` +
+      `Score: ${best.score} | Lane: ${best.key} | Has anchor: ${hasAnchor} | ` +
+      `Buyer: "${(t.buyer || "").slice(0, 40)}"`
+    );
+  }
   return {
     passes,
     excluded,

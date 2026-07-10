@@ -20377,6 +20377,9 @@ ${enquiryList}
   const { registerCampaignRoutes } = await import("../campaign-routes");
   registerCampaignRoutes(app, authenticateToken);
 
+  const { registerGrowthCampaignRoutes } = await import("../growth-campaign-routes");
+  registerGrowthCampaignRoutes(app, authenticateToken);
+
   app.post("/api/tender-company-profile/verify", authenticateTenderUser, async (req: any, res) => {
     try {
       const { password } = req.body;

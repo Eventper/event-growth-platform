@@ -5,6 +5,7 @@ import { FullScreenModal } from "@/components/ui/full-screen-modal";
 import DiscoveryTenders from "@/components/tender/DiscoveryTenders";
 import BidWriter from "@/components/tender/BidWriter";
 import ElizabethTenderChat from "@/components/tender/ElizabethTenderChat";
+import SearchFinder from "@/components/tender/SearchFinder";
 import {
   BLUE, PURPLE, BG, CARD_BG, BORDER, GOLD, btn, card, label, input,
   fmtDate, fmtMoney, TENDER_STATUSES, LANE_THRESHOLD, LANE_CHIPS, laneScoreOf,

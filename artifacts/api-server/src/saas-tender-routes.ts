@@ -51,7 +51,8 @@ function resolveAiProvider(): { key: string | undefined; baseURL: string; model:
   return { key, baseURL, model: process.env.TENDER_AI_MODEL || "gpt-4o", headers: {} };
 }
 
-// ─── EP Agent AI Helper ───────────────────────────────────────────────────────
+// ─── EP Agent AI Helper with Failover ────────────────────────────────────────
+// Try primary provider (OpenRouter), fallback to OpenAI if needed (Fix 8: 2026-07-10)
 async function claudeAI(systemPrompt: string, userPrompt: string, maxTokens = 4000): Promise<string> {
   // Enforce the org's monthly AI spend cap before spending anything (no-op if no
   // org context or no cap set). Throws a 402-coded error so over-budget generations
@@ -66,34 +67,76 @@ async function claudeAI(systemPrompt: string, userPrompt: string, maxTokens = 40
       throw err;
     }
   }
-  const ai = resolveAiProvider();
-  if (!ai.key) return "";
-  const response = await fetch(`${ai.baseURL}/chat/completions`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${ai.key}`, ...ai.headers },
-    body: JSON.stringify({
-      model: ai.model,
-      max_tokens: maxTokens,
-      messages: [
-        ...(systemPrompt ? [{ role: "system", content: systemPrompt }] : []),
-        { role: "user", content: userPrompt },
-      ],
-    }),
-  });
-  const data = await response.json() as any;
-  if (data.error) throw new Error(data.error.message || "AI API error");
-  // Record spend for the cost dashboard + cap accounting (best-effort; never throws).
-  if (aiCtx?.orgId != null && data.usage) {
-    const cost = (data.usage.prompt_tokens || 0) / 1_000_000 * GPT4O_USD_PER_1M_IN
-      + (data.usage.completion_tokens || 0) / 1_000_000 * GPT4O_USD_PER_1M_OUT;
-    await recordAiUsage({ orgId: aiCtx.orgId, feature: aiCtx.feature || "tender_ai", provider: ai.baseURL.includes("openrouter") ? "openrouter" : "openai", model: ai.model }, data.usage, cost);
+  
+  // Try primary provider first, fallback to secondary if it fails
+  const providers = [resolveAiProvider()];
+  const orKey = process.env.OPENROUTER_API_KEY || process.env.Open_router_AI;
+  const oaiKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
+  
+  // If primary is OpenRouter, add OpenAI as fallback. If primary is OpenAI, no fallback needed.
+  if (orKey && !process.env.OPENROUTER_API_KEY_DISABLED) {
+    if (oaiKey) {
+      providers.push({
+        key: oaiKey,
+        baseURL: (process.env.AI_INTEGRATIONS_OPENAI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, ""),
+        model: "gpt-4o",
+        headers: {},
+      });
+    }
   }
-  return data.choices?.[0]?.message?.content || "";
+  
+  let lastError: Error | null = null;
+  for (let i = 0; i < providers.length; i++) {
+    const ai = providers[i];
+    if (!ai.key) continue;
+    
+    try {
+      const response = await fetch(`${ai.baseURL}/chat/completions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${ai.key}`, ...ai.headers },
+        body: JSON.stringify({
+          model: ai.model,
+          max_tokens: maxTokens,
+          messages: [
+            ...(systemPrompt ? [{ role: "system", content: systemPrompt }] : []),
+            { role: "user", content: userPrompt },
+          ],
+        }),
+      });
+      const data = await response.json() as any;
+      if (data.error) {
+        lastError = new Error(data.error.message || "AI API error");
+        console.warn(`[AI] Provider ${i} (${ai.baseURL.includes("openrouter") ? "OpenRouter" : "OpenAI"}) failed:`, lastError.message);
+        continue; // Try next provider
+      }
+      
+      // Log successful generation with provider info for monitoring
+      const providerName = ai.baseURL.includes("openrouter") ? "openrouter" : "openai";
+      console.log(`[AI] Generated via ${providerName} (${i === 0 ? "primary" : "fallback"}): ${data.usage?.completion_tokens || 0} tokens`);
+      
+      // Record spend for the cost dashboard + cap accounting (best-effort; never throws).
+      if (aiCtx?.orgId != null && data.usage) {
+        const cost = (data.usage.prompt_tokens || 0) / 1_000_000 * GPT4O_USD_PER_1M_IN
+          + (data.usage.completion_tokens || 0) / 1_000_000 * GPT4O_USD_PER_1M_OUT;
+        await recordAiUsage({ orgId: aiCtx.orgId, feature: aiCtx.feature || "tender_ai", provider: providerName, model: ai.model }, data.usage, cost);
+      }
+      return data.choices?.[0]?.message?.content || "";
+    } catch (e) {
+      lastError = e instanceof Error ? e : new Error(String(e));
+      console.warn(`[AI] Provider ${i} request failed:`, lastError.message);
+      if (i < providers.length - 1) {
+        console.log(`[AI] Trying fallback provider...`);
+      }
+    }
+  }
+  
+  // All providers failed
+  throw lastError || new Error("No AI providers available");
 }
 
-// ─── Multi-turn chat helper (same model/cap/accounting as claudeAI) ──────────
+// ─── Multi-turn chat helper (same model/cap/accounting as claudeAI + failover) ──
 // Takes a full messages array so Elizabeth can hold a real back-and-forth
-// conversation with memory of the thread.
+// conversation with memory of the thread. Includes AI provider failover (Fix 8).
 async function claudeChat(messages: { role: string; content: string }[], maxTokens = 1200): Promise<string> {
   const aiCtx = aiOrgContext.getStore();
   if (aiCtx?.orgId != null) {
@@ -103,21 +146,58 @@ async function claudeChat(messages: { role: string; content: string }[], maxToke
       err.code = "AI_BUDGET_EXCEEDED"; err.status = 402; throw err;
     }
   }
-  const ai = resolveAiProvider();
-  if (!ai.key) return "";
-  const response = await fetch(`${ai.baseURL}/chat/completions`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${ai.key}`, ...ai.headers },
-    body: JSON.stringify({ model: ai.model, max_tokens: maxTokens, messages }),
-  });
-  const data = await response.json() as any;
-  if (data.error) throw new Error(data.error.message || "AI API error");
-  if (aiCtx?.orgId != null && data.usage) {
-    const cost = (data.usage.prompt_tokens || 0) / 1_000_000 * GPT4O_USD_PER_1M_IN
-      + (data.usage.completion_tokens || 0) / 1_000_000 * GPT4O_USD_PER_1M_OUT;
-    await recordAiUsage({ orgId: aiCtx.orgId, feature: aiCtx.feature || "elizabeth_chat", provider: ai.baseURL.includes("openrouter") ? "openrouter" : "openai", model: ai.model }, data.usage, cost);
+  
+  // Try primary provider first, fallback to secondary if it fails
+  const providers = [resolveAiProvider()];
+  const orKey = process.env.OPENROUTER_API_KEY || process.env.Open_router_AI;
+  const oaiKey = process.env.AI_INTEGRATIONS_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
+  
+  if (orKey && !process.env.OPENROUTER_API_KEY_DISABLED) {
+    if (oaiKey) {
+      providers.push({
+        key: oaiKey,
+        baseURL: (process.env.AI_INTEGRATIONS_OPENAI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, ""),
+        model: "gpt-4o",
+        headers: {},
+      });
+    }
   }
-  return data.choices?.[0]?.message?.content || "";
+  
+  let lastError: Error | null = null;
+  for (let i = 0; i < providers.length; i++) {
+    const ai = providers[i];
+    if (!ai.key) continue;
+    
+    try {
+      const response = await fetch(`${ai.baseURL}/chat/completions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${ai.key}`, ...ai.headers },
+        body: JSON.stringify({ model: ai.model, max_tokens: maxTokens, messages }),
+      });
+      const data = await response.json() as any;
+      if (data.error) {
+        lastError = new Error(data.error.message || "AI API error");
+        console.warn(`[Elizabeth] Provider ${i} failed:`, lastError.message);
+        continue;
+      }
+      
+      const providerName = ai.baseURL.includes("openrouter") ? "openrouter" : "openai";
+      console.log(`[Elizabeth] Chat via ${providerName} (${i === 0 ? "primary" : "fallback"}): ${data.usage?.completion_tokens || 0} tokens`);
+      
+      if (aiCtx?.orgId != null && data.usage) {
+        const cost = (data.usage.prompt_tokens || 0) / 1_000_000 * GPT4O_USD_PER_1M_IN
+          + (data.usage.completion_tokens || 0) / 1_000_000 * GPT4O_USD_PER_1M_OUT;
+        await recordAiUsage({ orgId: aiCtx.orgId, feature: aiCtx.feature || "elizabeth_chat", provider: providerName, model: ai.model }, data.usage, cost);
+      }
+      return data.choices?.[0]?.message?.content || "";
+    } catch (e) {
+      lastError = e instanceof Error ? e : new Error(String(e));
+      console.warn(`[Elizabeth] Provider ${i} request failed:`, lastError.message);
+      if (i < providers.length - 1) console.log(`[Elizabeth] Trying fallback provider...`);
+    }
+  }
+  
+  throw lastError || new Error("No AI providers available");
 }
 
 // Live Contracts Finder search (free OCDS API) for Elizabeth's "find more" intent.
@@ -5618,6 +5698,334 @@ ${(awaitingReview.rows as any[]).length > 0 ? `<ul style="margin:0 0 16px 20px;p
   // pipeline stats) is in one email from tender-deadline-mailer.ts.
   // setInterval(runScheduledMorningBriefing, 60 * 1000);
   // console.log("[EP Agent] Morning briefing scheduler started — fires daily at 07:00 UK time");
+
+  // ─── TENDER FINDER CONFIGURATION & SEARCH (Phase 2 SaaS UI) ──────────────────
+
+  // Initialize search config table if not exists
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS saas_tender_search_config (
+      id SERIAL PRIMARY KEY,
+      org_id INTEGER NOT NULL,
+      country VARCHAR(2) DEFAULT 'GB',
+      keywords TEXT[] DEFAULT ARRAY[]::TEXT[],
+      categories TEXT[] DEFAULT ARRAY[]::TEXT[],
+      regions TEXT[] DEFAULT ARRAY[]::TEXT[],
+      sme_suitable BOOLEAN DEFAULT FALSE,
+      procedure_types TEXT[] DEFAULT ARRAY[]::TEXT[],
+      date_from DATE,
+      date_to DATE,
+      digest_email VARCHAR(255),
+      created_at TIMESTAMP DEFAULT NOW(),
+      updated_at TIMESTAMP DEFAULT NOW(),
+      UNIQUE(org_id, country)
+    )
+  `).catch(() => {});
+
+  // ──────────────────────────────────────────────────────────────────────────────
+  // POST /api/saas-tender/config — Save or update search configuration
+  app.post("/api/saas-tender/config", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const { country = "GB", keywords = [], categories = [], regions = [], sme_suitable = false, procedure_types = [], date_from, date_to, digest_email } = req.body;
+      const orgId = req.saasUser.orgId;
+
+      const existing = await db.execute(sql`SELECT id FROM saas_tender_search_config WHERE org_id = ${orgId} AND country = ${country}`);
+      
+      if (existing.rows.length > 0) {
+        const result = await db.execute(sql`
+          UPDATE saas_tender_search_config 
+          SET keywords = ${keywords}::TEXT[], 
+              categories = ${categories}::TEXT[], 
+              regions = ${regions}::TEXT[],
+              sme_suitable = ${sme_suitable},
+              procedure_types = ${procedure_types}::TEXT[],
+              date_from = ${date_from || null},
+              date_to = ${date_to || null},
+              digest_email = ${digest_email || null},
+              updated_at = NOW()
+          WHERE org_id = ${orgId} AND country = ${country}
+          RETURNING *
+        `);
+        res.json(result.rows[0]);
+      } else {
+        const result = await db.execute(sql`
+          INSERT INTO saas_tender_search_config 
+          (org_id, country, keywords, categories, regions, sme_suitable, procedure_types, date_from, date_to, digest_email)
+          VALUES (${orgId}, ${country}, ${keywords}::TEXT[], ${categories}::TEXT[], ${regions}::TEXT[], ${sme_suitable}, ${procedure_types}::TEXT[], ${date_from || null}, ${date_to || null}, ${digest_email || null})
+          RETURNING *
+        `);
+        res.json(result.rows[0]);
+      }
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  // ──────────────────────────────────────────────────────────────────────────────
+  // GET /api/saas-tender/config — Get search configuration for org
+  app.get("/api/saas-tender/config", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const { country = "GB" } = req.query;
+      const orgId = req.saasUser.orgId;
+
+      let config = await db.execute(sql`SELECT * FROM saas_tender_search_config WHERE org_id = ${orgId} AND country = ${country}`);
+      
+      if (config.rows.length === 0) {
+        // Return pre-loaded defaults for this country
+        const defaults = country === "NG" ? {
+          country: "NG",
+          keywords: ["event management nigeria", "programme delivery africa", "conference management lagos", "government events nigeria", "international development west africa", "NGO events", "stakeholder engagement africa", "delegate management"],
+          categories: ["Professional Services", "Event Management", "Programme Management", "International Development", "Government Services"],
+          regions: ["Nigeria", "Ghana", "Senegal", "Gambia", "Kenya", "Uganda"],
+          digest_email: "admin@eventperfekt.com"
+        } : {
+          country: "GB",
+          keywords: ["programme delivery", "project management", "event management", "conference management", "Africa programme", "international development", "cross-border delivery", "stakeholder engagement", "PMO", "programme support", "government events", "workshop delivery", "delegate management", "logistics management"],
+          categories: ["Professional Services", "Programme Management", "Event Management", "Consultancy", "International Development", "Government Services", "Training and Development", "Logistics"],
+          regions: ["United Kingdom"],
+          digest_email: "adminuk@eventperfekt.com"
+        };
+        return res.json(defaults);
+      }
+      res.json(config.rows[0]);
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
+  // ──────────────────────────────────────────────────────────────────────────────
+  // Contracts Finder API Integration
+  async function searchContractsFinder(query: string, params: any = {}): Promise<any[]> {
+    try {
+      const { keywords = [], categories = [], regions = [], procedure_types = [], date_from, date_to, sme_only = false, page = 1, pageSize = 20 } = params;
+      const year = new Date().getFullYear();
+      
+      const q = keywords.length > 0 ? keywords.join(" ") : query;
+      const url = new URL("https://www.contractsfinder.service.gov.uk/Published/Notices/OCDS/Search");
+      url.searchParams.set("queryString", q);
+      url.searchParams.set("stage", "tender");
+      url.searchParams.set("output", "json");
+      url.searchParams.set("publishedFrom", date_from || `${year - 1}-01-01`);
+      url.searchParams.set("publishedTo", date_to || new Date().toISOString().split("T")[0]);
+      url.searchParams.set("size", pageSize.toString());
+      
+      const res = await fetch(url.toString(), { 
+        headers: { Accept: "application/json" },
+        signal: AbortSignal.timeout(15000)
+      });
+      
+      if (!res.ok) return [];
+      const data = await res.json() as any;
+      
+      const results: any[] = [];
+      const now = new Date();
+      
+      for (const r of (data?.releases || [])) {
+        const t = r.tender || {};
+        const dl = t.tenderPeriod?.endDate || "";
+        const status = (t.status || "").toLowerCase();
+        
+        // Filter closed tenders
+        if (["closed", "cancelled", "complete", "awarded", "unsuccessful", "withdrawn"].includes(status)) continue;
+        
+        // Filter by deadline
+        if (!dl || new Date(dl) <= now) continue;
+        
+        // Filter by procedure type if specified
+        if (procedure_types.length > 0 && !procedure_types.includes(t.procurementMethod || "")) continue;
+        
+        const title = (t.title || "").trim();
+        const desc = (t.description || "");
+        
+        // Apply relevance filter (same as sweeper)
+        const verdict = evaluateRelevance({ title, buyer: (r.buyer?.name) || "", description: desc });
+        if (verdict.excluded || !verdict.passes) continue;
+        
+        const hay = `${title} ${desc}`.toLowerCase();
+        if (EP_EXCLUDE_KEYWORDS.some(k => hay.includes(k))) continue;
+        
+        const idParts = (r.id || "").split("-");
+        const guid = idParts.length >= 5 ? idParts.slice(0, 5).join("-") : (r.id || "");
+        
+        results.push({
+          id: r.id,
+          title,
+          buyer: r.buyer?.name || "Unknown",
+          description: desc.substring(0, 200),
+          published_date: (r.date || "").split("T")[0],
+          deadline: dl.split("T")[0],
+          value: t.value?.amount || null,
+          value_estimated: (t.value?.amount ? true : false),
+          status: status,
+          source: "Contracts Finder",
+          url: guid ? `https://www.contractsfinder.service.gov.uk/Notice/${guid}` : "",
+          cpv_codes: t.classification?.map((c: any) => c.id) || [],
+          procedure_type: t.procurementMethod || "Open",
+          sme_suitable: false // CF doesn't always provide this
+        });
+      }
+      
+      return results;
+    } catch (err) {
+      console.error("Contracts Finder search error:", err);
+      return [];
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────────────────────────
+  // Find a Tender API Integration (requires CDP key)
+  async function searchFindATender(query: string, params: any = {}): Promise<any[]> {
+    try {
+      const { keywords = [], regions = [], date_from, date_to, page = 1, pageSize = 20 } = params;
+      const cdpKey = process.env.FIND_A_TENDER_CDP_KEY;
+      
+      if (!cdpKey) return [];
+      
+      const q = keywords.length > 0 ? keywords.join(" ") : query;
+      const url = new URL("https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages");
+      url.searchParams.set("q", q);
+      url.searchParams.set("published_from", date_from || new Date().toISOString().split("T")[0]);
+      if (date_to) url.searchParams.set("published_to", date_to);
+      url.searchParams.set("status", "active");
+      url.searchParams.set("page", page.toString());
+      url.searchParams.set("limit", pageSize.toString());
+      
+      const res = await fetch(url.toString(), {
+        headers: { "CDP-Api-Key": cdpKey, Accept: "application/json" },
+        signal: AbortSignal.timeout(15000)
+      });
+      
+      if (!res.ok) return [];
+      const data = await res.json() as any;
+      
+      const results: any[] = [];
+      const now = new Date();
+      
+      for (const pkg of (data?.releasePackages || [])) {
+        for (const r of (pkg.releases || [])) {
+          const t = r.tender || {};
+          const dl = t.tenderPeriod?.endDate || "";
+          
+          if (!dl || new Date(dl) <= now) continue;
+          
+          const title = (t.title || "").trim();
+          const desc = (t.description || "");
+          
+          const verdict = evaluateRelevance({ title, buyer: (r.buyer?.name) || "", description: desc });
+          if (verdict.excluded || !verdict.passes) continue;
+          
+          const hay = `${title} ${desc}`.toLowerCase();
+          if (EP_EXCLUDE_KEYWORDS.some(k => hay.includes(k))) continue;
+          
+          results.push({
+            id: r.ocid,
+            title,
+            buyer: r.buyer?.name || "Unknown",
+            description: desc.substring(0, 200),
+            published_date: (r.date || "").split("T")[0],
+            deadline: dl.split("T")[0],
+            value: t.value?.amount || null,
+            value_estimated: (t.value?.amount ? true : false),
+            status: "active",
+            source: "Find a Tender",
+            url: `https://www.find-tender.service.gov.uk/Notice/${r.ocid}`,
+            cpv_codes: t.classification?.map((c: any) => c.id) || [],
+            procedure_type: t.procurementMethod || "Open",
+            sme_suitable: t.smeParticipation === "yes"
+          });
+        }
+      }
+      
+      return results;
+    } catch (err) {
+      console.error("Find a Tender search error:", err);
+      return [];
+    }
+  }
+
+  // ──────────────────────────────────────────────────────────────────────────────
+  // POST /api/saas-tender/search — Combined tender search from multiple sources
+  app.post("/api/saas-tender/search", authenticateSaasUser, async (req: any, res) => {
+    try {
+      const { query = "", country = "GB", filters = {}, sort = "best_match", page = 1, pageSize = 20 } = req.body;
+      const orgId = req.saasUser.orgId;
+
+      // Get user's saved config to merge with request filters
+      const config = await db.execute(sql`SELECT * FROM saas_tender_search_config WHERE org_id = ${orgId} AND country = ${country}`).catch(() => ({ rows: [] }));
+      const savedConfig = config.rows[0] || {};
+      
+      const searchParams = {
+        keywords: filters.keywords || (savedConfig as any).keywords || [],
+        categories: filters.categories || (savedConfig as any).categories || [],
+        regions: filters.regions || (savedConfig as any).regions || [],
+        procedure_types: filters.procedure_types || (savedConfig as any).procedure_types || [],
+        sme_only: filters.sme_only || false,
+        date_from: filters.date_from || (savedConfig as any).date_from,
+        date_to: filters.date_to || (savedConfig as any).date_to,
+        page,
+        pageSize
+      };
+
+      // Search both sources in parallel
+      const [cfResults, fatResults] = await Promise.all([
+        country === "GB" ? searchContractsFinder(query, searchParams) : Promise.resolve([]),
+        country === "GB" ? searchFindATender(query, searchParams) : Promise.resolve([])
+      ]);
+
+      // Merge and deduplicate by title + buyer
+      const allResults = [...cfResults, ...fatResults];
+      const deduped = new Map();
+      for (const r of allResults) {
+        const key = `${(r.title || "").toLowerCase()}_${(r.buyer || "").toLowerCase()}`;
+        if (!deduped.has(key)) {
+          deduped.set(key, r);
+        }
+      }
+
+      let results = Array.from(deduped.values());
+
+      // Apply sorting
+      if (sort === "deadline_soonest") {
+        results.sort((a: any, b: any) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime());
+      } else if (sort === "newest") {
+        results.sort((a: any, b: any) => new Date(b.published_date).getTime() - new Date(a.published_date).getTime());
+      } else if (sort === "value_high") {
+        results.sort((a: any, b: any) => (b.value || 0) - (a.value || 0));
+      }
+
+      // Apply match score (using existing scoring logic)
+      const scored = results.map((r: any) => ({
+        ...r,
+        match_score: scoreEpBusinessFit({
+          title: r.title,
+          description: r.description,
+          buyer: r.buyer,
+          category: r.cpv_codes?.[0]
+        })
+      }));
+
+      // Stats
+      const stats = {
+        total: scored.length,
+        open: scored.filter((r: any) => r.status === "open" || r.status === "active").length,
+        closing_soon: scored.filter((r: any) => {
+          const days = (new Date(r.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24);
+          return days <= 7 && days > 0;
+        }).length,
+        average_value: scored.reduce((acc: number, r: any) => acc + (r.value || 0), 0) / scored.length || 0
+      };
+
+      res.json({
+        stats,
+        results: scored.slice((page - 1) * pageSize, page * pageSize),
+        page,
+        page_size: pageSize,
+        total_pages: Math.ceil(scored.length / pageSize),
+        total_results: scored.length
+      });
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  });
 }
 
 function fmtDateEmail(d: string | null): string {
