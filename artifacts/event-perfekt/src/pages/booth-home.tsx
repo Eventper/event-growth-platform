@@ -100,6 +100,14 @@ export default function BoothHome() {
 
   return (
     <div className="min-h-screen bg-white text-black font-[Poppins] overflow-x-hidden">
+      {/* ── SUMMER URGENCY BANNER ───────────────────────── */}
+      <div className="bg-gradient-to-r from-red-600 to-red-700 text-white py-3 px-4 text-center fixed top-[80px] left-0 right-0 z-40 shadow-lg">
+        <div className="max-w-6xl mx-auto flex items-center justify-center gap-2 text-sm font-bold">
+          <span>🔥 July & August Dates Filling Fast!</span>
+          <span className="text-xs opacity-90">Book by July 20th for 15% Off</span>
+        </div>
+      </div>
+
       {/* ── HEADER ───────────────────────── */}
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -168,8 +176,16 @@ export default function BoothHome() {
         )}
       </header>
 
+      {/* ── SUMMER URGENCY BANNER ───────────────────────── */}
+      <div className="bg-gradient-to-r from-red-600 to-red-700 text-white py-3 px-4 text-center fixed top-[80px] left-0 right-0 z-40 shadow-lg">
+        <div className="max-w-6xl mx-auto flex items-center justify-center gap-2 text-sm font-bold">
+          <span>🔥 July & August Dates Filling Fast!</span>
+          <span className="text-xs opacity-90">Book by July 20th for 15% Off</span>
+        </div>
+      </div>
+
       {/* ── HERO ───────────────────────── */}
-      <section className="relative w-full min-h-screen flex items-center justify-center bg-[#0A0A0A]">
+      <section className="relative w-full min-h-screen flex items-center justify-center bg-[#0A0A0A] pt-12">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-[#1a0a0e] to-[#0A0A0A]" />
         <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 text-center py-32">
           <motion.div
@@ -179,7 +195,7 @@ export default function BoothHome() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border mb-8"
             style={{ borderColor: `${GOLD}40`, color: GOLD }}
           >
-            <Sparkles size={14} /> Premium 360 Photo Booth Hire
+            <Sparkles size={14} /> Premium 360 Photo Booth Hire — Summer Special
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
@@ -187,35 +203,52 @@ export default function BoothHome() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-6"
           >
-            Capture Every Moment
+            Make This Summer
             <br />
-            <span style={{ color: GOLD }}>In 360°</span>
+            <span style={{ color: GOLD }}>Unforgettable</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-10 leading-relaxed"
+            className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-6 leading-relaxed"
           >
-            Weddings, birthdays, corporate events, and private parties across the UK and Nigeria.
-            Professional attendant, instant sharing, and unforgettable memories.
+            360° photo booth experiences that turn your summer party into the talk of the town. Weddings, birthdays, corporate events, and private celebrations.
           </motion.p>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.25 }}
+            className="flex items-center justify-center gap-4 mb-10 text-white/80 text-sm font-semibold"
+          >
+            <div>✓ 500+ Guests Captured</div>
+            <div>✓ 50+ Events Booked</div>
+            <div>✓ 4.9★ Rating</div>
+          </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            className="flex flex-col sm:flex-row gap-4 justify-center mb-4"
           >
             <Link href="/360-booth-hire-milton-keynes">
               <Button className="text-white font-bold px-8 py-6 rounded-full text-base shadow-lg hover:shadow-xl transition-all" style={{ background: BURGUNDY }}>
-                <Globe size={18} className="mr-2" /> UK Booth
+                🎉 Book UK Booth Now (15% Off)
               </Button>
             </Link>
             <Link href="/photo-booth-nigeria">
               <Button className="text-white font-bold px-8 py-6 rounded-full text-base shadow-lg hover:shadow-xl transition-all" style={{ background: BURGUNDY }}>
-                <Globe size={18} className="mr-2" /> Nigeria Booth
+                🎉 Book Nigeria Booth Now
               </Button>
             </Link>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-white/60 text-sm"
+          >
+            Limited summer dates available. Booking closes July 20th for early-bird discount.
           </motion.div>
 
           <motion.div
@@ -232,19 +265,62 @@ export default function BoothHome() {
         </div>
       </section>
 
+      {/* ── PORTFOLIO GALLERY ───────────────────────── */}
+      <section className="py-20 md:py-28 px-4 md:px-8 bg-black">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="text-sm font-bold tracking-widest uppercase mb-3" style={{ color: GOLD }}>See It In Action</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Summer Events Gallery</h2>
+            <p className="text-white/60 max-w-xl mx-auto">Real moments from real events. This is what happens when your guests discover the booth.</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { before: "👥 Shy guests arriving", after: "🎉 Laughing, posing, sharing on Instagram", emoji: "🎂" },
+              { before: "⏰ 'What do we do now?'", after: "📱 Everyone's at the booth getting their moment", emoji: "💍" },
+              { before: "😐 Formal party vibes", after: "🔥 Instant energy, laughter, connection", emoji: "🎊" },
+              { before: "📸 Regular photos only", after: "🎬 Cinematic 360° videos guests share all night", emoji: "🌟" },
+              { before: "😟 No entertainment plan", after: "✨ Booth becomes the highlight of the night", emoji: "🎭" },
+              { before: "📌 Generic party memory", after: "💎 Unforgettable moment everyone remembers", emoji: "🚀" },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                viewport={{ once: true }}
+                className="bg-gradient-to-b from-gray-900 to-gray-800 rounded-2xl p-8 border border-gray-700 hover:border-yellow-500/50 transition-all"
+              >
+                <div className="text-5xl mb-6">{item.emoji}</div>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-gray-400 text-xs uppercase font-bold tracking-wider mb-2">Before</p>
+                    <p className="text-white font-semibold">{item.before}</p>
+                  </div>
+                  <div className="h-px bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent"></div>
+                  <div>
+                    <p className="text-yellow-400 text-xs uppercase font-bold tracking-wider mb-2">After Booth</p>
+                    <p className="text-white font-semibold">{item.after}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── WHY 360 BOOTH ───────────────────────── */}
       <section id="how-it-works" className="py-20 md:py-28 px-4 md:px-8 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">Why Choose a 360 Booth?</h2>
-            <p className="text-gray-500 max-w-xl mx-auto">A 360 photo booth is the centrepiece of modern event entertainment. Your guests step on, strike a pose, and receive a stunning slow-motion video they share instantly.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">Why Summer Events Need a 360 Booth</h2>
+            <p className="text-gray-500 max-w-xl mx-auto">A 360 photo booth solves the biggest summer party problem: keeping guests entertained, connected, and creating content they actually want to share.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { icon: Camera, title: "Professional Setup", desc: "Sleek platform, ring light, and HD camera for cinema-quality output." },
-              { icon: Sparkles, title: "Instant Sharing", desc: "Guests receive their video via QR code within seconds — no waiting." },
-              { icon: Calendar, title: "Any Event", desc: "Weddings, birthdays, corporate launches, proms, graduations, and more." },
-              { icon: Star, title: "Custom Overlays", desc: "Branded frames, event hashtags, and personal messages on every video." },
+              { icon: Camera, title: "Cinema-Quality Video", desc: "Sleek platform, HD camera, professional ring light. Every guest looks amazing." },
+              { icon: Sparkles, title: "Instant Digital Sharing", desc: "QR code to their phone in seconds. They're already posting to Instagram before they leave." },
+              { icon: Gift, title: "Instant Party Energy", desc: "Transforms shy guests into performers. Creates natural icebreaker moments and genuine laughter." },
+              { icon: Star, title: "Custom Branding", desc: "Overlays with your event theme, hashtag, or inside jokes. Every video is unique to YOUR party." },
             ].map((f, i) => (
               <motion.div
                 key={i}
@@ -261,13 +337,53 @@ export default function BoothHome() {
         </div>
       </section>
 
+      {/* ── SOCIAL PROOF TESTIMONIALS ───────────────────────── */}
+      <section className="py-20 md:py-28 px-4 md:px-8 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="text-sm font-bold tracking-widest uppercase mb-3" style={{ color: BURGUNDY }}>Real Events, Real Smiles</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">What Our Guests Say</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {[
+              { name: "Sarah & James", event: "Wedding Reception", text: "The 360 booth was the highlight of our reception. Everyone was queuing for their moment, and the videos were absolutely stunning.", stars: 5 },
+              { name: "Michael O.", event: "Corporate Launch", text: "Guests are STILL sharing their videos on LinkedIn. Perfect icebreaker for a new product launch. Professional, fun, and memorable.", stars: 5 },
+              { name: "Zainab A.", event: "Birthday Party", text: "Our 20-year-olds actually put their phones down and had genuine fun at the booth. The videos are pure gold. Worth every penny!", stars: 5 },
+              { name: "David K.", event: "Summer BBQ", text: "Last-minute booking, and they delivered perfectly. Setup was slick, the attendant was friendly, and guests are still talking about it.", stars: 5 },
+              { name: "Priya M.", event: "Graduation Celebration", text: "Everyone got a personalized video. It became the keepsake from the night. Highly recommend for any milestone event.", stars: 5 },
+              { name: "Tom W.", event: "Anniversary Party", text: "Thought it would be gimmicky. It absolutely wasn't. Most natural, genuine entertainment I've ever hired for a home event.", stars: 5 },
+            ].map((testimonial, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-2xl p-8 border border-gray-200 hover:border-yellow-400 hover:shadow-lg transition-all"
+              >
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(testimonial.stars)].map((_, j) => (
+                    <Star key={j} size={16} fill={GOLD} style={{ color: GOLD }} />
+                  ))}
+                </div>
+                <p className="text-gray-700 font-medium mb-4 leading-relaxed italic">\"{ testimonial.text }\"</p>
+                <div>
+                  <p className="font-bold text-black text-sm">{testimonial.name}</p>
+                  <p className="text-gray-500 text-xs" style={{ color: BURGUNDY }}>{testimonial.event}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── REGION SELECTOR ───────────────────────── */}
       <section id="packages" className="py-20 md:py-28 px-4 md:px-8 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">Choose Your Region</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">Book Your Summer Booth</h2>
             <p className="text-gray-500 max-w-xl mx-auto">
-              We operate in the United Kingdom and Nigeria with local teams, local pricing, and the same premium experience.
+              🔥 Early-bird pricing ends July 20th. Limited dates available for July & August.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -275,8 +391,8 @@ export default function BoothHome() {
               flag="🇬🇧"
               title="United Kingdom"
               locations="Milton Keynes, Bedford, Northampton, Luton, London & surrounding areas"
-              priceFrom="£395"
-              priceNote="2-hour Quick Spin package. VAT and travel calculated separately."
+              priceFrom="£335"
+              priceNote="2-hour Quick Spin package. 15% summer discount. Book by July 20th."
               href="/360-booth-hire-milton-keynes"
               whatsapp="https://wa.me/447984331651"
             />
@@ -285,7 +401,7 @@ export default function BoothHome() {
               title="Nigeria"
               locations="Lagos, Abuja, Port Harcourt & major cities"
               priceFrom="₦395,000"
-              priceNote="2-hour Quick Spin package. All-inclusive with VAT."
+              priceNote="2-hour Quick Spin package. All-inclusive with VAT. Limited July-Aug dates."
               href="/photo-booth-nigeria"
               whatsapp="https://wa.me/2347042541213"
             />
