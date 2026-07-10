@@ -23000,13 +23000,7 @@ Return ONLY valid JSON with this structure:
 
       // ─── Email Routing Based on Inquiry Type ───
       const inquiryCategory = inquiryType || "general";
-      let routingEmail = "info@eventperfekt.com"; // Default
-
-      if (inquiryCategory === "booth-inquiry") {
-        routingEmail = "booth@eventperfekt.com"; // Booth team
-      } else if (inquiryCategory === "platform-inquiry") {
-        routingEmail = "platform@eventperfekt.com"; // Platform team
-      }
+      const routingEmail = "admin@eventperfekt.co.uk"; // All inquiries go here
 
       // ─── Auto-acknowledgement emails based on inquiry type ───
       if (inquiryCategory === "booth-inquiry") {
