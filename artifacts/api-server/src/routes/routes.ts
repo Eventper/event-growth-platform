@@ -22989,7 +22989,7 @@ Return ONLY valid JSON with this structure:
   // Contact Form Submission
   app.post("/api/contact", async (req: any, res) => {
     try {
-      const { name, email, company, phone, serviceType, message } = req.body;
+      const { name, email, company, phone, serviceType, inquiryType, message } = req.body;
 
       // Basic validation
       if (!name || !email || !message || !serviceType) {
@@ -22998,14 +22998,75 @@ Return ONLY valid JSON with this structure:
         });
       }
 
-      // ─── ONLY allowed auto-email: Booking Enquiry Acknowledgement ───
-      // No pricing, no invoice, no payment request — just simple thank you
-      if (serviceType === "360-booth-hire") {
+      // ─── Email Routing Based on Inquiry Type ───
+      const inquiryCategory = inquiryType || "general";
+      let routingEmail = "info@eventperfekt.com"; // Default
+
+      if (inquiryCategory === "booth-inquiry") {
+        routingEmail = "booth@eventperfekt.com"; // Booth team
+      } else if (inquiryCategory === "platform-inquiry") {
+        routingEmail = "platform@eventperfekt.com"; // Platform team
+      }
+
+      // ─── Auto-acknowledgement emails based on inquiry type ───
+      if (inquiryCategory === "booth-inquiry") {
         try {
-          const ackHtml = `
+          const boothAckHtml = `
             <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
               <div style="background:#330311;color:white;padding:24px;border-radius:8px 8px 0 0;text-align:center;">
-                <h1 style="margin:0;font-size:20px;">Thank You — We Have Received Your Booking Enquiry</h1>
+                <h1 style="margin:0;font-size:20px;">📸 Thank You For Your Booth Inquiry</h1>
+                <p style="margin:4px 0 0;opacity:0.8;font-size:13px;">Event Perfekt Global Ltd</p>
+              </div>
+              <div style="padding:24px;border:1px solid #eee;border-top:none;">
+                <p>Hi ${name},</p>
+                <p>Thank you for your interest in booking our 360 Photo Booth entertainment for your event.</p>
+                <p>We have received your enquiry and our booth team is currently reviewing your request.</p>
+                <p>We'll be in touch within 24 hours with pricing, availability, and next steps.</p>
+                <p style="margin-top:24px;padding:16px;background:#f0f0f0;border-left:4px solid #C9A84C;">
+                  <strong>🎯 What's Next?</strong><br/>
+                  Our team will confirm availability for your date and provide a custom quote based on your event type and location.
+                </p>
+                <p style="margin-top:24px;">Kind regards,<br/>The Event Perfekt Booth Team</p>
+                <p style="margin-top:24px;font-size:12px;color:#666;">Event Perfekt Global Ltd<br/>info@eventperfekt.com</p>
+              </div>
+            </div>`;
+          await sendEmail(email, "📸 We Received Your Booth Inquiry - Thank You!", boothAckHtml);
+          console.log(`✅ [BOOTH-ACK] Booth inquiry acknowledgement sent to ${email}`);
+        } catch (e: any) {
+          console.error("[BOOTH-ACK] Failed to send booth acknowledgement:", e.message);
+        }
+      } else if (inquiryCategory === "platform-inquiry") {
+        try {
+          const platformAckHtml = `
+            <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
+              <div style="background:#330311;color:white;padding:24px;border-radius:8px 8px 0 0;text-align:center;">
+                <h1 style="margin:0;font-size:20px;">🎯 Thank You For Your Platform Interest</h1>
+                <p style="margin:4px 0 0;opacity:0.8;font-size:13px;">The Human Behind The Title</p>
+              </div>
+              <div style="padding:24px;border:1px solid #eee;border-top:none;">
+                <p>Hi ${name},</p>
+                <p>Thank you for your interest in The Human Behind The Title platform and The Woman Who Leads The Room experience.</p>
+                <p>We have received your enquiry and our platform team is currently reviewing your request.</p>
+                <p>We'll be in touch within 24 hours with more information and details about available opportunities.</p>
+                <p style="margin-top:24px;padding:16px;background:#f0f0f0;border-left:4px solid #C9A84C;">
+                  <strong>🎯 What's Next?</strong><br/>
+                  Our team will provide details about upcoming events, corporate partnerships, or brand collaboration opportunities that match your interests.
+                </p>
+                <p style="margin-top:24px;">Kind regards,<br/>The Human Behind The Title Team</p>
+                <p style="margin-top:24px;font-size:12px;color:#666;">Event Perfekt Global Ltd<br/>info@eventperfekt.com</p>
+              </div>
+            </div>`;
+          await sendEmail(email, "🎯 We Received Your Platform Inquiry - Thank You!", platformAckHtml);
+          console.log(`✅ [PLATFORM-ACK] Platform inquiry acknowledgement sent to ${email}`);
+        } catch (e: any) {
+          console.error("[PLATFORM-ACK] Failed to send platform acknowledgement:", e.message);
+        }
+      } else {
+        try {
+          const genericAckHtml = `
+            <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;">
+              <div style="background:#330311;color:white;padding:24px;border-radius:8px 8px 0 0;text-align:center;">
+                <h1 style="margin:0;font-size:20px;">Thank You — We Have Received Your Inquiry</h1>
                 <p style="margin:4px 0 0;opacity:0.8;font-size:13px;">Event Perfekt Global Ltd</p>
               </div>
               <div style="padding:24px;border:1px solid #eee;border-top:none;">
@@ -23017,14 +23078,18 @@ Return ONLY valid JSON with this structure:
                 <p style="margin-top:24px;font-size:12px;color:#666;">20 Wenlock Road, London, N1 7PG<br/>info@eventperfekt.com</p>
               </div>
             </div>`;
-          await sendEmail(email, "Thank You — We Have Received Your Booking Enquiry", ackHtml);
-          console.log(`✅ [AUTO-ACK] Enquiry acknowledgement sent to ${email} for 360 Booth Hire`);
+          await sendEmail(email, "Thank You — We Have Received Your Inquiry", genericAckHtml);
+          console.log(`✅ [GENERAL-ACK] General inquiry acknowledgement sent to ${email}`);
         } catch (e: any) {
-          console.error("[AUTO-ACK] Failed to send enquiry acknowledgement:", e.message);
+          console.error("[GENERAL-ACK] Failed to send general acknowledgement:", e.message);
         }
       }
 
-      res.json({ success: true, message: "Contact form submitted successfully" });
+      res.json({ 
+        success: true, 
+        message: "Contact form submitted successfully",
+        routed_to: routingEmail
+      });
     } catch (error: any) {
       console.error("Contact form error:", error);
       res.status(500).json({ message: "Failed to submit contact form" });

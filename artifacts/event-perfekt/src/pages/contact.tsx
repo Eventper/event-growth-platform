@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { useVisitorTracking, trackFunnelEvent } from "@/hooks/use-visitor-tracking";
 
 export default function ContactPage() {
   usePageMeta({
@@ -15,6 +16,7 @@ export default function ContactPage() {
     company: "",
     phone: "",
     serviceType: "event-planning",
+    inquiryType: "general", // "general" | "booth-inquiry" | "platform-inquiry"
     message: "",
   });
 
@@ -34,6 +36,7 @@ export default function ContactPage() {
         company: "",
         phone: "",
         serviceType: "event-planning",
+        inquiryType: "general",
         message: "",
       });
       setTimeout(() => setSubmitted(false), 5000);
@@ -42,6 +45,11 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    trackFunnelEvent('contact_form_submit', '/contact', { 
+      inquiryType: formData.inquiryType,
+      serviceType: formData.serviceType,
+      source: 'contact_page'
+    });
     contactMutation.mutate(formData);
   };
 
@@ -144,10 +152,35 @@ export default function ContactPage() {
               />
             </div>
 
+            {/* Inquiry Type */}
+            <div>
+              <label className="block text-sm font-light text-black mb-2">
+                What are you interested in? *
+              </label>
+              <select
+                name="inquiryType"
+                value={formData.inquiryType}
+                onChange={(e) => {
+                  handleChange(e);
+                  // Auto-set serviceType based on inquiryType
+                  if (e.target.value === "booth-inquiry") {
+                    setFormData(prev => ({ ...prev, serviceType: "360-booth" }));
+                  } else if (e.target.value === "platform-inquiry") {
+                    setFormData(prev => ({ ...prev, serviceType: "platform" }));
+                  }
+                }}
+                className="w-full px-4 py-3 border border-black border-opacity-20 rounded focus:outline-none focus:border-[#330311] font-light"
+              >
+                <option value="general">General Inquiry</option>
+                <option value="booth-inquiry">📸 360 Booth Hire</option>
+                <option value="platform-inquiry">🎯 The Human Behind The Title Platform</option>
+              </select>
+            </div>
+
             {/* Service Type */}
             <div>
               <label className="block text-sm font-light text-black mb-2">
-                Interested In *
+                Service Type *
               </label>
               <select
                 name="serviceType"
@@ -155,13 +188,31 @@ export default function ContactPage() {
                 onChange={handleChange}
                 className="w-full px-4 py-3 border border-black border-opacity-20 rounded focus:outline-none focus:border-[#330311] font-light"
               >
-                <option value="event-planning">Full Event Planning</option>
-                <option value="day-coordination">Day Coordination</option>
-                <option value="venue-sourcing">Venue Sourcing</option>
-                <option value="design">Design & Experience</option>
-                <option value="project-management">Project Management</option>
-                <option value="tender-manager">Tender Manager</option>
-                <option value="other">Other</option>
+                {formData.inquiryType === "booth-inquiry" ? (
+                  <>
+                    <option value="360-booth">360 Photo Booth Hire</option>
+                    <option value="booth-corporate">Corporate Event Booth</option>
+                    <option value="booth-wedding">Wedding Photo Booth</option>
+                    <option value="booth-custom">Custom Booth Package</option>
+                  </>
+                ) : formData.inquiryType === "platform-inquiry" ? (
+                  <>
+                    <option value="platform">Platform Information</option>
+                    <option value="platform-corporate">Corporate Partnership</option>
+                    <option value="platform-brand">Brand Partnership</option>
+                    <option value="platform-event">Event Attendance</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="event-planning">Full Event Planning</option>
+                    <option value="day-coordination">Day Coordination</option>
+                    <option value="venue-sourcing">Venue Sourcing</option>
+                    <option value="design">Design & Experience</option>
+                    <option value="project-management">Project Management</option>
+                    <option value="tender-manager">Tender Manager</option>
+                    <option value="other">Other</option>
+                  </>
+                )}
               </select>
             </div>
 
