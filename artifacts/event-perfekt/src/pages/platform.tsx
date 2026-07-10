@@ -1,5 +1,6 @@
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { useLocation } from "wouter";
+import { useVisitorTracking, trackFunnelEvent } from "@/hooks/use-visitor-tracking";
 
 export default function Platform() {
   const [, navigate] = useLocation();
@@ -52,7 +53,7 @@ export default function Platform() {
             This first experience focuses on women because many senior women are carrying leadership pressure, business growth, identity shifts, health changes, financial decisions and personal responsibility at the same time.
           </p>
           <button
-            onClick={() => navigate("/")}
+            onClick={() => { trackFunnelEvent('cta_click', '/iamher/platform', { cta: 'view_experience' }); navigate("/"); }}
             className="px-8 py-3 bg-[#330311] text-white font-semibold rounded-lg hover:bg-[#4a0515] transition"
           >
             View The Woman Who Leads The Room
@@ -118,11 +119,22 @@ export default function Platform() {
             It supports conversations around women in leadership, menopause and workplace wellbeing, executive confidence, founder sustainability, financial wellbeing, burnout prevention, talent retention and human-centred leadership.
           </p>
           <p className="text-base text-gray-600 italic mb-8">
-            This is where corporate wellbeing meets leadership reality.
+            This is where corporate wellbeing meets leadership reality. And it's where entertainment like our 360 booth keeps your team engaged and connected.
           </p>
-          <button className="px-8 py-3 bg-[#330311] text-white font-semibold rounded-lg hover:bg-[#4a0515] transition">
-            Discuss Corporate Programmes
-          </button>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <button 
+              onClick={() => { trackFunnelEvent('cta_click', '/iamher/platform', { cta: 'corporate_programmes' }); navigate("/contact"); }}
+              className="px-8 py-3 bg-[#330311] text-white font-semibold rounded-lg hover:bg-[#4a0515] transition"
+            >
+              Discuss Corporate Programmes
+            </button>
+            <button 
+              onClick={() => { trackFunnelEvent('cta_click', '/iamher/platform', { cta: 'booth_corporate' }); navigate("/photo-booth-nigeria"); }}
+              className="px-8 py-3 border-2 border-[#330311] text-[#330311] font-semibold rounded-lg hover:bg-gray-100 transition"
+            >
+              Add Booth Entertainment to Your Event
+            </button>
+          </div>
         </section>
 
         {/* For Brand Partners */}
@@ -137,9 +149,56 @@ export default function Platform() {
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
             We create opportunities for aligned brands across women's health, skin health, luxury fragrance, beauty, aesthetics, financial wellbeing, business banking, hospitality, lifestyle and corporate wellbeing.
           </p>
-          <button className="px-8 py-3 bg-[#330311] text-white font-semibold rounded-lg hover:bg-[#4a0515] transition">
+          <button 
+            onClick={() => { trackFunnelEvent('cta_click', '/iamher/platform', { cta: 'brand_partnerships' }); navigate("/#partnerships"); }}
+            className="px-8 py-3 bg-[#330311] text-white font-semibold rounded-lg hover:bg-[#4a0515] transition"
+          >
             Explore Partnerships
           </button>
+        </section>
+
+        {/* Booth Entertainment for Corporate Events */}
+        <section className="bg-gradient-to-br from-[#330311] to-[#4a0515] text-white rounded-xl px-8 py-12">
+          <h2 className="text-3xl font-bold mb-6">Entertainment for Your Corporate Events & Celebrations</h2>
+          <p className="text-lg text-white/90 leading-relaxed mb-6">
+            Planning a corporate gathering, team celebration, or leadership event? Our 360 photo booth entertainment creates unforgettable moments, drives engagement, and gives your guests something to talk about.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div>
+              <h3 className="text-xl font-bold mb-3">Perfect for:</h3>
+              <ul className="space-y-2 text-white/80">
+                <li>✓ Leadership dinners & executive celebrations</li>
+                <li>✓ Team building & company events</li>
+                <li>✓ Corporate conferences & brand activations</li>
+                <li>✓ Networking events & brand launches</li>
+                <li>✓ Awards ceremonies & milestone celebrations</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-3">What you get:</h3>
+              <ul className="space-y-2 text-white/80">
+                <li>✓ Unlimited 360 video captures</li>
+                <li>✓ Instant social sharing</li>
+                <li>✓ Professional on-site attendant</li>
+                <li>✓ Custom branding & overlays available</li>
+                <li>✓ Premium setup & styling</li>
+              </ul>
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <button
+              onClick={() => { trackFunnelEvent('cta_click', '/iamher/platform', { cta: 'booth_inquiry', audience: 'corporate_event' }); navigate("/photo-booth-nigeria"); }}
+              className="px-8 py-3 bg-white text-[#330311] font-bold rounded-lg hover:bg-gray-100 transition"
+            >
+              📸 Book Your Booth Now
+            </button>
+            <button
+              onClick={() => { trackFunnelEvent('cta_click', '/iamher/platform', { cta: 'booth_inquiry_info', audience: 'corporate_event' }); navigate("/contact"); }}
+              className="px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition"
+            >
+              Get More Information
+            </button>
+          </div>
         </section>
 
         {/* Vision */}
@@ -182,7 +241,7 @@ export default function Platform() {
             </p>
           </div>
           <button
-            onClick={() => navigate("/contact")}
+            onClick={() => { trackFunnelEvent('cta_click', '/iamher/platform', { cta: 'register_interest' }); navigate("/contact"); }}
             className="px-8 py-3 bg-white text-[#330311] font-semibold rounded-lg hover:bg-gray-100 transition"
           >
             Register Your Interest
@@ -193,23 +252,32 @@ export default function Platform() {
         <section className="text-center py-12">
           <h2 className="text-4xl font-bold text-[#330311] mb-6">Build With The Platform</h2>
           <p className="text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto mb-12">
-            Whether you are a guest, corporate organisation, brand partner, speaker, city leader or sponsor, The Human Behind The Title offers a way to align with a platform built around leadership, wellbeing, confidence and longevity.
+            Whether you are a guest, corporate organisation, brand partner, speaker, city leader, event organizer or sponsor, The Human Behind The Title and Event Perfekt offer ways to align with experiences built around leadership, wellbeing, confidence and longevity.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
             <button
-              onClick={() => navigate("/")}
+              onClick={() => { trackFunnelEvent('cta_click', '/iamher/platform', { cta: 'apply_invitation' }); navigate("/"); }}
               className="px-8 py-3 bg-[#330311] text-white font-semibold rounded-lg hover:bg-[#4a0515] transition"
             >
               Apply for Your Invitation
             </button>
             <button
-              onClick={() => navigate("/#partnerships")}
+              onClick={() => { trackFunnelEvent('cta_click', '/iamher/platform', { cta: 'explore_partnerships' }); navigate("/#partnerships"); }}
               className="px-8 py-3 border-2 border-[#330311] text-[#330311] font-semibold rounded-lg hover:bg-gray-50 transition"
             >
               Explore Partnerships
             </button>
-            <button className="px-8 py-3 border-2 border-[#330311] text-[#330311] font-semibold rounded-lg hover:bg-gray-50 transition">
+            <button 
+              onClick={() => { trackFunnelEvent('cta_click', '/iamher/platform', { cta: 'corporate_programmes_final' }); navigate("/contact"); }}
+              className="px-8 py-3 border-2 border-[#330311] text-[#330311] font-semibold rounded-lg hover:bg-gray-50 transition"
+            >
               Discuss Corporate Programmes
+            </button>
+            <button 
+              onClick={() => { trackFunnelEvent('cta_click', '/iamher/platform', { cta: 'booth_final_cta', audience: 'event_organizer' }); navigate("/photo-booth-nigeria"); }}
+              className="px-8 py-3 bg-[#C9A84C] text-[#330311] font-semibold rounded-lg hover:bg-[#b8972f] transition"
+            >
+              📸 Book Booth Entertainment
             </button>
           </div>
         </section>
