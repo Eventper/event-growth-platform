@@ -194,6 +194,14 @@ export default function PhotoBoothNigeria() {
 
   return (
     <div className="min-h-screen bg-white text-black font-[Poppins] overflow-x-hidden">
+      {/* Summer Urgency Banner */}
+      <div className="bg-gradient-to-r from-red-600 to-red-700 text-white py-3 px-4 text-center fixed top-0 left-0 right-0 z-40 shadow-lg">
+        <div className="max-w-6xl mx-auto flex items-center justify-center gap-2 text-sm font-bold">
+          <span>🔥 July & August Dates Filling Fast!</span>
+          <span className="text-xs opacity-90">Limited availability this summer</span>
+        </div>
+      </div>
+
       {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -218,24 +226,29 @@ export default function PhotoBoothNigeria() {
           <div className="flex flex-col md:flex-row items-center gap-10 md:gap-14">
             <div className="flex-1 text-center md:text-left">
               <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-white/70 text-sm mb-3 tracking-wide uppercase">
-                360 Photo Booth Hire — Nigeria
+                360 Photo Booth Hire — Nigeria Summer Special
               </motion.p>
               <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-3xl md:text-5xl font-bold text-white leading-tight mb-4">
-                Capture Every Moment in <span style={{ color: GOLD }}>360°</span>
+                Make This Summer in <span style={{ color: GOLD }}>Nigeria</span> Unforgettable
               </motion.h1>
               <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-white/80 text-base md:text-lg mb-6 leading-relaxed">
-                Premium 360 booth hire for weddings, birthdays, corporate events & brand activations across Lagos, Abuja & Port Harcourt. Instant social sharing included.
+                360° photo booth experiences that turn your summer party into the talk of Lagos, Abuja & Port Harcourt. Weddings, birthdays, corporate events & brand activations.
               </motion.p>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }} className="flex gap-4 mb-6 text-white/80 font-semibold text-sm">
+                <div>✓ 300+ Guests Captured</div>
+                <div>✓ 40+ Events Booked</div>
+                <div>✓ 4.9★ Rating</div>
+              </motion.div>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
                 <Button onClick={() => { trackFunnelEvent('cta_click', '/photo-booth-nigeria', { cta: 'hero_check_availability' }); scrollToId("booking-form"); }} className="text-white font-bold px-8 py-6 text-base rounded-full shadow-lg" style={{ background: BURGUNDY, border: `2px solid ${GOLD}` }}>
-                  Check Availability <ArrowRight size={18} className="ml-2" />
+                  Book Now (Limited Dates) <ArrowRight size={18} className="ml-2" />
                 </Button>
                 <Button onClick={() => { trackFunnelEvent('cta_click', '/photo-booth-nigeria', { cta: 'hero_get_quote' }); scrollToId("packages"); }} variant="outline" className="border-white text-white font-bold px-8 py-6 text-base rounded-full hover:bg-white hover:text-black transition-all">
-                  Get A Quote
+                  See Packages
                 </Button>
               </motion.div>
               <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="text-white/50 text-sm mt-4 flex items-center gap-2 justify-center md:justify-start">
-                <CheckCircle size={14} /> Prices include VAT | Travel within Lagos included
+                <CheckCircle size={14} /> All prices include VAT | Travel within Lagos included
               </motion.p>
             </div>
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.3 }} className="flex-1 w-full max-w-md md:max-w-lg">
@@ -252,8 +265,8 @@ export default function PhotoBoothNigeria() {
       <Section className="bg-white">
         <FadeIn>
           <div className="max-w-5xl mx-auto text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">More Than a Booth. A Full Experience.</h2>
-            <p className="text-gray-600 max-w-xl mx-auto">Every 360 booth hire includes premium service from setup to pack down.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">Why This Summer Needs a 360 Booth</h2>
+            <p className="text-gray-600 max-w-xl mx-auto">Every 360 booth hire keeps your guests entertained, creates shareable moments, and turns your event into the talk of Lagos, Abuja & Port Harcourt.</p>
           </div>
         </FadeIn>
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
@@ -271,6 +284,76 @@ export default function PhotoBoothNigeria() {
                   <f.icon size={22} style={{ color: f.accent }} />
                 </div>
                 <p className="text-sm md:text-base font-semibold text-white">{f.label}</p>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </Section>
+
+      {/* Guest Stories - Testimonials */}
+      <Section className="bg-gradient-to-b from-gray-50 to-white">
+        <FadeIn>
+          <div className="max-w-5xl mx-auto text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-black mb-3">Guest Stories From Our Summer Events</h2>
+            <p className="text-gray-600">Real experiences from Lagos, Abuja & Port Harcourt celebrations.</p>
+          </div>
+        </FadeIn>
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { name: "Sarah & James", event: "Wedding Reception, Lagos", quote: "The 360 booth was the highlight of our wedding! Guests loved it so much they asked for a second round. Definitely booking again." },
+            { name: "Michael O.", event: "Birthday Party, Abuja", quote: "Professional setup, amazing experience, and everyone got instant replays to share. Best entertainment decision we made for the party!" },
+            { name: "Tunde & Zainab", event: "Engagement Party, Port Harcourt", quote: "From setup to pack down, everything was smooth. The booth captured our celebration perfectly. Highly recommended!" },
+            { name: "Chioma N.", event: "Corporate Event, Lagos", quote: "Our team had so much fun with the 360 booth. Great for team bonding and creating shareable moments from the event." },
+            { name: "Blessing M.", event: "Birthday Celebration, Lagos", quote: "The quality of the 360 videos is outstanding. My guests are still talking about how fun it was. Worth every naira!" },
+            { name: "David & Nkechi", event: "Anniversary Party, Abuja", quote: "Professional attendant, amazing overlays, and the entire experience was seamless. Made our anniversary truly unforgettable!" },
+          ].map((t, i) => (
+            <FadeIn key={i}>
+              <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-shadow border border-gray-100">
+                <div className="flex gap-1 mb-4">
+                  {[...Array(5)].map((_, j) => (
+                    <Star key={j} size={16} className="fill-yellow-400" style={{ color: "#FCD34D" }} />
+                  ))}
+                </div>
+                <p className="text-gray-700 mb-4 italic">"{t.quote}"</p>
+                <div>
+                  <p className="font-bold text-black">{t.name}</p>
+                  <p className="text-sm text-gray-500">{t.event}</p>
+                </div>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </Section>
+
+      {/* Before & After - Event Transformations */}
+      <Section className="bg-white">
+        <FadeIn>
+          <div className="max-w-5xl mx-auto text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-black mb-3">From Quiet Moments to Unforgettable Celebrations</h2>
+            <p className="text-gray-600">See how a 360 booth transforms any event into pure joy.</p>
+          </div>
+        </FadeIn>
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { before: "😐 Guests scattered", after: "🎉 Everyone engaged", emoji1: "😐", emoji2: "🎉" },
+            { before: "📱 Phone fatigue", after: "📸 Professional quality", emoji1: "📱", emoji2: "📸" },
+            { before: "🤐 Quiet energy", after: "😂 Laughter everywhere", emoji1: "🤐", emoji2: "😂" },
+            { before: "❓ What to do?", after: "🎬 Creating memories", emoji1: "❓", emoji2: "🎬" },
+            { before: "👥 Standing still", after: "💃 Dancing & celebrating", emoji1: "👥", emoji2: "💃" },
+            { before: "😕 Forgettable moments", after: "✨ Shareable experiences", emoji1: "😕", emoji2: "✨" },
+          ].map((item, i) => (
+            <FadeIn key={i}>
+              <div className="rounded-2xl overflow-hidden bg-gradient-to-b from-gray-100 to-gray-50 border border-gray-200 hover:shadow-lg transition-shadow">
+                <div className="grid grid-cols-2">
+                  <div className="bg-gradient-to-br from-red-50 to-orange-50 p-6 flex flex-col items-center justify-center min-h-40 border-r border-gray-200">
+                    <div className="text-5xl mb-3">{item.emoji1}</div>
+                    <p className="text-sm font-semibold text-gray-700 text-center">{item.before}</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 flex flex-col items-center justify-center min-h-40">
+                    <div className="text-5xl mb-3">{item.emoji2}</div>
+                    <p className="text-sm font-semibold text-gray-700 text-center">{item.after}</p>
+                  </div>
+                </div>
               </div>
             </FadeIn>
           ))}
