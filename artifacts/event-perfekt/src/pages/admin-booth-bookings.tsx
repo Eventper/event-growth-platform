@@ -697,8 +697,9 @@ export default function AdminBoothBookings() {
             ))}
           </div>
         )}
-          ) : (
-            <div className="space-y-6">
+      </>
+        ) : (
+          <div className="space-y-6">
               {/* Inquiries Search & Filter */}
               <Card className="border-0 shadow-sm">
                 <CardContent className="p-4 flex flex-col md:flex-row gap-3">

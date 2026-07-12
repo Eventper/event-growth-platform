@@ -66,9 +66,9 @@ if (failures.length) {
   process.exit(1);
 }
 
-// Ensure root and /home redirect to the Growth Hub without altering other routes.
+// Ensure root and /home redirect to the I AM HER landing without altering other routes.
 try {
-  const redirectHtml = `<!doctype html>\n<html lang="en">\n  <head>\n    <meta charset="utf-8" />\n    <meta http-equiv="X-UA-Compatible" content="IE=edge" />\n    <meta name="viewport" content="width=device-width,initial-scale=1" />\n    <meta name="robots" content="noindex" />\n    <meta http-equiv="refresh" content="0;url=/growth-platform/" />\n    <title>Redirecting…</title>\n    <script>if(typeof window!=='undefined'){window.location.replace('/growth-platform/')}</script>\n  </head>\n  <body>Redirecting to <a href="/growth-platform/">Growth Hub</a>.</body>\n</html>`;
+  const redirectHtml = `<!doctype html>\n<html lang="en">\n  <head>\n    <meta charset="utf-8" />\n    <meta http-equiv="X-UA-Compatible" content="IE=edge" />\n    <meta name="viewport" content="width=device-width,initial-scale=1" />\n    <meta name="robots" content="noindex" />\n    <meta http-equiv="refresh" content="0;url=/iamher" />\n    <title>Redirecting…</title>\n    <script>if(typeof window!=='undefined'){window.location.replace('/iamher')}</script>\n  </head>\n  <body>Redirecting to <a href="/iamher">I AM HER</a>.</body>\n</html>`;
 
   // Overwrite the base index.html to redirect to /growth-platform/
   writeFileSync(baseIndexPath, redirectHtml, "utf-8");
@@ -78,7 +78,7 @@ try {
   mkdirSync(dirname(homeOut), { recursive: true });
   writeFileSync(homeOut, redirectHtml, "utf-8");
 
-  console.log(`[prerender-seo] wrote redirect files for / and /home -> /growth-platform/`);
+  console.log(`[prerender-seo] wrote redirect files for / and /home -> /iamher`);
 } catch (err) {
   console.error(`[prerender-seo] failed to write redirect files: ${(err as Error).message}`);
   process.exit(1);

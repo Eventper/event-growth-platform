@@ -255,9 +255,9 @@ function Router() {
       <Switch>
         {/* Public pages */}
         <Route path="/">
-          {() => <Redirect to="/home" />}
+          {() => <Redirect to="/iamher" />}
         </Route>
-        <Route path="/home" component={HeroPage} />
+        <Route path="/home">{() => <Redirect to="/iamher" />}</Route>
         <Route path="/about" component={AboutPage} />
         <Route path="/platform" component={PlatformPage} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
