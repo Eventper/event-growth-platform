@@ -5,6 +5,21 @@ import PlannerLayout from "@/components/PlannerLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
@@ -19,6 +34,7 @@ import {
   CheckCircle,
   XCircle,
   Mail,
+  Phone,
   FileText,
   Download,
   CreditCard,
@@ -71,6 +87,21 @@ interface BoothBooking {
   createdAt: string;
 }
 
+interface BoothInquiry {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  serviceType?: string;
+  message?: string;
+  status: string;
+  assigned_to?: string;
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+}
+
 interface AuditLogEntry {
   id: string;
   action: string;
@@ -109,6 +140,7 @@ export default function AdminBoothBookings() {
   const [statusFilter, setStatusFilter] = useState("");
   const [expandedAudit, setExpandedAudit] = useState<string | null>(null);
   const [auditLogs, setAuditLogs] = useState<Record<string, AuditLogEntry[]>>({});
+  const [view, setView] = useState<"bookings" | "inquiries">("bookings");
 
   const { data: bookings = [], isLoading } = useQuery({
     queryKey: ["/api/booth-bookings"],
@@ -121,6 +153,17 @@ export default function AdminBoothBookings() {
       return res.json() as Promise<BoothBooking[]>;
     },
   });
+
+  // Query booth inquiries
+  const { data: inquiriesData, isLoading: inquiriesLoading } = useQuery({
+    queryKey: ["booth-inquiries"],
+    queryFn: async () => {
+      const res = await apiRequest("GET", "/api/booth-inquiries?limit=100");
+      return res.json();
+    },
+  });
+
+  const inquiries = inquiriesData?.inquiries || [];
 
   // Generate quote/invoice draft (sends to info@eventperfekt.com for review)
   const sendQuoteMutation = useMutation({
@@ -310,6 +353,32 @@ export default function AdminBoothBookings() {
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-8 space-y-6">
+        {/* View Tabs */}
+        <div className="flex gap-2 border-b border-gray-300">
+          <button
+            onClick={() => setView("bookings")}
+            className={`px-4 py-2 font-medium text-sm transition-colors ${
+              view === "bookings"
+                ? "border-b-2 border-[#C9A84C] text-[#330311]"
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            Bookings ({bookings.length})
+          </button>
+          <button
+            onClick={() => setView("inquiries")}
+            className={`px-4 py-2 font-medium text-sm transition-colors ${
+              view === "inquiries"
+                ? "border-b-2 border-[#C9A84C] text-[#330311]"
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            Inquiries ({inquiries.length})
+          </button>
+        </div>
+
+        {view === "bookings" ? (
+          <>
         {/* Filters */}
         <Card className="border-0 shadow-sm">
           <CardContent className="p-4 flex flex-col md:flex-row gap-3">
@@ -628,6 +697,131 @@ export default function AdminBoothBookings() {
             ))}
           </div>
         )}
+          ) : (
+            <div className="space-y-6">
+              {/* Inquiries Search & Filter */}
+              <Card className="border-0 shadow-sm">
+                <CardContent className="p-4 flex flex-col md:flex-row gap-3">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <Input
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      placeholder="Search by name or email..."
+                      className="pl-9"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Filter className="w-4 h-4 text-gray-400" />
+                    <select
+                      value={statusFilter}
+                      onChange={(e) => setStatusFilter(e.target.value)}
+                      className="border rounded-lg px-3 py-2 text-sm bg-white"
+                    >
+                      <option value="">All Statuses</option>
+                      <option value="new">New</option>
+                      <option value="contacted">Contacted</option>
+                      <option value="quote_sent">Quote Sent</option>
+                      <option value="booked">Booked</option>
+                      <option value="lost">Lost</option>
+                    </select>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {inquiriesLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <Loader2 className="w-8 h-8 animate-spin text-[#C9A84C]" />
+                </div>
+              ) : inquiries.length === 0 ? (
+                <Card className="border-0 shadow-sm">
+                  <CardContent className="p-8 text-center text-gray-500">
+                    <Mail className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                    <p>No booth inquiries yet</p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="space-y-3">
+                  {inquiries
+                    .filter((inq) => {
+                      const matchesSearch =
+                        !search ||
+                        inq.name.toLowerCase().includes(search.toLowerCase()) ||
+                        inq.email.toLowerCase().includes(search.toLowerCase());
+                      const matchesStatus = !statusFilter || inq.status === statusFilter;
+                      return matchesSearch && matchesStatus;
+                    })
+                    .map((inq) => (
+                      <motion.div
+                        key={inq.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <Card className="border-0 shadow-sm hover:shadow-md transition-shadow">
+                          <CardContent className="p-4">
+                            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <h3 className="font-semibold text-[#330311]">{inq.name}</h3>
+                                  <Badge className="bg-[#C9A84C] text-white text-xs">
+                                    {inq.status}
+                                  </Badge>
+                                </div>
+                                <div className="space-y-1 text-sm text-gray-600">
+                                  <p className="flex items-center gap-2">
+                                    <Mail className="w-4 h-4" />
+                                    {inq.email}
+                                  </p>
+                                  {inq.phone && (
+                                    <p className="flex items-center gap-2">
+                                      <Phone className="w-4 h-4" />
+                                      {inq.phone}
+                                    </p>
+                                  )}
+                                  {inq.company && (
+                                    <p className="flex items-center gap-2">
+                                      <User className="w-4 h-4" />
+                                      {inq.company}
+                                    </p>
+                                  )}
+                                  {inq.serviceType && (
+                                    <p className="text-xs text-gray-500">Service: {inq.serviceType}</p>
+                                  )}
+                                  <p className="text-xs text-gray-400">
+                                    {new Date(inq.created_at).toLocaleDateString('en-GB', {
+                                      day: 'numeric',
+                                      month: 'short',
+                                      year: 'numeric',
+                                    })}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex gap-2">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => navigate(`/admin/booth-dashboard`)}
+                                  className="text-xs"
+                                >
+                                  View in Dashboard
+                                </Button>
+                              </div>
+                            </div>
+                            {inq.message && (
+                              <div className="mt-3 pt-3 border-t text-sm text-gray-600">
+                                <p className="font-medium text-xs text-gray-500 mb-1">Message:</p>
+                                <p className="text-gray-700">{inq.message}</p>
+                              </div>
+                            )}
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ))}
+                </div>
+              )}
+            </div>
+          )}
       </main>
     </div>
     </PlannerLayout>

@@ -90,6 +90,34 @@ export default function boothInquiryRoutes(app: Express) {
   });
 
   /**
+   * GET /api/booth-inquiries/stats/summary
+   * Analytics summary for booth inquiries
+   * MUST be registered before /:id to avoid route collision
+   */
+  app.get("/api/booth-inquiries/stats/summary", authenticateToken, async (req: any, res) => {
+    try {
+      const stats = await db.execute(sql`
+        SELECT
+          COUNT(*) as total,
+          COUNT(CASE WHEN status = 'new' THEN 1 END) as new_inquiries,
+          COUNT(CASE WHEN status = 'contacted' THEN 1 END) as contacted,
+          COUNT(CASE WHEN status = 'quote_sent' THEN 1 END) as quote_sent,
+          COUNT(CASE WHEN status = 'booked' THEN 1 END) as booked,
+          COUNT(CASE WHEN status = 'lost' THEN 1 END) as lost,
+          COUNT(DISTINCT DATE(created_at)) as days_active,
+          COUNT(CASE WHEN created_at >= NOW() - INTERVAL '7 days' THEN 1 END) as this_week,
+          COUNT(CASE WHEN created_at >= NOW() - INTERVAL '30 days' THEN 1 END) as this_month
+        FROM booth_inquiries
+      `);
+
+      res.json(stats.rows[0] || {});
+    } catch (error) {
+      logger.error("Failed to fetch booth stats:", error);
+      res.status(500).json({ error: "Failed to fetch stats" });
+    }
+  });
+
+  /**
    * GET /api/booth-inquiries
    * List all booth inquiries (requires auth)
    */
@@ -181,33 +209,6 @@ export default function boothInquiryRoutes(app: Express) {
     } catch (error) {
       logger.error("Failed to update booth inquiry:", error);
       res.status(500).json({ error: "Failed to update inquiry" });
-    }
-  });
-
-  /**
-   * GET /api/booth-inquiries/stats/summary
-   * Analytics summary for booth inquiries
-   */
-  app.get("/api/booth-inquiries/stats/summary", authenticateToken, async (req: any, res) => {
-    try {
-      const stats = await db.execute(sql`
-        SELECT
-          COUNT(*) as total,
-          COUNT(CASE WHEN status = 'new' THEN 1 END) as new_inquiries,
-          COUNT(CASE WHEN status = 'contacted' THEN 1 END) as contacted,
-          COUNT(CASE WHEN status = 'quote_sent' THEN 1 END) as quote_sent,
-          COUNT(CASE WHEN status = 'booked' THEN 1 END) as booked,
-          COUNT(CASE WHEN status = 'lost' THEN 1 END) as lost,
-          COUNT(DISTINCT DATE(created_at)) as days_active,
-          COUNT(CASE WHEN created_at >= NOW() - INTERVAL '7 days' THEN 1 END) as this_week,
-          COUNT(CASE WHEN created_at >= NOW() - INTERVAL '30 days' THEN 1 END) as this_month
-        FROM booth_inquiries
-      `);
-
-      res.json(stats.rows[0] || {});
-    } catch (error) {
-      logger.error("Failed to fetch booth stats:", error);
-      res.status(500).json({ error: "Failed to fetch stats" });
     }
   });
 

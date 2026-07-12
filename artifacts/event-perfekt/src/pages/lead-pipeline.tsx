@@ -231,10 +231,36 @@ export default function LeadPipeline() {
   const [convertDialogOpen, setConvertDialogOpen] = useState(false);
   const [noteText, setNoteText] = useState("");
   const [assignee, setAssignee] = useState("");
+  const [view, setView] = useState<"general" | "booth" | "all">("general");
 
   const { data: enquiries = [], isLoading } = useQuery<Enquiry[]>({
     queryKey: ["/api/enquiries"],
   });
+
+  const { data: boothInquiriesData, isLoading: boothLoading } = useQuery({
+    queryKey: ["booth-inquiries"],
+    queryFn: async () => {
+      const res = await apiRequest("GET", "/api/booth-inquiries?limit=100");
+      return res.json();
+    },
+  });
+
+  const boothInquiries = (boothInquiriesData?.inquiries || []).map((inq: any) => ({
+    id: inq.id,
+    name: inq.name,
+    email: inq.email,
+    phone: inq.phone || null,
+    event_type: "booth",
+    guest_count: null,
+    preferred_date: null,
+    budget_range: null,
+    country: null,
+    message: inq.message || null,
+    status: inq.status || "new",
+    assigned_to: inq.assigned_to || null,
+    notes: inq.notes || null,
+    created_at: inq.created_at,
+  }));
 
   const updateEnquiry = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Record<string, string | null> }) => {
@@ -263,7 +289,12 @@ export default function LeadPipeline() {
     },
   });
 
-  const filteredEnquiries = enquiries.filter(
+  const displayedEnquiries = 
+    view === "general" ? enquiries :
+    view === "booth" ? boothInquiries :
+    [...enquiries, ...boothInquiries];
+
+  const filteredEnquiries = displayedEnquiries.filter(
     (e) =>
       e.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       e.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -343,6 +374,40 @@ export default function LeadPipeline() {
           <p className="text-white/60 mt-1">
             Track and manage enquiries through your sales pipeline
           </p>
+
+          {/* View Tabs */}
+          <div className="flex gap-4 mt-4 border-b border-white/10 pb-4">
+            <button
+              onClick={() => setView("general")}
+              className={`px-4 py-2 font-medium text-sm transition-colors ${
+                view === "general"
+                  ? "border-b-2 border-[#C9A84C] text-[#C9A84C]"
+                  : "text-white/60 hover:text-white"
+              }`}
+            >
+              General Leads ({enquiries.length})
+            </button>
+            <button
+              onClick={() => setView("booth")}
+              className={`px-4 py-2 font-medium text-sm transition-colors ${
+                view === "booth"
+                  ? "border-b-2 border-[#C9A84C] text-[#C9A84C]"
+                  : "text-white/60 hover:text-white"
+              }`}
+            >
+              Booth Inquiries ({boothInquiries.length})
+            </button>
+            <button
+              onClick={() => setView("all")}
+              className={`px-4 py-2 font-medium text-sm transition-colors ${
+                view === "all"
+                  ? "border-b-2 border-[#C9A84C] text-[#C9A84C]"
+                  : "text-white/60 hover:text-white"
+              }`}
+            >
+              All ({enquiries.length + boothInquiries.length})
+            </button>
+          </div>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 mb-6">

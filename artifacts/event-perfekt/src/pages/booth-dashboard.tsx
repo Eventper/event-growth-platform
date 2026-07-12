@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/lib/auth";
 import PlannerLayout from "@/components/PlannerLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -54,10 +56,30 @@ const PIPELINE_STAGES = [
 
 export default function BoothDashboard() {
   const { toast } = useToast();
+  const { user } = useAuth();
+  const [, setLocation] = useLocation();
   const [selectedInquiry, setSelectedInquiry] = useState<BoothInquiry | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [filterStatus, setFilterStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Protect route: redirect to login if not authenticated
+  useEffect(() => {
+    if (!user) {
+      setLocation("/login");
+    }
+  }, [user, setLocation]);
+
+  // Show loading while checking auth
+  if (!user) {
+    return (
+      <PlannerLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#C9A84C]" />
+        </div>
+      </PlannerLayout>
+    );
+  }
 
   // Fetch booth inquiries
   const { data: inquiriesData, isLoading, refetch } = useQuery({
