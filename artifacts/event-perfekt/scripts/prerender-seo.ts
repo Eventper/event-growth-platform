@@ -65,3 +65,21 @@ if (failures.length) {
   // Fail the build loudly — silent SEO loss is exactly the bug this fixes.
   process.exit(1);
 }
+
+// Ensure root and /home redirect to the Growth Hub without altering other routes.
+try {
+  const redirectHtml = `<!doctype html>\n<html lang="en">\n  <head>\n    <meta charset="utf-8" />\n    <meta http-equiv="X-UA-Compatible" content="IE=edge" />\n    <meta name="viewport" content="width=device-width,initial-scale=1" />\n    <meta name="robots" content="noindex" />\n    <meta http-equiv="refresh" content="0;url=/growth-platform/" />\n    <title>Redirecting…</title>\n    <script>if(typeof window!=='undefined'){window.location.replace('/growth-platform/')}</script>\n  </head>\n  <body>Redirecting to <a href="/growth-platform/">Growth Hub</a>.</body>\n</html>`;
+
+  // Overwrite the base index.html to redirect to /growth-platform/
+  writeFileSync(baseIndexPath, redirectHtml, "utf-8");
+
+  // Also create a /home redirect
+  const homeOut = join(distDir, "home", "index.html");
+  mkdirSync(dirname(homeOut), { recursive: true });
+  writeFileSync(homeOut, redirectHtml, "utf-8");
+
+  console.log(`[prerender-seo] wrote redirect files for / and /home -> /growth-platform/`);
+} catch (err) {
+  console.error(`[prerender-seo] failed to write redirect files: ${(err as Error).message}`);
+  process.exit(1);
+}
