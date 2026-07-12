@@ -23,6 +23,14 @@ publicDir = "artifacts/event-perfekt/dist/public"
 serve = "static"
 
 [[services.production.rewrites]]
+# Ensure prerendered /iamher/ files are served directly rather than being
+# intercepted by the generic SPA catch-all. A specific rewrite for the
+# /iamher/* path returns the prerendered index.html for that directory.
+[[services.production.rewrites]]
+from = "/iamher/*"
+to = "/iamher/index.html"
+
+[[services.production.rewrites]]
 from = "/*"
 to = "/index.html"
 
