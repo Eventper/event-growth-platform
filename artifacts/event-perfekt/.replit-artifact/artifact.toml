@@ -31,6 +31,21 @@ from = "/iamher/*"
 to = "/iamher/index.html"
 
 [[services.production.rewrites]]
+# Redirect the site root to the prerendered /iamher page.
+from = "/"
+to = "/iamher/index.html"
+
+[[services.production.rewrites]]
+# Redirect /home (exact) to /iamher
+from = "/home"
+to = "/iamher/index.html"
+
+[[services.production.rewrites]]
+# Redirect /home/* to /iamher
+from = "/home/*"
+to = "/iamher/index.html"
+
+[[services.production.rewrites]]
 from = "/*"
 to = "/index.html"
 
