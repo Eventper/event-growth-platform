@@ -73,12 +73,20 @@ export function useVisitorTracking(page: string, title?: string) {
     const sessionId = getOrCreateSessionId();
     const utm = getStoredUtm();
 
+    // Normalize page path to always begin with '/'
+    const normPage = page && page.startsWith("/") ? page : `/${page}`;
+
+    // Mark this pageview in localStorage so analytics lazy-init doesn't double-post
+    try {
+      localStorage.setItem('ep_last_pv', JSON.stringify({ path: normPage, ts: Date.now() }));
+    } catch {}
+
     fetch("/api/track/pageview", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         sessionId,
-        page,
+        page: normPage,
         title: title || document.title,
         referrer: document.referrer || undefined,
         ...utm,
@@ -86,11 +94,11 @@ export function useVisitorTracking(page: string, title?: string) {
     }).catch(() => {});
 
     // Also track I Am Her funnel page_visit
-    if (page === "/iamher" || page === "/access" || page === "/access/payment" || page === "/meet-the-room" || page.startsWith("/iamher/") || page === "/360-booth-hire-milton-keynes" || page === "/photobooth" || page === "/photo-booth-nigeria") {
+    if (normPage === "/iamher" || normPage === "/access" || normPage === "/access/payment" || normPage === "/meet-the-room" || normPage.startsWith("/iamher/") || normPage === "/360-booth-hire-milton-keynes" || normPage === "/photobooth" || normPage === "/photo-booth-nigeria") {
       fetch("/api/track/funnel-event", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId, eventType: "page_visit", page, metadata: { title } }),
+        body: JSON.stringify({ sessionId, eventType: "page_visit", page: normPage, metadata: { title } }),
       }).catch(() => {});
     }
 

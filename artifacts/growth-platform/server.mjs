@@ -1,4 +1,5 @@
 import http from 'http';
+import https from 'https';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -7,10 +8,43 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const publicDir = path.join(__dirname, 'dist/public');
 const port = process.env.PORT || 5000;
+const apiBackend = process.env.API_BACKEND; // e.g. "http://127.0.0.1:5007"
 
 const server = http.createServer((req, res) => {
   let filePath = path.join(publicDir, req.url === '/' ? 'index.html' : req.url);
   
+  // Optional proxy: forward any /api/* requests to API_BACKEND when configured.
+  if (apiBackend && req.url && req.url.startsWith('/api/')) {
+    try {
+      const backend = new URL(apiBackend);
+      const proxyOptions = {
+        protocol: backend.protocol,
+        hostname: backend.hostname,
+        port: backend.port || (backend.protocol === 'https:' ? 443 : 80),
+        path: req.url,
+        method: req.method,
+        headers: { ...req.headers, host: backend.host },
+      };
+
+      const proxyReq = (backend.protocol === 'https:' ? https : http).request(proxyOptions, (proxyRes) => {
+        res.writeHead(proxyRes.statusCode || 502, proxyRes.headers);
+        proxyRes.pipe(res, { end: true });
+      });
+
+      proxyReq.on('error', () => {
+        res.writeHead(502);
+        res.end('Bad Gateway');
+      });
+
+      req.pipe(proxyReq, { end: true });
+      return;
+    } catch (err) {
+      res.writeHead(502);
+      res.end('Bad Gateway');
+      return;
+    }
+  }
+
   // Normalize path to prevent directory traversal
   filePath = path.normalize(filePath);
   if (!filePath.startsWith(publicDir)) {

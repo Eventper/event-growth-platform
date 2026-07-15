@@ -1,5 +1,5 @@
-import { Component, ErrorInfo, ReactNode, lazy, Suspense } from "react";
-import { Switch, Route, Redirect, Router as WouterRouter } from "wouter";
+import { Component, ErrorInfo, ReactNode, lazy, Suspense, useEffect, useRef } from "react";
+import { Switch, Route, Redirect, Router as WouterRouter, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -250,6 +250,46 @@ class PortalErrorBoundary extends Component<
 function Router() {
   const portalUser = getPortalUser();
   const trustee = isTrusteePortalUser(portalUser);
+  const [location] = useLocation();
+  const analyticsRef = useRef<any>(null);
+  const lastSent = useRef<{ path?: string; at?: number }>({});
+
+  useEffect(() => {
+    // initialize analytics if configured
+    try {
+      // lazy-import to avoid modifying server-side build when running Node
+      import("./lib/analytics").then((mod) => {
+        analyticsRef.current = mod;
+        mod.initAnalytics();
+        mod.sendPageView(window.location.pathname, document.title);
+        lastSent.current = { path: window.location.pathname, at: Date.now() };
+      });
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
+  // Send pageview on every SPA navigation (debounced to avoid duplicates)
+  useEffect(() => {
+    try {
+      const path = location || window.location.pathname;
+      const now = Date.now();
+      if (lastSent.current.path === path && now - (lastSent.current.at || 0) < 1000) return;
+      lastSent.current = { path, at: now };
+      if (analyticsRef.current && analyticsRef.current.sendPageView) {
+        analyticsRef.current.sendPageView(path, document.title);
+      } else {
+        // If analytics not yet loaded, lazy-import and call
+        import("./lib/analytics").then((mod) => {
+          analyticsRef.current = mod;
+          mod.initAnalytics();
+          mod.sendPageView(path, document.title);
+        }).catch(() => {});
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, [location]);
   return (
     <Suspense fallback={null}>
       <Switch>

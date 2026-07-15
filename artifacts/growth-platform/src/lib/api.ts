@@ -1,6 +1,15 @@
 // API wrapper with automatic auth header injection
 function normalizeRequestUrl(url: string): string {
   if (/^https?:\/\//i.test(url)) return url;
+
+  // If an explicit API host is provided via VITE_API_URL (e.g. "https://api.example.com"),
+  // use it for `/api/*` calls so deployments can point the SPA at a separate API host.
+  const apiHost = (import.meta.env.VITE_API_URL || "").trim();
+  if (apiHost) {
+    if (url.startsWith("/api/")) return apiHost.replace(/\/$/, "") + url;
+    return url;
+  }
+
   if (!url.startsWith("/api/")) return url;
 
   // Keep API calls working when the app is served under a sub-path
